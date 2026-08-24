@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CU Ways Frontend
 
-## Getting Started
+Next.js frontend for CU Ways. The app uses the App Router, React, TypeScript, Tailwind CSS, shadcn/ui, and Lucide icons.
 
-First, run the development server:
+The current UI is still the initial starter screen. Backend API integration and product pages will be added incrementally.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Requirements
+
+- Node.js LTS
+- pnpm 11.13.0+
+
+All commands below are run from this directory:
+
+```powershell
+cd D:\test-fullstack\cu-way\frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Install dependencies and start the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+pnpm install
+pnpm dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+The page uses hot reload. Start editing [src/app/page.tsx](src/app/page.tsx) to change the home page.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Useful commands
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm lint` | Run ESLint |
+| `pnpm exec tsc --noEmit` | Check TypeScript without emitting files |
+| `pnpm build` | Create a production build |
+| `pnpm start` | Serve the production build locally |
 
-## Deploy on Vercel
+Run the production flow with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+pnpm lint
+pnpm exec tsc --noEmit
+pnpm build
+pnpm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```text
+src/app              App Router pages, layout, metadata, and global styles
+src/components/ui    Reusable UI components
+src/lib              Shared utilities
+public                Static assets
+components.json       shadcn/ui configuration and aliases
+next.config.ts        Next.js configuration
+```
+
+The `@/*` import alias points to `src/*`:
+
+```tsx
+import { Button } from "@/components/ui/button";
+```
+
+## UI conventions
+
+- Add routes and page-level UI under `src/app`.
+- Put reusable components under `src/components`.
+- Use the existing shadcn/ui components before creating duplicates.
+- Use Tailwind utility classes for styling.
+- Use Lucide icons through `lucide-react`.
+- Keep shared helper functions in `src/lib`.
+
+## Backend
+
+The backend runs separately from the frontend. See the [backend README](../backend/README.md) for PostgreSQL, API, migration, and health-check instructions.
+
+There are currently no frontend environment variables or API client configuration. Add them only when frontend-to-backend integration is introduced.
+
+## Current scope
+
+Implemented:
+
+- Next.js App Router setup
+- TypeScript and ESLint
+- Tailwind CSS v4
+- shadcn/ui Base Nova configuration
+- Reusable Button and Input components
+- Geist font setup and responsive starter layout
+
+Not implemented yet:
+
+- Authentication screens
+- User, creator, and marketer flows
+- Survey, job, offer, payment, and review pages
+- Backend API client and data fetching
