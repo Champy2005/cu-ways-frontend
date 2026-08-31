@@ -69,6 +69,7 @@ Try the flow:
 | `pnpm dev` | Start the development server |
 | `pnpm lint` | Run ESLint |
 | `pnpm typecheck` | Check TypeScript without emitting files |
+| `pnpm generate:api` | Generate TypeScript contract types from the backend OpenAPI document |
 | `pnpm build` | Create a production build |
 | `pnpm start` | Serve the production build locally |
 
@@ -78,7 +79,7 @@ Try the flow:
 - Prefer Server Components for initial data and use Client Components only for interaction or browser APIs.
 - Use `src/lib/api/server-client.ts` for server-side backend calls and `browser-client.ts` for same-origin BFF calls.
 - Keep `BACKEND_API_URL` server-only; never use `NEXT_PUBLIC_` for secrets or access tokens.
-- Treat `src/lib/api/generated/` as contract types mirrored from `backend/docs/openapi.yaml`; replace it with generated output when the API type-generation step is introduced.
+- Treat `src/lib/api/generated/backend.ts` as generated output from `backend/docs/openapi.yaml`; do not edit it by hand.
 - Keep authorization checks in server code and the backend. Proxy redirects are only an early UX check.
 - Add `providers/`, `hooks/`, and `types/` only when a concrete shared use case requires them.
 

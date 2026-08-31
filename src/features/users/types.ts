@@ -1,4 +1,4 @@
-export type {
-  User,
-  UserList,
-} from "@/lib/api/generated/backend";
+import type { components } from "@/lib/api/generated/backend";
+
+export type User = components["schemas"]["User"];
+export type UserList = components["schemas"]["UserListResponse"]["data"];

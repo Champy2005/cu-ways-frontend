@@ -140,7 +140,7 @@ Provides the transport boundary between the frontend and backend.
 - `envelope.ts` contains environment-independent response-envelope helpers.
 - `generated/` is the contract boundary for types derived from `backend/docs/openapi.yaml`.
 
-The current contract types mirror the backend OpenAPI document and are isolated so an OpenAPI generator can replace them later without changing feature UI APIs.
+The contract file is generated from `backend/docs/openapi.yaml` with `pnpm generate:api`. It is isolated so regeneration does not require changing feature UI APIs. Do not edit generated output by hand.
 
 ### `src/lib/auth`
 
@@ -182,7 +182,7 @@ The following rules are mandatory:
 4. Browser code must call same-origin BFF endpoints through `browser-client.ts`; it must not call the Go backend directly with a secret URL or bearer token.
 5. Server Components and Server Actions should call the backend directly through `server-client.ts` rather than making an unnecessary request to a local Route Handler.
 6. `src/app/api` may adapt transport and cookies, but must not duplicate backend business rules.
-7. `src/lib/api/generated` is a contract boundary; generated files should not contain UI code or secrets.
+7. `src/lib/api/generated` is a contract boundary; generated files should not contain UI code or secrets and must not be edited by hand.
 8. Shared components must remain domain-neutral. Feature-specific behavior belongs under its feature.
 9. Prefer explicit dependency injection through function arguments or constructors over global mutable stores.
 10. Do not introduce a global state library until a concrete cross-page client-state requirement exists.
@@ -258,7 +258,7 @@ The backend is the source of truth for users and future domain entities. Do not 
 Use this sequence when adding a feature such as surveys or jobs:
 
 1. Confirm the backend endpoint and OpenAPI contract.
-2. Add or regenerate the relevant contract types in `src/lib/api/generated`.
+2. Run `pnpm generate:api` to regenerate the contract types in `src/lib/api/generated`.
 3. Create `src/features/<feature>/types.ts` and `api.ts`.
 4. Add feature schemas for form and query validation.
 5. Implement feature-specific components under `components/` inside the feature.
@@ -299,7 +299,7 @@ When testing protected pages, run the Go backend and use a development admin see
 - Duplicating backend business rules in Next.js Route Handlers.
 - Creating a global store for data already owned by the backend.
 - Sharing feature-private components by reaching into another feature folder.
-- Manually editing generated API output without updating the OpenAPI source contract.
+- Manually editing generated API output instead of updating the OpenAPI source contract and regenerating it.
 - Adding a library or abstraction before a concrete requirement justifies it.
 
 ## Current status

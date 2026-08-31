@@ -1,4 +1,6 @@
-import type { ErrorEnvelope } from "@/lib/api/generated/backend";
+import type { components } from "@/lib/api/generated/backend";
+
+type ErrorEnvelope = components["schemas"]["ErrorResponse"];
 
 export class ApiError extends Error {
   readonly status: number;
