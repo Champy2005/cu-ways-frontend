@@ -24,7 +24,7 @@ export async function browserApiRequest<T>(
   }
 
   const data = extractData<T>(payload);
-  if (data === null) {
+  if (data === undefined) {
     throw apiErrorFromResponse(response.status, payload);
   }
 

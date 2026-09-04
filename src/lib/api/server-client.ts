@@ -23,7 +23,7 @@ export async function serverApiRequest<T>(
   if (!response.ok) throw apiErrorFromResponse(response.status, payload);
 
   const data = extractData<T>(payload);
-  if (data === null) throw apiErrorFromResponse(response.status, payload);
+  if (data === undefined) throw apiErrorFromResponse(response.status, payload);
   return data;
 }
 

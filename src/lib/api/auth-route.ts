@@ -6,6 +6,7 @@ import {
 } from "@/lib/api/backend-client";
 import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
+import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import {
   validateLoginInput,
   validateRegisterInput,
@@ -18,6 +19,14 @@ const INVALID_REQUEST = {
   error: {
     code: "validation_error",
     message: "request validation failed",
+  },
+} as const;
+
+const INVALID_ORIGIN = {
+  status: "error",
+  error: {
+    code: "invalid_origin",
+    message: "request origin is not allowed",
   },
 } as const;
 
@@ -34,6 +43,10 @@ export async function handleAuthRequest(
   path: string,
   validator: AuthRequestValidator,
 ): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin"))) {
+    return NextResponse.json(INVALID_ORIGIN, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
