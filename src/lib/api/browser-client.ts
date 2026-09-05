@@ -1,5 +1,5 @@
 import { apiErrorFromResponse } from "@/lib/api/errors";
-import { extractData } from "@/lib/api/envelope";
+import { hasData } from "@/lib/api/envelope";
 
 export async function browserApiRequest<T>(
   path: string,
@@ -23,10 +23,9 @@ export async function browserApiRequest<T>(
     throw apiErrorFromResponse(response.status, payload);
   }
 
-  const data = extractData<T>(payload);
-  if (data === null) {
+  if (!hasData(payload)) {
     throw apiErrorFromResponse(response.status, payload);
   }
 
-  return data;
+  return payload.data as T;
 }
