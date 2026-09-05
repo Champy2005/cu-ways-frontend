@@ -1,10 +1,55 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getDisplayError } from "@/lib/api/errors";
+import { updateCurrentUser } from "@/features/users/browser-api";
+import {
+  contactValidationMessage,
+  normalizeContactUpdate,
+} from "@/features/users/schemas";
 import type { User } from "@/features/users/types";
 
 type UserProfileCardProps = {
   user: User;
 };
 
-export function UserProfileCard({ user }: UserProfileCardProps) {
+export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
+  const [user, setUser] = useState(initialUser);
+  const [phone, setPhone] = useState(initialUser.phone ?? "");
+  const [lineID, setLineID] = useState(initialUser.line_id ?? "");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const input = normalizeContactUpdate({ phone, line_id: lineID });
+    const validationError = contactValidationMessage(input);
+    if (validationError) {
+      setError(validationError);
+      setSuccess(null);
+      return;
+    }
+
+    setIsPending(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const updatedUser = await updateCurrentUser(input);
+      setUser(updatedUser);
+      setPhone(updatedUser.phone ?? "");
+      setLineID(updatedUser.line_id ?? "");
+      setSuccess("Contact information saved.");
+    } catch (requestError) {
+      setError(getDisplayError(requestError));
+    } finally {
+      setIsPending(false);
+    }
+  }
+
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
       <div className="flex items-start justify-between gap-4">
@@ -15,20 +60,29 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
         </div>
         <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700">User #{user.user_id}</span>
       </div>
-      <dl className="mt-8 grid gap-5 sm:grid-cols-3">
-        <div>
-          <dt className="text-xs font-medium uppercase tracking-wide text-zinc-500">Phone</dt>
-          <dd className="mt-1 text-sm text-zinc-900">{user.phone || "Not provided"}</dd>
+
+      <form className="mt-8" onSubmit={handleSubmit}>
+        <div className="grid gap-5 sm:grid-cols-3">
+          <div>
+            <label className="text-xs font-medium uppercase tracking-wide text-zinc-500" htmlFor="profile-phone">Phone</label>
+            <Input id="profile-phone" className="mt-2" autoComplete="tel" maxLength={20} placeholder="Not provided" value={phone} onChange={(event) => setPhone(event.target.value)} disabled={isPending} />
+          </div>
+          <div>
+            <label className="text-xs font-medium uppercase tracking-wide text-zinc-500" htmlFor="profile-line-id">LINE ID</label>
+            <Input id="profile-line-id" className="mt-2" maxLength={50} placeholder="Not provided" value={lineID} onChange={(event) => setLineID(event.target.value)} disabled={isPending} />
+          </div>
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Joined</p>
+            <p className="mt-3 text-sm text-zinc-900">{new Date(user.created_at).toLocaleDateString()}</p>
+          </div>
         </div>
-        <div>
-          <dt className="text-xs font-medium uppercase tracking-wide text-zinc-500">Line ID</dt>
-          <dd className="mt-1 text-sm text-zinc-900">{user.line_id || "Not provided"}</dd>
-        </div>
-        <div>
-          <dt className="text-xs font-medium uppercase tracking-wide text-zinc-500">Joined</dt>
-          <dd className="mt-1 text-sm text-zinc-900">{new Date(user.created_at).toLocaleDateString()}</dd>
-        </div>
-      </dl>
+        <p className="mt-3 text-xs text-zinc-500">Both fields are optional. Your email remains available as a contact channel.</p>
+        {error ? <p className="mt-4 text-sm text-red-700" role="alert">{error}</p> : null}
+        {success ? <p className="mt-4 text-sm text-green-700" role="status">{success}</p> : null}
+        <Button className="mt-5" type="submit" disabled={isPending}>
+          {isPending ? "Saving..." : "Save contact information"}
+        </Button>
+      </form>
     </div>
   );
 }
