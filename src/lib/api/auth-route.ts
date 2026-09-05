@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 
-import {
-  fetchBackend,
-  readBackendPayload,
-} from "@/lib/api/backend-client";
+import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
 import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import {

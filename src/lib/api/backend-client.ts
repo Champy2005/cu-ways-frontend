@@ -1,10 +1,7 @@
 import { getBackendApiUrl } from "@/lib/env";
 export { extractData, isRecord } from "@/lib/api/envelope";
 
-export async function fetchBackend(
-  path: string,
-  init: RequestInit = {},
-): Promise<Response> {
+export async function fetchBackend(path: string, init: RequestInit = {}): Promise<Response> {
   const baseUrl = getBackendApiUrl().replace(/\/+$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const headers = new Headers(init.headers);

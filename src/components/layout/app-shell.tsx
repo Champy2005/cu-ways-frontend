@@ -17,20 +17,35 @@ export function AppShell({ children, role }: AppShellProps) {
             CU Ways
           </Link>
           <nav className="flex items-center gap-1" aria-label="Main navigation">
-            <Link className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100" href="/dashboard">
+            <Link
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+              href="/dashboard"
+            >
               Dashboard
             </Link>
-            <Link className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100" href="/profile">
+            <Link
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+              href="/profile"
+            >
               Profile
             </Link>
-            <Link className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100" href="/surveys">
+            <Link
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+              href="/surveys"
+            >
               Surveys
             </Link>
-            <Link className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100" href="/jobs">
+            <Link
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+              href="/jobs"
+            >
               Jobs
             </Link>
             {role === "admin" ? (
-              <Link className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100" href="/admin/users">
+              <Link
+                className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+                href="/admin/users"
+              >
                 Users
               </Link>
             ) : null}

@@ -33,12 +33,7 @@ export function isErrorEnvelope(value: unknown): value is ErrorEnvelope {
 
 export function apiErrorFromResponse(status: number, payload: unknown): ApiError {
   if (isErrorEnvelope(payload)) {
-    return new ApiError(
-      status,
-      payload.error.code,
-      payload.error.message,
-      payload.error.details,
-    );
+    return new ApiError(status, payload.error.code, payload.error.message, payload.error.details);
   }
 
   return new ApiError(status, "request_failed", "The request could not be completed");

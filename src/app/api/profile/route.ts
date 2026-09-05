@@ -39,7 +39,10 @@ export async function PUT(request: Request): Promise<Response> {
     return NextResponse.json(payload, { status: upstream.status });
   } catch {
     return NextResponse.json(
-      { status: "error", error: { code: "backend_unavailable", message: "backend service is unavailable" } },
+      {
+        status: "error",
+        error: { code: "backend_unavailable", message: "backend service is unavailable" },
+      },
       { status: 503 },
     );
   }

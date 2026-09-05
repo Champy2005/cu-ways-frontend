@@ -80,10 +80,18 @@ export function registerValidationMessage(input: RegisterRequest): string | null
   if (input.password.length < 8 || input.password.length > 128) {
     return "Password must be between 8 and 128 characters.";
   }
-  if (input.phone !== undefined && input.phone !== null && (input.phone.trim().length === 0 || input.phone.length > 20)) {
+  if (
+    input.phone !== undefined &&
+    input.phone !== null &&
+    (input.phone.trim().length === 0 || input.phone.length > 20)
+  ) {
     return "Phone must be between 1 and 20 characters.";
   }
-  if (input.line_id !== undefined && input.line_id !== null && (input.line_id.trim().length === 0 || input.line_id.length > 50)) {
+  if (
+    input.line_id !== undefined &&
+    input.line_id !== null &&
+    (input.line_id.trim().length === 0 || input.line_id.length > 50)
+  ) {
     return "Line ID must be between 1 and 50 characters.";
   }
   return null;
