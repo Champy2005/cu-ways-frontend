@@ -8,10 +8,12 @@ import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import {
   validateLoginInput,
+  normalizeRegisterInput,
   validateRegisterInput,
 } from "@/features/auth/schemas";
 
 type AuthRequestValidator = (value: unknown) => boolean;
+type AuthRequestNormalizer = (value: unknown) => unknown;
 
 const INVALID_REQUEST = {
   status: "error",
@@ -33,6 +35,7 @@ export async function handleAuthRequest(
   request: Request,
   path: string,
   validator: AuthRequestValidator,
+  normalizer?: AuthRequestNormalizer,
 ): Promise<Response> {
   let body: unknown;
   try {
@@ -40,6 +43,8 @@ export async function handleAuthRequest(
   } catch {
     return NextResponse.json(INVALID_REQUEST, { status: 422 });
   }
+
+  body = normalizer?.(body) ?? body;
 
   if (!validator(body)) {
     return NextResponse.json(INVALID_REQUEST, { status: 422 });
@@ -92,4 +97,4 @@ export async function handleAuthRequest(
   return response;
 }
 
-export { validateLoginInput, validateRegisterInput };
+export { normalizeRegisterInput, validateLoginInput, validateRegisterInput };

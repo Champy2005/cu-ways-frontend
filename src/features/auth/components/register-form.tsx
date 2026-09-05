@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getDisplayError } from "@/lib/api/errors";
 import { register } from "@/features/auth/api";
-import { registerValidationMessage } from "@/features/auth/schemas";
+import {
+  normalizeRegisterInput,
+  registerValidationMessage,
+} from "@/features/auth/schemas";
 import type { RegisterRequest } from "@/features/auth/types";
 
 export function RegisterForm() {
@@ -23,7 +26,8 @@ export function RegisterForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const validationError = registerValidationMessage(values);
+    const normalizedValues = normalizeRegisterInput(values);
+    const validationError = registerValidationMessage(normalizedValues);
     if (validationError) {
       setError(validationError);
       return;
@@ -32,7 +36,7 @@ export function RegisterForm() {
     setIsPending(true);
     setError(null);
     try {
-      await register(values);
+      await register(normalizedValues);
       router.push("/dashboard");
       router.refresh();
     } catch (requestError) {
