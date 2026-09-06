@@ -4,11 +4,12 @@ import { spawnSync } from "node:child_process";
 
 const frontendRoot = process.cwd();
 const configuredSpec = process.env.OPENAPI_SPEC_PATH?.trim();
-const candidates = [
-  configuredSpec ? resolve(frontendRoot, configuredSpec) : null,
-  resolve(frontendRoot, "../cu-ways-backend/docs/openapi.yaml"),
-  resolve(frontendRoot, "../backend/docs/openapi.yaml"),
-].filter(Boolean);
+const candidates = configuredSpec
+  ? [resolve(frontendRoot, configuredSpec)]
+  : [
+      resolve(frontendRoot, "../cu-ways-backend/docs/openapi.yaml"),
+      resolve(frontendRoot, "../backend/docs/openapi.yaml"),
+    ];
 
 const specPath = candidates.find((candidate) => existsSync(candidate));
 if (!specPath) {
