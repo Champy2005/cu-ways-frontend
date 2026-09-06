@@ -101,7 +101,31 @@ and branch names, coverage policy, and future full-stack testing plan, see
 - Keep authorization checks in server code and the backend. Proxy redirects are only an early UX check.
 - Add `providers/`, `hooks/`, and `types/` only when a concrete shared use case requires them.
 
-## Backend
+## Marketer workspace (EPC-02)
+
+The frontend includes professional profile editing at `/marketer/profile`, service management at
+`/marketer/services`, a private performance summary at `/marketer/dashboard`, and signed-in service
+viewing at `/marketers/[id]/services`. Open **Marketer workspace** from the existing dashboard.
+These live routes use proposed backend endpoints. Until those endpoints are implemented, they show
+explicit unavailable or eligibility states; they never substitute sample data.
+
+To review all frontend interactions with fictional data, enable the local demo:
+
+```powershell
+$env:MARKETER_DEMO_ENABLED = "true"
+pnpm dev
+```
+
+Open `/demo/marketer` on the port printed by Next.js. Use Overview, Services, Profile, and Creator
+view to review both themes, profile saving, service publishing/editing/deletion, and read-only viewing.
+Changes stay in that browser tab's session storage across reloads. **Reset demo** restores fixtures.
+Demo changes never call the backend. When browser storage is unavailable, edits remain in memory
+until the page reloads. The demo returns 404 unless explicitly enabled and is always disabled in production.
+
+The backend handoff, proposed response shapes, numeric-experience migration dependency, and remaining
+full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
+
+## Backend setup
 
 See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migrations, API endpoints,
 admin seeding, and health checks.

@@ -1,0 +1,111 @@
+.marketer-theme {
+  --mk-bg: #f9f9f9;
+  --mk-surface: #ffffff;
+  --mk-text: #0d111a;
+  --mk-muted: #696d76;
+  --mk-border: #e2e4e8;
+  --mk-accent: #c81365;
+  --mk-error: #b42318;
+  --mk-danger: #b42318;
+  --mk-info: #1877ac;
+  --mk-success: #15803d;
+  --mk-profile-accent: #15803d;
+  --mk-identity-bg: #0d111a;
+  --mk-identity-text: #f9f9f9;
+  --background: var(--mk-bg);
+  --foreground: var(--mk-text);
+  --primary: var(--mk-text);
+  --primary-foreground: var(--mk-bg);
+  --muted: var(--mk-border);
+  --muted-foreground: var(--mk-muted);
+  --input: var(--mk-border);
+  --border: var(--mk-border);
+  --ring: #429ec3;
+  --destructive: #c3203e;
+  color: var(--mk-text);
+  background: var(--mk-bg);
+  font-family: var(--font-marketer), Arial, sans-serif;
+  color-scheme: light;
+}
+
+.marketer-theme[data-theme="dark"] {
+  --mk-bg: #0d111a;
+  --mk-surface: #1a1f2b;
+  --mk-text: #f9f9f9;
+  --mk-muted: #a0a5b5;
+  --mk-border: #343a48;
+  --mk-accent: #ff79b3;
+  --mk-error: #fda29b;
+  --mk-danger: #fda29b;
+  --mk-info: #72c8ef;
+  --mk-success: #6ee7a0;
+  --mk-profile-accent: #ff79b3;
+  --mk-identity-bg: #f9f9f9;
+  --mk-identity-text: #0d111a;
+  --destructive: #ff8397;
+  color-scheme: dark;
+}
+
+.marketer-theme[data-theme="dark"] .mk-logo {
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.mk-theme-button,
+.mk-workspace-link {
+  color: var(--mk-text);
+}
+.mk-nav-link {
+  color: var(--mk-muted);
+  transition: background 150ms ease;
+}
+.mk-nav-link:hover {
+  background: var(--mk-border);
+  color: var(--mk-text);
+}
+.mk-nav-link[aria-current="page"] {
+  background: #287e9f;
+  color: #fff;
+}
+.mk-bottom-nav {
+  background: var(--mk-surface);
+  border-color: var(--mk-border);
+}
+.marketer-theme :focus-visible {
+  outline: 2px solid #429ec3;
+  outline-offset: 4px;
+}
+.mk-skip {
+  position: fixed;
+  top: -100px;
+  left: 20px;
+  z-index: 100;
+  background: var(--mk-surface);
+  padding: 12px;
+}
+.mk-skip:focus {
+  top: 10px;
+}
+.mk-button {
+  min-height: 42px;
+  border-radius: 14px;
+}
+.mk-input {
+  color: var(--mk-text);
+  border-color: var(--mk-border);
+}
+.marketer-theme p,
+.marketer-theme h1,
+.marketer-theme h2 {
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketer-theme *,
+  .marketer-theme *::before,
+  .marketer-theme *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
