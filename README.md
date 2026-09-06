@@ -35,6 +35,7 @@ src/
 ├── lib/                         # API clients, auth session, environment, utilities
 │   ├── api/
 │   └── auth/
+├── scripts/generate-api.mjs     # Resolves backend OpenAPI source and generates API types
 └── proxy.ts                     # Auth-aware route redirect boundary
 ```
 
@@ -95,8 +96,8 @@ and branch names, coverage policy, and future full-stack testing plan, see
 - Keep `src/app` focused on routing and composition; put feature logic under `src/features`.
 - Prefer Server Components for initial data and use Client Components only for interaction or browser APIs.
 - Use `src/lib/api/server-client.ts` for server-side backend calls and `browser-client.ts` for same-origin BFF calls.
-- Keep `BACKEND_API_URL` server-only; never use `NEXT_PUBLIC_` for secrets or access tokens.
-- Treat `src/lib/api/generated/backend.ts` as generated output from `backend/docs/openapi.yaml`; do not edit it by hand.
+- Keep `BACKEND_API_URL` and `FRONTEND_ORIGIN` server-only; never use `NEXT_PUBLIC_` for secrets or access tokens.
+- Treat `src/lib/api/generated/backend.ts` as generated output from `../cu-ways-backend/docs/openapi.yaml`; do not edit it by hand. The generation script falls back to `../backend/docs/openapi.yaml` for this local workspace layout.
 - Keep authorization checks in server code and the backend. Proxy redirects are only an early UX check.
 - Add `providers/`, `hooks/`, and `types/` only when a concrete shared use case requires them.
 

@@ -18,7 +18,7 @@
     "test:coverage": "vitest run --coverage",
     "security:audit": "pnpm audit --audit-level=high",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm security:audit && pnpm build",
-    "generate:api": "openapi-typescript ../cu-ways-backend/docs/openapi.yaml -o src/lib/api/generated/backend.ts"
+    "generate:api": "node scripts/generate-api.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

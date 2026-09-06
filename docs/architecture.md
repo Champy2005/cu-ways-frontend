@@ -50,6 +50,7 @@ frontend/
 │   │   └── utils.ts                      # Generic utilities
 │   └── proxy.ts                          # Lightweight request redirect boundary
 ├── docs/architecture.md                  # This architecture document
+├── scripts/generate-api.mjs              # OpenAPI source resolver and type-generation script
 ├── public/                               # Static assets
 ├── .env.example                          # Safe environment template
 ├── next.config.ts                        # Next.js configuration
@@ -138,9 +139,9 @@ Provides the transport boundary between the frontend and backend.
 - `backend-client.ts` is used by server-side Route Handlers and talks to `BACKEND_API_URL`.
 - `errors.ts` normalizes backend error envelopes into `ApiError`.
 - `envelope.ts` contains environment-independent response-envelope helpers.
-- `generated/` is the contract boundary for types derived from `backend/docs/openapi.yaml`.
+- `generated/` is the contract boundary for types derived from `../cu-ways-backend/docs/openapi.yaml`.
 
-The contract file is generated from `backend/docs/openapi.yaml` with `pnpm generate:api`. It is isolated so regeneration does not require changing feature UI APIs. Do not edit generated output by hand.
+The contract file is generated from the sibling `cu-ways-backend/docs/openapi.yaml` repository with `pnpm generate:api`. The generation script also supports the current local workspace layout (`../backend/docs/openapi.yaml`) and an `OPENAPI_SPEC_PATH` override. It is isolated so regeneration does not require changing feature UI APIs. Do not edit generated output by hand.
 
 ### `src/lib/auth`
 
@@ -168,9 +169,10 @@ Environment access is server-only by import boundary.
 
 ```env
 BACKEND_API_URL=http://localhost:8081
+FRONTEND_ORIGIN=http://localhost:3000
 ```
 
-Do not expose `BACKEND_API_URL`, access tokens, or other secrets through `NEXT_PUBLIC_*` variables or client components.
+`FRONTEND_ORIGIN` is the exact public origin allowed to call the authentication BFF. Set it to the deployed frontend origin outside local development. Do not expose `BACKEND_API_URL`, `FRONTEND_ORIGIN`, access tokens, or other secrets through `NEXT_PUBLIC_*` variables or client components.
 
 ## Dependency rules
 
@@ -186,6 +188,14 @@ The following rules are mandatory:
 8. Shared components must remain domain-neutral. Feature-specific behavior belongs under its feature.
 9. Prefer explicit dependency injection through function arguments or constructors over global mutable stores.
 10. Do not introduce a global state library until a concrete cross-page client-state requirement exists.
+
+## Authentication BFF origin protection
+
+The login and registration Route Handlers require an exact `Origin` match with `FRONTEND_ORIGIN`. Requests with a missing, malformed, or different origin receive a `403 invalid_origin` response before the backend is called.
+
+This protects against login CSRF: a third-party site cannot use the victim's browser to set a session cookie for the attacker's account. `HttpOnly` protects token confidentiality, while `SameSite=Lax` provides cookie policy protection; neither replaces origin validation for unauthenticated login requests.
+
+The check is intentionally applied to the browser-facing login and register BFF routes. The logout route only clears the current cookie and does not establish a session.
 
 ## Server and client boundary
 
@@ -258,7 +268,7 @@ The backend is the source of truth for users and future domain entities. Do not 
 Use this sequence when adding a feature such as surveys or jobs:
 
 1. Confirm the backend endpoint and OpenAPI contract.
-2. Run `pnpm generate:api` to regenerate the contract types in `src/lib/api/generated`.
+2. Run `pnpm generate:api` to regenerate the contract types in `src/lib/api/generated` from the sibling backend OpenAPI document.
 3. Create `src/features/<feature>/types.ts` and `api.ts`.
 4. Add feature schemas for form and query validation.
 5. Implement feature-specific components under `components/` inside the feature.

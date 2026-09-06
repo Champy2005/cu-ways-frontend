@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
 import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
+import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import {
   validateLoginInput,
   normalizeRegisterInput,
@@ -20,6 +21,14 @@ const INVALID_REQUEST = {
   },
 } as const;
 
+const INVALID_ORIGIN = {
+  status: "error",
+  error: {
+    code: "invalid_origin",
+    message: "request origin is not allowed",
+  },
+} as const;
+
 const INVALID_UPSTREAM_RESPONSE = {
   status: "error",
   error: {
@@ -34,6 +43,10 @@ export async function handleAuthRequest(
   validator: AuthRequestValidator,
   normalizer?: AuthRequestNormalizer,
 ): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin"))) {
+    return NextResponse.json(INVALID_ORIGIN, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
