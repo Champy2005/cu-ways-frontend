@@ -26,5 +26,7 @@ export const config = {
     "/surveys/:path*",
     "/jobs/:path*",
     "/admin/:path*",
+    "/marketer/:path*",
+    "/marketers/:path*",
   ],
 };

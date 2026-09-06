@@ -1,5 +1,6 @@
 import { apiErrorFromResponse } from "@/lib/api/errors";
-import { extractData, fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
+import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
+import { hasData } from "@/lib/api/envelope";
 import { getSession } from "@/lib/auth/session";
 
 /**
@@ -15,9 +16,8 @@ export async function serverApiRequest<T>(path: string, init: RequestInit = {}):
   const payload = await readBackendPayload(response);
   if (!response.ok) throw apiErrorFromResponse(response.status, payload);
 
-  const data = extractData<T>(payload);
-  if (data === undefined) throw apiErrorFromResponse(response.status, payload);
-  return data;
+  if (!hasData(payload)) throw apiErrorFromResponse(response.status, payload);
+  return payload.data as T;
 }
 
 export function serverApiGet<T>(path: string): Promise<T> {
