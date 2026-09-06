@@ -223,10 +223,15 @@ jobs:
         run: pnpm security:audit
 
       - name: Reject newly introduced high-severity dependencies
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && vars.DEPENDENCY_REVIEW_ENABLED == 'true'
         uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: high
+
+      - name: Explain optional dependency review
+        if: github.event_name == 'pull_request' && vars.DEPENDENCY_REVIEW_ENABLED != 'true'
+        run: |
+          echo "::notice::GitHub Dependency Review is disabled for this repository. The blocking pnpm High/Critical audit still passed. Enable the Dependency Graph and set the repository Actions variable DEPENDENCY_REVIEW_ENABLED=true to turn on the PR dependency-diff gate."
 
   secret-scan:
     name: Secret scan

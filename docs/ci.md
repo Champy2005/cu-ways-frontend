@@ -18,12 +18,17 @@ The `Frontend CI` workflow runs these jobs in parallel where possible:
 | PR and commit governance      | Conventional Commit PR title and commit messages; structured branch name                            |
 | Formatting, lint, and types   | Prettier, GitHub Actions syntax, strict ESLint/Next/SonarJS rules, Next route types, and TypeScript |
 | Unit tests and coverage       | The Vitest tests that exist in this repository and the initial 10% global coverage floor            |
-| Dependency vulnerability gate | Full lockfile audit and a PR dependency-diff check that fails at High or Critical severity          |
+| Dependency vulnerability gate | Blocking High/Critical lockfile audit; optional GitHub PR dependency-diff review                    |
 | Secret scan                   | Gitleaks scan of Git history                                                                        |
 | Production build              | A strict `next build`, with pnpm-store and `.next/cache` reuse                                      |
 
 The last job is named **Frontend quality gate**. It succeeds only when every job in the table
 succeeds.
+
+The `pnpm audit` portion of the dependency gate always runs and remains blocking. GitHub's separate
+Dependency Review action requires the repository Dependency Graph, so it runs only when the
+repository Actions variable `DEPENDENCY_REVIEW_ENABLED` is exactly `true`. This prevents a missing
+GitHub repository feature from blocking a PR while keeping the lockfile vulnerability gate active.
 
 The test job does not translate backlog rows into tests and does not assume that Epics 2–4 are
 implemented. It runs only committed `*.test.ts` and `*.test.tsx` files. The initial tests cover
@@ -55,6 +60,15 @@ Do not select the individual jobs and do not select anything from **Frontend ext
 The single aggregate status keeps the rule stable if the internal job layout changes. If the team
 wants observation without blocking while the workflow settles, leave the required-check list empty
 for the first few pull requests, then add the aggregate check after it is consistently green.
+
+To enable the stricter PR dependency-diff review later:
+
+1. Open **Settings → Advanced Security** and enable the repository Dependency Graph.
+2. Open **Settings → Secrets and variables → Actions → Variables**.
+3. Add the repository variable `DEPENDENCY_REVIEW_ENABLED` with the value `true`.
+
+Until both are configured, the workflow records a notice and relies on the blocking High/Critical
+`pnpm audit` result.
 
 ## Pull request conventions
 
