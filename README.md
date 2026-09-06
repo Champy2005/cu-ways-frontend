@@ -1,98 +1,109 @@
 # CU Ways Frontend
 
-Next.js frontend for CU Ways. The app uses the App Router, React, TypeScript, Tailwind CSS, shadcn/ui, and Lucide icons.
-
-The current UI is still the initial starter screen. Backend API integration and product pages will be added incrementally.
-
-## Requirements
-
-- Node.js LTS
-- pnpm 11.13.0+
-
-All commands below are run from this directory:
-
-```powershell
-cd D:\test-fullstack\cu-way\frontend
-```
+Next.js App Router frontend for CU Ways. The project uses TypeScript, Tailwind CSS, shadcn/Base UI, and a feature-based architecture.
 
 ## Quick start
 
-Install dependencies and start the development server:
+Requirements: Node.js 22.13.0 or newer (CI uses Node.js 24 LTS) and pnpm 11.25.0.
 
 ```powershell
+cd path\to\cu-ways-frontend
+corepack enable
 pnpm install
+Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-The page uses hot reload. Start editing [src/app/page.tsx](src/app/page.tsx) to change the home page.
-
-## Useful commands
-
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Start the development server |
-| `pnpm lint` | Run ESLint |
-| `pnpm exec tsc --noEmit` | Check TypeScript without emitting files |
-| `pnpm build` | Create a production build |
-| `pnpm start` | Serve the production build locally |
-
-Run the production flow with:
-
-```powershell
-pnpm lint
-pnpm exec tsc --noEmit
-pnpm build
-pnpm start
-```
+Open [http://localhost:3000](http://localhost:3000). The Go backend should be running at `http://localhost:8081`; change `BACKEND_API_URL` in `.env.local` when needed.
 
 ## Project structure
 
 ```text
-src/app              App Router pages, layout, metadata, and global styles
-src/components/ui    Reusable UI components
-src/lib              Shared utilities
-public                Static assets
-components.json       shadcn/ui configuration and aliases
-next.config.ts        Next.js configuration
+src/
+├── app/                         # Next.js routes, layouts, loading/error boundaries
+│   ├── (public)/                # Landing, login, and register
+│   ├── (app)/                   # Authenticated dashboard, profile, surveys, jobs
+│   ├── (admin)/admin/           # Administrator-only pages
+│   └── api/auth/                # Thin BFF handlers that set/clear session cookie
+├── features/                    # Feature API, schemas, types, and feature UI
+│   ├── auth/
+│   └── users/
+├── components/                  # Reusable UI and application shell
+│   ├── ui/                      # shadcn/Base UI primitives
+│   ├── layout/
+│   └── feedback/
+├── lib/                         # API clients, auth session, environment, utilities
+│   ├── api/
+│   └── auth/
+├── scripts/generate-api.mjs     # Resolves backend OpenAPI source and generates API types
+└── proxy.ts                     # Auth-aware route redirect boundary
 ```
 
-The `@/*` import alias points to `src/*`:
+The `@/*` alias points to `src/*`:
 
 ```tsx
 import { Button } from "@/components/ui/button";
+import { LoginForm } from "@/features/auth/components/login-form";
 ```
 
-## UI conventions
+## Authentication flow
 
-- Add routes and page-level UI under `src/app`.
-- Put reusable components under `src/components`.
-- Use the existing shadcn/ui components before creating duplicates.
-- Use Tailwind utility classes for styling.
-- Use Lucide icons through `lucide-react`.
-- Keep shared helper functions in `src/lib`.
+Login and registration use the Next.js BFF routes:
+
+```text
+Browser → /api/auth/login → Go backend /api/v1/auth/login
+                         → HttpOnly cuways_session cookie
+```
+
+The browser never reads the JWT. Server API calls read the cookie and forward `Authorization: Bearer ...` to the backend. `src/proxy.ts` performs lightweight redirects, while the backend remains the authority for token validation and permissions.
+
+Try the flow:
+
+1. Open `/register` or `/login`.
+2. Sign in with an existing account, or register a new one.
+3. Visit `/dashboard` and `/profile`.
+4. Promote a local account with the backend `make seed-admin` command to access `/admin/users`.
+
+## Development commands
+
+| Command               | Purpose                                                               |
+| --------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`            | Start the development server                                          |
+| `pnpm format:check`   | Verify Prettier formatting without changing files                     |
+| `pnpm lint`           | Run strict ESLint, Next.js, and complexity checks                     |
+| `pnpm typecheck`      | Generate Next route types and check TypeScript without emitting files |
+| `pnpm test`           | Run the current Vitest unit tests once                                |
+| `pnpm test:coverage`  | Run unit tests and enforce the initial coverage floor                 |
+| `pnpm security:audit` | Fail on High or Critical dependency vulnerabilities                   |
+| `pnpm check`          | Run the main local quality and dependency-security checks             |
+| `pnpm generate:api`   | Generate TypeScript contract types from the backend OpenAPI document  |
+| `pnpm build`          | Create a production build                                             |
+| `pnpm start`          | Serve the production build locally                                    |
+
+## Continuous integration
+
+GitHub Actions validates pull requests into `dev` and `main` with governance, formatting, lint,
+static analysis, unit coverage, dependency and secret scanning, type checking, and a production
+build. The required test scope follows implemented frontend behavior; unfinished backlog epics do
+not have placeholder tests that can block merging.
+
+For the exact branch-ruleset check to require, the optional manual security workflow, accepted PR
+and branch names, coverage policy, and future full-stack testing plan, see
+[docs/ci.md](docs/ci.md).
+
+## Architecture rules
+
+- Keep `src/app` focused on routing and composition; put feature logic under `src/features`.
+- Prefer Server Components for initial data and use Client Components only for interaction or browser APIs.
+- Use `src/lib/api/server-client.ts` for server-side backend calls and `browser-client.ts` for same-origin BFF calls.
+- Keep `BACKEND_API_URL` and `FRONTEND_ORIGIN` server-only; never use `NEXT_PUBLIC_` for secrets or access tokens.
+- Treat `src/lib/api/generated/backend.ts` as generated output from `../cu-ways-backend/docs/openapi.yaml`; do not edit it by hand. The generation script falls back to `../backend/docs/openapi.yaml` for this local workspace layout.
+- Keep authorization checks in server code and the backend. Proxy redirects are only an early UX check.
+- Add `providers/`, `hooks/`, and `types/` only when a concrete shared use case requires them.
 
 ## Backend
 
-The backend runs separately from the frontend. See the [backend README](../backend/README.md) for PostgreSQL, API, migration, and health-check instructions.
+See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migrations, API endpoints,
+admin seeding, and health checks.
 
-There are currently no frontend environment variables or API client configuration. Add them only when frontend-to-backend integration is introduced.
-
-## Current scope
-
-Implemented:
-
-- Next.js App Router setup
-- TypeScript and ESLint
-- Tailwind CSS v4
-- shadcn/ui Base Nova configuration
-- Reusable Button and Input components
-- Geist font setup and responsive starter layout
-
-Not implemented yet:
-
-- Authentication screens
-- User, creator, and marketer flows
-- Survey, job, offer, payment, and review pages
-- Backend API client and data fetching
+For the full frontend structure and dependency rules, see [docs/architecture.md](docs/architecture.md).
