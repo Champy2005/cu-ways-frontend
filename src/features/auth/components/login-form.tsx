@@ -70,12 +70,19 @@ export function LoginForm() {
           required
         />
       </div>
-      {error ? <p className="text-sm text-red-700" role="alert">{error}</p> : null}
+      {error ? (
+        <p className="text-sm text-red-700" role="alert">
+          {error}
+        </p>
+      ) : null}
       <Button type="submit" className="w-full" disabled={isPending} size="lg">
         {isPending ? "Signing in..." : "Sign in"}
       </Button>
       <p className="text-center text-sm text-zinc-600">
-        No account? <Link className="font-medium text-zinc-950 underline" href="/register">Create one</Link>
+        No account?{" "}
+        <Link className="font-medium text-zinc-950 underline" href="/register">
+          Create one
+        </Link>
       </p>
     </form>
   );

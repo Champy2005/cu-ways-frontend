@@ -7,7 +7,9 @@ export default function LoginPage() {
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">CU Ways</p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">Welcome back</h1>
         <p className="mt-2 text-sm text-zinc-600">Sign in to continue to your workspace.</p>
-        <div className="mt-8"><LoginForm /></div>
+        <div className="mt-8">
+          <LoginForm />
+        </div>
       </section>
     </main>
   );

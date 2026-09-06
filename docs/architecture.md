@@ -285,10 +285,14 @@ Do not create empty feature folders, speculative global stores, or generic API a
 Run from `frontend/`:
 
 ```powershell
-pnpm lint
-pnpm typecheck
-pnpm build
+pnpm check
 ```
+
+`pnpm check` verifies formatting, strict lint and complexity rules, generated Next route types,
+TypeScript, the currently implemented unit-test scope with coverage, High/Critical dependency
+security, and a production build. It is frontend-only and does not require the Go backend or
+PostgreSQL. See [ci.md](ci.md) for the merge gate, manual extended checks, and the future full-stack
+test boundary.
 
 Recommended test coverage:
 

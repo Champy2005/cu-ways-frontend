@@ -1,3 +1,6 @@
 allowBuilds:
   sharp: false
   unrs-resolver: false
+overrides:
+  # Patch the qs version pulled through shadcn's MCP/Express toolchain.
+  qs: 6.16.0

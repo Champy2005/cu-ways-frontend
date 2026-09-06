@@ -1,18 +1,17 @@
 import { NextResponse } from "next/server";
 
-import {
-  fetchBackend,
-  readBackendPayload,
-} from "@/lib/api/backend-client";
+import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
 import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import {
   validateLoginInput,
+  normalizeRegisterInput,
   validateRegisterInput,
 } from "@/features/auth/schemas";
 
 type AuthRequestValidator = (value: unknown) => boolean;
+type AuthRequestNormalizer = (value: unknown) => unknown;
 
 const INVALID_REQUEST = {
   status: "error",
@@ -42,6 +41,7 @@ export async function handleAuthRequest(
   request: Request,
   path: string,
   validator: AuthRequestValidator,
+  normalizer?: AuthRequestNormalizer,
 ): Promise<Response> {
   if (!isAllowedFrontendOrigin(request.headers.get("origin"))) {
     return NextResponse.json(INVALID_ORIGIN, { status: 403 });
@@ -53,6 +53,8 @@ export async function handleAuthRequest(
   } catch {
     return NextResponse.json(INVALID_REQUEST, { status: 422 });
   }
+
+  body = normalizer?.(body) ?? body;
 
   if (!validator(body)) {
     return NextResponse.json(INVALID_REQUEST, { status: 422 });
@@ -105,4 +107,4 @@ export async function handleAuthRequest(
   return response;
 }
 
-export { validateLoginInput, validateRegisterInput };
+export { normalizeRegisterInput, validateLoginInput, validateRegisterInput };

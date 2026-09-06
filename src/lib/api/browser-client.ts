@@ -1,10 +1,7 @@
 import { apiErrorFromResponse } from "@/lib/api/errors";
-import { extractData } from "@/lib/api/envelope";
+import { hasData } from "@/lib/api/envelope";
 
-export async function browserApiRequest<T>(
-  path: string,
-  init: RequestInit = {},
-): Promise<T> {
+export async function browserApiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   headers.set("Accept", "application/json");
   if (init.body && !headers.has("Content-Type")) {
@@ -23,10 +20,9 @@ export async function browserApiRequest<T>(
     throw apiErrorFromResponse(response.status, payload);
   }
 
-  const data = extractData<T>(payload);
-  if (data === undefined) {
+  if (!hasData(payload)) {
     throw apiErrorFromResponse(response.status, payload);
   }
 
-  return data;
+  return payload.data as T;
 }

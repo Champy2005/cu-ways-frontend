@@ -11,7 +11,11 @@ export default async function AdminUsersPage() {
   } catch (error) {
     return (
       <div className="space-y-6">
-        <FeaturePlaceholder eyebrow="Administration" title="Users" description="Manage active CU Ways accounts." />
+        <FeaturePlaceholder
+          eyebrow="Administration"
+          title="Users"
+          description="Manage active CU Ways accounts."
+        />
         <InlineError message={getDisplayError(error)} />
       </div>
     );

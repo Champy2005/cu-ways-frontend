@@ -4,10 +4,11 @@ Next.js App Router frontend for CU Ways. The project uses TypeScript, Tailwind C
 
 ## Quick start
 
-Requirements: Node.js LTS and pnpm 11.13.0+.
+Requirements: Node.js 22.13.0 or newer (CI uses Node.js 24 LTS) and pnpm 11.25.0.
 
 ```powershell
-cd D:\test-fullstack\cu-way\frontend
+cd path\to\cu-ways-frontend
+corepack enable
 pnpm install
 Copy-Item .env.example .env.local
 pnpm dev
@@ -65,14 +66,30 @@ Try the flow:
 
 ## Development commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Start the development server |
-| `pnpm lint` | Run ESLint |
-| `pnpm typecheck` | Check TypeScript without emitting files |
-| `pnpm generate:api` | Generate TypeScript contract types from the backend OpenAPI document |
-| `pnpm build` | Create a production build |
-| `pnpm start` | Serve the production build locally |
+| Command               | Purpose                                                               |
+| --------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`            | Start the development server                                          |
+| `pnpm format:check`   | Verify Prettier formatting without changing files                     |
+| `pnpm lint`           | Run strict ESLint, Next.js, and complexity checks                     |
+| `pnpm typecheck`      | Generate Next route types and check TypeScript without emitting files |
+| `pnpm test`           | Run the current Vitest unit tests once                                |
+| `pnpm test:coverage`  | Run unit tests and enforce the initial coverage floor                 |
+| `pnpm security:audit` | Fail on High or Critical dependency vulnerabilities                   |
+| `pnpm check`          | Run the main local quality and dependency-security checks             |
+| `pnpm generate:api`   | Generate TypeScript contract types from the backend OpenAPI document  |
+| `pnpm build`          | Create a production build                                             |
+| `pnpm start`          | Serve the production build locally                                    |
+
+## Continuous integration
+
+GitHub Actions validates pull requests into `dev` and `main` with governance, formatting, lint,
+static analysis, unit coverage, dependency and secret scanning, type checking, and a production
+build. The required test scope follows implemented frontend behavior; unfinished backlog epics do
+not have placeholder tests that can block merging.
+
+For the exact branch-ruleset check to require, the optional manual security workflow, accepted PR
+and branch names, coverage policy, and future full-stack testing plan, see
+[docs/ci.md](docs/ci.md).
 
 ## Architecture rules
 
@@ -86,6 +103,7 @@ Try the flow:
 
 ## Backend
 
-See the [backend README](../backend/README.md) for PostgreSQL, migrations, API endpoints, admin seeding, and health checks.
+See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migrations, API endpoints,
+admin seeding, and health checks.
 
 For the full frontend structure and dependency rules, see [docs/architecture.md](docs/architecture.md).

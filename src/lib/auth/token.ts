@@ -15,9 +15,10 @@ export function getSessionClaims(token: string): SessionClaims | null {
   if (parts.length !== 3) return null;
 
   try {
-    const payload = JSON.parse(
-      Buffer.from(parts[1], "base64url").toString("utf8"),
-    ) as Record<string, unknown>;
+    const payload = JSON.parse(Buffer.from(parts[1], "base64url").toString("utf8")) as Record<
+      string,
+      unknown
+    >;
     const userId = Number(payload.sub);
     const expiresAt = Number(payload.exp);
     const role = payload.role;
