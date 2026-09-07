@@ -20,7 +20,7 @@ export default async function MarketerDemoPage({
   const { view } = await searchParams;
   return (
     <div className={inter.variable}>
-      <MarketerShell demo>
+      <MarketerShell demo demoView={view}>
         <DemoWorkspace view={view ?? "dashboard"} />
       </MarketerShell>
     </div>

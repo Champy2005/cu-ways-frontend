@@ -68,11 +68,7 @@ export function RouteFeedback({ kind = "unavailable" }: { kind?: MarketerFailure
 
 export function MarketerLoading() {
   return (
-    <div
-      className="mx-auto max-w-2xl space-y-5 py-7"
-      role="status"
-      aria-label="Loading marketer information"
-    >
+    <div className="space-y-5 py-7" role="status" aria-label="Loading marketer information">
       <span className="text-sm text-[var(--mk-muted)]">Loading your workspace…</span>
       {["h-32", "h-24", "h-24"].map((height, index) => (
         <div

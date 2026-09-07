@@ -64,20 +64,20 @@ export function ServiceCatalog({
 
   return (
     <section aria-labelledby="service-catalog-heading">
-      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div className="mk-page-heading flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-[var(--mk-accent)] uppercase">
+          <p className="mk-eyebrow">
             {actions ? "Your professional workspace" : "Service catalog"}
           </p>
           <h1
             ref={headingRef}
             tabIndex={-1}
             id="service-catalog-heading"
-            className="text-[28px] leading-tight font-semibold tracking-tight break-words text-[var(--mk-text)] sm:text-3xl"
+            className="mk-page-title break-words"
           >
             {actions ? "My services" : `${marketer.name}’s services`}
           </h1>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--mk-muted)]">
+          <p className="mk-page-description">
             {actions
               ? "Turn your campus connections into opportunities. Create packages that show creators what you can do."
               : "Explore published packages, delivery scope, and standard pricing."}
@@ -87,7 +87,7 @@ export function ServiceCatalog({
           <Button
             ref={publishRef}
             onClick={() => openEditor({ type: "create" })}
-            className="h-11 rounded-xl bg-[#e42278] px-5 text-white hover:bg-[#ca1566]"
+            className="mk-publish-button"
           >
             <Plus aria-hidden="true" />
             Publish a service
@@ -123,7 +123,7 @@ export function ServiceCatalog({
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mk-service-grid">
           {services.map((service) => (
             <ServiceCard
               key={service.service_id}

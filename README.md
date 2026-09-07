@@ -122,6 +122,13 @@ Changes stay in that browser tab's session storage across reloads. **Reset demo*
 Demo changes never call the backend. When browser storage is unavailable, edits remain in memory
 until the page reloads. The demo returns 404 unless explicitly enabled and is always disabled in production.
 
+The marketer screens share a fluid desktop frame, with responsive cards and a profile sidebar/form
+layout. Below 768px, the desktop tabs become a sticky compact bottom navigation and a hamburger
+menu. Light/dark preference persists separately from demo data; dialogs and confirmation controls
+follow the chosen theme. Motion is subtle and honors reduced-motion preferences. With the explicit
+demo flag enabled, the Next.js development badge is hidden so it does not cover mobile navigation;
+compile and runtime errors still appear normally.
+
 The backend handoff, proposed response shapes, numeric-experience migration dependency, and remaining
 full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
 

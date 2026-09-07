@@ -3,9 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, Home, Moon, Sun, UserRound, ArrowLeft } from "lucide-react";
-import { useSyncExternalStore, type ReactNode } from "react";
+import { Moon, Sun, ArrowLeft } from "lucide-react";
+import { useRef, useSyncExternalStore, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { getDemoView, MarketerNavigation } from "./marketer-navigation";
+import { MarketerMobileMenu } from "./marketer-mobile-menu";
 import "../marketer.css";
 
 const THEME_KEY = "cuways-marketer-theme";
@@ -36,14 +38,18 @@ function readTheme(): "light" | "dark" {
 }
 
 const lightTheme = () => "light" as const;
-const navigation = [
-  { id: "dashboard", label: "Overview", icon: Home },
-  { id: "services", label: "Services", icon: Briefcase },
-  { id: "profile", label: "Profile", icon: UserRound },
-] as const;
-
-export function MarketerShell({ children, demo = false }: { children: ReactNode; demo?: boolean }) {
+export function MarketerShell({
+  children,
+  demo = false,
+  demoView,
+}: {
+  children: ReactNode;
+  demo?: boolean;
+  demoView?: string;
+}) {
   const pathname = usePathname();
+  const menuContainer = useRef<HTMLDivElement>(null);
+  const selected = demo ? getDemoView(demoView) : (pathname.split("/").at(-1) ?? "dashboard");
   const theme = useSyncExternalStore(subscribeTheme, readTheme, lightTheme);
 
   function toggleTheme() {
@@ -62,90 +68,63 @@ export function MarketerShell({ children, demo = false }: { children: ReactNode;
       <a className="mk-skip" href="#marketer-content">
         Skip to content
       </a>
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-6 py-6 md:px-10">
-        <Link
-          href={demo ? "/demo/marketer" : "/marketer/dashboard"}
-          aria-label="CU Ways marketer home"
-          className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4"
-        >
-          <Image
-            src="/marketer-assets/logo.png"
-            width={122}
-            height={35}
-            alt="CU Ways"
-            className="mk-logo h-[35px] w-[122px] object-contain"
-          />
-        </Link>
-        <div className="flex items-center gap-3">
+      <header className="mk-header">
+        <div className="mk-frame mk-header-inner">
           <Link
-            href="/dashboard"
-            className="mk-workspace-link hidden items-center gap-2 text-xs sm:inline-flex"
+            href={demo ? "/demo/marketer" : "/marketer/dashboard"}
+            aria-label="CU Ways marketer home"
+            className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4"
           >
-            <ArrowLeft size={14} /> Workspace
+            <Image
+              src={
+                theme === "dark" ? "/marketer-assets/logo-dark.svg" : "/marketer-assets/logo.svg"
+              }
+              width={152}
+              height={42}
+              alt="CU Ways"
+              className="mk-logo"
+              loading="eager"
+            />
           </Link>
-          <Button
-            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-            title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-            variant="ghost"
-            size="icon-lg"
-            onClick={toggleTheme}
-            className="mk-theme-button"
-          >
-            {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-          </Button>
-          <Image
-            src="/marketer-assets/mascot.svg"
-            width={36}
-            height={35}
-            alt=""
-            loading="eager"
-            className="h-[35px] w-9"
-          />
+          <div className="flex items-center gap-1.5 md:gap-4">
+            <Link
+              href="/dashboard"
+              className="mk-workspace-link hidden items-center gap-2 text-sm md:inline-flex"
+            >
+              <ArrowLeft size={14} /> Workspace
+            </Link>
+            <Button
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+              title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+              variant="ghost"
+              size="icon-lg"
+              onClick={toggleTheme}
+              className="mk-icon-button mk-theme-button"
+            >
+              {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            </Button>
+            <Image
+              src="/marketer-assets/mascot.svg"
+              width={36}
+              height={35}
+              alt=""
+              loading="eager"
+              className="mk-header-mascot"
+            />
+            <MarketerMobileMenu demo={demo} selected={selected} portalContainer={menuContainer} />
+          </div>
         </div>
       </header>
+      <div ref={menuContainer} />
       {!demo && (
-        <nav
-          aria-label="Marketer navigation"
-          className="mx-auto mb-5 hidden max-w-5xl gap-2 px-10 md:flex"
-        >
-          {navigation.map(({ id, label, icon: Icon }) => (
-            <Link
-              key={id}
-              href={`/marketer/${id}`}
-              aria-current={pathname === `/marketer/${id}` ? "page" : undefined}
-              className="mk-nav-link flex items-center gap-2 rounded-full px-5 py-2.5 text-sm"
-            >
-              <Icon size={17} />
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <div className="mk-frame mk-live-navigation">
+          <MarketerNavigation selected={selected} />
+        </div>
       )}
-      <main
-        id="marketer-content"
-        className="mx-auto w-full max-w-5xl px-6 pb-28 pt-2 md:px-10 md:pb-14"
-        tabIndex={-1}
-      >
+      <main id="marketer-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}
       </main>
-      {!demo && (
-        <nav
-          aria-label="Mobile marketer navigation"
-          className="mk-bottom-nav fixed bottom-5 left-1/2 z-20 flex w-[calc(100%-3rem)] max-w-sm -translate-x-1/2 items-center justify-around gap-2 rounded-full border px-3 py-2 shadow-lg md:hidden"
-        >
-          {navigation.map(({ id, label, icon: Icon }) => (
-            <Link
-              key={id}
-              href={`/marketer/${id}`}
-              aria-current={pathname === `/marketer/${id}` ? "page" : undefined}
-              className="mk-nav-link flex min-w-16 flex-col items-center gap-1 rounded-2xl px-3 py-1.5 text-[10px]"
-            >
-              <Icon size={22} />
-              {label}
-            </Link>
-          ))}
-        </nav>
-      )}
+      <MarketerNavigation demo={demo} selected={selected} variant="mobile" />
     </div>
   );
 }

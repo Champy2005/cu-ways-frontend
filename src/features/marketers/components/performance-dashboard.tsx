@@ -20,20 +20,19 @@ type PerformanceDashboardProps = {
   recentJobs?: RecentJob[];
 };
 
-const cardClassName =
-  "min-w-0 rounded-[18px] border border-[var(--mk-border)]/50 bg-[var(--mk-surface)] p-4 shadow-sm sm:p-5";
+const cardClassName = "mk-card mk-card-padding";
 
 function PerformanceStats({ stats }: { stats: MarketerStats }) {
   return (
     <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-      <div className={cn(cardClassName, "col-span-2 sm:col-span-1")}>
+      <div className={cn(cardClassName, "mk-stat-card col-span-2 sm:col-span-1")}>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <dt className="text-sm text-[var(--mk-muted)]">Total earnings</dt>
+          <dt className="mk-stat-label">Total earnings</dt>
           <span className="inline-flex items-center gap-1 text-[11px] text-[var(--mk-muted)]">
             <Eye aria-hidden="true" className="size-3" /> Only visible to you
           </span>
         </div>
-        <dd className="mt-3 flex items-baseline gap-2 text-2xl font-medium tabular-nums">
+        <dd className="mk-stat-value mt-4 flex items-baseline gap-2 tabular-nums">
           <span aria-hidden="true" className="text-3xl text-[var(--mk-success)]">
             ฿
           </span>
@@ -41,18 +40,18 @@ function PerformanceStats({ stats }: { stats: MarketerStats }) {
           <span className="sr-only">Thai baht</span>
         </dd>
       </div>
-      <div className={cardClassName}>
-        <dt className="text-sm text-[var(--mk-muted)]">Completed jobs</dt>
-        <dd className="mt-3 flex items-center gap-2 text-2xl font-medium tabular-nums">
+      <div className={cn(cardClassName, "mk-stat-card")}>
+        <dt className="mk-stat-label">Completed jobs</dt>
+        <dd className="mk-stat-value mt-4 flex items-center gap-2 tabular-nums">
           <CheckSquare2 aria-hidden="true" className="size-6 shrink-0 text-[var(--mk-accent)]" />
           <span className="min-w-0 wrap-anywhere">
             {stats.total_jobs_completed.toLocaleString("en-TH")}
           </span>
         </dd>
       </div>
-      <div className={cardClassName}>
-        <dt className="text-sm text-[var(--mk-muted)]">Average rating</dt>
-        <dd className="mt-3 flex flex-wrap items-center gap-1.5 text-2xl font-medium tabular-nums">
+      <div className={cn(cardClassName, "mk-stat-card")}>
+        <dt className="mk-stat-label">Average rating</dt>
+        <dd className="mk-stat-value mt-4 flex flex-wrap items-center gap-1.5 tabular-nums">
           <Star
             aria-hidden="true"
             className="size-6 fill-[var(--mk-accent)] text-[var(--mk-accent)]"
@@ -70,8 +69,8 @@ function PerformanceStats({ stats }: { stats: MarketerStats }) {
 
 function RecentJobs({ jobs }: { jobs: RecentJob[] }) {
   return (
-    <section aria-labelledby="marketer-recent-jobs" className="mt-7">
-      <h2 id="marketer-recent-jobs" className="mb-3 text-xl font-medium">
+    <section aria-labelledby="marketer-recent-jobs" className="mk-overview-recent">
+      <h2 id="marketer-recent-jobs" className="mk-section-title">
         Recent jobs
       </h2>
       {jobs.length === 0 ? (
@@ -82,14 +81,14 @@ function RecentJobs({ jobs }: { jobs: RecentJob[] }) {
           </p>
         </div>
       ) : (
-        <ul className="space-y-3">
+        <ul className="mk-recent-jobs">
           {jobs.map((job) => (
             <li
               key={job.id}
               className={cn(cardClassName, "flex items-center justify-between gap-3")}
             >
               <div className="min-w-0">
-                <p className="text-sm font-medium wrap-anywhere">{job.title}</p>
+                <p className="text-base font-medium wrap-anywhere">{job.title}</p>
                 <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                   <span className="text-[var(--mk-muted)]">{job.date}</span>
                   <span
@@ -124,25 +123,31 @@ export function PerformanceDashboard({
   recentJobs = [],
 }: PerformanceDashboardProps) {
   return (
-    <div className="mx-auto max-w-4xl space-y-7 text-[var(--mk-text)]">
-      <h1 className="sr-only">Marketer dashboard</h1>
-      <MarketerIdentity name={profile.name} />
-      <section aria-labelledby="marketer-quickview">
-        <h2 id="marketer-quickview" className="mb-3 text-xl font-medium">
-          Quickview
-        </h2>
-        {stats ? (
-          <PerformanceStats stats={stats} />
-        ) : (
-          <div role="status" className={cardClassName}>
-            <p className="font-medium">Performance data is unavailable.</p>
-            <p className="mt-2 text-sm text-[var(--mk-muted)]">
-              {statsError ?? "Your performance summary will appear once it is available."}
-            </p>
-          </div>
-        )}
-      </section>
-      <RecentJobs jobs={recentJobs} />
+    <div className="text-[var(--mk-text)]">
+      <div className="mk-page-heading">
+        <p className="mk-eyebrow">Your professional workspace</p>
+        <h1 className="mk-page-title">Overview</h1>
+        <p className="mk-page-description">A snapshot of your work, earnings, and impact.</p>
+      </div>
+      <div className="mk-overview">
+        <MarketerIdentity name={profile.name} />
+        <section aria-labelledby="marketer-quickview">
+          <h2 id="marketer-quickview" className="mk-section-title">
+            Quickview
+          </h2>
+          {stats ? (
+            <PerformanceStats stats={stats} />
+          ) : (
+            <div role="status" className={cardClassName}>
+              <p className="font-medium">Performance data is unavailable.</p>
+              <p className="mt-2 text-sm text-[var(--mk-muted)]">
+                {statsError ?? "Your performance summary will appear once it is available."}
+              </p>
+            </div>
+          )}
+        </section>
+        <RecentJobs jobs={recentJobs} />
+      </div>
     </div>
   );
 }
