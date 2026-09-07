@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { Briefcase, Eye, Home, UserRound } from "lucide-react";
 
+import { navigateDemo, useLocalQuery } from "../local-navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const ownerViews = [
+export const ownerViews = [
   { id: "dashboard", label: "Overview", icon: Home },
   { id: "services", label: "Services", icon: Briefcase },
   { id: "profile", label: "Profile", icon: UserRound },
@@ -27,10 +29,13 @@ export function MarketerNavigation({
   onNavigate,
 }: {
   demo?: boolean;
-  selected: string;
+  selected?: string;
   variant?: "desktop" | "mobile" | "menu";
   onNavigate?: () => void;
 }) {
+  const pathname = usePathname();
+  const localView = useLocalQuery("view", selected ?? "dashboard");
+  const active = demo ? getDemoView(localView) : (selected ?? pathname.split("/").at(-1));
   const label = demo ? "Demo views" : "Marketer navigation";
   return (
     <nav
@@ -45,9 +50,13 @@ export function MarketerNavigation({
         <Link
           key={id}
           href={demo ? `/demo/marketer?view=${id}` : `/marketer/${id}`}
-          aria-current={selected === id ? "page" : undefined}
+          aria-current={active === id ? "page" : undefined}
           className="mk-nav-link"
-          onClick={onNavigate}
+          prefetch={demo ? false : undefined}
+          onClick={(event) => {
+            if (demo) navigateDemo(event, id);
+            onNavigate?.();
+          }}
         >
           <Icon aria-hidden="true" size={20} strokeWidth={1.8} />
           <span>{label}</span>

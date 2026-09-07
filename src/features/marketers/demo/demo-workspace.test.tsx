@@ -1,4 +1,3 @@
-import { useState, type MouseEvent } from "react";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
@@ -7,24 +6,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DemoWorkspace } from "./demo-workspace";
 import { initialDemoState, resetDemo } from "./store";
 
-/** Simulate Next's query-string navigation while exercising the real demo links and views. */
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/demo/marketer",
+  useRouter: () => ({ refresh: vi.fn() }),
+}));
 function DemoNavigation({ initialView = "services" }: { initialView?: string }) {
-  const [view, setView] = useState(initialView);
-
-  function navigate(event: MouseEvent<HTMLDivElement>) {
-    const anchor = (event.target as Element).closest("a");
-    if (!anchor) return;
-    const url = new URL(anchor.href);
-    if (url.pathname !== "/demo/marketer") return;
-    event.preventDefault();
-    setView(url.searchParams.get("view") ?? "dashboard");
-  }
-
-  return (
-    <div onClickCapture={navigate}>
-      <DemoWorkspace view={view} />
-    </div>
-  );
+  return <DemoWorkspace view={initialView} />;
 }
 
 function visit(label: "Overview" | "Services" | "Profile" | "Creator view") {
@@ -37,6 +24,7 @@ const noNetwork = vi.fn<typeof fetch>(() =>
 );
 
 beforeEach(() => {
+  window.history.replaceState(null, "", "/demo/marketer");
   sessionStorage.clear();
   resetDemo();
   noNetwork.mockClear();
@@ -91,20 +79,24 @@ describe("DemoWorkspace integration", () => {
           });
         });
         if (view === "profile") {
-          expect(serverView.getByLabelText("Bio")).toHaveValue(stored.profile.bio);
-          expect(serverView.getByLabelText("Years of experience")).toHaveValue("1.75");
-          expect(serverView.getByLabelText("Availability text")).toHaveValue("Monday evenings");
+          expect(await serverView.findByLabelText("Bio")).toHaveValue(stored.profile.bio);
+          expect(await serverView.findByLabelText("Years of experience")).toHaveValue("1.75");
+          expect(await serverView.findByLabelText("Availability text")).toHaveValue(
+            "Monday evenings",
+          );
         } else {
           expect(
-            serverView.getByRole("heading", { name: stored.services[0].service_type }),
+            await serverView.findByRole("heading", { name: stored.services[0].service_type }),
           ).toBeInTheDocument();
           expect(serverView.getByText("฿725.25")).toBeInTheDocument();
           expect(serverView.queryByText("On-Campus Distribution")).not.toBeInTheDocument();
           fireEvent.click(
             serverView.getByRole("button", { name: "Edit Package saved before reloading" }),
           );
-          expect(serverView.getByLabelText(/Standard pricing \(THB\)/)).toHaveValue("725.25");
-          expect(serverView.getByLabelText(/Scope description/)).toHaveValue(
+          expect(await serverView.findByLabelText(/Standard pricing \(THB\)/)).toHaveValue(
+            "725.25",
+          );
+          expect(await serverView.findByLabelText(/Scope description/)).toHaveValue(
             "Previously saved delivery scope",
           );
         }
@@ -118,24 +110,26 @@ describe("DemoWorkspace integration", () => {
 
   it("publishes and edits packages through the owner view and shows the latest catalog to creators", async () => {
     render(<DemoNavigation />);
-    fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    fireEvent.change(screen.getByLabelText(/Service type/), { target: { value: "custom" } });
-    fireEvent.change(screen.getByLabelText(/Custom service name/), {
+    fireEvent.click(await screen.findByRole("button", { name: "Publish a service" }));
+    fireEvent.change(await screen.findByLabelText(/Service type/), { target: { value: "custom" } });
+    fireEvent.change(await screen.findByLabelText(/Custom service name/), {
       target: { value: "Research interview outreach" },
     });
-    fireEvent.change(screen.getByLabelText(/Scope description/), {
+    fireEvent.change(await screen.findByLabelText(/Scope description/), {
       target: { value: "Invite student participants\nProvide an outreach summary" },
     });
-    fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), {
+    fireEvent.change(await screen.findByLabelText(/Standard pricing \(THB\)/), {
       target: { value: "425.50" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     await screen.findByText("Service published successfully.");
 
     visit("Creator view");
-    expect(screen.getByRole("heading", { name: "Mali Srisai’s services" })).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Research interview outreach" }),
+      await screen.findByRole("heading", { name: "Mali Srisai’s services" }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Research interview outreach" }),
     ).toBeInTheDocument();
     expect(screen.getByText("฿425.50")).toBeInTheDocument();
     expect(
@@ -144,14 +138,16 @@ describe("DemoWorkspace integration", () => {
     expect(screen.queryByText(/earnings|Only visible to you|12,400/)).not.toBeInTheDocument();
 
     visit("Services");
-    fireEvent.click(screen.getByRole("button", { name: "Edit Research interview outreach" }));
-    expect(screen.getByLabelText(/Scope description/)).toHaveValue(
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Edit Research interview outreach" }),
+    );
+    expect(await screen.findByLabelText(/Scope description/)).toHaveValue(
       "Invite student participants\nProvide an outreach summary",
     );
-    fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), {
+    fireEvent.change(await screen.findByLabelText(/Standard pricing \(THB\)/), {
       target: { value: "500.25" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Save changes" }));
     await screen.findByText("Service updated successfully.");
     visit("Creator view");
     expect(screen.getByText("฿500.25")).toBeInTheDocument();
@@ -160,27 +156,33 @@ describe("DemoWorkspace integration", () => {
 
   it("retains saved professional information across navigation and a fresh workspace mount", async () => {
     const { unmount } = render(<DemoNavigation initialView="profile" />);
-    fireEvent.change(screen.getByLabelText("Bio"), {
+    fireEvent.change(await screen.findByLabelText("Bio"), {
       target: { value: "Available for thoughtful campus outreach." },
     });
-    fireEvent.change(screen.getByLabelText("Years of experience"), { target: { value: "0.5" } });
-    fireEvent.change(screen.getByLabelText("Availability text"), { target: { value: "" } });
-    fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
+    fireEvent.change(await screen.findByLabelText("Years of experience"), {
+      target: { value: "0.5" },
+    });
+    fireEvent.change(await screen.findByLabelText("Availability text"), { target: { value: "" } });
+    fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
     await screen.findByText("Professional information saved.");
 
     visit("Overview");
-    expect(screen.getByText("12,400.00")).toBeInTheDocument();
+    expect(await screen.findByText("12,400.00")).toBeInTheDocument();
     visit("Creator view");
     expect(screen.queryByText(/earnings|12,400|Only visible to you/)).not.toBeInTheDocument();
     visit("Profile");
-    expect(screen.getByLabelText("Bio")).toHaveValue("Available for thoughtful campus outreach.");
-    expect(screen.getByLabelText("Years of experience")).toHaveValue("0.5");
-    expect(screen.getByLabelText("Availability text")).toHaveValue("");
+    expect(await screen.findByLabelText("Bio")).toHaveValue(
+      "Available for thoughtful campus outreach.",
+    );
+    expect(await screen.findByLabelText("Years of experience")).toHaveValue("0.5");
+    expect(await screen.findByLabelText("Availability text")).toHaveValue("");
 
     unmount();
     render(<DemoNavigation initialView="profile" />);
-    expect(screen.getByLabelText("Bio")).toHaveValue("Available for thoughtful campus outreach.");
-    expect(screen.getByLabelText("Years of experience")).toHaveValue("0.5");
+    expect(await screen.findByLabelText("Bio")).toHaveValue(
+      "Available for thoughtful campus outreach.",
+    );
+    expect(await screen.findByLabelText("Years of experience")).toHaveValue("0.5");
     expect(sessionStorage.getItem("cuways-marketer-demo-v1")).toContain(
       "Available for thoughtful campus outreach.",
     );
@@ -188,43 +190,55 @@ describe("DemoWorkspace integration", () => {
 
   it("resets saved and unsaved profile values and removes validation state", async () => {
     render(<DemoNavigation initialView="profile" />);
-    fireEvent.change(screen.getByLabelText("Bio"), {
+    fireEvent.change(await screen.findByLabelText("Bio"), {
       target: { value: "Previously saved demo bio" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
     await screen.findByText("Professional information saved.");
-    fireEvent.change(screen.getByLabelText("Bio"), { target: { value: "An unsaved edit" } });
-    fireEvent.change(screen.getByLabelText("Years of experience"), { target: { value: "-1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
-    expect(screen.getByLabelText("Years of experience")).toHaveAttribute("aria-invalid", "true");
-
-    fireEvent.click(screen.getByRole("button", { name: "Reset demo" }));
-    await waitFor(() =>
-      expect(screen.getByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio),
+    fireEvent.change(await screen.findByLabelText("Bio"), { target: { value: "An unsaved edit" } });
+    fireEvent.change(await screen.findByLabelText("Years of experience"), {
+      target: { value: "-1" },
+    });
+    fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
+    expect(await screen.findByLabelText("Years of experience")).toHaveAttribute(
+      "aria-invalid",
+      "true",
     );
-    expect(screen.getByLabelText("Years of experience")).toHaveValue("2.5");
-    expect(screen.getByLabelText("Years of experience")).toHaveAttribute("aria-invalid", "false");
+
+    fireEvent.click(await screen.findByRole("button", { name: "Reset demo" }));
+    await waitFor(async () =>
+      expect(await screen.findByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio),
+    );
+    expect(await screen.findByLabelText("Years of experience")).toHaveValue("2.5");
+    expect(await screen.findByLabelText("Years of experience")).toHaveAttribute(
+      "aria-invalid",
+      "false",
+    );
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(screen.queryByText("Professional information saved.")).not.toBeInTheDocument();
     visit("Overview");
     visit("Profile");
-    expect(screen.getByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio);
+    expect(await screen.findByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio);
   });
 
   it("restores deleted service fixtures in both owner and viewer catalogs after reset", async () => {
     render(<DemoNavigation />);
-    fireEvent.click(screen.getByRole("button", { name: "Delete On-Campus Distribution" }));
-    fireEvent.click(screen.getByRole("button", { name: "Delete service" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Delete On-Campus Distribution" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Delete service" }));
     await screen.findByText("Service deleted successfully.");
     visit("Creator view");
     expect(
       screen.queryByRole("heading", { name: "On-Campus Distribution" }),
     ).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Reset demo" }));
-    expect(screen.getByRole("heading", { name: "On-Campus Distribution" })).toBeInTheDocument();
+    fireEvent.click(await screen.findByRole("button", { name: "Reset demo" }));
+    expect(
+      await screen.findByRole("heading", { name: "On-Campus Distribution" }),
+    ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Edit |Delete / })).not.toBeInTheDocument();
     visit("Services");
-    expect(screen.getByRole("button", { name: "Edit On-Campus Distribution" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("button", { name: "Edit On-Campus Distribution" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("2 services")).toBeInTheDocument();
   });
 });

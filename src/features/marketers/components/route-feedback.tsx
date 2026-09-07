@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -71,7 +72,7 @@ export function MarketerLoading() {
     <div className="space-y-5 py-7" role="status" aria-label="Loading marketer information">
       <span className="text-sm text-[var(--mk-muted)]">Loading your workspace…</span>
       {["h-32", "h-24", "h-24"].map((height, index) => (
-        <div
+        <Skeleton
           key={index}
           className={`${height} animate-pulse rounded-3xl bg-[var(--mk-border)] motion-reduce:animate-none`}
         />

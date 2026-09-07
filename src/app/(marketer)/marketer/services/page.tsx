@@ -10,8 +10,7 @@ export default async function MarketerServicesPage() {
   await requireSession();
   let profile, services;
   try {
-    profile = await getMyProfile();
-    services = await getMyServices();
+    [profile, services] = await Promise.all([getMyProfile(), getMyServices()]);
   } catch (error) {
     return <RouteFeedback kind={marketerFailure(error)} />;
   }

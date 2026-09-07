@@ -1,6 +1,6 @@
 import { requireSession } from "@/lib/auth/guards";
 import { getPublicCatalog } from "@/features/marketers/api";
-import { ServiceCatalog } from "@/features/marketers/components/service-catalog";
+import { PublicServiceCatalog } from "@/features/marketers/components/public-service-catalog";
 import { RouteFeedback } from "@/features/marketers/components/route-feedback";
 import { marketerFailure } from "@/features/marketers/failures";
 
@@ -17,5 +17,5 @@ export default async function PublicCatalogPage({ params }: { params: Promise<{ 
   } catch (error) {
     return <RouteFeedback kind={marketerFailure(error)} />;
   }
-  return <ServiceCatalog {...catalog} />;
+  return <PublicServiceCatalog {...catalog} />;
 }

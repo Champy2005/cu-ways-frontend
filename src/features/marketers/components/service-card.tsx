@@ -1,3 +1,5 @@
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Box, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,14 +15,14 @@ export interface ServiceCardProps {
 /** Display-only by default; management callbacks are provided only by the owner catalog. */
 export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
   return (
-    <article className="mk-card mk-service-card flex flex-col">
+    <Card className="mk-card mk-service-card flex flex-col gap-0">
       <div className="mb-5 flex items-center justify-between gap-3">
         <div className="flex size-10 items-center justify-center rounded-xl bg-[#e42278]/10 text-[var(--mk-accent)]">
           <Box className="size-5" aria-hidden="true" />
         </div>
-        <span className="rounded-full bg-[#15803d]/10 px-2.5 py-1 text-xs font-medium text-[var(--mk-success,#15803d)]">
+        <Badge className="rounded-full bg-[#15803d]/10 px-2.5 py-1 text-xs font-medium text-[var(--mk-success,#15803d)]">
           Published
-        </span>
+        </Badge>
       </div>
       <h2 className="text-lg leading-snug font-semibold break-words text-[var(--mk-text)]">
         {service.service_type}
@@ -59,6 +61,6 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
           </div>
         )}
       </div>
-    </article>
+    </Card>
   );
 }

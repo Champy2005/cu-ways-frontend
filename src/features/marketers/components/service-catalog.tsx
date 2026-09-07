@@ -6,11 +6,23 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { MarketerActions, Service } from "@/features/marketers/types";
 
-import { DeleteServiceDialog } from "./delete-service-dialog";
 import { ServiceCard } from "./service-card";
-import { ServiceDialog } from "./service-dialog";
+import { lazy, Suspense, type SyntheticEvent } from "react";
+const loadEditor = () => import("./catalog-dialog");
+const CatalogDialog = lazy(() =>
+  loadEditor().then((module) => ({ default: module.CatalogDialog })),
+);
+function preloadEditor() {
+  void loadEditor().catch(() => {
+    /* Opening the dialog retries loading. */
+  });
+}
 
-type ServiceEditor = { type: "create" } | { type: "edit" | "delete"; service: Service };
+function preloadOnIntent(event: SyntheticEvent) {
+  if ((event.target as Element).closest("button")) preloadEditor();
+}
+
+export type ServiceEditor = { type: "create" } | { type: "edit" | "delete"; service: Service };
 
 export interface ServiceCatalogProps {
   services: Service[];
@@ -63,7 +75,11 @@ export function ServiceCatalog({
   }
 
   return (
-    <section aria-labelledby="service-catalog-heading">
+    <section
+      aria-labelledby="service-catalog-heading"
+      onPointerOver={actions ? preloadOnIntent : undefined}
+      onFocus={actions ? preloadOnIntent : undefined}
+    >
       <div className="mk-page-heading flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <p className="mk-eyebrow">
@@ -135,61 +151,28 @@ export function ServiceCatalog({
         </div>
       )}
       {actions && editor && (
-        <CatalogDialog
-          editor={editor}
-          actions={actions}
-          finalFocus={finalFocus}
-          onClose={() => setEditor(null)}
-          onSaved={saveService}
-          onDeleted={(service) =>
-            applyServices(
-              services.filter((item) => item.service_id !== service.service_id),
-              "Service deleted successfully.",
-            )
+        <Suspense
+          fallback={
+            <p role="status" className="py-4">
+              Loading service editor...
+            </p>
           }
-        />
+        >
+          <CatalogDialog
+            editor={editor}
+            actions={actions}
+            finalFocus={finalFocus}
+            onClose={() => setEditor(null)}
+            onSaved={saveService}
+            onDeleted={(service) =>
+              applyServices(
+                services.filter((item) => item.service_id !== service.service_id),
+                "Service deleted successfully.",
+              )
+            }
+          />
+        </Suspense>
       )}
     </section>
-  );
-}
-
-function CatalogDialog({
-  editor,
-  actions,
-  onSaved,
-  onDeleted,
-  onClose,
-  finalFocus,
-}: {
-  editor: ServiceEditor;
-  actions: NonNullable<ServiceCatalogProps["actions"]>;
-  onSaved: (service: Service) => void;
-  onDeleted: (service: Service) => void;
-  onClose: () => void;
-  finalFocus: () => HTMLElement | null;
-}) {
-  if (editor.type === "delete") {
-    return (
-      <DeleteServiceDialog
-        service={editor.service}
-        onDelete={actions.deleteService}
-        onDeleted={() => onDeleted(editor.service)}
-        onClose={onClose}
-        finalFocus={finalFocus}
-      />
-    );
-  }
-  return (
-    <ServiceDialog
-      service={editor.type === "edit" ? editor.service : undefined}
-      onSave={
-        editor.type === "edit"
-          ? (input) => actions.updateService(editor.service.service_id, input)
-          : actions.createService
-      }
-      onSaved={onSaved}
-      onClose={onClose}
-      finalFocus={finalFocus}
-    />
   );
 }

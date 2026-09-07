@@ -62,7 +62,7 @@ describe("ServiceCatalog", () => {
   it("validates missing type and price without publishing", async () => {
     const { actions } = setup([]);
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     expect(
       await screen.findByText("Choose a service type or enter a custom service name."),
     ).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe("ServiceCatalog", () => {
     fireEvent.change(screen.getByLabelText(/Scope description/), {
       target: { value: "Translate questions\nDeliver a reviewed document" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     expect(await screen.findByRole("status")).toHaveTextContent("Service published successfully.");
     expect(actions.createService).toHaveBeenCalledWith({
       service_type: "Survey translation",
@@ -119,7 +119,7 @@ describe("ServiceCatalog", () => {
     );
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
     chooseService();
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Please update the service price.");
     expect(screen.getByText("This price cannot be published.")).toBeInTheDocument();
     expect(screen.getByLabelText(/Standard pricing \(THB\)/)).toHaveValue("250");
@@ -127,7 +127,7 @@ describe("ServiceCatalog", () => {
     fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), {
       target: { value: "300" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     expect(await screen.findByRole("status")).toHaveTextContent("Service published successfully.");
   });
 
@@ -245,7 +245,7 @@ describe("ServiceCatalog", () => {
     render(<SharedCatalog />);
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
     chooseService();
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     await screen.findByRole("status");
     fireEvent.click(screen.getByRole("button", { name: "Viewer preview" }));
     expect(screen.getByRole("heading", { name: "General Survey Boost" })).toBeInTheDocument();

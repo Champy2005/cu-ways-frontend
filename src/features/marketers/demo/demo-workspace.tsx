@@ -1,30 +1,17 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { lazy, Suspense, useSyncExternalStore } from "react";
+import { useLocalQuery } from "../local-navigation";
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ProfileForm } from "../components/profile-form";
-import { PerformanceDashboard, type RecentJob } from "../components/performance-dashboard";
-import { ServiceCatalog } from "../components/service-catalog";
-import { getDemoView, MarketerNavigation } from "../components/marketer-navigation";
-import {
-  demoActions,
-  getDemoSnapshot,
-  getServerDemoSnapshot,
-  resetDemo,
-  subscribeDemo,
-} from "./store";
 
-const recentJobs: RecentJob[] = [
-  { id: 1, title: "Campus Food Survey", date: "2026-09-02", status: "Completed", price: "250.00" },
-  {
-    id: 2,
-    title: "Student Travel Habits",
-    date: "2026-09-04",
-    status: "In Progress",
-    price: "400.00",
-  },
-];
+import { getDemoView, MarketerNavigation } from "../components/marketer-navigation";
+import { getDemoSnapshot, getServerDemoSnapshot, resetDemo, subscribeDemo } from "./store";
+
+const ProfileView = lazy(() => import("./profile-view"));
+const DashboardView = lazy(() => import("./dashboard-view"));
+const CatalogView = lazy(() => import("./catalog-view"));
+const ViewerView = lazy(() => import("./viewer-view"));
 
 const subscribeHydration = () => () => {};
 const clientReady = () => true;
@@ -33,7 +20,7 @@ const serverReady = () => false;
 export function DemoWorkspace({ view }: { view: string }) {
   const hydrated = useSyncExternalStore(subscribeHydration, clientReady, serverReady);
   const state = useSyncExternalStore(subscribeDemo, getDemoSnapshot, getServerDemoSnapshot);
-  const selected = getDemoView(view);
+  const selected = getDemoView(useLocalQuery("view", view));
   // Forms keep their own editing state. Mount them only after session data is available.
   if (!hydrated)
     return (
@@ -61,36 +48,20 @@ export function DemoWorkspace({ view }: { view: string }) {
         </Button>
       </aside>
       <MarketerNavigation demo selected={selected} />
-      <div key={`${selected}-${state.revision}`}>
-        {selected === "dashboard" && (
-          <PerformanceDashboard
-            profile={state.profile}
-            stats={state.stats}
-            recentJobs={recentJobs}
-          />
-        )}
-        {selected === "profile" && (
-          <ProfileForm profile={state.profile} onSave={demoActions.saveProfile} />
-        )}
-        {selected === "services" && (
-          <ServiceCatalog
-            services={state.services}
-            marketer={state.profile}
-            actions={demoActions}
-          />
-        )}
-        {selected === "viewer" && (
-          <>
-            <p className="mb-5 text-xs text-[var(--mk-muted)]">
-              Creator preview · Published service catalog
-            </p>
-            <ServiceCatalog
-              services={state.services}
-              marketer={{ user_id: state.profile.user_id, name: state.profile.name }}
-            />
-          </>
-        )}
-      </div>
+      <Suspense
+        fallback={
+          <p role="status" className="min-h-96 py-10">
+            Loading preview...
+          </p>
+        }
+      >
+        <div key={`${selected}-${state.revision}`}>
+          {selected === "dashboard" && <DashboardView state={state} />}
+          {selected === "profile" && <ProfileView state={state} />}
+          {selected === "services" && <CatalogView state={state} />}
+          {selected === "viewer" && <ViewerView state={state} />}
+        </div>
+      </Suspense>
     </>
   );
 }

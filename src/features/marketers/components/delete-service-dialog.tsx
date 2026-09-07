@@ -1,6 +1,14 @@
 "use client";
 
-import { AlertDialog } from "@base-ui/react/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogPopup,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogClose,
+} from "@/components/ui/alert-dialog";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -42,31 +50,31 @@ export function DeleteServiceDialog({
   }
 
   return (
-    <AlertDialog.Root open onOpenChange={(open) => !open && !inFlight.current && onClose()}>
+    <AlertDialog open onOpenChange={(open) => !open && !inFlight.current && onClose()}>
       <div ref={portalContainer} />
-      <AlertDialog.Portal container={portalContainer}>
-        <AlertDialog.Backdrop className="mk-dialog-backdrop fixed inset-0 z-[60]" />
-        <AlertDialog.Popup
+      <AlertDialogPortal container={portalContainer}>
+        <AlertDialogOverlay className="mk-dialog-backdrop fixed inset-0 z-[60]" />
+        <AlertDialogPopup
           finalFocus={finalFocus}
           className="mk-dialog-surface fixed top-1/2 left-1/2 z-[70] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl p-6 outline-none sm:p-8"
         >
-          <AlertDialog.Title className="text-xl font-semibold">Delete service?</AlertDialog.Title>
-          <AlertDialog.Description className="mt-3 text-sm leading-6 break-words text-[var(--mk-muted)]">
+          <AlertDialogTitle className="text-xl font-semibold">Delete service?</AlertDialogTitle>
+          <AlertDialogDescription className="mt-3 text-sm leading-6 break-words text-[var(--mk-muted)]">
             <strong className="font-semibold text-[var(--mk-text)]">{service.service_type}</strong>{" "}
             will be removed from your published catalog. This cannot be undone.
-          </AlertDialog.Description>
+          </AlertDialogDescription>
           {error && (
             <p role="alert" className="mk-error-notice mt-4 rounded-xl p-3 text-sm">
               {error}
             </p>
           )}
           <div className="mt-7 flex gap-3">
-            <AlertDialog.Close
+            <AlertDialogClose
               disabled={pending}
               render={<Button variant="outline" className="mk-secondary-button flex-1" />}
             >
               Cancel
-            </AlertDialog.Close>
+            </AlertDialogClose>
             <Button
               onClick={remove}
               disabled={pending}
@@ -75,8 +83,8 @@ export function DeleteServiceDialog({
               {pending ? "Deleting…" : "Delete service"}
             </Button>
           </div>
-        </AlertDialog.Popup>
-      </AlertDialog.Portal>
-    </AlertDialog.Root>
+        </AlertDialogPopup>
+      </AlertDialogPortal>
+    </AlertDialog>
   );
 }

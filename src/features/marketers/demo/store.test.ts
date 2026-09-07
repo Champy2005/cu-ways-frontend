@@ -5,6 +5,7 @@ import {
   getDemoSnapshot,
   initialDemoState,
   resetDemo,
+  saveDemoContact,
 } from "./store";
 
 beforeEach(() => {
@@ -84,4 +85,27 @@ describe("isolated marketer demo", () => {
   ])("recovers malformed saved state", (raw) => {
     expect(decodeDemoState(raw)).toEqual(initialDemoState);
   });
+});
+
+it("restores old sessions without losing profile or service edits", () => {
+  const old = {
+    ...initialDemoState,
+    contact: undefined,
+    profile: { ...initialDemoState.profile, bio: "Saved before upgrade" },
+    services: [],
+  };
+  const restored = decodeDemoState(JSON.stringify(old));
+  expect(restored.contact).toEqual(initialDemoState.contact);
+  expect(restored.profile.bio).toBe("Saved before upgrade");
+  expect(restored.services).toEqual([]);
+});
+it("persists contact changes in the session and resets both profile sections", async () => {
+  await saveDemoContact({ phone: "123", line_id: null });
+  expect(decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v1")).contact.phone).toBe(
+    "123",
+  );
+  await demoActions.saveProfile({ bio: "Changed", experience_years: 0, availability_text: null });
+  resetDemo();
+  expect(getDemoSnapshot().contact).toEqual(initialDemoState.contact);
+  expect(getDemoSnapshot().profile).toEqual(initialDemoState.profile);
 });

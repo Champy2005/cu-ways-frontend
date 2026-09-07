@@ -138,3 +138,5 @@ See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migration
 admin seeding, and health checks.
 
 For the full frontend structure and dependency rules, see [docs/architecture.md](docs/architecture.md).
+
+Marketer UI refinements, unified profile tabs, lazy-loading boundaries, and measured bundle changes are documented in [docs/marketer-ui-refinement.md](docs/marketer-ui-refinement.md).

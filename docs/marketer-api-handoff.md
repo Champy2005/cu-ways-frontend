@@ -4,13 +4,13 @@ The frontend implements Chp's Sprint 1 tasks for US-005–008. The contracts bel
 
 ## Routes and integration boundary
 
-| Frontend route             | Behavior                                                                                       |
-| -------------------------- | ---------------------------------------------------------------------------------------------- |
-| `/marketer/profile`        | Professional profile editor; Basic information links to the existing `/profile` contact editor |
-| `/marketer/services`       | Owner catalog, publish/edit dialogs, confirmed removal                                         |
-| `/marketer/dashboard`      | Private completed-jobs, rating, and earnings summary                                           |
-| `/marketers/[id]/services` | Signed-in read-only catalog with display-safe identity                                         |
-| `/demo/marketer`           | Explicit development preview with owner/viewer modes and session-only fictional data           |
+| Frontend route             | Behavior                                                                             |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| `/marketer/profile`        | Unified Basic and In-depth profile tabs; independent contact and professional saves  |
+| `/marketer/services`       | Owner catalog, publish/edit dialogs, confirmed removal                               |
+| `/marketer/dashboard`      | Private completed-jobs, rating, and earnings summary                                 |
+| `/marketers/[id]/services` | Signed-in read-only catalog with display-safe identity                               |
+| `/demo/marketer`           | Explicit development preview with owner/viewer modes and session-only fictional data |
 
 Server Components use `src/features/marketers/api.ts` and the existing server API client. Interactive writes use `liveMarketerActions` from `browser-api.ts`, then same-origin BFF handlers. The BFF reads the HttpOnly session, validates the configured `FRONTEND_ORIGIN`, and forwards the bearer token only on the server. Backend token validation, membership, ownership, and business rules remain authoritative. JWT roles are currently `user` and `admin`; neither is a marketer-membership claim.
 
@@ -92,3 +92,5 @@ Set the server-only environment variable `MARKETER_DEMO_ENABLED=true` and run `p
 The frontend suite checks optional/invalid profile values, service names and decimal boundaries, backend response decoding, public-field projection, missing-session/origin protections, malformed JSON and ownership injection, backend validation and permission errors, and empty 204 deletion. UI checks cover saving, publish/edit/remove/cancel, error retention, viewer restrictions, session persistence, responsive dialogs, keyboard behavior, and both themes. Run the frontend gate with `pnpm check`.
 
 After backend delivery, verify with actual marketer and creator accounts: profile values persist after a new session; other signed-in users see published and edited services; removal disappears from both catalogs; a foreign marketer cannot edit/remove a guessed service ID; non-marketers receive an explicit eligibility response; numeric legacy profile migration preserves old information; zero stats differ from API outage; only paid amounts appear in private earnings; and the viewer API never returns earnings. These are integration acceptance checks, not claims established by the isolated demo.
+
+Rendering boundaries, unified contact behavior, and performance measurements are documented in [marketer-ui-refinement.md](marketer-ui-refinement.md). No backend endpoints or generated API definitions changed for these tabs.

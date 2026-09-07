@@ -1,3 +1,5 @@
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SERVICE_TYPES } from "@/features/marketers/schemas";
@@ -31,10 +33,10 @@ function FieldError({ id, children }: { id: string; children?: string }) {
 function ServiceTypeField({ values, errors, update, id }: ServiceFieldsProps) {
   return (
     <div className="border-t border-[var(--mk-border)] py-5">
-      <label htmlFor={`${id}-type`} className="mb-2 block text-sm font-medium">
+      <FieldLabel htmlFor={`${id}-type`} className="mb-2 block text-sm font-medium">
         Service type <span aria-hidden="true">*</span>
-      </label>
-      <select
+      </FieldLabel>
+      <NativeSelect
         id={`${id}-type`}
         name="service_type"
         value={values.selection}
@@ -42,21 +44,21 @@ function ServiceTypeField({ values, errors, update, id }: ServiceFieldsProps) {
         aria-invalid={Boolean(errors.service_type)}
         aria-describedby={errors.service_type ? `${id}-type-error` : undefined}
         onChange={(event) => update("selection", event.target.value)}
-        className={`w-full min-w-0 border px-3 text-sm outline-none focus-visible:ring-3 aria-invalid:border-[var(--mk-error)] ${inputClass}`}
+        className="mk-service-select w-full min-w-0"
       >
-        <option value="">Select a service type</option>
+        <NativeSelectOption value="">Select a service type</NativeSelectOption>
         {SERVICE_TYPES.map((type) => (
-          <option key={type} value={type}>
+          <NativeSelectOption key={type} value={type}>
             {type}
-          </option>
+          </NativeSelectOption>
         ))}
-        <option value="custom">Custom Service</option>
-      </select>
+        <NativeSelectOption value="custom">Custom Service</NativeSelectOption>
+      </NativeSelect>
       {values.selection === "custom" && (
         <div className="mt-4">
-          <label htmlFor={`${id}-custom`} className="mb-2 block text-sm font-medium">
+          <FieldLabel htmlFor={`${id}-custom`} className="mb-2 block text-sm font-medium">
             Custom service name <span aria-hidden="true">*</span>
-          </label>
+          </FieldLabel>
           <Input
             id={`${id}-custom`}
             value={values.customName}
@@ -84,9 +86,9 @@ export function ServiceFields(props: ServiceFieldsProps) {
     <>
       <ServiceTypeField {...props} />
       <div className="border-t border-[var(--mk-border)] py-5">
-        <label htmlFor={`${id}-scope`} className="mb-2 block text-sm font-medium">
+        <FieldLabel htmlFor={`${id}-scope`} className="mb-2 block text-sm font-medium">
           Scope description <span className="font-normal text-[var(--mk-muted)]">(optional)</span>
-        </label>
+        </FieldLabel>
         <Textarea
           id={`${id}-scope`}
           name="scope_text"
@@ -105,9 +107,9 @@ export function ServiceFields(props: ServiceFieldsProps) {
         <FieldError id={`${id}-scope-error`}>{errors.scope_text}</FieldError>
       </div>
       <div className="border-y border-[var(--mk-border)] py-5">
-        <label htmlFor={`${id}-price`} className="mb-2 block text-sm font-medium">
+        <FieldLabel htmlFor={`${id}-price`} className="mb-2 block text-sm font-medium">
           Standard pricing (THB) <span aria-hidden="true">*</span>
-        </label>
+        </FieldLabel>
         <div className="relative">
           <span
             aria-hidden="true"

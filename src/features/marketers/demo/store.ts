@@ -1,7 +1,10 @@
+import type { ContactProfile, SaveContact } from "@/features/users/types";
+import { validateContactUpdate } from "@/features/users/schemas";
 import type { MarketerActions, MarketerProfile, MarketerStats, Service } from "../types";
 import { validateProfileInput, validateServiceInput } from "../schemas";
 
 export type DemoState = {
+  contact: ContactProfile;
   profile: MarketerProfile;
   services: Service[];
   stats: MarketerStats;
@@ -10,6 +13,14 @@ export type DemoState = {
 const STORAGE_KEY = "cuways-marketer-demo-v1";
 const EVENT = "cuways-marketer-demo-change";
 export const initialDemoState: DemoState = {
+  contact: {
+    user_id: 101,
+    name: "Mali Srisai",
+    email: "mali@example.test",
+    phone: null,
+    line_id: "mali.demo",
+    created_at: "2026-08-01T09:00:00Z",
+  },
   revision: 0,
   profile: {
     user_id: 101,
@@ -87,6 +98,7 @@ export function decodeDemoState(raw: string | null): DemoState {
     if (new Set(value.services.map((service) => service.service_id)).size !== value.services.length)
       return initialDemoState;
     return {
+      contact: restoreContact(value.contact),
       profile: value.profile,
       services: value.services,
       stats: initialDemoState.stats,
@@ -184,4 +196,21 @@ export const demoActions: MarketerActions = {
       services: current.services.filter((entry) => entry.service_id !== id),
     });
   },
+};
+
+function restoreContact(value: unknown): ContactProfile {
+  if (!isRecord(value) || !validateContactUpdate({ phone: value.phone, line_id: value.line_id }))
+    return initialDemoState.contact;
+  return {
+    ...initialDemoState.contact,
+    phone: value.phone as string | null,
+    line_id: value.line_id as string | null,
+  };
+}
+export const saveDemoContact: SaveContact = async (input) => {
+  if (!validateContactUpdate(input)) throw new Error("Check your contact fields.");
+  const current = getDemoSnapshot();
+  const contact = { ...current.contact, ...input };
+  saveState({ ...current, contact });
+  return contact;
 };

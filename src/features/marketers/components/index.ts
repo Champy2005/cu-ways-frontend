@@ -4,3 +4,5 @@ export { ServiceCard } from "./service-card";
 export { MarketerIdentity, MarketerAvatar } from "./marketer-identity";
 export { ProfileForm } from "./profile-form";
 export { PerformanceDashboard, type RecentJob } from "./performance-dashboard";
+
+export { PublicServiceCatalog } from "./public-service-catalog";

@@ -9,6 +9,7 @@ let desktopQuery: (EventTarget & { matches: boolean }) | undefined;
 
 beforeEach(() => {
   localStorage.clear();
+  window.history.replaceState(null, "", "/");
   desktopQuery = undefined;
   vi.stubGlobal("matchMedia", (query: string) => {
     const media = Object.assign(new EventTarget(), {
@@ -43,7 +44,7 @@ describe("MarketerShell navigation and theme", () => {
   });
 
   it("exposes the creator preview through mobile navigation and closes its menu after selecting it", async () => {
-    const { container } = render(
+    render(
       <MarketerShell demo demoView="viewer">
         Demo workspace
       </MarketerShell>,
@@ -53,28 +54,29 @@ describe("MarketerShell navigation and theme", () => {
       "aria-current",
       "page",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Open navigation menu" }));
-    const dialog = await screen.findByRole("dialog", { name: "Your workspace" });
-    // Fixed overlays must live outside the sticky, blurred header's containing block.
-    expect(container.querySelector("header")?.contains(dialog)).toBe(false);
-    const preview = within(dialog).getByRole("link", { name: "Creator view" });
+    fireEvent.click(await screen.findByRole("button", { name: "Open navigation menu" }));
+    const dialog = await screen.findByRole("menu", { name: "Open navigation menu" });
+    // Navigation is an anchored menu, with no dialog backdrop or scroll locking.
+    expect(document.querySelector("[data-slot=dialog-overlay]")).toBeNull();
+    expect(document.body.style.overflow).not.toBe("hidden");
+    const preview = within(dialog).getByRole("menuitem", { name: "Creator view" });
     expect(preview).toHaveAttribute("href", "/demo/marketer?view=viewer");
     preview.addEventListener("click", (event) => event.preventDefault(), { once: true });
     fireEvent.click(preview);
-    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
-  it("restores hamburger focus on Escape and removes the modal when resized to desktop", async () => {
+  it("restores hamburger focus on Escape and dismisses the menu when resized to desktop", async () => {
     render(<MarketerShell>Live workspace</MarketerShell>);
-    const trigger = screen.getByRole("button", { name: "Open navigation menu" });
+    const trigger = await screen.findByRole("button", { name: "Open navigation menu" });
     trigger.focus();
     fireEvent.click(trigger);
-    const close = await screen.findByRole("button", { name: "Close navigation menu" });
+    const close = await screen.findByRole("menu", { name: "Open navigation menu" });
     fireEvent.keyDown(close, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
     await waitFor(() => expect(trigger).toHaveFocus());
     fireEvent.click(trigger);
-    await screen.findByRole("dialog");
+    await screen.findByRole("menu");
     expect(desktopQuery).toBeDefined();
     act(() => {
       if (desktopQuery) {
@@ -82,7 +84,7 @@ describe("MarketerShell navigation and theme", () => {
         desktopQuery.dispatchEvent(new Event("change"));
       }
     });
-    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
   it("defaults to light, persists dark mode across remounts, and switches to the transparent dark logo", () => {

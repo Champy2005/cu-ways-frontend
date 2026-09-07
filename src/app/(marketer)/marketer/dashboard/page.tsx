@@ -9,19 +9,15 @@ export const metadata = { title: "Marketer overview | CU Ways" };
 
 export default async function MarketerDashboardPage() {
   await requireSession();
-  let profile;
-  try {
-    profile = await getMyProfile();
-  } catch (error) {
-    return <RouteFeedback kind={marketerFailure(error)} />;
+  const [profileResult, statsResult] = await Promise.allSettled([getMyProfile(), getMyStats()]);
+  if (profileResult.status === "rejected")
+    return <RouteFeedback kind={marketerFailure(profileResult.reason)} />;
+  if (statsResult.status === "rejected") {
+    const kind = marketerFailure(statsResult.reason);
+    if (kind !== "unavailable") return <RouteFeedback kind={kind} />;
   }
-  let stats = null;
-  try {
-    stats = await getMyStats();
-  } catch (error) {
-    const kind = marketerFailure(error);
-    if (kind === "unauthorized" || kind === "forbidden") return <RouteFeedback kind={kind} />;
-  }
+  const profile = profileResult.value;
+  const stats = statsResult.status === "fulfilled" ? statsResult.value : null;
   return (
     <>
       <PerformanceDashboard

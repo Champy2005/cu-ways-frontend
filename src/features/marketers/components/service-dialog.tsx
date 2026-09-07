@@ -1,6 +1,14 @@
 "use client";
 
-import { Dialog } from "@base-ui/react/dialog";
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogPopup,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Box, X } from "lucide-react";
 import { useId, useRef, useState, type FormEvent } from "react";
 
@@ -95,11 +103,11 @@ export function ServiceDialog({
   }
 
   return (
-    <Dialog.Root open onOpenChange={(open) => !open && requestClose()}>
+    <Dialog open onOpenChange={(open) => !open && requestClose()}>
       <div ref={portalContainer} />
-      <Dialog.Portal container={portalContainer}>
-        <Dialog.Backdrop className="mk-dialog-backdrop fixed inset-0 z-[60]" />
-        <Dialog.Popup
+      <DialogPortal container={portalContainer}>
+        <DialogOverlay className="mk-dialog-backdrop fixed inset-0 z-[60]" />
+        <DialogPopup
           finalFocus={finalFocus}
           className="mk-dialog-surface mk-service-popup fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-[28px] outline-none sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:w-[600px] sm:max-w-[calc(100%-3rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[28px]"
         >
@@ -109,22 +117,22 @@ export function ServiceDialog({
           />
           <div className="flex shrink-0 items-start justify-between gap-2 px-6 pt-6 pb-5 sm:px-8">
             <div className="min-w-0">
-              <Dialog.Title className="text-xl leading-7 font-medium">
+              <DialogTitle className="text-xl leading-7 font-medium">
                 {service ? "Edit Service Package" : "Publish Service Package"}
-              </Dialog.Title>
-              <Dialog.Description className="mt-1.5 text-xs leading-5 text-[var(--mk-muted)]">
+              </DialogTitle>
+              <DialogDescription className="mt-1.5 text-xs leading-5 text-[var(--mk-muted)]">
                 {service
                   ? "Keep your rates and scope up to date."
                   : "Show your survey package to creators."}
-              </Dialog.Description>
+              </DialogDescription>
             </div>
-            <Dialog.Close
+            <DialogClose
               disabled={pending}
               aria-label="Close service dialog"
               render={<Button variant="ghost" className="mk-icon-button" />}
             >
               <X className="size-5" aria-hidden="true" />
-            </Dialog.Close>
+            </DialogClose>
           </div>
           <form ref={formRef} onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
             <div className="min-h-0 overflow-y-auto px-6 sm:px-8">
@@ -162,8 +170,8 @@ export function ServiceDialog({
             onKeepEditing={() => setDiscardOpen(false)}
             onDiscard={onClose}
           />
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </DialogPopup>
+      </DialogPortal>
+    </Dialog>
   );
 }

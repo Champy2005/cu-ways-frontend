@@ -16,7 +16,7 @@ const profile: MarketerProfile = {
 afterEach(cleanup);
 
 describe("ProfileForm", () => {
-  it("uses the existing basic information editor and displays unspecified optional fields", () => {
+  it("displays unspecified optional professional fields", () => {
     render(
       <ProfileForm
         profile={{ ...profile, bio: null, experience_years: null, availability_text: null }}
@@ -24,10 +24,6 @@ describe("ProfileForm", () => {
       />,
     );
 
-    expect(screen.getByRole("link", { name: "Basic information" })).toHaveAttribute(
-      "href",
-      "/profile",
-    );
     expect(screen.getAllByPlaceholderText("Not specified")).toHaveLength(3);
     expect(screen.getByLabelText("Years of experience")).toHaveValue("");
   });
