@@ -1,4 +1,5 @@
 "use client";
+import type { NavigationDevice } from "@/components/layout/navigation-device";
 import Image from "next/image";
 import { Moon, Sun } from "lucide-react";
 import { createContext, useContext, useSyncExternalStore, type ReactNode } from "react";
@@ -33,11 +34,17 @@ function readTheme(): "light" | "dark" {
 const lightTheme = () => "light" as const;
 
 const ThemeContext = createContext<"light" | "dark">("light");
-export function MarketerTheme({ children }: { children: ReactNode }) {
+export function MarketerTheme({
+  children,
+  device = "desktop",
+}: {
+  children: ReactNode;
+  device?: NavigationDevice;
+}) {
   const theme = useSyncExternalStore(subscribeTheme, readTheme, lightTheme);
   return (
     <ThemeContext value={theme}>
-      <div className="marketer-theme min-h-dvh" data-theme={theme}>
+      <div className="marketer-theme min-h-dvh" data-theme={theme} data-navigation={device}>
         {children}
       </div>
     </ThemeContext>

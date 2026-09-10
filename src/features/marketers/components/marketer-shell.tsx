@@ -1,3 +1,4 @@
+import type { NavigationDevice } from "@/components/layout/navigation-device";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -8,15 +9,17 @@ import { MarketerMobileMenu } from "./marketer-mobile-menu";
 import "../marketer.css";
 export function MarketerShell({
   children,
+  device = "desktop",
   demo = false,
   demoView,
 }: {
   children: ReactNode;
+  device?: NavigationDevice;
   demo?: boolean;
   demoView?: string;
 }) {
   return (
-    <MarketerTheme>
+    <MarketerTheme device={device}>
       <a className="mk-skip" href="#marketer-content">
         Skip to content
       </a>
@@ -29,35 +32,39 @@ export function MarketerShell({
           >
             <MarketerLogo />
           </Link>
-          <div className="flex items-center gap-1.5 md:gap-4">
-            <Link
-              href="/dashboard"
-              className="mk-workspace-link hidden items-center gap-2 text-sm md:inline-flex"
-            >
-              <ArrowLeft size={14} /> Workspace
-            </Link>
+          <div className="mk-header-actions flex items-center gap-1.5 md:gap-4">
+            {device === "desktop" && (
+              <Link
+                href="/dashboard"
+                className="mk-workspace-link inline-flex items-center gap-2 text-sm"
+              >
+                <ArrowLeft size={14} /> Workspace
+              </Link>
+            )}
             <MarketerThemeToggle />
             <Image
-              src="/marketer-assets/mascot.svg"
-              width={36}
-              height={34}
+              src="/marketer-assets/paired-birds.svg"
+              width={44}
+              height={30}
               alt=""
               loading="eager"
               className="mk-header-mascot"
             />
-            <MarketerMobileMenu demo={demo} initialView={demoView} />
+            {device === "mobile" && <MarketerMobileMenu demo={demo} initialView={demoView} />}
           </div>
         </div>
+        {device === "desktop" && (
+          <div className="mk-frame mk-live-navigation">
+            <MarketerNavigation demo={demo} selected={demoView} />
+          </div>
+        )}
       </header>
-      {!demo && (
-        <div className="mk-frame mk-live-navigation">
-          <MarketerNavigation />
-        </div>
-      )}
       <main id="marketer-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}
       </main>
-      <MarketerNavigation demo={demo} selected={demoView} variant="mobile" />
+      {device === "mobile" && (
+        <MarketerNavigation demo={demo} selected={demoView} variant="mobile" />
+      )}
     </MarketerTheme>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { ContactProfile, SaveContact } from "@/features/users/types";
@@ -12,6 +13,7 @@ import { RouteFeedback, type MarketerFailure } from "./route-feedback";
 
 export interface ProfileWorkspaceProps {
   profile?: MarketerProfile;
+  onboarding?: boolean;
   contact?: ContactProfile;
   professionalFailure?: MarketerFailure;
   contactFailure?: MarketerFailure;
@@ -22,6 +24,7 @@ export interface ProfileWorkspaceProps {
 
 export function ProfileWorkspace({
   profile,
+  onboarding = false,
   contact,
   professionalFailure,
   contactFailure,
@@ -29,6 +32,7 @@ export function ProfileWorkspace({
   saveProfile,
   saveContact,
 }: ProfileWorkspaceProps) {
+  const [created, setCreated] = useState(false);
   const query = useLocalQuery("tab", initialTab);
   const tab = query === "basic" ? "basic" : "professional";
   const name = profile?.name ?? contact?.name ?? "Your profile";
@@ -37,7 +41,11 @@ export function ProfileWorkspace({
       <div className="mk-page-heading">
         <p className="mk-eyebrow">Your professional workspace</p>
         <h1 className="mk-page-title">Profile settings</h1>
-        <p className="mk-page-description">Manage your contact and professional information.</p>
+        <p className="mk-page-description">
+          {onboarding && !created
+            ? "Complete your professional information to create your marketer profile."
+            : "Manage your contact and professional information."}
+        </p>
       </div>
       <div className="mk-profile-layout">
         <Card className="mk-card mk-profile-summary" aria-label="Profile identity">
@@ -66,7 +74,11 @@ export function ProfileWorkspace({
             </TabsContent>
             <TabsContent value="professional" keepMounted>
               {profile ? (
-                <ProfileForm profile={profile} onSave={saveProfile} />
+                <ProfileForm
+                  profile={profile}
+                  onSave={saveProfile}
+                  onProfileChange={() => setCreated(true)}
+                />
               ) : (
                 <RouteFeedback kind={professionalFailure} />
               )}

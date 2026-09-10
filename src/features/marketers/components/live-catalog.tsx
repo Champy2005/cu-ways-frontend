@@ -18,7 +18,7 @@ export function LiveCatalog({
         href={`/marketers/${profile.user_id}/services`}
         className="mt-6 inline-flex text-sm text-[var(--mk-muted)] underline underline-offset-4"
       >
-        View your catalog as a creator
+        Creator catalog — coming soon
       </Link>
     </>
   );

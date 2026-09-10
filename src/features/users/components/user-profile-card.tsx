@@ -35,11 +35,12 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
               className="text-xs font-medium uppercase tracking-wide text-zinc-500"
               htmlFor="profile-phone"
             >
-              Phone
+              Phone number <span aria-hidden="true">*</span>
             </label>
             <Input
               id="profile-phone"
               className="mt-2"
+              required
               autoComplete="tel"
               maxLength={20}
               placeholder="Not provided"
@@ -72,9 +73,7 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
             </p>
           </div>
         </div>
-        <p className="mt-3 text-xs text-zinc-500">
-          Both fields are optional. Your email remains available as a contact channel.
-        </p>
+        <p className="mt-3 text-xs text-zinc-500">Phone number is required. LINE ID is optional.</p>
         {error ? (
           <p className="mt-4 text-sm text-red-700" role="alert">
             {error}

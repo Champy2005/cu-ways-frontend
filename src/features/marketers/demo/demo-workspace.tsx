@@ -5,7 +5,7 @@ import { useLocalQuery } from "../local-navigation";
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { getDemoView, MarketerNavigation } from "../components/marketer-navigation";
+import { getDemoView } from "../components/marketer-navigation";
 import { getDemoSnapshot, getServerDemoSnapshot, resetDemo, subscribeDemo } from "./store";
 
 const ProfileView = lazy(() => import("./profile-view"));
@@ -47,7 +47,6 @@ export function DemoWorkspace({ view }: { view: string }) {
           <span>Reset demo</span>
         </Button>
       </aside>
-      <MarketerNavigation demo selected={selected} />
       <Suspense
         fallback={
           <p role="status" className="min-h-96 py-10">

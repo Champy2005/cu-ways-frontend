@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+import { navigationDevice } from "@/components/layout/navigation-device";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { MarketerShell } from "@/features/marketers/components/marketer-shell";
@@ -18,9 +20,10 @@ export default async function MarketerDemoPage({
 }) {
   if (!isMarketerDemoEnabled()) notFound();
   const { view } = await searchParams;
+  const device = navigationDevice((await headers()).get("user-agent"));
   return (
     <div className={inter.variable}>
-      <MarketerShell demo demoView={view}>
+      <MarketerShell device={device} demo demoView={view}>
         <DemoWorkspace view={view ?? "dashboard"} />
       </MarketerShell>
     </div>

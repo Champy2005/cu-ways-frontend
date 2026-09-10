@@ -1,25 +1,11 @@
-/** Provisional EPC-02 contracts. Replace with generated aliases after backend OpenAPI integration. */
-export interface MarketerProfile {
-  user_id: number;
-  name: string;
-  bio: string | null;
-  experience_years: number | null;
-  availability_text: string | null;
-}
+import type { components } from "@/lib/api/generated/backend";
 
-export type ProfileInput = Pick<MarketerProfile, "bio" | "experience_years" | "availability_text">;
+export type MarketerProfile = components["schemas"]["MarketerProfile"];
+export type ProfileInput = components["schemas"]["MarketerProfileRequest"];
+export type Service = components["schemas"]["Service"];
+export type ServiceInput = Required<components["schemas"]["CreateServiceRequest"]>;
 
-export interface Service {
-  service_id: number;
-  user_id: number;
-  service_type: string;
-  scope_text: string | null;
-  price: string;
-  created_at: string;
-}
-
-export type ServiceInput = Pick<Service, "service_type" | "scope_text" | "price">;
-
+/** Preview-only contracts until dedicated backend endpoints are published. */
 export interface MarketerStats {
   total_jobs_completed: number;
   average_rating: number;

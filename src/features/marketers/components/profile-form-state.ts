@@ -7,8 +7,13 @@ import { isRecord } from "@/lib/api/envelope";
 import { parseProfileForm } from "@/features/marketers/schemas";
 import type { MarketerProfile, ProfileInput } from "@/features/marketers/types";
 
-type ProfileFields = Record<keyof ProfileInput, string>;
-export type ProfileFieldErrors = Partial<Record<keyof ProfileInput, string>>;
+type ProfileFields = Record<
+  "bio" | "experience_years" | "availability_text" | "availability_status",
+  string
+>;
+export type ProfileFieldErrors = Partial<
+  Record<"bio" | "experience_years" | "availability_text" | "availability_status", string>
+>;
 
 export type ProfileFormProps = {
   profile: MarketerProfile;
@@ -19,6 +24,7 @@ export type ProfileFormProps = {
 
 function profileFields(profile: MarketerProfile): ProfileFields {
   return {
+    availability_status: profile.availability_status,
     bio: profile.bio ?? "",
     experience_years: profile.experience_years?.toString() ?? "",
     availability_text: profile.availability_text ?? "",
@@ -28,7 +34,12 @@ function profileFields(profile: MarketerProfile): ProfileFields {
 function profileFieldErrors(error: unknown): ProfileFieldErrors {
   if (!(error instanceof ApiError) || !isRecord(error.details)) return {};
   const errors: ProfileFieldErrors = {};
-  const fields: (keyof ProfileInput)[] = ["bio", "experience_years", "availability_text"];
+  const fields: (keyof ProfileFields)[] = [
+    "bio",
+    "experience_years",
+    "availability_text",
+    "availability_status",
+  ];
   for (const field of fields) {
     const message = error.details[field];
     if (typeof message === "string") errors[field] = message;
@@ -44,7 +55,7 @@ export function useProfessionalProfile({ profile, onSave, onProfileChange }: Pro
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
 
-  function change(field: keyof ProfileInput, value: string) {
+  function change(field: keyof ProfileFields, value: string) {
     setValues((previous) => ({ ...previous, [field]: value }));
     setSuccess(false);
   }
@@ -64,7 +75,11 @@ export function useProfessionalProfile({ profile, onSave, onProfileChange }: Pro
     setPending(true);
     setErrors({});
     try {
-      const savedProfile = await onSave(result.data);
+      const savedProfile = await onSave({
+        ...result.data,
+        expertise: profile.expertise.map((option) => option.slug),
+        campuses: profile.campuses.map((option) => option.slug),
+      });
       setValues(profileFields(savedProfile));
       onProfileChange?.(savedProfile);
       setSuccess(true);

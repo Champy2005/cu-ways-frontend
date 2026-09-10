@@ -3,14 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MarketerShell } from "./marketer-shell";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/marketer/services" }));
-
-let desktopQuery: (EventTarget & { matches: boolean }) | undefined;
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/marketer/services",
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
+}));
 
 beforeEach(() => {
   localStorage.clear();
   window.history.replaceState(null, "", "/");
-  desktopQuery = undefined;
   vi.stubGlobal("matchMedia", (query: string) => {
     const media = Object.assign(new EventTarget(), {
       matches: false,
@@ -19,7 +19,6 @@ beforeEach(() => {
       addListener: vi.fn(),
       removeListener: vi.fn(),
     });
-    if (query === "(min-width: 768px)") desktopQuery = media;
     return media;
   });
 });
@@ -30,22 +29,21 @@ afterEach(() => {
 });
 
 describe("MarketerShell navigation and theme", () => {
-  it("uses the same live destinations and current page in desktop and mobile navigation", () => {
-    render(<MarketerShell>Live workspace</MarketerShell>);
-    for (const name of ["Marketer navigation", "Mobile marketer navigation"]) {
-      const nav = within(screen.getByRole("navigation", { name }));
-      expect(nav.getByRole("link", { name: "Services" })).toHaveAttribute("aria-current", "page");
-      expect(nav.getByRole("link", { name: "Profile" })).toHaveAttribute(
-        "href",
-        "/marketer/profile",
-      );
-      expect(nav.queryByRole("link", { name: "Creator view" })).not.toBeInTheDocument();
-    }
+  it.each([375, 767, 768, 1440])("never mounts a mobile bar on desktop at %ipx", (width) => {
+    vi.stubGlobal("innerWidth", width);
+    render(<MarketerShell device="desktop">Live workspace</MarketerShell>);
+    const nav = within(screen.getByRole("navigation", { name: "Marketer navigation" }));
+    expect(nav.getByRole("link", { name: "Services" })).toHaveAttribute("aria-current", "page");
+    expect(
+      screen.queryByRole("navigation", { name: "Mobile marketer navigation" }),
+    ).not.toBeInTheDocument();
+    expect(document.querySelector(".mk-navigation-mobile")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Open navigation menu" })).not.toBeInTheDocument();
   });
 
-  it("exposes the creator preview through mobile navigation and closes its menu after selecting it", async () => {
+  it("keeps creator preview in bottom navigation and shows the reference menu", async () => {
     render(
-      <MarketerShell demo demoView="viewer">
+      <MarketerShell device="mobile" demo demoView="viewer">
         Demo workspace
       </MarketerShell>,
     );
@@ -59,15 +57,23 @@ describe("MarketerShell navigation and theme", () => {
     // Navigation is an anchored menu, with no dialog backdrop or scroll locking.
     expect(document.querySelector("[data-slot=dialog-overlay]")).toBeNull();
     expect(document.body.style.overflow).not.toBe("hidden");
-    const preview = within(dialog).getByRole("menuitem", { name: "Creator view" });
-    expect(preview).toHaveAttribute("href", "/demo/marketer?view=viewer");
+    expect(within(dialog).getByRole("menuitem", { name: /Jobs.*Coming soon/ })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    expect(within(dialog).getByRole("menuitem", { name: /Messages.*Coming soon/ })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    const preview = within(dialog).getByRole("menuitem", { name: "Profile" });
+    expect(preview).toHaveAttribute("href", "/demo/marketer?view=profile");
     preview.addEventListener("click", (event) => event.preventDefault(), { once: true });
     fireEvent.click(preview);
     await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
-  it("restores hamburger focus on Escape and dismisses the menu when resized to desktop", async () => {
-    render(<MarketerShell>Live workspace</MarketerShell>);
+  it("restores hamburger focus on Escape and keeps mobile navigation after resizing", async () => {
+    render(<MarketerShell device="mobile">Live workspace</MarketerShell>);
     const trigger = await screen.findByRole("button", { name: "Open navigation menu" });
     trigger.focus();
     fireEvent.click(trigger);
@@ -77,14 +83,17 @@ describe("MarketerShell navigation and theme", () => {
     await waitFor(() => expect(trigger).toHaveFocus());
     fireEvent.click(trigger);
     await screen.findByRole("menu");
-    expect(desktopQuery).toBeDefined();
     act(() => {
-      if (desktopQuery) {
-        desktopQuery.matches = true;
-        desktopQuery.dispatchEvent(new Event("change"));
-      }
+      vi.stubGlobal("innerWidth", 1440);
+      window.dispatchEvent(new Event("resize"));
     });
-    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+    expect(screen.getByRole("menu")).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Mobile marketer navigation" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("navigation", { name: "Marketer navigation" }),
+    ).not.toBeInTheDocument();
   });
 
   it("defaults to light, persists dark mode across remounts, and switches to the transparent dark logo", () => {

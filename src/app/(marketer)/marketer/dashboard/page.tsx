@@ -3,7 +3,6 @@ import { getMyProfile, getMyStats } from "@/features/marketers/api";
 import { PerformanceDashboard } from "@/features/marketers/components/performance-dashboard";
 import { RouteFeedback } from "@/features/marketers/components/route-feedback";
 import { marketerFailure } from "@/features/marketers/failures";
-import { RefreshStats } from "@/features/marketers/components/refresh-stats";
 
 export const metadata = { title: "Marketer overview | CU Ways" };
 
@@ -23,9 +22,8 @@ export default async function MarketerDashboardPage() {
       <PerformanceDashboard
         profile={profile}
         stats={stats}
-        statsError="Your performance summary is temporarily unavailable. Please try again shortly."
+        statsError="Performance summaries are not available yet."
       />
-      {!stats && <RefreshStats />}
     </>
   );
 }

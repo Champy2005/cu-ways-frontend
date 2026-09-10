@@ -1,5 +1,7 @@
 # Marketer UI refinement and rendering notes
 
+> Current integration and device-navigation behavior is documented in [marketer-api-handoff.md](marketer-api-handoff.md). The notes below describe the earlier UI refinement; viewport-selected navigation and optional professional fields have since been replaced.
+
 The marketer experience uses the project's shadcn `base-nova` components. Shared primitive defaults are preserved; marketer card, popover, input, foreground, focus, and brand colors are mapped in `src/features/marketers/marketer.css`.
 
 ## Profile and demo behavior

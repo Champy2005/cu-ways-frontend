@@ -3,6 +3,7 @@ import { isRecord } from "@/lib/api/envelope";
 import {
   isDecimalAmount,
   isNonnegativeNumber,
+  isNullableText,
   validateProfileInput,
   validateServiceInput,
 } from "@/features/marketers/schemas";
@@ -25,29 +26,55 @@ export function isPositiveId(value: unknown): value is number {
   return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
 }
 
+function readCatalogOptions(value: unknown): MarketerProfile["expertise"] {
+  if (!Array.isArray(value)) return invalidContract();
+  return value.map((option) => {
+    if (!isRecord(option) || typeof option.slug !== "string" || typeof option.name !== "string")
+      return invalidContract();
+    return { slug: option.slug, name: option.name };
+  });
+}
 export function readMarketerProfile(value: unknown): MarketerProfile {
-  if (!isRecord(value) || !isPositiveId(value.user_id) || typeof value.name !== "string") {
+  if (
+    !isRecord(value) ||
+    !isPositiveId(value.user_id) ||
+    typeof value.name !== "string" ||
+    typeof value.email !== "string" ||
+    !isNullableText(value.phone) ||
+    !isNullableText(value.line_id) ||
+    typeof value.created_at !== "string"
+  )
     return invalidContract();
-  }
+  const expertise = readCatalogOptions(value.expertise);
+  const campuses = readCatalogOptions(value.campuses);
   const profile = {
     bio: value.bio,
     experience_years: value.experience_years,
+    availability_status: value.availability_status,
     availability_text: value.availability_text,
+    expertise: expertise.map((option) => option.slug),
+    campuses: campuses.map((option) => option.slug),
   };
   if (!validateProfileInput(profile)) return invalidContract();
-  // Never infer numeric years from the legacy text `experience` field.
-  if (
-    profile.experience_years === null &&
-    typeof value.experience === "string" &&
-    value.experience.trim()
-  ) {
-    return invalidContract();
-  }
-  return { user_id: value.user_id, name: value.name, ...profile };
+  return {
+    ...profile,
+    user_id: value.user_id,
+    name: value.name,
+    email: value.email,
+    phone: value.phone,
+    line_id: value.line_id,
+    created_at: value.created_at,
+    expertise,
+    campuses,
+  };
+}
+
+export function readServiceDeletion(value: unknown, id: number): void {
+  if (!isRecord(value) || value.service_id !== id || value.deleted !== true) invalidContract();
 }
 
 export function readService(value: unknown): Service {
-  if (!isRecord(value) || !isPositiveId(value.service_id) || !isPositiveId(value.user_id)) {
+  if (!isRecord(value) || !isPositiveId(value.service_id)) {
     return invalidContract();
   }
   const input = {
@@ -60,7 +87,6 @@ export function readService(value: unknown): Service {
   }
   return {
     service_id: value.service_id,
-    user_id: value.user_id,
     ...input,
     created_at: value.created_at,
   };
@@ -92,7 +118,6 @@ export function readPublicCatalog(value: unknown): PublicCatalog {
   const { user_id, name } = value.marketer;
   if (!isPositiveId(user_id) || typeof name !== "string") return invalidContract();
   const services = readServices(value.services);
-  if (services.some((service) => service.user_id !== user_id)) return invalidContract();
   // Project only public fields even if a future backend accidentally includes private statistics.
   return { marketer: { user_id, name }, services };
 }

@@ -5,14 +5,19 @@ import { extractData } from "@/lib/api/envelope";
 import { apiErrorFromResponse } from "@/lib/api/errors";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import { isPositiveId, readMarketerProfile, readService } from "@/features/marketers/contracts";
+import {
+  isPositiveId,
+  readMarketerProfile,
+  readService,
+  readServiceDeletion,
+} from "@/features/marketers/contracts";
 import { validateProfileInput, validateServiceInput } from "@/features/marketers/schemas";
 
 interface MutationOptions {
   path: string;
-  method: "POST" | "PUT" | "DELETE";
+  method: "POST" | "PATCH" | "DELETE";
   validate?: (value: unknown) => boolean;
-  readData?: (value: unknown) => unknown;
+  readData: (value: unknown) => unknown;
 }
 
 function errorResponse(status: number, code: string, message: string, details?: unknown): Response {
@@ -27,17 +32,14 @@ async function mutationBody(request: Request, options: MutationOptions): Promise
 }
 
 async function mutationResponse(upstream: Response, options: MutationOptions): Promise<Response> {
-  if (upstream.status === 204 && options.method === "DELETE") {
-    return new Response(null, { status: 204 });
-  }
   const payload = await readBackendPayload(upstream);
   if (!upstream.ok) {
     const error = apiErrorFromResponse(upstream.status, payload);
     return errorResponse(error.status, error.code, error.message, error.details);
   }
   try {
-    if (!options.readData) throw new Error("expected an empty deletion response");
     const data = options.readData(extractData<unknown>(payload));
+    if (options.method === "DELETE") return new Response(null, { status: 204 });
     return NextResponse.json({ status: "success", data }, { status: upstream.status });
   } catch {
     return errorResponse(
@@ -79,8 +81,8 @@ async function handleMutation(request: Request, options: MutationOptions): Promi
 
 export function saveMarketerProfile(request: Request): Promise<Response> {
   return handleMutation(request, {
-    path: "/api/v1/marketers/me",
-    method: "PUT",
+    path: "/api/v1/me/marketer-profile",
+    method: "PATCH",
     validate: validateProfileInput,
     readData: readMarketerProfile,
   });
@@ -88,7 +90,7 @@ export function saveMarketerProfile(request: Request): Promise<Response> {
 
 export function publishMarketerService(request: Request): Promise<Response> {
   return handleMutation(request, {
-    path: "/api/v1/services",
+    path: "/api/v1/me/services",
     method: "POST",
     validate: validateServiceInput,
     readData: readService,
@@ -98,7 +100,7 @@ export function publishMarketerService(request: Request): Promise<Response> {
 export function changeMarketerService(
   request: Request,
   id: string,
-  method: "PUT" | "DELETE",
+  method: "PATCH" | "DELETE",
 ): Promise<Response> {
   if (!/^\d+$/.test(id) || !isPositiveId(Number(id))) {
     return Promise.resolve(
@@ -106,9 +108,9 @@ export function changeMarketerService(
     );
   }
   return handleMutation(request, {
-    path: `/api/v1/services/${Number(id)}`,
+    path: `/api/v1/me/services/${Number(id)}`,
     method,
     validate: validateServiceInput,
-    readData: method === "PUT" ? readService : undefined,
+    readData: method === "PATCH" ? readService : (value) => readServiceDeletion(value, Number(id)),
   });
 }

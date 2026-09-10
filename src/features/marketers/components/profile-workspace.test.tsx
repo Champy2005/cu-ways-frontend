@@ -13,6 +13,8 @@ function setup(overrides: Partial<React.ComponentProps<typeof ProfileWorkspace>>
   const saveProfile = vi.fn(async (input: ProfileInput) => ({
     ...initialDemoState.profile,
     ...input,
+    expertise: initialDemoState.profile.expertise,
+    campuses: initialDemoState.profile.campuses,
   }));
   const saveContact = vi.fn(async (input: UpdateUserRequest) => ({
     ...initialDemoState.contact,
@@ -36,21 +38,21 @@ function select(name: string) {
 describe("Unified profile", () => {
   it("retains both drafts and saves each independently, including optional clearing", async () => {
     const { saveProfile, saveContact } = setup();
-    fireEvent.change(screen.getByLabelText("Bio"), {
+    fireEvent.change(screen.getByLabelText(/^Bio/), {
       target: { value: "Unsaved professional draft" },
     });
     select("Basic information");
     expect(window.location.search).toBe("?tab=basic");
     expect(screen.getByText("mali@example.test")).toBeVisible();
-    fireEvent.change(screen.getByLabelText("Phone"), { target: { value: " 0812345678 " } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: " 0812345678 " } });
     fireEvent.change(screen.getByLabelText("LINE ID"), { target: { value: " " } });
     select("In-depth information");
-    expect(screen.getByLabelText("Bio")).toHaveValue("Unsaved professional draft");
+    expect(screen.getByLabelText(/^Bio/)).toHaveValue("Unsaved professional draft");
     fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
     await screen.findByText("Professional information saved.");
     expect(saveContact).not.toHaveBeenCalled();
     select("Basic information");
-    expect(screen.getByLabelText("Phone")).toHaveValue(" 0812345678 ");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue(" 0812345678 ");
     fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));
     await screen.findByText("Contact information saved.");
     expect(saveContact).toHaveBeenCalledWith({ phone: "0812345678", line_id: null });
@@ -64,13 +66,13 @@ describe("Unified profile", () => {
       "aria-selected",
       "true",
     );
-    fireEvent.change(screen.getByLabelText("Phone"), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
     select("In-depth information");
     act(() => {
       window.history.replaceState(null, "", "/marketer/profile?tab=basic");
       window.dispatchEvent(new PopStateEvent("popstate"));
     });
-    expect(screen.getByLabelText("Phone")).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
     expect(screen.getByRole("tab", { name: "Basic information" })).toHaveAttribute(
       "aria-selected",
       "true",
@@ -96,7 +98,7 @@ describe("Unified profile", () => {
     );
     setup({ saveContact });
     select("Basic information");
-    fireEvent.change(screen.getByLabelText("Phone"), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
     const button = screen.getByRole("button", { name: "Save contact information" });
     fireEvent.submit(button.closest("form")!);
     fireEvent.submit(button.closest("form")!);
@@ -104,7 +106,7 @@ describe("Unified profile", () => {
     expect(button).toBeDisabled();
     await act(async () => reject(new Error("Network unavailable")));
     await waitFor(() => expect(button).not.toBeDisabled());
-    expect(screen.getByLabelText("Phone")).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
     expect(screen.getByRole("alert")).toHaveTextContent("Your changes are still here");
   });
 });

@@ -12,7 +12,9 @@ export function validateContactUpdate(value: unknown): value is UpdateUserReques
   return (
     keys.length === 2 &&
     keys.every((key) => key === "phone" || key === "line_id") &&
-    isNullableString(input.phone, 20) &&
+    typeof input.phone === "string" &&
+    input.phone.trim().length > 0 &&
+    input.phone.length <= 20 &&
     isNullableString(input.line_id, 50)
   );
 }
@@ -28,7 +30,8 @@ export function normalizeContactUpdate(input: {
 }
 
 export function contactValidationMessage(input: UpdateUserRequest): string | null {
-  if (input.phone && input.phone.length > 20) {
+  if (!input.phone?.trim()) return "Phone number is required.";
+  if (input.phone.length > 20) {
     return "Phone must be 20 characters or fewer.";
   }
   if (input.line_id && input.line_id.length > 50) {

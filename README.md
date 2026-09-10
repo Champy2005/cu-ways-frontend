@@ -106,8 +106,9 @@ and branch names, coverage policy, and future full-stack testing plan, see
 The frontend includes professional profile editing at `/marketer/profile`, service management at
 `/marketer/services`, a private performance summary at `/marketer/dashboard`, and signed-in service
 viewing at `/marketers/[id]/services`. Open **Marketer workspace** from the existing dashboard.
-These live routes use proposed backend endpoints. Until those endpoints are implemented, they show
-explicit unavailable or eligibility states; they never substitute sample data.
+Profile and service management use the published backend endpoints. Private performance statistics
+and public creator catalogs remain explicitly unavailable until dedicated endpoints are implemented;
+live pages never substitute sample data.
 
 To review all frontend interactions with fictional data, enable the local demo:
 
@@ -123,13 +124,14 @@ Demo changes never call the backend. When browser storage is unavailable, edits 
 until the page reloads. The demo returns 404 unless explicitly enabled and is always disabled in production.
 
 The marketer screens share a fluid desktop frame, with responsive cards and a profile sidebar/form
-layout. Below 768px, the desktop tabs become a sticky compact bottom navigation and a hamburger
-menu. Light/dark preference persists separately from demo data; dialogs and confirmation controls
+layout. Navigation is selected by device user agent: desktop browsers always get sticky top tabs,
+even when resized narrowly; phones/tablets get a compact header, hamburger menu, and fixed bottom
+navigation. Only the selected navigation is rendered. Page content remains responsive. Light/dark preference persists separately from demo data; dialogs and confirmation controls
 follow the chosen theme. Motion is subtle and honors reduced-motion preferences. With the explicit
 demo flag enabled, the Next.js development badge is hidden so it does not cover mobile navigation;
 compile and runtime errors still appear normally.
 
-The backend handoff, proposed response shapes, numeric-experience migration dependency, and remaining
+The connected backend contracts, required fields, device selection, and remaining
 full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
 
 ## Backend setup

@@ -7,32 +7,57 @@ import {
   validateServiceInput,
 } from "@/features/marketers/schemas";
 
-const profileForm = { bio: "", experience_years: "", availability_text: "" };
+const profileForm = {
+  bio: "Bio",
+  experience_years: "0",
+  availability_text: "Weekdays",
+  availability_status: "available",
+};
 const serviceForm = { service_type: "On-Campus Distribution", scope_text: "", price: "50" };
 
 describe("professional profile validation", () => {
-  it("normalizes optional blank fields to null", () => {
-    expect(parseProfileForm({ bio: "  ", experience_years: "", availability_text: "\n" })).toEqual({
-      success: true,
-      data: { bio: null, experience_years: null, availability_text: null },
+  it("rejects blank required fields", () => {
+    expect(
+      parseProfileForm({
+        ...profileForm,
+        bio: "  ",
+        experience_years: "",
+        availability_text: "\n",
+      }),
+    ).toMatchObject({
+      success: false,
+      errors: {
+        bio: expect.any(String),
+        experience_years: expect.any(String),
+        availability_text: expect.any(String),
+      },
     });
   });
 
-  it.each(["0", "2.5", ".5", "0.25"])("accepts nonnegative years %s", (years) => {
+  it.each(["0", "2", "80"])("accepts nonnegative years %s", (years) => {
     expect(parseProfileForm({ ...profileForm, experience_years: years })).toEqual({
       success: true,
-      data: { bio: null, experience_years: Number(years), availability_text: null },
+      data: { ...profileForm, experience_years: Number(years) },
     });
   });
 
-  it.each(["-1", "NaN", "Infinity", "two years", "1e3", "0x10", "9".repeat(310)])(
-    "rejects invalid years %s",
-    (years) => {
-      const result = parseProfileForm({ ...profileForm, experience_years: years });
-      expect(result.success).toBe(false);
-      if (!result.success) expect(result.errors.experience_years).toBeTruthy();
-    },
-  );
+  it.each([
+    "",
+    "81",
+    "2.5",
+    ".5",
+    "-1",
+    "NaN",
+    "Infinity",
+    "two years",
+    "1e3",
+    "0x10",
+    "9".repeat(310),
+  ])("rejects invalid years %s", (years) => {
+    const result = parseProfileForm({ ...profileForm, experience_years: years });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.errors.experience_years).toBeTruthy();
+  });
 
   it("trims profile text without losing internal line breaks", () => {
     const result = parseProfileForm({
@@ -47,8 +72,11 @@ describe("professional profile validation", () => {
   });
 
   it("validates transport types and rejects caller-supplied ownership", () => {
-    const input = { bio: null, experience_years: 1.5, availability_text: null };
+    const input = { ...profileForm, experience_years: 1 };
     expect(validateProfileInput(input)).toBe(true);
+    expect(validateProfileInput({ ...input, bio: "x".repeat(5001) })).toBe(false);
+    expect(validateProfileInput({ ...input, availability_status: "unknown" })).toBe(false);
+    expect(validateProfileInput({ ...input, expertise: [123] })).toBe(false);
     expect(validateProfileInput({ ...input, experience_years: "1.5" })).toBe(false);
     expect(validateProfileInput({ ...input, experience_years: Infinity })).toBe(false);
     expect(validateProfileInput({ ...input, user_id: 9 })).toBe(false);

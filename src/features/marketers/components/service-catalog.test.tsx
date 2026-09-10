@@ -10,7 +10,6 @@ import { ServiceCatalog, type ServiceCatalogProps } from "./service-catalog";
 const marketer = { user_id: 17, name: "Mali Demo" };
 const service: Service = {
   service_id: 4,
-  user_id: 17,
   service_type: "On-Campus Distribution",
   scope_text: "LINE groups\n30 responses in three days",
   price: "599.00",

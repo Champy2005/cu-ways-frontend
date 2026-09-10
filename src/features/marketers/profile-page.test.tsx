@@ -58,3 +58,26 @@ describe("Unified profile server boundary", () => {
     expect((await MarketerProfilePage(query)).props.kind).toBe("ineligible");
   });
 });
+
+it("opens onboarding only for a confirmed missing marketer profile", async () => {
+  vi.mocked(getMyProfile).mockRejectedValue(
+    new ApiError(404, "marketer_profile_not_found", "No profile"),
+  );
+  const page = await MarketerProfilePage(query);
+  expect(page.props.onboarding).toBe(true);
+  expect(page.props.profile).toMatchObject({
+    user_id: 101,
+    bio: "",
+    expertise: [],
+    campuses: [],
+    availability_status: "available",
+  });
+  expect(page.props.professionalFailure).toBeUndefined();
+});
+it("does not confuse an unknown 404 with onboarding", async () => {
+  vi.mocked(getMyProfile).mockRejectedValue(new ApiError(404, "not_found", "Not found"));
+  const page = await MarketerProfilePage(query);
+  expect(page.props.onboarding).toBe(false);
+  expect(page.props.profile).toBeUndefined();
+  expect(page.props.professionalFailure).toBe("unavailable");
+});

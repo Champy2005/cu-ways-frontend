@@ -1,37 +1,19 @@
 import { serverApiGet } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
-import {
-  isPositiveId,
-  readMarketerProfile,
-  readMarketerStats,
-  readPublicCatalog,
-  readServices,
-} from "@/features/marketers/contracts";
+import { isPositiveId, readMarketerProfile, readServices } from "./contracts";
+import type { MarketerStats, PublicCatalog } from "./types";
 
-/** Proposed endpoints pending Rew/Gy's backend OpenAPI implementation. */
 export async function getMyProfile() {
-  return readMarketerProfile(await serverApiGet<unknown>("/api/v1/marketers/me"));
+  return readMarketerProfile(await serverApiGet<unknown>("/api/v1/me/marketer-profile"));
 }
-
 export async function getMyServices() {
-  return readServices(await serverApiGet<unknown>("/api/v1/marketers/me/services"));
+  return readServices(await serverApiGet<unknown>("/api/v1/me/services"));
 }
-
-export async function getMyStats() {
-  return readMarketerStats(await serverApiGet<unknown>("/api/v1/marketers/me/stats"));
+// No dedicated contracts exist yet. Never call speculative URLs or supply fixtures in live mode.
+export async function getMyStats(): Promise<MarketerStats> {
+  throw new ApiError(503, "feature_unavailable", "Performance summaries are not available yet.");
 }
-
-export async function getPublicCatalog(id: number) {
+export async function getPublicCatalog(id: number): Promise<PublicCatalog> {
   if (!isPositiveId(id)) throw new ApiError(404, "marketer_not_found", "Marketer not found.");
-  const catalog = readPublicCatalog(
-    await serverApiGet<unknown>(`/api/v1/marketers/${id}/services`),
-  );
-  if (catalog.marketer.user_id !== id) {
-    throw new ApiError(
-      502,
-      "invalid_backend_response",
-      "The service catalog is temporarily unavailable.",
-    );
-  }
-  return catalog;
+  throw new ApiError(503, "feature_unavailable", "Public service catalogs are not available yet.");
 }

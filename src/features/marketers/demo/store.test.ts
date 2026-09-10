@@ -22,7 +22,8 @@ describe("isolated marketer demo", () => {
       await demoActions.saveProfile({
         bio: "Kept in memory",
         experience_years: 1,
-        availability_text: null,
+        availability_text: "Weekdays",
+        availability_status: "available",
       });
       expect(getDemoSnapshot().profile.bio).toBe("Kept in memory");
     } finally {
@@ -33,8 +34,9 @@ describe("isolated marketer demo", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     await demoActions.saveProfile({
       bio: "Saved demo bio",
-      experience_years: 0.5,
-      availability_text: null,
+      experience_years: 0,
+      availability_text: "Weekdays",
+      availability_status: "available",
     });
     const created = await demoActions.createService({
       service_type: "Custom outreach",
@@ -46,9 +48,9 @@ describe("isolated marketer demo", () => {
       scope_text: null,
       price: "125.50",
     });
-    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v1"));
+    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2"));
     expect(persisted.profile.bio).toBe("Saved demo bio");
-    expect(persisted.profile.experience_years).toBe(0.5);
+    expect(persisted.profile.experience_years).toBe(0);
     expect(persisted.services[0]).toMatchObject({
       service_type: "Updated outreach",
       price: "125.50",
@@ -101,10 +103,15 @@ it("restores old sessions without losing profile or service edits", () => {
 });
 it("persists contact changes in the session and resets both profile sections", async () => {
   await saveDemoContact({ phone: "123", line_id: null });
-  expect(decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v1")).contact.phone).toBe(
+  expect(decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2")).contact.phone).toBe(
     "123",
   );
-  await demoActions.saveProfile({ bio: "Changed", experience_years: 0, availability_text: null });
+  await demoActions.saveProfile({
+    bio: "Changed",
+    experience_years: 0,
+    availability_text: "Weekdays",
+    availability_status: "available",
+  });
   resetDemo();
   expect(getDemoSnapshot().contact).toEqual(initialDemoState.contact);
   expect(getDemoSnapshot().profile).toEqual(initialDemoState.profile);

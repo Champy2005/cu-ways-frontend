@@ -32,7 +32,7 @@ describe("authentication input validation", () => {
     );
   });
 
-  it("normalizes optional blank contact fields before registration", () => {
+  it("rejects a blank phone after normalization", () => {
     const normalized = normalizeRegisterInput({
       ...validRegistration,
       phone: "   ",
@@ -40,7 +40,7 @@ describe("authentication input validation", () => {
     });
 
     expect(normalized).toMatchObject({ phone: null, line_id: null });
-    expect(validateRegisterInput(normalized)).toBe(true);
-    expect(registerValidationMessage(normalized)).toBeNull();
+    expect(validateRegisterInput(normalized)).toBe(false);
+    expect(registerValidationMessage(normalized)).toContain("Phone");
   });
 });

@@ -1,9 +1,10 @@
+import { initialDemoState } from "./demo/store";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { liveMarketerActions } from "@/features/marketers/browser-api";
 
 const input = { service_type: "Campus distribution", scope_text: null, price: "250.00" };
-const service = { ...input, user_id: 2, service_id: 7, created_at: "2026-09-06T00:00:00Z" };
+const service = { ...input, service_id: 7, created_at: "2026-09-06T00:00:00Z" };
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -36,9 +37,14 @@ describe("live marketer browser adapter", () => {
     );
   });
 
-  it("saves optional professional fields and reads back saved profile data", async () => {
-    const profileInput = { bio: null, experience_years: 0.5, availability_text: null };
-    const profile = { ...profileInput, user_id: 2, name: "Demo marketer" };
+  it("saves required professional fields and reads back saved profile data", async () => {
+    const profileInput = {
+      bio: "Bio",
+      experience_years: 0,
+      availability_text: "Weekdays",
+      availability_status: "available" as const,
+    };
+    const profile = { ...initialDemoState.profile, ...profileInput, name: "Demo marketer" };
     const fetchMock = vi
       .fn()
       .mockResolvedValue(Response.json({ status: "success", data: profile }));

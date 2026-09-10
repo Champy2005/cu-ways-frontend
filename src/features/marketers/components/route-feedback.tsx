@@ -15,8 +15,7 @@ const messages: Record<MarketerFailure, { title: string; description: string }> 
   },
   ineligible: {
     title: "A marketer profile is required",
-    description:
-      "This workspace is available to registered survey marketers. Return to your workspace to continue.",
+    description: "Create your marketer profile to start offering services.",
   },
   forbidden: {
     title: "You don’t have access",
@@ -51,6 +50,11 @@ export function RouteFeedback({ kind = "unavailable" }: { kind?: MarketerFailure
         {message.description}
       </p>
       <div className="mt-6 flex flex-wrap items-center gap-5">
+        {kind === "ineligible" && (
+          <Link className="mk-button px-5 py-2" href="/marketer/profile">
+            Create marketer profile
+          </Link>
+        )}
         {kind === "unavailable" && (
           <Button className="mk-button px-5" onClick={() => router.refresh()}>
             Try again

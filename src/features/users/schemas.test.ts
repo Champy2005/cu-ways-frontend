@@ -15,7 +15,11 @@ describe("user contact validation", () => {
   });
 
   it("accepts the exact contact update shape", () => {
-    expect(validateContactUpdate({ phone: null, line_id: "cuways" })).toBe(true);
+    expect(validateContactUpdate({ phone: "0812345678", line_id: null })).toBe(true);
+    expect(validateContactUpdate({ phone: null, line_id: "cuways" })).toBe(false);
+    expect(contactValidationMessage({ phone: "  ", line_id: null })).toBe(
+      "Phone number is required.",
+    );
     expect(validateContactUpdate({ phone: null, line_id: null, role: "admin" })).toBe(false);
   });
 

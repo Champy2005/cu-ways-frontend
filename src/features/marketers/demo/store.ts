@@ -10,14 +10,14 @@ export type DemoState = {
   stats: MarketerStats;
   revision: number;
 };
-const STORAGE_KEY = "cuways-marketer-demo-v1";
+const STORAGE_KEY = "cuways-marketer-demo-v2";
 const EVENT = "cuways-marketer-demo-change";
 export const initialDemoState: DemoState = {
   contact: {
     user_id: 101,
     name: "Mali Srisai",
     email: "mali@example.test",
-    phone: null,
+    phone: "0812345678",
     line_id: "mali.demo",
     created_at: "2026-08-01T09:00:00Z",
   },
@@ -26,13 +26,19 @@ export const initialDemoState: DemoState = {
     user_id: 101,
     name: "Mali Srisai",
     bio: "Connecting campus voices with meaningful research. I help survey creators reach the right students through thoughtful, personal outreach.",
-    experience_years: 2.5,
+    experience_years: 2,
+    availability_status: "available",
+    expertise: [],
+    campuses: [],
+    email: "mali@example.test",
+    phone: "0812345678",
+    line_id: "mali.demo",
+    created_at: "2026-08-01T09:00:00Z",
     availability_text: "Weekdays after 4 pm · Weekends by arrangement",
   },
   services: [
     {
       service_id: 1,
-      user_id: 101,
       service_type: "On-Campus Distribution",
       scope_text:
         "Distribution channels: Campus common areas and faculty notice boards\nTarget respondents: Chulalongkorn undergraduate students\nExpected delivery: 30–50 responses over 3 days\nProof: Posting screenshots and distribution summary",
@@ -41,7 +47,6 @@ export const initialDemoState: DemoState = {
     },
     {
       service_id: 2,
-      user_id: 101,
       service_type: "Online Campus Communities",
       scope_text:
         "Thoughtful sharing across student LINE communities. Includes two follow-up posts and a summary of outreach activity.",
@@ -65,13 +70,15 @@ function validStoredProfile(value: unknown): value is MarketerProfile {
     bio: value.bio,
     experience_years: value.experience_years,
     availability_text: value.availability_text,
+    availability_status: value.availability_status,
+    expertise: Array.isArray(value.expertise) ? value.expertise.map((option) => option.slug) : null,
+    campuses: Array.isArray(value.campuses) ? value.campuses.map((option) => option.slug) : null,
   });
 }
 
 function validStoredService(value: unknown): value is Service {
   if (
     !isRecord(value) ||
-    value.user_id !== 101 ||
     !Number.isSafeInteger(value.service_id) ||
     Number(value.service_id) < 1 ||
     typeof value.created_at !== "string"
@@ -161,7 +168,12 @@ export const demoActions: MarketerActions = {
   async saveProfile(input) {
     if (!validateProfileInput(input)) throw new Error("Check your professional profile fields.");
     const current = getDemoSnapshot();
-    const profile = { ...current.profile, ...input };
+    const profile = {
+      ...current.profile,
+      ...input,
+      expertise: current.profile.expertise,
+      campuses: current.profile.campuses,
+    };
     saveState({ ...current, profile });
     return profile;
   },
@@ -171,7 +183,6 @@ export const demoActions: MarketerActions = {
     const service: Service = {
       ...input,
       service_id: Math.max(0, ...current.services.map((entry) => entry.service_id)) + 1,
-      user_id: 101,
       created_at: new Date().toISOString(),
     };
     saveState({ ...current, services: [service, ...current.services] });

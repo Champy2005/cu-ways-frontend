@@ -26,16 +26,18 @@ export function ProfileForm(props: ProfileFormProps) {
   return (
     <form onSubmit={form.submit} noValidate className="mk-profile-form">
       <p className="mb-5 text-sm text-[var(--mk-muted)]">
-        All fields are optional. Add details that help creators get to know your work.
+        Complete the required fields (*) to help creators get to know your work.
       </p>
       <fieldset disabled={form.pending} className="mk-profile-fields">
         <legend className="sr-only">Professional information</legend>
         <div className="mk-profile-field mk-profile-bio">
           <FieldLabel htmlFor={`${id}-bio`} className="mk-profile-label">
-            Bio
+            Bio <span aria-hidden="true">*</span>
           </FieldLabel>
           <Textarea
             id={`${id}-bio`}
+            required
+            maxLength={5000}
             name="bio"
             rows={4}
             placeholder="Not specified"
@@ -49,12 +51,13 @@ export function ProfileForm(props: ProfileFormProps) {
         </div>
         <div className="mk-profile-field">
           <FieldLabel htmlFor={`${id}-experience`} className="mk-profile-label">
-            Years of experience
+            Years of experience <span aria-hidden="true">*</span>
           </FieldLabel>
           <Input
             id={`${id}-experience`}
             name="experience_years"
-            inputMode="decimal"
+            required
+            inputMode="numeric"
             placeholder="Not specified"
             className={fieldClassName}
             value={form.values.experience_years}
@@ -63,16 +66,18 @@ export function ProfileForm(props: ProfileFormProps) {
             aria-describedby={`${id}-experience-help${form.errors.experience_years ? ` ${id}-experience-error` : ""}`}
           />
           <p id={`${id}-experience-help`} className="mt-2 text-sm text-[var(--mk-muted)]">
-            Enter a number of years, such as 2 or 0.5.
+            Enter a whole number from 0 to 80.
           </p>
           <FieldError id={`${id}-experience-error`} error={form.errors.experience_years} />
         </div>
         <div className="mk-profile-field">
           <FieldLabel htmlFor={`${id}-availability`} className="mk-profile-label">
-            Availability text
+            Availability text <span aria-hidden="true">*</span>
           </FieldLabel>
           <Textarea
             id={`${id}-availability`}
+            required
+            maxLength={5000}
             name="availability_text"
             rows={2}
             placeholder="Not specified"
@@ -85,6 +90,25 @@ export function ProfileForm(props: ProfileFormProps) {
             }
           />
           <FieldError id={`${id}-availability-error`} error={form.errors.availability_text} />
+        </div>
+        <div className="mk-profile-field">
+          <FieldLabel htmlFor={`${id}-status`} className="mk-profile-label">
+            Availability status <span aria-hidden="true">*</span>
+          </FieldLabel>
+          <select
+            id={`${id}-status`}
+            required
+            className="mk-profile-input w-full"
+            value={form.values.availability_status}
+            onChange={(event) => form.change("availability_status", event.target.value)}
+            aria-invalid={Boolean(form.errors.availability_status)}
+            aria-describedby={form.errors.availability_status ? `${id}-status-error` : undefined}
+          >
+            <option value="available">Available</option>
+            <option value="limited">Limited availability</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+          <FieldError id={`${id}-status-error`} error={form.errors.availability_status} />
         </div>
       </fieldset>
 

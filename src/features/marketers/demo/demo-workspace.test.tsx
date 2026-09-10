@@ -1,3 +1,4 @@
+import { MarketerNavigation } from "../components/marketer-navigation";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
@@ -11,7 +12,12 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn() }),
 }));
 function DemoNavigation({ initialView = "services" }: { initialView?: string }) {
-  return <DemoWorkspace view={initialView} />;
+  return (
+    <>
+      <MarketerNavigation demo selected={initialView} />
+      <DemoWorkspace view={initialView} />
+    </>
+  );
 }
 
 function visit(label: "Overview" | "Services" | "Profile" | "Creator view") {
@@ -48,7 +54,7 @@ describe("DemoWorkspace integration", () => {
         profile: {
           ...initialDemoState.profile,
           bio: "A biography saved before reloading",
-          experience_years: 1.75,
+          experience_years: 1,
           availability_text: "Monday evenings",
         },
         services: [
@@ -61,7 +67,7 @@ describe("DemoWorkspace integration", () => {
           },
         ],
       };
-      sessionStorage.setItem("cuways-marketer-demo-v1", JSON.stringify(stored));
+      sessionStorage.setItem("cuways-marketer-demo-v2", JSON.stringify(stored));
       const container = document.createElement("div");
       document.body.append(container);
       container.innerHTML = renderToString(<DemoWorkspace view={view} />);
@@ -79,9 +85,9 @@ describe("DemoWorkspace integration", () => {
           });
         });
         if (view === "profile") {
-          expect(await serverView.findByLabelText("Bio")).toHaveValue(stored.profile.bio);
-          expect(await serverView.findByLabelText("Years of experience")).toHaveValue("1.75");
-          expect(await serverView.findByLabelText("Availability text")).toHaveValue(
+          expect(await serverView.findByLabelText(/^Bio/)).toHaveValue(stored.profile.bio);
+          expect(await serverView.findByLabelText(/^Years of experience/)).toHaveValue("1");
+          expect(await serverView.findByLabelText(/^Availability text/)).toHaveValue(
             "Monday evenings",
           );
         } else {
@@ -156,13 +162,15 @@ describe("DemoWorkspace integration", () => {
 
   it("retains saved professional information across navigation and a fresh workspace mount", async () => {
     const { unmount } = render(<DemoNavigation initialView="profile" />);
-    fireEvent.change(await screen.findByLabelText("Bio"), {
+    fireEvent.change(await screen.findByLabelText(/^Bio/), {
       target: { value: "Available for thoughtful campus outreach." },
     });
-    fireEvent.change(await screen.findByLabelText("Years of experience"), {
-      target: { value: "0.5" },
+    fireEvent.change(await screen.findByLabelText(/^Years of experience/), {
+      target: { value: "0" },
     });
-    fireEvent.change(await screen.findByLabelText("Availability text"), { target: { value: "" } });
+    fireEvent.change(await screen.findByLabelText(/^Availability text/), {
+      target: { value: "Weekdays" },
+    });
     fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
     await screen.findByText("Professional information saved.");
 
@@ -171,46 +179,48 @@ describe("DemoWorkspace integration", () => {
     visit("Creator view");
     expect(screen.queryByText(/earnings|12,400|Only visible to you/)).not.toBeInTheDocument();
     visit("Profile");
-    expect(await screen.findByLabelText("Bio")).toHaveValue(
+    expect(await screen.findByLabelText(/^Bio/)).toHaveValue(
       "Available for thoughtful campus outreach.",
     );
-    expect(await screen.findByLabelText("Years of experience")).toHaveValue("0.5");
-    expect(await screen.findByLabelText("Availability text")).toHaveValue("");
+    expect(await screen.findByLabelText(/^Years of experience/)).toHaveValue("0");
+    expect(await screen.findByLabelText(/^Availability text/)).toHaveValue("Weekdays");
 
     unmount();
     render(<DemoNavigation initialView="profile" />);
-    expect(await screen.findByLabelText("Bio")).toHaveValue(
+    expect(await screen.findByLabelText(/^Bio/)).toHaveValue(
       "Available for thoughtful campus outreach.",
     );
-    expect(await screen.findByLabelText("Years of experience")).toHaveValue("0.5");
-    expect(sessionStorage.getItem("cuways-marketer-demo-v1")).toContain(
+    expect(await screen.findByLabelText(/^Years of experience/)).toHaveValue("0");
+    expect(sessionStorage.getItem("cuways-marketer-demo-v2")).toContain(
       "Available for thoughtful campus outreach.",
     );
   });
 
   it("resets saved and unsaved profile values and removes validation state", async () => {
     render(<DemoNavigation initialView="profile" />);
-    fireEvent.change(await screen.findByLabelText("Bio"), {
+    fireEvent.change(await screen.findByLabelText(/^Bio/), {
       target: { value: "Previously saved demo bio" },
     });
     fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
     await screen.findByText("Professional information saved.");
-    fireEvent.change(await screen.findByLabelText("Bio"), { target: { value: "An unsaved edit" } });
-    fireEvent.change(await screen.findByLabelText("Years of experience"), {
+    fireEvent.change(await screen.findByLabelText(/^Bio/), {
+      target: { value: "An unsaved edit" },
+    });
+    fireEvent.change(await screen.findByLabelText(/^Years of experience/), {
       target: { value: "-1" },
     });
     fireEvent.click(await screen.findByRole("button", { name: "Confirm changes" }));
-    expect(await screen.findByLabelText("Years of experience")).toHaveAttribute(
+    expect(await screen.findByLabelText(/^Years of experience/)).toHaveAttribute(
       "aria-invalid",
       "true",
     );
 
     fireEvent.click(await screen.findByRole("button", { name: "Reset demo" }));
     await waitFor(async () =>
-      expect(await screen.findByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio),
+      expect(await screen.findByLabelText(/^Bio/)).toHaveValue(initialDemoState.profile.bio),
     );
-    expect(await screen.findByLabelText("Years of experience")).toHaveValue("2.5");
-    expect(await screen.findByLabelText("Years of experience")).toHaveAttribute(
+    expect(await screen.findByLabelText(/^Years of experience/)).toHaveValue("2");
+    expect(await screen.findByLabelText(/^Years of experience/)).toHaveAttribute(
       "aria-invalid",
       "false",
     );
@@ -218,7 +228,7 @@ describe("DemoWorkspace integration", () => {
     expect(screen.queryByText("Professional information saved.")).not.toBeInTheDocument();
     visit("Overview");
     visit("Profile");
-    expect(await screen.findByLabelText("Bio")).toHaveValue(initialDemoState.profile.bio);
+    expect(await screen.findByLabelText(/^Bio/)).toHaveValue(initialDemoState.profile.bio);
   });
 
   it("restores deleted service fixtures in both owner and viewer catalogs after reset", async () => {

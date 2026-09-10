@@ -16,3 +16,5 @@ The project’s matching Lucide icons supply interface glyphs and faint person/p
 
 The local `/figma` reference folder is not a runtime dependency. The small production assets above
 are self-contained and do not load external resources.
+
+`paired-birds.svg` contains only the paired pink/blue birds and arrows extracted from the user-supplied navigation SVG. It is a decorative header asset.

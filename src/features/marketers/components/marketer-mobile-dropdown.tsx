@@ -1,17 +1,17 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, Menu } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Briefcase, Home, LogOut, Menu, MessageSquare, UserRound } from "lucide-react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { demoViews, ownerViews, getDemoView } from "./marketer-navigation";
+import { getDemoView } from "./marketer-navigation";
+import { useLogout } from "@/components/layout/use-logout";
 import { navigateDemo, useLocalQuery } from "../local-navigation";
 
 export default function MarketerMobileMenu({
@@ -21,20 +21,12 @@ export default function MarketerMobileMenu({
   demo: boolean;
   initialView?: string;
 }) {
+  const { logout, isPending, error } = useLogout();
   const [open, setOpen] = useState(false);
   const portal = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const view = useLocalQuery("view", initialView ?? "dashboard");
   const selected = demo ? getDemoView(view) : pathname.split("/").at(-1);
-  useEffect(() => {
-    if (!open) return;
-    const desktop = window.matchMedia("(min-width: 768px)");
-    const close = () => {
-      if (desktop.matches) setOpen(false);
-    };
-    desktop.addEventListener("change", close);
-    return () => desktop.removeEventListener("change", close);
-  }, [open]);
   return (
     <>
       <div ref={portal} />
@@ -48,37 +40,52 @@ export default function MarketerMobileMenu({
         <DropdownMenuContent
           container={portal}
           align="end"
-          sideOffset={12}
-          collisionPadding={16}
-          className="w-60 max-w-[calc(100vw-2rem)] rounded-2xl border border-[var(--mk-border)] p-2 shadow-xl"
+          sideOffset={18}
+          collisionPadding={0}
+          className="mk-header-menu"
           aria-label="Your workspace"
         >
-          {(demo ? demoViews : ownerViews).map(({ id, label, icon: Icon }) => (
+          {[
+            { id: "dashboard", label: "Dashboard", icon: Home, disabled: false },
+            { id: "jobs", label: "Jobs", icon: Briefcase, disabled: true },
+            { id: "messages", label: "Messages", icon: MessageSquare, disabled: true },
+            { id: "profile", label: "Profile", icon: UserRound, disabled: false },
+          ].map(({ id, label, icon: Icon, disabled }) => (
             <DropdownMenuItem
               key={id}
+              disabled={disabled}
+              aria-label={disabled ? `${label} — Coming soon` : undefined}
               aria-current={selected === id ? "page" : undefined}
               render={
-                <Link
-                  href={demo ? `/demo/marketer?view=${id}` : `/marketer/${id}`}
-                  prefetch={demo ? false : undefined}
-                  onClick={(event) => {
-                    if (demo) navigateDemo(event, id);
-                    setOpen(false);
-                  }}
-                />
+                disabled ? undefined : (
+                  <Link
+                    href={demo ? `/demo/marketer?view=${id}` : `/marketer/${id}`}
+                    prefetch={demo ? false : undefined}
+                    onClick={(event) => {
+                      if (demo) navigateDemo(event, id);
+                      setOpen(false);
+                    }}
+                  />
+                )
               }
             >
               <Icon aria-hidden="true" />
               {label}
+              {disabled && <span className="mk-menu-unavailable"> Coming soon</span>}
             </DropdownMenuItem>
           ))}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem render={<Link href="/dashboard" onClick={() => setOpen(false)} />}>
-            <ArrowLeft aria-hidden="true" />
-            Back to workspace
+          <DropdownMenuItem disabled={demo || isPending} onClick={logout}>
+            <LogOut aria-hidden="true" />
+            {isPending ? "Signing out…" : "Sign out"}
+            {demo && <span className="mk-menu-unavailable"> Preview only</span>}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {error && (
+        <p role="alert" className="text-sm text-[var(--mk-error)]">
+          {error}
+        </p>
+      )}
     </>
   );
 }

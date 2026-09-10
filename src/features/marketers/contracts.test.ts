@@ -1,3 +1,4 @@
+import { initialDemoState } from "./demo/store";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -10,25 +11,18 @@ import {
 
 const service = {
   service_id: 7,
-  user_id: 2,
   service_type: "Custom",
   scope_text: null,
   price: "50.00",
   created_at: "2026-09-06T00:00:00Z",
 };
-const profile = {
-  user_id: 2,
-  name: "Demo marketer",
-  bio: null,
-  experience_years: 1.5,
-  availability_text: null,
-};
+const profile = initialDemoState.profile;
 
-describe("provisional marketer response contracts", () => {
+describe("backend marketer response contracts", () => {
   it("requires numeric experience and does not coerce legacy text", () => {
     expect(readMarketerProfile(profile)).toEqual(profile);
     const { experience_years: ignoredYears, ...legacy } = profile;
-    expect(ignoredYears).toBe(1.5);
+    expect(ignoredYears).toBe(2);
     expect(() => readMarketerProfile({ ...legacy, experience: "Two years" })).toThrow();
     expect(() => readMarketerProfile({ ...profile, experience_years: "2" })).toThrow();
     expect(() =>
@@ -62,9 +56,7 @@ describe("provisional marketer response contracts", () => {
       services: [service],
     });
     expect(JSON.stringify(result)).not.toContain("total_earnings");
-    expect(() =>
-      readPublicCatalog({ marketer: profile, services: [{ ...service, user_id: 3 }] }),
-    ).toThrow();
+    expect(() => readPublicCatalog({ marketer: null, services: [] })).toThrow();
   });
 
   it("distinguishes valid zero statistics from unavailable values", () => {
