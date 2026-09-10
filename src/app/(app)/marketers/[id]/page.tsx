@@ -2,21 +2,21 @@ import { notFound } from "next/navigation";
 import { CheckSquare } from "lucide-react";
 
 import { InlineError } from "@/components/feedback/inline-error";
-import { getMarketer } from "@/features/marketers/api";
-import { MarketerHeroCard } from "@/features/marketers/components/marketer-hero-card";
-import { MarketerInfoList } from "@/features/marketers/components/marketer-info-list";
-import { MarketerPageHeader } from "@/features/marketers/components/marketer-page-header";
-import { MarketerRating } from "@/features/marketers/components/marketer-rating";
-import { MarketerSection } from "@/features/marketers/components/marketer-section";
-import { MarketerStatTile } from "@/features/marketers/components/marketer-stat-tile";
-import { SendCustomJobButton } from "@/features/marketers/components/send-custom-job-button";
-import { ServicePackageRow } from "@/features/marketers/components/service-package-row";
-import { formatCount, formatDateRange, formatYears } from "@/features/marketers/format";
+import { getMarketer } from "@/features/marketer-discovery/api";
+import { MarketerHeroCard } from "@/features/marketer-discovery/components/marketer-hero-card";
+import { MarketerInfoList } from "@/features/marketer-discovery/components/marketer-info-list";
+import { MarketerPageHeader } from "@/features/marketer-discovery/components/marketer-page-header";
+import { MarketerRating } from "@/features/marketer-discovery/components/marketer-rating";
+import { MarketerSection } from "@/features/marketer-discovery/components/marketer-section";
+import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
+import { SendCustomJobButton } from "@/features/marketer-discovery/components/send-custom-job-button";
+import { ServicePackageRow } from "@/features/marketer-discovery/components/service-package-row";
+import { formatCount, formatDateRange, formatYears } from "@/features/marketer-discovery/format";
 import {
   buildBackHref,
   buildMarketerSubPageHref,
   type RawSearchParams,
-} from "@/features/marketers/schemas";
+} from "@/features/marketer-discovery/schemas";
 import { getDisplayError } from "@/lib/api/errors";
 
 export default async function MarketerProfilePage({

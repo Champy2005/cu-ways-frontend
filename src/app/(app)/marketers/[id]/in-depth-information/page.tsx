@@ -2,11 +2,14 @@ import { notFound } from "next/navigation";
 import { CalendarDays } from "lucide-react";
 
 import { InlineError } from "@/components/feedback/inline-error";
-import { getMarketer } from "@/features/marketers/api";
-import { MarketerAvatar } from "@/features/marketers/components/marketer-avatar";
-import { MarketerDetailShell } from "@/features/marketers/components/marketer-detail-shell";
-import { formatDateRange } from "@/features/marketers/format";
-import { buildMarketerHrefFromRef, type RawSearchParams } from "@/features/marketers/schemas";
+import { getMarketer } from "@/features/marketer-discovery/api";
+import { MarketerAvatar } from "@/features/marketer-discovery/components/marketer-avatar";
+import { MarketerDetailShell } from "@/features/marketer-discovery/components/marketer-detail-shell";
+import { formatDateRange } from "@/features/marketer-discovery/format";
+import {
+  buildMarketerHrefFromRef,
+  type RawSearchParams,
+} from "@/features/marketer-discovery/schemas";
 import { getDisplayError } from "@/lib/api/errors";
 
 export default async function InDepthInformationPage({

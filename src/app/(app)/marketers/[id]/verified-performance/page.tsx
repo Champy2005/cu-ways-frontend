@@ -3,13 +3,16 @@ import { CheckSquare, SquareCheckBig, UserRound } from "lucide-react";
 
 import { EmptyState } from "@/components/feedback/empty-state";
 import { InlineError } from "@/components/feedback/inline-error";
-import { getMarketer } from "@/features/marketers/api";
-import { MarketerDetailShell } from "@/features/marketers/components/marketer-detail-shell";
-import { MarketerRating } from "@/features/marketers/components/marketer-rating";
-import { MarketerReviewCard } from "@/features/marketers/components/marketer-review-card";
-import { MarketerStatTile } from "@/features/marketers/components/marketer-stat-tile";
-import { formatCount } from "@/features/marketers/format";
-import { buildMarketerHrefFromRef, type RawSearchParams } from "@/features/marketers/schemas";
+import { getMarketer } from "@/features/marketer-discovery/api";
+import { MarketerDetailShell } from "@/features/marketer-discovery/components/marketer-detail-shell";
+import { MarketerRating } from "@/features/marketer-discovery/components/marketer-rating";
+import { MarketerReviewCard } from "@/features/marketer-discovery/components/marketer-review-card";
+import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
+import { formatCount } from "@/features/marketer-discovery/format";
+import {
+  buildMarketerHrefFromRef,
+  type RawSearchParams,
+} from "@/features/marketer-discovery/schemas";
 import { getDisplayError } from "@/lib/api/errors";
 
 export default async function VerifiedPerformancePage({

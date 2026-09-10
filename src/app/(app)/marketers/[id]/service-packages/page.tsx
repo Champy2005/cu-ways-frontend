@@ -2,10 +2,13 @@ import { notFound } from "next/navigation";
 
 import { EmptyState } from "@/components/feedback/empty-state";
 import { InlineError } from "@/components/feedback/inline-error";
-import { getMarketer } from "@/features/marketers/api";
-import { MarketerDetailShell } from "@/features/marketers/components/marketer-detail-shell";
-import { ServicePackageRow } from "@/features/marketers/components/service-package-row";
-import { buildMarketerHrefFromRef, type RawSearchParams } from "@/features/marketers/schemas";
+import { getMarketer } from "@/features/marketer-discovery/api";
+import { MarketerDetailShell } from "@/features/marketer-discovery/components/marketer-detail-shell";
+import { ServicePackageRow } from "@/features/marketer-discovery/components/service-package-row";
+import {
+  buildMarketerHrefFromRef,
+  type RawSearchParams,
+} from "@/features/marketer-discovery/schemas";
 import { getDisplayError } from "@/lib/api/errors";
 
 export default async function ServicePackagesPage({

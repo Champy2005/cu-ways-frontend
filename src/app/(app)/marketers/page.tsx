@@ -1,13 +1,13 @@
 import { InlineError } from "@/components/feedback/inline-error";
-import { listMarketers } from "@/features/marketers/api";
-import { MarketerList } from "@/features/marketers/components/marketer-list";
-import { MarketerPageHeader } from "@/features/marketers/components/marketer-page-header";
-import { MarketerSearchPanel } from "@/features/marketers/components/marketer-search-panel";
+import { listMarketers } from "@/features/marketer-discovery/api";
+import { MarketerList } from "@/features/marketer-discovery/components/marketer-list";
+import { MarketerPageHeader } from "@/features/marketer-discovery/components/marketer-page-header";
+import { MarketerSearchPanel } from "@/features/marketer-discovery/components/marketer-search-panel";
 import {
   parseMarketerQuery,
   serializeMarketerQuery,
   type RawSearchParams,
-} from "@/features/marketers/schemas";
+} from "@/features/marketer-discovery/schemas";
 import { getDisplayError } from "@/lib/api/errors";
 
 export default async function MarketersPage({

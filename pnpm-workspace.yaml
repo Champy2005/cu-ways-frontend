@@ -4,7 +4,6 @@ allowBuilds:
 overrides:
   # Patch the qs version pulled through shadcn's MCP/Express toolchain.
   qs: 6.16.0
-  # Transitive advisories with no direct dependency to bump:
-  # sharp comes from next, js-yaml from openapi-typescript/commitlint/shadcn.
-  sharp: 0.35.4
+  # GHSA js-yaml CPU-exhaustion advisory; transitive via openapi-typescript,
+  # commitlint and shadcn, so there is no direct dependency to bump.
   js-yaml: 4.3.2
