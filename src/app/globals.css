@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -46,6 +46,18 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-accent-teal: var(--accent-teal);
+  --color-verified: var(--verified);
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-surface: var(--surface);
+  --color-muted-strong: var(--muted-strong);
+  --color-label: var(--label);
+  --color-faint: var(--faint);
+  --shadow-card: 0px 2px 3px 0px rgb(0 0 0 / 0.25);
 }
 
 :root {
@@ -81,6 +93,19 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* CU Ways marketer palette, sampled from the Figma discovery/profile frames. */
+  --brand: oklch(0.605 0.228 1.6);
+  --brand-foreground: oklch(1 0 0);
+  --brand-subtle: oklch(0.605 0.228 1.6 / 12%);
+  --accent-teal: oklch(0.66 0.102 228);
+  --verified: oklch(0.799 0.194 153.2);
+  --hero: oklch(0.178 0.02 265.9);
+  --hero-foreground: oklch(0.982 0 0);
+  --surface: oklch(0.982 0 0);
+  --muted-strong: oklch(0.65 0.006 264.5);
+  --label: oklch(0.412 0.011 264.5);
+  --faint: oklch(0.888 0 0);
 }
 
 .dark {
@@ -115,6 +140,19 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Marketer palette, dark frames. Inert until something applies the .dark class. */
+  --brand: oklch(0.66 0.21 1.6);
+  --brand-foreground: oklch(1 0 0);
+  --brand-subtle: oklch(0.66 0.21 1.6 / 22%);
+  --accent-teal: oklch(0.72 0.095 228);
+  --verified: oklch(0.799 0.194 153.2);
+  --hero: oklch(0.145 0 0);
+  --hero-foreground: oklch(0.985 0 0);
+  --surface: oklch(0.145 0 0);
+  --muted-strong: oklch(0.708 0 0);
+  --label: oklch(0.82 0.008 264.5);
+  --faint: oklch(0.35 0 0);
 }
 
 @layer base {
