@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownWideNarrow, ArrowUpNarrowWide, CalendarDays, X } from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpNarrowWide, X } from "lucide-react";
 
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { FilterChip } from "@/features/marketer-discovery/components/filter-chip";
 import {
+  AVAILABILITY_OPTIONS,
   CAMPUS_OPTIONS,
   EXPERIENCE_BOUNDS,
   EXPERTISE_OPTIONS,
-  MONTH_LABELS,
   PRICE_BOUNDS,
   RATING_SORT_OPTIONS,
 } from "@/features/marketer-discovery/constants";
@@ -28,6 +28,9 @@ type MarketerFilterSheetProps = {
 };
 
 type Option = { value: string; label: string };
+
+// The backend combines selected expertise and campus values with AND.
+const MATCH_ALL_HINT = "Marketers must match every option you select.";
 
 function toggleValue(list: string[], value: string): string[] {
   return list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
@@ -46,7 +49,8 @@ function ChipGroup({
 }) {
   return (
     <fieldset>
-      <legend className="mb-3 text-lg font-medium text-foreground">{legend}</legend>
+      <legend className="mb-1 text-lg font-medium text-foreground">{legend}</legend>
+      <p className="mb-3 text-xs text-muted-foreground">{MATCH_ALL_HINT}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <FilterChip
@@ -58,72 +62,6 @@ function ChipGroup({
         ))}
       </div>
     </fieldset>
-  );
-}
-
-function DateSelects({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string | null;
-  onChange: (next: string | null) => void;
-}) {
-  const [year, month, day] = (value ?? "").split("-");
-  const selectClass =
-    "rounded-md border border-input bg-background px-2 py-1 text-sm text-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50";
-
-  const update = (part: "y" | "m" | "d", next: string) => {
-    const y = part === "y" ? next : (year ?? "");
-    const m = part === "m" ? next : (month ?? "");
-    const d = part === "d" ? next : (day ?? "");
-    onChange(y && m && d ? `${y}-${m}-${d}` : null);
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      <span className="w-8 text-sm text-foreground">{label}</span>
-      <select
-        aria-label={`${label} day`}
-        value={day ?? ""}
-        onChange={(event) => update("d", event.target.value)}
-        className={selectClass}
-      >
-        <option value="">Day</option>
-        {Array.from({ length: 31 }, (_, index) => String(index + 1).padStart(2, "0")).map((d) => (
-          <option key={d} value={d}>
-            {Number(d)}
-          </option>
-        ))}
-      </select>
-      <select
-        aria-label={`${label} month`}
-        value={month ?? ""}
-        onChange={(event) => update("m", event.target.value)}
-        className={selectClass}
-      >
-        <option value="">Month</option>
-        {MONTH_LABELS.map((name, index) => (
-          <option key={name} value={String(index + 1).padStart(2, "0")}>
-            {name}
-          </option>
-        ))}
-      </select>
-      <select
-        aria-label={`${label} year`}
-        value={year ?? ""}
-        onChange={(event) => update("y", event.target.value)}
-        className={selectClass}
-      >
-        <option value="">Year</option>
-        {["2025", "2026", "2027"].map((y) => (
-          <option key={y} value={y}>
-            {y}
-          </option>
-        ))}
-      </select>
-    </div>
   );
 }
 
@@ -235,30 +173,32 @@ export function MarketerFilterSheet({
               thumbLabels={["Minimum price", "Maximum price"]}
               onValueChange={(next) => {
                 const [min, max] = Array.isArray(next) ? next : [next, next];
-                onDraftChange({ ...draft, minPrice: min ?? null, maxPrice: max ?? null });
+                onDraftChange({
+                  ...draft,
+                  // A handle left at its bound means "no limit", so it is not sent.
+                  minPrice: min === undefined || min <= PRICE_BOUNDS.min ? null : min,
+                  maxPrice: max === undefined || max >= PRICE_BOUNDS.max ? null : max,
+                });
               }}
             />
           </div>
 
           <fieldset>
             <legend className="mb-3 text-lg font-medium text-foreground">Availability</legend>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <CalendarDays className="size-5 shrink-0 text-foreground" aria-hidden="true" />
-                <DateSelects
-                  label="From"
-                  value={draft.from}
-                  onChange={(from) => onDraftChange({ ...draft, from })}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="size-5 shrink-0" aria-hidden="true" />
-                <DateSelects
-                  label="To"
-                  value={draft.to}
-                  onChange={(to) => onDraftChange({ ...draft, to })}
-                />
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {AVAILABILITY_OPTIONS.map((option) => {
+                const selected = draft.availability === option.value;
+                return (
+                  <FilterChip
+                    key={option.value}
+                    label={option.label}
+                    selected={selected}
+                    onToggle={() =>
+                      onDraftChange({ ...draft, availability: selected ? null : option.value })
+                    }
+                  />
+                );
+              })}
             </div>
           </fieldset>
         </div>

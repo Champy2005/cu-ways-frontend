@@ -1,13 +1,16 @@
-// TEMPORARY DEVIATION from the house convention that feature types alias
-// components["schemas"][...] from src/lib/api/generated/backend.ts.
-// Verified 2026-09: cu-ways-backend/docs/openapi.yaml contains zero marketer
-// definitions, so there is nothing to alias yet. Replace every type below with a
-// generated alias once the backend contract exists — see the TODO in api.ts.
-//
-// Field names deliberately mirror the backend's snake_case style (see User:
-// user_id, line_id, created_at) so the eventual swap does not rename call sites.
-// Aggregates a teammate will compute are nullable from day one, because the UI
-// already has to render the "No ratings yet" state.
+import type { components, operations } from "@/lib/api/generated/backend";
+
+// Backend contract, generated from cu-ways-backend dev (docs/openapi.yaml).
+export type MarketerSearchItem = components["schemas"]["MarketerSearchItem"];
+export type MarketerSearchPage = components["schemas"]["MarketerSearchResponse"]["data"];
+export type MarketerSearchParams = NonNullable<
+  operations["searchMarketers"]["parameters"]["query"]
+>;
+export type AvailabilityStatus = components["schemas"]["MarketerProfile"]["availability_status"];
+
+// View models the discovery components render, mapped from the contract in
+// mapping.ts. Fields the backend has no source for are null or empty rather
+// than invented.
 
 export type MarketerSummary = {
   marketer_id: number;
@@ -46,10 +49,10 @@ export type Marketer = MarketerSummary & {
   bio: string;
   experience: string;
   years_of_experience: number | null;
-  available_from: string | null;
-  available_to: string | null;
+  availability_status: AvailabilityStatus;
+  availability_text: string;
   expertise: string[];
-  campus_coverage: string[];
+  campuses: string[];
   performance: MarketerPerformance;
   service_packages: ServicePackage[];
   reviews: MarketerReview[];
@@ -65,8 +68,7 @@ export type MarketerQuery = {
   experience: number | null;
   minPrice: number | null;
   maxPrice: number | null;
-  from: string | null;
-  to: string | null;
+  availability: AvailabilityStatus | null;
   sort: MarketerSortOption | null;
 };
 

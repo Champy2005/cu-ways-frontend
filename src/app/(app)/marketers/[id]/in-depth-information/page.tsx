@@ -5,7 +5,7 @@ import { InlineError } from "@/components/feedback/inline-error";
 import { getMarketer } from "@/features/marketer-discovery/api";
 import { MarketerAvatar } from "@/features/marketer-discovery/components/marketer-avatar";
 import { MarketerDetailShell } from "@/features/marketer-discovery/components/marketer-detail-shell";
-import { formatDateRange } from "@/features/marketer-discovery/format";
+import { formatAvailability } from "@/features/marketer-discovery/format";
 import {
   buildMarketerHrefFromRef,
   type RawSearchParams,
@@ -35,7 +35,7 @@ export default async function InDepthInformationPage({
   }
   if (!marketer) notFound();
 
-  const availability = formatDateRange(marketer.available_from, marketer.available_to);
+  const availability = formatAvailability(marketer.availability_status, marketer.availability_text);
 
   return (
     <MarketerDetailShell
@@ -69,7 +69,7 @@ export default async function InDepthInformationPage({
         <h2 className="mb-2 text-base font-medium text-foreground">Availability</h2>
         <p className="flex items-center gap-2 text-sm text-label">
           <CalendarDays className="size-5 shrink-0 text-foreground" aria-hidden="true" />
-          {availability ?? "This marketer has not published availability dates yet."}
+          {availability}
         </p>
       </section>
     </MarketerDetailShell>

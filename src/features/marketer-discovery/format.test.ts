@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  formatAvailability,
   formatBaht,
   formatCount,
-  formatDateRange,
   formatRating,
   formatShortDate,
   formatYears,
@@ -34,9 +34,10 @@ describe("marketer formatting", () => {
     expect(formatShortDate("not-a-date")).toBe("not-a-date");
   });
 
-  it("collapses a same-month date range", () => {
-    expect(formatDateRange("2025-09-06", "2025-09-28")).toBe("6 - 28 Sep 2025");
-    expect(formatDateRange("2025-09-06", "2025-11-05")).toBe("6 Sep 2025 - 5 Nov 2025");
-    expect(formatDateRange(null, "2025-09-28")).toBeNull();
+  it("labels the availability status and appends the marketer's note", () => {
+    expect(formatAvailability("limited", "Booked until mid-month")).toBe(
+      "Limited · Booked until mid-month",
+    );
+    expect(formatAvailability("available", "   ")).toBe("Available");
   });
 });

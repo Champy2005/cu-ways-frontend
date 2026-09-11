@@ -75,8 +75,14 @@ export default async function VerifiedPerformancePage({
       <h2 className="mt-8 mb-3 text-base font-medium text-foreground">Latest Reviews</h2>
       {reviews.length === 0 ? (
         <EmptyState
-          title="No ratings yet"
-          description="This marketer has no reviews from completed jobs yet. Ratings appear here once a job is finished and reviewed."
+          title={
+            performance.rating_count > 0 ? "Review comments aren't available yet" : "No ratings yet"
+          }
+          description={
+            performance.rating_count > 0
+              ? "The rating above comes from completed jobs, but the backend doesn't return individual reviews yet."
+              : "This marketer has no reviews from completed jobs yet. Ratings appear here once a job is finished and reviewed."
+          }
         />
       ) : (
         <ul className="flex flex-col gap-3">

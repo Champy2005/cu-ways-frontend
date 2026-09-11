@@ -11,7 +11,7 @@ import { MarketerSection } from "@/features/marketer-discovery/components/market
 import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
 import { SendCustomJobButton } from "@/features/marketer-discovery/components/send-custom-job-button";
 import { ServicePackageRow } from "@/features/marketer-discovery/components/service-package-row";
-import { formatCount, formatDateRange, formatYears } from "@/features/marketer-discovery/format";
+import { formatAvailability, formatCount, formatYears } from "@/features/marketer-discovery/format";
 import {
   buildBackHref,
   buildMarketerSubPageHref,
@@ -99,10 +99,11 @@ export default async function MarketerProfilePage({
             { label: "Bio", value: marketer.bio },
             { label: "Year of experience", value: formatYears(marketer.years_of_experience) },
             {
-              label: "Availability Text",
-              value:
-                formatDateRange(marketer.available_from, marketer.available_to) ?? "Not specified",
+              label: "Availability",
+              value: formatAvailability(marketer.availability_status, marketer.availability_text),
             },
+            { label: "Expertise", value: marketer.expertise.join(", ") || "—" },
+            { label: "Campus coverage", value: marketer.campuses.join(", ") || "—" },
           ]}
         />
       </MarketerSection>

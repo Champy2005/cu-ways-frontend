@@ -60,7 +60,7 @@ export function MarketerList({ marketers, query }: MarketerListProps) {
   }
 
   return (
-    <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
       {marketers.map((marketer) => (
         <li key={marketer.marketer_id}>
           <MarketerCard marketer={marketer} href={buildMarketerHref(marketer.marketer_id, query)} />

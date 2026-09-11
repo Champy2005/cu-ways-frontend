@@ -18,13 +18,12 @@ import type { MarketerQuery } from "@/features/marketer-discovery/types";
 
 const fullQuery: MarketerQuery = {
   q: "food",
-  expertise: ["devops", "designer"],
-  campus: ["engineering"],
+  expertise: ["data-collection", "survey-distribution"],
+  campus: ["cu-main-campus"],
   experience: 3,
   minPrice: 550,
   maxPrice: 1270,
-  from: "2025-09-06",
-  to: "2025-09-28",
+  availability: "available",
   sort: "rating_asc",
 };
 
@@ -45,64 +44,57 @@ describe("marketer query parsing", () => {
     expect(serializeMarketerQuery({ ...EMPTY_MARKETER_QUERY, q: "food" })).toBe("q=food");
   });
 
-  it("drops unknown slugs and de-duplicates lists", () => {
+  it("keeps only the backend's catalog slugs and de-duplicates lists", () => {
     const query = parseMarketerQuery({
-      expertise: "devops,not-a-real-slug,devops",
+      expertise: "data-collection,devops,data-collection",
       campus: "atlantis",
     });
-    expect(query.expertise).toEqual(["devops"]);
+    expect(query.expertise).toEqual(["data-collection"]);
     expect(query.campus).toEqual([]);
   });
 
-  it("clamps out-of-range numbers instead of throwing", () => {
-    expect(parseMarketerQuery({ exp: "999" }).experience).toBe(50);
+  it("clamps out-of-range numbers to the backend's limits instead of throwing", () => {
+    expect(parseMarketerQuery({ exp: "999" }).experience).toBe(80);
     expect(parseMarketerQuery({ exp: "-3" }).experience).toBe(0);
     expect(parseMarketerQuery({ exp: "not-a-number" }).experience).toBeNull();
     expect(parseMarketerQuery({ max: "999999" }).maxPrice).toBe(5000);
   });
 
-  it("normalizes an inverted price range and date range", () => {
+  it("normalizes an inverted price range", () => {
     const prices = parseMarketerQuery({ min: "2000", max: "500" });
     expect([prices.minPrice, prices.maxPrice]).toEqual([500, 2000]);
+  });
 
-    const dates = parseMarketerQuery({ from: "2025-12-01", to: "2025-01-01" });
-    expect([dates.from, dates.to]).toEqual(["2025-01-01", "2025-12-01"]);
+  it("accepts the three availability statuses case-insensitively", () => {
+    expect(parseMarketerQuery({ avail: "LIMITED" }).availability).toBe("limited");
+    expect(parseMarketerQuery({ avail: "sometimes" }).availability).toBeNull();
   });
 
   it("takes the first value when a key is repeated", () => {
     expect(parseMarketerQuery({ q: ["first", "second"] }).q).toBe("first");
   });
 
-  it("rejects malformed dates and unknown sort options", () => {
-    expect(parseMarketerQuery({ from: "06/09/2025" }).from).toBeNull();
-    expect(parseMarketerQuery({ from: "2025-13-45" }).from).toBeNull();
+  it("rejects unknown sort options and accepts both rating directions", () => {
     expect(parseMarketerQuery({ sort: "price_sideways" }).sort).toBeNull();
-  });
-
-  it("accepts both rating sort directions", () => {
     expect(parseMarketerQuery({ sort: "rating_asc" }).sort).toBe("rating_asc");
     expect(parseMarketerQuery({ sort: "rating_desc" }).sort).toBe("rating_desc");
-    expect(serializeMarketerQuery({ ...EMPTY_MARKETER_QUERY, sort: "rating_desc" })).toBe(
-      "sort=rating_desc",
-    );
   });
 
-  it("no longer accepts the removed minimum-rating filter", () => {
-    const query = parseMarketerQuery({ rating: "4" });
+  it("ignores the removed minimum-rating and date-range parameters", () => {
+    const query = parseMarketerQuery({ rating: "4", from: "2025-09-06", to: "2025-09-28" });
     expect(query).toEqual(EMPTY_MARKETER_QUERY);
-    expect(serializeMarketerQuery(query)).toBe("");
   });
 });
 
 describe("marketer filter chips", () => {
   it("produces one chip per active filter", () => {
     expect(activeFilterChips(fullQuery).map((chip) => chip.label)).toEqual([
-      "DevOps",
-      "Designer",
-      "Engineering",
+      "Data Collection",
+      "Survey Distribution",
+      "CU Main Campus",
       "3+ years",
       "Price Range",
-      "Availability",
+      "Available",
       "Rating: low to high",
     ]);
   });
@@ -112,19 +104,24 @@ describe("marketer filter chips", () => {
   });
 
   it("removes only the targeted filter", () => {
-    const chips = activeFilterChips(fullQuery);
-    const devops = chips[0];
-    if (!devops) throw new Error("expected a chip");
+    const first = activeFilterChips(fullQuery)[0];
+    if (!first) throw new Error("expected a chip");
 
-    const next = removeFilter(fullQuery, devops);
-    expect(next.expertise).toEqual(["designer"]);
-    expect(next.campus).toEqual(["engineering"]);
+    const next = removeFilter(fullQuery, first);
+    expect(next.expertise).toEqual(["survey-distribution"]);
+    expect(next.campus).toEqual(["cu-main-campus"]);
     expect(next.q).toBe("food");
   });
 
-  it("clears both ends of a range filter at once", () => {
+  it("clears both ends of the price range at once", () => {
     const next = removeFilter(fullQuery, { key: "minPrice", label: "Price Range" });
     expect([next.minPrice, next.maxPrice]).toEqual([null, null]);
+  });
+
+  it("clears the availability filter", () => {
+    expect(removeFilter(fullQuery, { key: "availability", label: "Available" }).availability).toBe(
+      null,
+    );
   });
 });
 

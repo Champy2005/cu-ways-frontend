@@ -53,7 +53,10 @@ describe("MarketerList", () => {
 
   it("mentions the filters when a filtered search matches nothing", () => {
     render(
-      <MarketerList marketers={[]} query={{ ...EMPTY_MARKETER_QUERY, expertise: ["devops"] }} />,
+      <MarketerList
+        marketers={[]}
+        query={{ ...EMPTY_MARKETER_QUERY, expertise: ["data-collection"] }}
+      />,
     );
 
     expect(

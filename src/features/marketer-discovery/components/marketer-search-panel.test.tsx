@@ -35,23 +35,30 @@ describe("MarketerSearchPanel", () => {
   it("renders a removable chip per active filter", () => {
     render(
       <MarketerSearchPanel
-        query={{ ...EMPTY_MARKETER_QUERY, expertise: ["devops"], sort: "rating_desc" }}
+        query={{ ...EMPTY_MARKETER_QUERY, expertise: ["data-collection"], sort: "rating_desc" }}
       />,
     );
 
-    expect(screen.getByText("DevOps")).toBeInTheDocument();
+    expect(screen.getByText("Data Collection")).toBeInTheDocument();
     expect(screen.getByText("Rating: high to low")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Remove DevOps filter" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Remove Data Collection filter" }),
+    ).toBeInTheDocument();
   });
 
   it("drops only the removed filter from the pushed URL", () => {
     render(
       <MarketerSearchPanel
-        query={{ ...EMPTY_MARKETER_QUERY, q: "food", expertise: ["devops"], sort: "rating_desc" }}
+        query={{
+          ...EMPTY_MARKETER_QUERY,
+          q: "food",
+          expertise: ["data-collection"],
+          sort: "rating_desc",
+        }}
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove DevOps filter" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Data Collection filter" }));
 
     expect(push).toHaveBeenCalledWith("/marketers?q=food&sort=rating_desc", { scroll: false });
   });

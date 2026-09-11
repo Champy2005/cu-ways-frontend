@@ -1,17 +1,23 @@
 import {
+  AVAILABILITY_OPTIONS,
   CAMPUS_OPTIONS,
   EXPERIENCE_BOUNDS,
   EXPERTISE_OPTIONS,
   PRICE_BOUNDS,
   SORT_OPTIONS,
 } from "@/features/marketer-discovery/constants";
-import type { MarketerQuery, MarketerSortOption } from "@/features/marketer-discovery/types";
+import type {
+  AvailabilityStatus,
+  MarketerQuery,
+  MarketerSortOption,
+} from "@/features/marketer-discovery/types";
 
 export type RawSearchParams = Record<string, string | string[] | undefined>;
 
 const EXPERTISE_VALUES = EXPERTISE_OPTIONS.map((option) => option.value);
 const CAMPUS_VALUES = CAMPUS_OPTIONS.map((option) => option.value);
-const SORT_VALUES = SORT_OPTIONS.map((option) => option.value);
+const AVAILABILITY_VALUES: string[] = AVAILABILITY_OPTIONS.map((option) => option.value);
+const SORT_VALUES: string[] = SORT_OPTIONS.map((option) => option.value);
 
 const DISCOVERY_PATH = "/marketers";
 const MAX_KEYWORD_LENGTH = 100;
@@ -23,8 +29,7 @@ export const EMPTY_MARKETER_QUERY: MarketerQuery = {
   experience: null,
   minPrice: null,
   maxPrice: null,
-  from: null,
-  to: null,
+  availability: null,
   sort: null,
 };
 
@@ -42,20 +47,20 @@ function parseList(raw: string | string[] | undefined, allowed: string[]): strin
 }
 
 function parseInteger(raw: string | string[] | undefined, min: number, max: number): number | null {
-  const value = Number(firstValue(raw));
-  if (!Number.isFinite(value) || firstValue(raw).trim() === "") return null;
+  const text = firstValue(raw).trim();
+  const value = Number(text);
+  if (text === "" || !Number.isFinite(value)) return null;
   return Math.min(Math.max(Math.trunc(value), min), max);
 }
 
-function parseIsoDate(raw: string | string[] | undefined): string | null {
-  const value = firstValue(raw).trim();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  return Number.isNaN(Date.parse(value)) ? null : value;
+function parseAvailability(raw: string | string[] | undefined): AvailabilityStatus | null {
+  const value = firstValue(raw).trim().toLowerCase();
+  return AVAILABILITY_VALUES.includes(value) ? (value as AvailabilityStatus) : null;
 }
 
 function parseSort(raw: string | string[] | undefined): MarketerSortOption | null {
   const value = firstValue(raw).trim();
-  return SORT_VALUES.includes(value as MarketerSortOption) ? (value as MarketerSortOption) : null;
+  return SORT_VALUES.includes(value) ? (value as MarketerSortOption) : null;
 }
 
 function toRecord(input: RawSearchParams | URLSearchParams): RawSearchParams {
@@ -78,10 +83,6 @@ export function parseMarketerQuery(input: RawSearchParams | URLSearchParams): Ma
   const maxPrice = parseInteger(params.max, PRICE_BOUNDS.min, PRICE_BOUNDS.max);
   const swap = minPrice !== null && maxPrice !== null && minPrice > maxPrice;
 
-  const from = parseIsoDate(params.from);
-  const to = parseIsoDate(params.to);
-  const swapDates = from !== null && to !== null && from > to;
-
   return {
     q: firstValue(params.q).trim().slice(0, MAX_KEYWORD_LENGTH),
     expertise: parseList(params.expertise, EXPERTISE_VALUES),
@@ -89,13 +90,15 @@ export function parseMarketerQuery(input: RawSearchParams | URLSearchParams): Ma
     experience: parseInteger(params.exp, EXPERIENCE_BOUNDS.min, EXPERIENCE_BOUNDS.max),
     minPrice: swap ? maxPrice : minPrice,
     maxPrice: swap ? minPrice : maxPrice,
-    from: swapDates ? to : from,
-    to: swapDates ? from : to,
+    availability: parseAvailability(params.avail),
     sort: parseSort(params.sort),
   };
 }
 
-/** Emits a canonical, stable key order and omits everything at its default. */
+/**
+ * Our own discovery URL format: canonical key order, defaults omitted. This is
+ * not what the backend reads; mapping.ts builds the backend query separately.
+ */
 export function serializeMarketerQuery(query: MarketerQuery): string {
   const params = new URLSearchParams();
   if (query.q) params.set("q", query.q);
@@ -104,8 +107,7 @@ export function serializeMarketerQuery(query: MarketerQuery): string {
   if (query.experience !== null) params.set("exp", String(query.experience));
   if (query.minPrice !== null) params.set("min", String(query.minPrice));
   if (query.maxPrice !== null) params.set("max", String(query.maxPrice));
-  if (query.from !== null) params.set("from", query.from);
-  if (query.to !== null) params.set("to", query.to);
+  if (query.availability !== null) params.set("avail", query.availability);
   if (query.sort !== null) params.set("sort", query.sort);
   return params.toString();
 }
@@ -143,8 +145,8 @@ export function activeFilterChips(query: MarketerQuery): FilterChip[] {
   if (query.minPrice !== null || query.maxPrice !== null) {
     chips.push({ key: "minPrice", label: "Price Range" });
   }
-  if (query.from !== null || query.to !== null) {
-    chips.push({ key: "from", label: "Availability" });
+  if (query.availability !== null) {
+    chips.push({ key: "availability", label: labelFor(AVAILABILITY_OPTIONS, query.availability) });
   }
   if (query.sort !== null) {
     chips.push({ key: "sort", label: labelFor(SORT_OPTIONS, query.sort) });
@@ -172,8 +174,8 @@ export function removeFilter(query: MarketerQuery, chip: FilterChip): MarketerQu
       return { ...query, experience: null };
     case "minPrice":
       return { ...query, minPrice: null, maxPrice: null };
-    case "from":
-      return { ...query, from: null, to: null };
+    case "availability":
+      return { ...query, availability: null };
     case "sort":
       return { ...query, sort: null };
     default:

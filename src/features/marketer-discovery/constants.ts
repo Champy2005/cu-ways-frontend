@@ -1,40 +1,44 @@
-import type { MarketerSortOption } from "@/features/marketer-discovery/types";
+import type { AvailabilityStatus, MarketerSortOption } from "@/features/marketer-discovery/types";
 
 type Option = {
   value: string;
   label: string;
 };
 
-// Option tables drive both the filter sheet UI and the query parser, so an
-// unknown slug in a hand-edited URL is rejected in exactly one place.
+// Slugs and names mirror the curated catalog seeded by the backend migration
+// 000005_marketer_profiles. The backend has no endpoint that lists them, so a
+// catalog change there must be mirrored here; an unknown slug matches nothing.
 export const EXPERTISE_OPTIONS: Option[] = [
-  { value: "designer", label: "Designer" },
-  { value: "product-manager", label: "Product Manager" },
-  { value: "marketing", label: "Marketing" },
-  { value: "data-scientist", label: "Data Scientist" },
-  { value: "devops", label: "DevOps" },
-  { value: "architect", label: "Architect" },
-  { value: "strategist", label: "Strategist" },
-  { value: "analyst", label: "Analyst" },
-  { value: "researcher", label: "Researcher" },
+  { value: "survey-distribution", label: "Survey Distribution" },
+  { value: "participant-recruitment", label: "Participant Recruitment" },
+  { value: "data-collection", label: "Data Collection" },
+  { value: "quantitative-analysis", label: "Quantitative Analysis" },
+  { value: "qualitative-analysis", label: "Qualitative Analysis" },
+  { value: "report-preparation", label: "Report Preparation" },
 ];
 
 export const CAMPUS_OPTIONS: Option[] = [
-  { value: "engineering", label: "Engineering" },
-  { value: "science", label: "Science" },
-  { value: "arts", label: "Arts" },
-  { value: "education", label: "Education" },
+  { value: "cu-main-campus", label: "CU Main Campus" },
+  { value: "cu-health-sciences-campus", label: "CU Health Sciences Campus" },
+  { value: "off-campus", label: "Off-campus" },
+  { value: "online-remote", label: "Online / Remote" },
+];
+
+export const AVAILABILITY_OPTIONS: { value: AvailabilityStatus; label: string }[] = [
+  { value: "available", label: "Available" },
+  { value: "limited", label: "Limited" },
+  { value: "unavailable", label: "Unavailable" },
 ];
 
 type SortOption = { value: MarketerSortOption; label: string };
 
-/** The two the filter sheet renders. Rating sorting is the only sort with a control today. */
+/** The two the filter sheet renders. */
 export const RATING_SORT_OPTIONS: SortOption[] = [
   { value: "rating_desc", label: "Rating: high to low" },
   { value: "rating_asc", label: "Rating: low to high" },
 ];
 
-/** Every sort the URL accepts, including ones no control produces yet. */
+/** Every sort the URL accepts. The backend rejects experience_desc with a 422. */
 export const SORT_OPTIONS: SortOption[] = [
   ...RATING_SORT_OPTIONS,
   { value: "price_asc", label: "Lowest price" },
@@ -43,7 +47,10 @@ export const SORT_OPTIONS: SortOption[] = [
 ];
 
 export const PRICE_BOUNDS = { min: 0, max: 5000 } as const;
-export const EXPERIENCE_BOUNDS = { min: 0, max: 50 } as const;
+/** Matches the backend's 0-80 check on marketers.experience_years. */
+export const EXPERIENCE_BOUNDS = { min: 0, max: 80 } as const;
+/** The backend's maximum page_size. Discovery shows a single page. */
+export const SEARCH_PAGE_SIZE = 100;
 
 export const MONTH_LABELS = [
   "Jan",

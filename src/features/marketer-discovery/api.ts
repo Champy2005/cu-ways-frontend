@@ -1,38 +1,39 @@
-import { findMockMarketer, selectMockMarketers } from "@/features/marketer-discovery/mock-data";
+import { serverApiGet } from "@/lib/api/server-client";
+import {
+  toBackendSearchParams,
+  toMarketer,
+  toMarketerSummary,
+} from "@/features/marketer-discovery/mapping";
+import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
 import type {
   Marketer,
   MarketerQuery,
+  MarketerSearchPage,
   MarketerSearchResult,
 } from "@/features/marketer-discovery/types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INTEGRATION POINT — owned by the marketer search/filter backend task.
-//
-// The backend OpenAPI contract has no marketer endpoints yet, so these two
-// functions resolve from src/features/marketers/mock-data.ts. This file is the
-// ONLY seam: no page or component reaches past it. When the contract lands:
-//
-//   1. pnpm generate:api
-//   2. replace the two bodies below with serverApiGet<T> calls, e.g.
-//        return serverApiGet<MarketerSearchResult>(`/api/v1/marketers?${qs}`);
-//   3. delete src/features/marketers/mock-data.ts
-//   4. rewrite src/features/marketers/types.ts as components["schemas"][...] aliases
-//
-// Both are already async so every call site awaits them today and the swap
-// changes no caller. Server-only by convention, matching features/users/api.ts —
+// Backed by GET /api/v1/marketers on cu-ways-backend dev. Server-only, matching
+// features/users/api.ts: serverApiGet attaches the session's bearer token, so
 // Client Components must not import this module.
-// ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * `query` is accepted in full so the signature is already correct for the real
- * endpoint. The mock honours the keyword and orders by rating so the sort
- * control is demonstrable; the remaining filters are the backend's
- * responsibility and must not be reimplemented in the frontend.
- */
+const SEARCH_PATH = "/api/v1/marketers";
+
 export async function listMarketers(query: MarketerQuery): Promise<MarketerSearchResult> {
-  return selectMockMarketers(query);
+  const page = await serverApiGet<MarketerSearchPage>(
+    `${SEARCH_PATH}?${toBackendSearchParams(query).toString()}`,
+  );
+  return { items: page.items.map(toMarketerSummary), total: page.total };
 }
 
+/**
+ * The backend has no GET /api/v1/marketers/{id} yet, so this searches with no
+ * filters at the maximum page size and picks the id. Correct while there are
+ * at most 100 marketers; switch to the direct endpoint once it exists.
+ */
 export async function getMarketer(marketerID: number): Promise<Marketer | null> {
-  return findMockMarketer(marketerID);
+  const page = await serverApiGet<MarketerSearchPage>(
+    `${SEARCH_PATH}?${toBackendSearchParams(EMPTY_MARKETER_QUERY).toString()}`,
+  );
+  const item = page.items.find((candidate) => candidate.profile.user_id === marketerID);
+  return item ? toMarketer(item) : null;
 }
