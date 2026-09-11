@@ -2,11 +2,12 @@
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
 const dialogPopupVariants = cva(
-  "fixed z-50 flex max-h-[90dvh] flex-col overflow-y-auto bg-background text-foreground shadow-xl outline-none transition-all data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+  "fixed z-50 flex max-h-[90dvh] flex-col overflow-hidden bg-background text-foreground shadow-xl outline-none transition-all data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
   {
     variants: {
       position: {
@@ -55,6 +56,25 @@ function DialogDescription({ className, ...props }: DialogPrimitive.Description.
   );
 }
 
+function DialogHeader({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="dialog-header" className={cn("shrink-0", className)} {...props} />;
+}
+
+/** The only scrolling region, so the header and footer never overlap the content. */
+function DialogBody({ className, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-body"
+      className={cn("min-h-0 flex-1 overflow-y-auto", className)}
+      {...props}
+    />
+  );
+}
+
+function DialogFooter({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="dialog-footer" className={cn("shrink-0", className)} {...props} />;
+}
+
 function DialogContent({
   className,
   position = "sheet",
@@ -80,9 +100,12 @@ function DialogContent({
 
 export {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
   dialogPopupVariants,

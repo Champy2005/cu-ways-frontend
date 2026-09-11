@@ -2,7 +2,15 @@
 
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, X } from "lucide-react";
 
-import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -80,8 +88,8 @@ export function MarketerFilterSheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-6">
-        <div className="mb-6 flex items-start justify-between">
+      <DialogContent>
+        <DialogHeader className="flex items-start justify-between px-6 pt-6 pb-4">
           <DialogTitle>Marketers Filter</DialogTitle>
           <DialogClose
             aria-label="Close filters"
@@ -89,9 +97,9 @@ export function MarketerFilterSheet({
           >
             <X className="size-5" aria-hidden="true" />
           </DialogClose>
-        </div>
+        </DialogHeader>
 
-        <div className="flex flex-col gap-6">
+        <DialogBody className="flex flex-col gap-6 px-6 pb-6">
           <ChipGroup
             legend="Expertise"
             options={EXPERTISE_OPTIONS}
@@ -201,9 +209,9 @@ export function MarketerFilterSheet({
               })}
             </div>
           </fieldset>
-        </div>
+        </DialogBody>
 
-        <div className="sticky bottom-0 z-10 -mx-6 mt-8 flex gap-3 border-t border-border bg-background px-6 py-4">
+        <DialogFooter className="flex gap-3 border-t border-border px-6 py-4">
           <Button variant="outline" size="lg" className="flex-1" onClick={onClear}>
             Clear all
           </Button>
@@ -214,7 +222,7 @@ export function MarketerFilterSheet({
           >
             Show results
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
