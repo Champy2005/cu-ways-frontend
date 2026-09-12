@@ -1,8 +1,15 @@
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SERVICE_TYPES } from "@/features/marketers/schemas";
+import type { RefObject } from "react";
 
 export type ServiceFormValues = {
   selection: string;
@@ -18,6 +25,7 @@ type ServiceFieldsProps = {
   errors: ServiceFieldErrors;
   update: (field: keyof ServiceFormValues, value: string) => void;
   id: string;
+  portalContainer?: RefObject<HTMLDivElement | null>;
 };
 
 const inputClass = "mk-service-input";
@@ -30,30 +38,45 @@ function FieldError({ id, children }: { id: string; children?: string }) {
   ) : null;
 }
 
-function ServiceTypeField({ values, errors, update, id }: ServiceFieldsProps) {
+function ServiceTypeField({ values, errors, update, id, portalContainer }: ServiceFieldsProps) {
   return (
     <div className="border-t border-[var(--mk-border)] py-5">
       <FieldLabel htmlFor={`${id}-type`} className="mb-2 block text-sm font-medium">
         Service type <span aria-hidden="true">*</span>
       </FieldLabel>
-      <NativeSelect
-        id={`${id}-type`}
+      <Select
+        items={[
+          ...SERVICE_TYPES.map((type) => ({ value: type, label: type })),
+          { value: "custom", label: "Custom service" },
+        ]}
         name="service_type"
         value={values.selection}
         required
-        aria-invalid={Boolean(errors.service_type)}
-        aria-describedby={errors.service_type ? `${id}-type-error` : undefined}
-        onChange={(event) => update("selection", event.target.value)}
-        className="mk-service-select w-full min-w-0"
+        modal={false}
+        onValueChange={(value) => update("selection", value ?? "")}
       >
-        <NativeSelectOption value="">Select a service type</NativeSelectOption>
-        {SERVICE_TYPES.map((type) => (
-          <NativeSelectOption key={type} value={type}>
-            {type}
-          </NativeSelectOption>
-        ))}
-        <NativeSelectOption value="custom">Custom Service</NativeSelectOption>
-      </NativeSelect>
+        <SelectTrigger
+          id={`${id}-type`}
+          className="mk-service-input w-full min-w-0"
+          aria-invalid={Boolean(errors.service_type)}
+          aria-describedby={errors.service_type ? `${id}-type-error` : undefined}
+        >
+          <SelectValue placeholder="Select a service type" />
+        </SelectTrigger>
+        <SelectContent
+          container={portalContainer}
+          align="start"
+          alignItemWithTrigger={false}
+          className="mk-select-content"
+        >
+          {SERVICE_TYPES.map((type) => (
+            <SelectItem key={type} value={type}>
+              {type}
+            </SelectItem>
+          ))}
+          <SelectItem value="custom">Custom service</SelectItem>
+        </SelectContent>
+      </Select>
       {values.selection === "custom" && (
         <div className="mt-4">
           <FieldLabel htmlFor={`${id}-custom`} className="mb-2 block text-sm font-medium">

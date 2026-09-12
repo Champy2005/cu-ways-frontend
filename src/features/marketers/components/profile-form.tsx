@@ -1,11 +1,18 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FieldLabel } from "@/components/ui/field";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { FieldLabel, FieldError as FormFieldError } from "@/components/ui/field";
 import {
   useProfessionalProfile,
   type ProfileFormProps,
@@ -15,14 +22,15 @@ const fieldClassName = "mk-profile-input";
 
 function FieldError({ id, error }: { id: string; error?: string }) {
   return error ? (
-    <p id={id} role="alert" className="mt-2 text-sm text-[var(--mk-error)]">
+    <FormFieldError id={id} className="mt-2 text-[var(--mk-error)]">
       {error}
-    </p>
+    </FormFieldError>
   ) : null;
 }
 export function ProfileForm(props: ProfileFormProps) {
   const form = useProfessionalProfile(props);
   const id = useId();
+  const portal = useRef<HTMLDivElement>(null);
   return (
     <form onSubmit={form.submit} noValidate className="mk-profile-form">
       <p className="mb-5 text-sm text-[var(--mk-muted)]">
@@ -95,19 +103,41 @@ export function ProfileForm(props: ProfileFormProps) {
           <FieldLabel htmlFor={`${id}-status`} className="mk-profile-label">
             Availability status <span aria-hidden="true">*</span>
           </FieldLabel>
-          <select
-            id={`${id}-status`}
+          <Select
+            items={[
+              { value: "available", label: "Available" },
+              { value: "limited", label: "Limited availability" },
+              { value: "unavailable", label: "Unavailable" },
+            ]}
+            name="availability_status"
             required
-            className="mk-profile-input w-full"
+            disabled={form.pending}
+            modal={false}
             value={form.values.availability_status}
-            onChange={(event) => form.change("availability_status", event.target.value)}
-            aria-invalid={Boolean(form.errors.availability_status)}
-            aria-describedby={form.errors.availability_status ? `${id}-status-error` : undefined}
+            onValueChange={(value) => {
+              if (value) form.change("availability_status", value);
+            }}
           >
-            <option value="available">Available</option>
-            <option value="limited">Limited availability</option>
-            <option value="unavailable">Unavailable</option>
-          </select>
+            <SelectTrigger
+              id={`${id}-status`}
+              className="mk-profile-input w-full"
+              aria-invalid={Boolean(form.errors.availability_status)}
+              aria-describedby={form.errors.availability_status ? `${id}-status-error` : undefined}
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent
+              container={portal}
+              align="start"
+              alignItemWithTrigger={false}
+              className="mk-select-content"
+            >
+              <SelectItem value="available">Available</SelectItem>
+              <SelectItem value="limited">Limited availability</SelectItem>
+              <SelectItem value="unavailable">Unavailable</SelectItem>
+            </SelectContent>
+          </Select>
+          <div ref={portal} />
           <FieldError id={`${id}-status-error`} error={form.errors.availability_status} />
         </div>
       </fieldset>
@@ -119,7 +149,7 @@ export function ProfileForm(props: ProfileFormProps) {
           </p>
         ) : null}
         {form.success ? (
-          <p role="status" className="text-[var(--mk-profile-accent)]">
+          <p role="status" className="text-[var(--mk-accent)]">
             Professional information saved.
           </p>
         ) : null}

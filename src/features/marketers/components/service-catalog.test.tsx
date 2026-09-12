@@ -38,8 +38,14 @@ function setup(services: Service[] = [service]) {
   return { actions, onServicesChange };
 }
 
-function chooseService(type = "General Survey Boost", price = "250") {
-  fireEvent.change(screen.getByLabelText(/Service type/), { target: { value: type } });
+async function chooseService(type = "General Survey Boost", price = "250") {
+  fireEvent.click(screen.getByRole("combobox", { name: /Service type/ }));
+  fireEvent.keyDown(
+    await screen.findByRole("option", {
+      name: type === "custom" ? "Custom service" : type,
+    }),
+    { key: "Enter" },
+  );
   fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), { target: { value: price } });
 }
 
@@ -88,7 +94,7 @@ describe("ServiceCatalog", () => {
   it("publishes a custom zero-price service and preserves scope line breaks", async () => {
     const { actions, onServicesChange } = setup([]);
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    chooseService("custom", "0");
+    await chooseService("custom", "0");
     fireEvent.change(screen.getByLabelText(/Custom service name/), {
       target: { value: "Survey translation" },
     });
@@ -117,12 +123,14 @@ describe("ServiceCatalog", () => {
       }),
     );
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    chooseService();
+    await chooseService();
     fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Please update the service price.");
     expect(screen.getByText("This price cannot be published.")).toBeInTheDocument();
     expect(screen.getByLabelText(/Standard pricing \(THB\)/)).toHaveValue("250");
-    expect(screen.getByLabelText(/Service type/)).toHaveValue("General Survey Boost");
+    expect(screen.getByRole("combobox", { name: /Service type/ })).toHaveTextContent(
+      "General Survey Boost",
+    );
     fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), {
       target: { value: "300" },
     });
@@ -140,7 +148,7 @@ describe("ServiceCatalog", () => {
         }),
     );
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    chooseService();
+    await chooseService();
     const publish = screen.getByRole("button", { name: "Publish" });
     fireEvent.click(publish);
     fireEvent.click(publish);
@@ -161,7 +169,9 @@ describe("ServiceCatalog", () => {
     };
     const { actions } = setup([custom]);
     fireEvent.click(screen.getByRole("button", { name: "Edit Faculty workshop" }));
-    expect(screen.getByLabelText(/Service type/)).toHaveValue("custom");
+    expect(screen.getByRole("combobox", { name: /Service type/ })).toHaveTextContent(
+      "Custom service",
+    );
     expect(screen.getByLabelText(/Custom service name/)).toHaveValue("Faculty workshop");
     expect(screen.getByLabelText(/Scope description/)).toHaveValue(custom.scope_text);
     fireEvent.change(screen.getByLabelText(/Standard pricing \(THB\)/), {
@@ -243,7 +253,7 @@ describe("ServiceCatalog", () => {
     }
     render(<SharedCatalog />);
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    chooseService();
+    await chooseService();
     fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
     await screen.findByRole("status");
     fireEvent.click(screen.getByRole("button", { name: "Viewer preview" }));

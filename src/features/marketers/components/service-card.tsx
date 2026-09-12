@@ -20,7 +20,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
         <div className="flex size-10 items-center justify-center rounded-xl bg-[#e42278]/10 text-[var(--mk-accent)]">
           <Box className="size-5" aria-hidden="true" />
         </div>
-        <Badge className="rounded-full bg-[#15803d]/10 px-2.5 py-1 text-xs font-medium text-[var(--mk-success,#15803d)]">
+        <Badge className="rounded-full bg-[color-mix(in_srgb,var(--mk-accent)_10%,transparent)] px-2.5 py-1 text-xs font-medium text-[var(--mk-accent)]">
           Published
         </Badge>
       </div>

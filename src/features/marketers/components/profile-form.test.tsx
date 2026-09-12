@@ -20,6 +20,20 @@ const profile: MarketerProfile = {
 afterEach(cleanup);
 
 describe("ProfileForm", () => {
+  it("selects availability through the custom dropdown and saves its API value", async () => {
+    const onSave = vi.fn().mockResolvedValue({ ...profile, availability_status: "unavailable" });
+    render(<ProfileForm profile={profile} onSave={onSave} />);
+    fireEvent.click(screen.getByRole("combobox", { name: /^Availability status/ }));
+    fireEvent.keyDown(await screen.findByRole("option", { name: "Unavailable" }), { key: "Enter" });
+    expect(screen.getByRole("combobox")).toHaveTextContent("Unavailable");
+    fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
+    expect(screen.getByRole("combobox")).toBeDisabled();
+    await screen.findByText("Professional information saved.");
+    expect(onSave).toHaveBeenCalledWith(
+      expect.objectContaining({ availability_status: "unavailable" }),
+    );
+  });
+
   it("marks core fields required and rejects blank profile text", () => {
     const onSave = vi.fn();
     render(

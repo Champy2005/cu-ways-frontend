@@ -117,7 +117,10 @@ describe("DemoWorkspace integration", () => {
   it("publishes and edits packages through the owner view and shows the latest catalog to creators", async () => {
     render(<DemoNavigation />);
     fireEvent.click(await screen.findByRole("button", { name: "Publish a service" }));
-    fireEvent.change(await screen.findByLabelText(/Service type/), { target: { value: "custom" } });
+    fireEvent.click(await screen.findByRole("combobox", { name: /Service type/ }));
+    fireEvent.keyDown(await screen.findByRole("option", { name: "Custom service" }), {
+      key: "Enter",
+    });
     fireEvent.change(await screen.findByLabelText(/Custom service name/), {
       target: { value: "Research interview outreach" },
     });

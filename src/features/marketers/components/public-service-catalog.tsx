@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { ServiceCard } from "./service-card";
 import type { Service } from "../types";
 export function PublicServiceCatalog({
@@ -31,12 +32,12 @@ export function PublicServiceCatalog({
           ))}
         </div>
       ) : (
-        <div className="mk-card p-10 text-center">
+        <Card className="mk-card gap-0 p-10 text-center">
           <h2 className="text-lg font-semibold">No published services yet</h2>
           <p className="mt-2 text-sm text-[var(--mk-muted)]">
             This marketer has not published any service packages yet. Check back later.
           </p>
-        </div>
+        </Card>
       )}
     </section>
   );

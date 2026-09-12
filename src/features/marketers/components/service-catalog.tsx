@@ -113,7 +113,7 @@ export function ServiceCatalog({
       {notice && (
         <p
           role="status"
-          className="mb-5 rounded-xl border border-emerald-600/20 bg-emerald-600/10 px-4 py-3 text-sm text-[var(--mk-success,#15803d)]"
+          className="mb-5 rounded-xl border border-[color-mix(in_srgb,var(--mk-accent)_22%,transparent)] bg-[color-mix(in_srgb,var(--mk-accent)_8%,transparent)] px-4 py-3 text-sm text-[var(--mk-accent)]"
         >
           {notice}
         </p>

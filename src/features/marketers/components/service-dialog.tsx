@@ -137,7 +137,13 @@ export function ServiceDialog({
           <form ref={formRef} onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
             <div className="min-h-0 overflow-y-auto px-6 sm:px-8">
               <fieldset disabled={pending} className="min-w-0">
-                <ServiceFields values={values} update={update} errors={errors} id={id} />
+                <ServiceFields
+                  values={values}
+                  update={update}
+                  errors={errors}
+                  id={id}
+                  portalContainer={portalContainer}
+                />
               </fieldset>
               {error && (
                 <p role="alert" className="mk-error-notice mt-4 rounded-xl p-3 text-sm leading-5">

@@ -88,9 +88,11 @@ export function MarketerThemeToggle() {
       variant="ghost"
       size="icon-lg"
       onClick={toggleTheme}
-      className="mk-icon-button mk-theme-button"
+      className="mk-icon-button mk-theme-button relative overflow-hidden"
     >
-      {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      <span key={theme} className="mk-theme-icon">
+        {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      </span>
     </Button>
   );
 }

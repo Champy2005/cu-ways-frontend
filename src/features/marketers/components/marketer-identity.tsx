@@ -24,7 +24,7 @@ export function MarketerIdentity({ name }: { name: string }) {
     <section aria-label="Marketer identity" className="mk-identity">
       <MarketerAvatar name={name} />
       <div className="min-w-0 pb-2 pr-2">
-        <p className="text-base font-medium text-[var(--mk-info)]">Marketer</p>
+        <p className="text-base font-medium text-[var(--mk-accent)]">Marketer</p>
         <p className="mt-2 text-base font-medium wrap-anywhere sm:text-xl">{name}</p>
       </div>
       <Image

@@ -52,7 +52,7 @@ export function ProfileWorkspace({
           <MarketerAvatar name={name} className="size-[98px] text-4xl" />
           <div className="min-w-0 max-w-full">
             <p className="text-lg font-semibold wrap-anywhere">{name}</p>
-            <p className="mt-1 text-sm text-[var(--mk-info)]">Survey Marketer</p>
+            <p className="mt-1 text-sm text-[var(--mk-accent)]">Survey Marketer</p>
           </div>
           <p className="mk-profile-summary-description border-t border-[var(--mk-border)] pt-5 text-sm leading-6 text-[var(--mk-muted)]">
             Help creators get to know your experience and when you are available to work.
