@@ -124,9 +124,17 @@ Demo changes never call the backend. When browser storage is unavailable, edits 
 until the page reloads. The demo returns 404 unless explicitly enabled and is always disabled in production.
 
 The marketer screens share a fluid desktop frame, with responsive cards and a profile sidebar/form
-layout. Navigation is selected by device user agent: desktop browsers always get sticky top tabs,
-even when resized narrowly; phones/tablets get a compact header, hamburger menu, and fixed bottom
-navigation. Only the selected navigation is rendered. Page content remains responsive. Light/dark preference persists separately from demo data; dialogs and confirmation controls
+layout. Desktop browsers use a single 72px sticky header with inline navigation at widths of
+1024px and above; narrower windows use a hamburger menu with the same destinations. Phones/tablets
+retain their compact header and fixed bottom navigation. Hidden desktop navigation is not focusable,
+and widening a desktop window closes its compact menu. The birds open a local role preview picker;
+selecting a role does not change account permissions or call the backend.
+
+Next.js automatically loads `.env.local`, including `MARKETER_DEMO_ENABLED`. Keep it `false` for
+normal development and restart the development server after changing it. Explicitly set it to `true`
+only when reviewing the demo; production always blocks the demo.
+
+On first visit the theme follows the browser/system preference. A manual light/dark choice persists separately from demo data; dialogs and confirmation controls
 follow the chosen theme. Motion is subtle and honors reduced-motion preferences. With the explicit
 demo flag enabled, the Next.js development badge is hidden so it does not cover mobile navigation;
 compile and runtime errors still appear normally.

@@ -1,6 +1,6 @@
 # Marketer UI refinement and rendering notes
 
-> Current integration and device-navigation behavior is documented in [marketer-api-handoff.md](marketer-api-handoff.md). The notes below describe the earlier UI refinement; viewport-selected navigation and optional professional fields have since been replaced.
+> Current integration and device-navigation behavior is documented in [marketer-api-handoff.md](marketer-api-handoff.md). The notes below describe the earlier UI refinement; navigation and professional-field behavior have since been updated.
 
 The marketer experience uses the project's shadcn `base-nova` components. Shared primitive defaults are preserved; marketer card, popover, input, foreground, focus, and brand colors are mapped in `src/features/marketers/marketer.css`.
 
@@ -16,7 +16,7 @@ The marketer experience uses the project's shadcn `base-nova` components. Shared
 ## Rendering boundaries
 
 - `MarketerShell` renders static composition on the server and passes page children through `MarketerTheme`. Theme controls, active navigation, mobile menu behavior, and forms are client boundaries.
-- The mobile dropdown implementation loads only at mobile widths. Desktop does not eagerly download it. Its non-modal menu supports keyboard navigation and dismisses on Escape, selection, outside interaction, and desktop resizing.
+- The compact dropdown is shared by narrow desktop windows and the mobile shell. Its non-modal menu supports keyboard navigation and dismisses on Escape, selection, outside interaction, and desktop resizing.
 - `PublicServiceCatalog` is a separate display component exported for integration. The live viewer route does not import the owner catalog, editor, mutation adapter, or confirmation dialogs.
 - The owner catalog loads `CatalogDialog` on demand and preloads it on pointer/focus intent over management buttons. Existing final-focus callbacks, dirty-form confirmation, and duplicate-submission guards remain in place.
 - Owner profile/statistics and profile/services requests start concurrently. Existing private API requests remain `no-store`; no user-shared data cache was introduced.

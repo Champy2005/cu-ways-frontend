@@ -1,11 +1,11 @@
 import type { NavigationDevice } from "@/components/layout/navigation-device";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 import { MarketerTheme, MarketerLogo, MarketerThemeToggle } from "./marketer-theme";
 import { MarketerNavigation } from "./marketer-navigation";
 import { MarketerMobileMenu } from "./marketer-mobile-menu";
+import { MarketerRolePicker } from "./marketer-role-picker";
 import "../marketer.css";
 export function MarketerShell({
   children,
@@ -32,6 +32,7 @@ export function MarketerShell({
           >
             <MarketerLogo />
           </Link>
+          {device === "desktop" && <MarketerNavigation demo={demo} selected={demoView} />}
           <div className="mk-header-actions flex items-center gap-1.5 md:gap-4">
             {device === "desktop" && (
               <Link
@@ -42,22 +43,10 @@ export function MarketerShell({
               </Link>
             )}
             <MarketerThemeToggle />
-            <Image
-              src="/marketer-assets/paired-birds.svg"
-              width={44}
-              height={30}
-              alt=""
-              loading="eager"
-              className="mk-header-mascot"
-            />
-            {device === "mobile" && <MarketerMobileMenu demo={demo} initialView={demoView} />}
+            <MarketerRolePicker />
+            <MarketerMobileMenu demo={demo} initialView={demoView} device={device} />
           </div>
         </div>
-        {device === "desktop" && (
-          <div className="mk-frame mk-live-navigation">
-            <MarketerNavigation demo={demo} selected={demoView} />
-          </div>
-        )}
       </header>
       <main id="marketer-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}

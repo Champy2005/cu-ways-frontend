@@ -29,6 +29,80 @@ afterEach(() => {
 });
 
 describe("MarketerShell navigation and theme", () => {
+  it("follows the system until a theme is explicitly selected", () => {
+    const media = Object.assign(new EventTarget(), { matches: true });
+    vi.stubGlobal("matchMedia", () => media);
+    render(<MarketerShell>System theme</MarketerShell>);
+    expect(screen.getByRole("button", { name: "Switch to light theme" })).toBeInTheDocument();
+    expect(localStorage.getItem("cuways-marketer-theme")).toBeNull();
+    act(() => {
+      media.matches = false;
+      media.dispatchEvent(new Event("change"));
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Switch to dark theme" }));
+    act(() => media.dispatchEvent(new Event("change")));
+    expect(screen.getByRole("button", { name: "Switch to light theme" })).toBeInTheDocument();
+    expect(localStorage.getItem("cuways-marketer-theme")).toBe("dark");
+  });
+
+  it("uses the system for an invalid saved theme and honors saved light over system dark", () => {
+    vi.stubGlobal("matchMedia", () => Object.assign(new EventTarget(), { matches: true }));
+    localStorage.setItem("cuways-marketer-theme", "invalid");
+    const first = render(<MarketerShell>Theme</MarketerShell>);
+    expect(screen.getByRole("button", { name: "Switch to light theme" })).toBeInTheDocument();
+    first.unmount();
+    localStorage.setItem("cuways-marketer-theme", "light");
+    render(<MarketerShell>Theme</MarketerShell>);
+    expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
+  });
+
+  it("closes an open desktop menu when crossing the wide breakpoint", async () => {
+    const media = Object.assign(new EventTarget(), { matches: false });
+    vi.stubGlobal("matchMedia", () => media);
+    render(<MarketerShell device="desktop">Live workspace</MarketerShell>);
+    fireEvent.click(await screen.findByRole("button", { name: "Open navigation menu" }));
+    const menu = await screen.findByRole("menu");
+    expect(within(menu).getByRole("menuitem", { name: "Services" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    act(() => {
+      media.matches = true;
+      media.dispatchEvent(new Event("change"));
+    });
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+  });
+
+  it("previews both roles without requests or session changes and resets on remount", async () => {
+    const fetch = vi.fn();
+    vi.stubGlobal("fetch", fetch);
+    const cookie = document.cookie;
+    const first = render(<MarketerShell>Role preview</MarketerShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Switch role preview, current: Marketer" }));
+    fireEvent.click(await screen.findByRole("menuitemradio", { name: "Creator" }));
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+    const trigger = screen.getByRole("button", { name: "Switch role preview, current: Creator" });
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(screen.getByRole("status")).toHaveTextContent("Creator preview selected");
+    fireEvent.click(trigger);
+    expect(await screen.findByRole("menuitemradio", { name: "Creator" })).toHaveAttribute(
+      "aria-checked",
+      "true",
+    );
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Marketer" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Marketer preview selected");
+    expect(fetch).not.toHaveBeenCalled();
+    expect(document.cookie).toBe(cookie);
+    first.unmount();
+    render(<MarketerShell>Role preview</MarketerShell>);
+    const reset = screen.getByRole("button", { name: "Switch role preview, current: Marketer" });
+    reset.focus();
+    fireEvent.click(reset);
+    fireEvent.keyDown(await screen.findByRole("menu"), { key: "Escape" });
+    await waitFor(() => expect(reset).toHaveFocus());
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+  });
+
   it.each([375, 767, 768, 1440])("never mounts a mobile bar on desktop at %ipx", (width) => {
     vi.stubGlobal("innerWidth", width);
     render(<MarketerShell device="desktop">Live workspace</MarketerShell>);
@@ -38,7 +112,7 @@ describe("MarketerShell navigation and theme", () => {
       screen.queryByRole("navigation", { name: "Mobile marketer navigation" }),
     ).not.toBeInTheDocument();
     expect(document.querySelector(".mk-navigation-mobile")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Open navigation menu" })).not.toBeInTheDocument();
+    // CSS hides the compact trigger at wide desktop widths.
   });
 
   it("keeps creator preview in bottom navigation and shows the reference menu", async () => {
@@ -57,13 +131,13 @@ describe("MarketerShell navigation and theme", () => {
     // Navigation is an anchored menu, with no dialog backdrop or scroll locking.
     expect(document.querySelector("[data-slot=dialog-overlay]")).toBeNull();
     expect(document.body.style.overflow).not.toBe("hidden");
-    expect(within(dialog).getByRole("menuitem", { name: /Jobs.*Coming soon/ })).toHaveAttribute(
-      "aria-disabled",
-      "true",
+    expect(within(dialog).getByRole("menuitem", { name: "Services" })).toHaveAttribute(
+      "href",
+      "/demo/marketer?view=services",
     );
-    expect(within(dialog).getByRole("menuitem", { name: /Messages.*Coming soon/ })).toHaveAttribute(
-      "aria-disabled",
-      "true",
+    expect(within(dialog).getByRole("menuitem", { name: "Creator view" })).toHaveAttribute(
+      "aria-current",
+      "page",
     );
     const preview = within(dialog).getByRole("menuitem", { name: "Profile" });
     expect(preview).toHaveAttribute("href", "/demo/marketer?view=profile");

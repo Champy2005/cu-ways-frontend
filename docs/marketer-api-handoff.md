@@ -56,18 +56,15 @@ switching remain outside this migration.
 
 ## Device-specific navigation
 
-The shared marketer layout selects navigation from the request's user agent using Next.js's device
-parser. Phone/tablet agents receive the mobile shell; desktop and unrecognized agents receive the
-desktop shell. No viewport-width or resize event chooses the navigation. A desktop browser at 375px
-still has desktop top tabs and never mounts the bottom bar or hamburger. Mobile agents keep the
-bottom bar at wide widths, including rotation. Browsers requesting a desktop user agent receive the
-desktop shell. This is presentation only and is not an authentication boundary.
+The request user agent selects the phone/tablet bottom bar. Desktop and unrecognized agents use
+inline header navigation at 1024px and above and the hamburger below that breakpoint. Desktop never
+mounts a bottom bar. Phone/tablet agents retain the bottom bar at wide widths, including rotation.
+This is presentation only and is not an authentication boundary.
 
-The desktop header and tabs remain sticky together. Mobile navigation has a sticky compact header,
-a divided hamburger panel, and a fixed bottom bar with safe-area space. Dashboard and Profile menu
-items navigate; Jobs and Messages are marked coming soon. Sign out uses the existing session-clearing
-endpoint. Services remain in the main navigation. The paired-bird asset was extracted from the supplied
-SVG and is decorative, not a role-switching control. Page content remains responsive in both shells.
+Desktop uses a single 72px sticky header. The compact menu shares Overview, Services, Profile, and
+(demo only) Creator view with the primary navigation, plus Workspace and the existing sign-out action.
+An open desktop menu closes when expanding to 1024px. The birds open an animated Marketer/Creator
+preview picker; selection is transient UI state and never changes sessions, permissions, or backend data.
 
 ## Demo and dry verification
 
@@ -94,7 +91,7 @@ Dry checks do not establish those properties.
 - Formatting, strict lint, TypeScript, and production build passed.
 - All 155 tests passed across 24 files; coverage thresholds passed (76.96% lines).
 - Chrome browser checks passed with desktop and iPhone user agents at all four widths in both
-  themes (16 combinations). Same-page resizing preserved the selected navigation; desktop pages
+  themes (16 combinations). Before the responsive header update, same-page resizing preserved navigation; desktop pages
   contained no mobile bar. Keyboard activation, Escape/focus restoration, outside-click dismissal,
   sticky positioning, horizontal overflow, and mobile save-button clearance were checked.
 - Real Next pages and BFF adapters passed against in-process mocked upstream fetches: initial
