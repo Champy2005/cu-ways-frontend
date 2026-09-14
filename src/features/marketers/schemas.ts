@@ -32,8 +32,21 @@ function hasExactKeys(value: Record<string, unknown>, keys: string[]): boolean {
 
 export const AVAILABILITY_STATUSES = ["available", "limited", "unavailable"] as const;
 
-function requiredText(value: unknown): value is string {
-  return typeof value === "string" && value.trim().length > 0 && value.length <= 5000;
+function profileText(value: unknown): value is string {
+  return typeof value === "string" && value.length <= 5000;
+}
+function experienceYears(value: unknown): value is number {
+  return isNonnegativeNumber(value) && Number.isInteger(value) && value <= 80;
+}
+function isAvailabilityStatus(value: unknown): value is (typeof AVAILABILITY_STATUSES)[number] {
+  return AVAILABILITY_STATUSES.some((status) => status === value);
+}
+function optionalField(
+  value: Record<string, unknown>,
+  key: string,
+  validate: (field: unknown) => boolean,
+): boolean {
+  return !Object.prototype.hasOwnProperty.call(value, key) || validate(value[key]);
 }
 function slugList(value: unknown): boolean {
   return (
@@ -56,12 +69,10 @@ export function validateProfileInput(value: unknown): value is ProfileInput {
   ];
   return (
     Object.keys(value).every((key) => allowed.includes(key)) &&
-    requiredText(value.bio) &&
-    requiredText(value.availability_text) &&
-    isNonnegativeNumber(value.experience_years) &&
-    Number.isInteger(value.experience_years) &&
-    value.experience_years <= 80 &&
-    AVAILABILITY_STATUSES.some((status) => status === value.availability_status) &&
+    optionalField(value, "bio", profileText) &&
+    optionalField(value, "experience_years", experienceYears) &&
+    optionalField(value, "availability_text", profileText) &&
+    isAvailabilityStatus(value.availability_status) &&
     slugList(value.expertise) &&
     slugList(value.campuses)
   );
@@ -88,24 +99,27 @@ export function parseProfileForm(input: {
   availability_text: string;
   availability_status: string;
 }): FormResult<ProfileInput> {
+  const bio = input.bio.trim();
   const years = input.experience_years.trim();
+  const availabilityText = input.availability_text.trim();
   const errors: Partial<Record<keyof ProfileInput, string>> = {};
-  if (!requiredText(input.bio.trim())) errors.bio = "Enter a bio of 1–5,000 characters.";
-  if (!requiredText(input.availability_text.trim()))
-    errors.availability_text = "Enter availability details of 1–5,000 characters.";
-  if (!/^\d+$/.test(years) || Number(years) > 80)
+  if (bio.length > 5000) errors.bio = "Bio must be 5,000 characters or fewer.";
+  if (availabilityText.length > 5000)
+    errors.availability_text = "Availability details must be 5,000 characters or fewer.";
+  if (years && (!/^\d+$/.test(years) || Number(years) > 80))
     errors.experience_years = "Enter a whole number of years from 0 to 80.";
-  const status = AVAILABILITY_STATUSES.find((value) => value === input.availability_status);
+  const status = isAvailabilityStatus(input.availability_status)
+    ? input.availability_status
+    : undefined;
   if (!status) errors.availability_status = "Choose your availability status.";
   if (Object.keys(errors).length || !status) return { success: false, errors };
+  const data: ProfileInput = { availability_status: status };
+  if (bio) data.bio = bio;
+  if (years) data.experience_years = Number(years);
+  if (availabilityText) data.availability_text = availabilityText;
   return {
     success: true,
-    data: {
-      bio: input.bio.trim(),
-      experience_years: Number(years),
-      availability_text: input.availability_text.trim(),
-      availability_status: status,
-    },
+    data,
   };
 }
 

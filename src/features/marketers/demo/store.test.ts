@@ -61,6 +61,23 @@ describe("isolated marketer demo", () => {
     fetchSpy.mockRestore();
   });
 
+  it("uses backend defaults for omitted profile fields and persists the cleared values", async () => {
+    const saved = await demoActions.saveProfile({ availability_status: "limited" });
+    expect(saved).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited",
+    });
+    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2"));
+    expect(persisted.profile).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited",
+    });
+  });
+
   it("reset restores fixtures without retaining private form changes", async () => {
     await demoActions.deleteService(1);
     resetDemo();

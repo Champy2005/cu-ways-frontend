@@ -175,7 +175,10 @@ export const demoActions: MarketerActions = {
     const current = getDemoSnapshot();
     const profile = {
       ...current.profile,
-      ...input,
+      bio: input.bio ?? "",
+      experience_years: input.experience_years ?? 0,
+      availability_text: input.availability_text ?? "",
+      availability_status: input.availability_status,
       expertise: current.profile.expertise,
       campuses: current.profile.campuses,
     };

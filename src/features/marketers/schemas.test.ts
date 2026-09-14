@@ -16,7 +16,7 @@ const profileForm = {
 const serviceForm = { service_type: "On-Campus Distribution", scope_text: "", price: "50" };
 
 describe("professional profile validation", () => {
-  it("rejects blank required fields", () => {
+  it("omits blank optional fields and keeps availability status required", () => {
     expect(
       parseProfileForm({
         ...profileForm,
@@ -24,13 +24,10 @@ describe("professional profile validation", () => {
         experience_years: "",
         availability_text: "\n",
       }),
-    ).toMatchObject({
+    ).toEqual({ success: true, data: { availability_status: "available" } });
+    expect(parseProfileForm({ ...profileForm, availability_status: "" })).toMatchObject({
       success: false,
-      errors: {
-        bio: expect.any(String),
-        experience_years: expect.any(String),
-        availability_text: expect.any(String),
-      },
+      errors: { availability_status: expect.any(String) },
     });
   });
 
@@ -42,7 +39,6 @@ describe("professional profile validation", () => {
   });
 
   it.each([
-    "",
     "81",
     "2.5",
     ".5",
@@ -74,13 +70,28 @@ describe("professional profile validation", () => {
   it("validates transport types and rejects caller-supplied ownership", () => {
     const input = { ...profileForm, experience_years: 1 };
     expect(validateProfileInput(input)).toBe(true);
+    expect(validateProfileInput({ availability_status: "available" })).toBe(true);
+    expect(
+      validateProfileInput({
+        bio: "",
+        experience_years: 0,
+        availability_status: "available",
+        availability_text: "",
+      }),
+    ).toBe(true);
     expect(validateProfileInput({ ...input, bio: "x".repeat(5001) })).toBe(false);
     expect(validateProfileInput({ ...input, availability_status: "unknown" })).toBe(false);
     expect(validateProfileInput({ ...input, expertise: [123] })).toBe(false);
     expect(validateProfileInput({ ...input, experience_years: "1.5" })).toBe(false);
     expect(validateProfileInput({ ...input, experience_years: Infinity })).toBe(false);
     expect(validateProfileInput({ ...input, user_id: 9 })).toBe(false);
-    expect(validateProfileInput({ bio: null })).toBe(false);
+    expect(validateProfileInput({ availability_status: "available", bio: null })).toBe(false);
+    expect(validateProfileInput({ availability_status: "available", experience_years: null })).toBe(
+      false,
+    );
+    expect(
+      validateProfileInput({ availability_status: "available", availability_text: null }),
+    ).toBe(false);
     expect(validateProfileInput(null)).toBe(false);
   });
 });

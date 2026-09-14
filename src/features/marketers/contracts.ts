@@ -47,17 +47,30 @@ export function readMarketerProfile(value: unknown): MarketerProfile {
     return invalidContract();
   const expertise = readCatalogOptions(value.expertise);
   const campuses = readCatalogOptions(value.campuses);
+  const bio = value.bio;
+  const experienceYears = value.experience_years;
+  const availabilityText = value.availability_text;
   const profile = {
-    bio: value.bio,
-    experience_years: value.experience_years,
+    bio,
+    experience_years: experienceYears,
     availability_status: value.availability_status,
-    availability_text: value.availability_text,
+    availability_text: availabilityText,
     expertise: expertise.map((option) => option.slug),
     campuses: campuses.map((option) => option.slug),
   };
-  if (!validateProfileInput(profile)) return invalidContract();
+  if (
+    typeof bio !== "string" ||
+    typeof availabilityText !== "string" ||
+    !isNonnegativeNumber(experienceYears) ||
+    !Number.isInteger(experienceYears) ||
+    !validateProfileInput(profile)
+  )
+    return invalidContract();
   return {
     ...profile,
+    bio,
+    experience_years: experienceYears,
+    availability_text: availabilityText,
     user_id: value.user_id,
     name: value.name,
     email: value.email,

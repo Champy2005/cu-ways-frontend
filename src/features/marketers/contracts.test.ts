@@ -22,13 +22,18 @@ const profile = initialDemoState.profile;
 describe("backend marketer response contracts", () => {
   it("requires numeric experience and does not coerce legacy text", () => {
     expect(readMarketerProfile(profile)).toEqual(profile);
+    expect(
+      readMarketerProfile({ ...profile, bio: "", experience_years: 0, availability_text: "" }),
+    ).toMatchObject({ bio: "", experience_years: 0, availability_text: "" });
     const { experience_years: ignoredYears, ...legacy } = profile;
     expect(ignoredYears).toBe(2);
     expect(() => readMarketerProfile({ ...legacy, experience: "Two years" })).toThrow();
     expect(() => readMarketerProfile({ ...profile, experience_years: "2" })).toThrow();
+    expect(() => readMarketerProfile({ ...profile, bio: null })).toThrow();
     expect(() =>
       readMarketerProfile({ ...profile, experience_years: null, experience: "Two summers" }),
     ).toThrow();
+    expect(() => readMarketerProfile({ ...profile, availability_text: null })).toThrow();
     expect(() => readMarketerProfile(null)).toThrow();
   });
 

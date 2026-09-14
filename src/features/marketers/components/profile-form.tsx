@@ -34,17 +34,17 @@ export function ProfileForm(props: ProfileFormProps) {
   return (
     <form onSubmit={form.submit} noValidate className="mk-profile-form">
       <p className="mb-5 text-sm text-[var(--mk-muted)]">
-        Complete the required fields (*) to help creators get to know your work.
+        Availability status is required. Bio, years of experience, and availability details are
+        optional.
       </p>
       <fieldset disabled={form.pending} className="mk-profile-fields">
         <legend className="sr-only">Professional information</legend>
         <div className="mk-profile-field mk-profile-bio">
           <FieldLabel htmlFor={`${id}-bio`} className="mk-profile-label">
-            Bio <span aria-hidden="true">*</span>
+            Bio
           </FieldLabel>
           <Textarea
             id={`${id}-bio`}
-            required
             maxLength={5000}
             name="bio"
             rows={4}
@@ -59,12 +59,11 @@ export function ProfileForm(props: ProfileFormProps) {
         </div>
         <div className="mk-profile-field">
           <FieldLabel htmlFor={`${id}-experience`} className="mk-profile-label">
-            Years of experience <span aria-hidden="true">*</span>
+            Years of experience
           </FieldLabel>
           <Input
             id={`${id}-experience`}
             name="experience_years"
-            required
             inputMode="numeric"
             placeholder="Not specified"
             className={fieldClassName}
@@ -80,11 +79,10 @@ export function ProfileForm(props: ProfileFormProps) {
         </div>
         <div className="mk-profile-field">
           <FieldLabel htmlFor={`${id}-availability`} className="mk-profile-label">
-            Availability text <span aria-hidden="true">*</span>
+            Availability text
           </FieldLabel>
           <Textarea
             id={`${id}-availability`}
-            required
             maxLength={5000}
             name="availability_text"
             rows={2}

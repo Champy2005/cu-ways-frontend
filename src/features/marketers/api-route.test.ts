@@ -98,6 +98,34 @@ describe("marketer mutation BFF boundary", () => {
     );
   });
 
+  it("forwards omitted optional profile values and rejects explicit nulls", async () => {
+    const partialInput = { availability_status: "limited" as const };
+    const defaultedProfile = {
+      ...profile,
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited" as const,
+    };
+    vi.mocked(fetchBackend).mockResolvedValueOnce(upstream(defaultedProfile));
+    const response = await saveProfile(request("PUT", partialInput));
+    expect(response.status).toBe(200);
+    expect(fetchBackend).toHaveBeenCalledWith(
+      "/api/v1/me/marketer-profile",
+      expect.objectContaining({ body: JSON.stringify(partialInput) }),
+    );
+    expect((await response.json()).data).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+    });
+
+    expect(
+      (await saveProfile(request("PUT", { availability_status: "available", bio: null }))).status,
+    ).toBe(422);
+    expect(fetchBackend).toHaveBeenCalledTimes(1);
+  });
+
   it("publishes and edits service announcements", async () => {
     vi.mocked(fetchBackend).mockResolvedValueOnce(upstream(service, 201));
     expect((await publish(request("POST", input))).status).toBe(201);

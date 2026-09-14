@@ -34,19 +34,30 @@ describe("ProfileForm", () => {
     );
   });
 
-  it("marks core fields required and rejects blank profile text", () => {
-    const onSave = vi.fn();
-    render(
-      <ProfileForm profile={{ ...profile, bio: "", availability_text: "" }} onSave={onSave} />,
-    );
-    expect(screen.getByLabelText(/^Bio/)).toBeRequired();
+  it("omits blank optional fields while saving required availability status", async () => {
+    const saved = { ...profile, bio: "", experience_years: 0, availability_text: "" };
+    const onSave = vi.fn().mockResolvedValue(saved);
+    render(<ProfileForm profile={profile} onSave={onSave} />);
+    expect(screen.getByLabelText(/^Bio/)).not.toBeRequired();
+    expect(screen.getByLabelText(/^Years of experience/)).not.toBeRequired();
+    expect(screen.getByLabelText(/^Availability text/)).not.toBeRequired();
     expect(screen.getByLabelText(/^Availability status/)).toBeRequired();
+    fireEvent.change(screen.getByLabelText(/^Bio/), { target: { value: "  " } });
+    fireEvent.change(screen.getByLabelText(/^Years of experience/), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText(/^Availability text/), { target: { value: "\n" } });
     fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
-    expect(onSave).not.toHaveBeenCalled();
-    expect(screen.getByLabelText(/^Bio/)).toHaveAttribute("aria-invalid", "true");
+    await screen.findByText("Professional information saved.");
+    expect(onSave).toHaveBeenCalledWith({
+      availability_status: profile.availability_status,
+      expertise: profile.expertise.map((option) => option.slug),
+      campuses: profile.campuses.map((option) => option.slug),
+    });
+    expect(screen.getByLabelText(/^Bio/)).toHaveValue("");
+    expect(screen.getByLabelText(/^Years of experience/)).toHaveValue("0");
+    expect(screen.getByLabelText(/^Availability text/)).toHaveValue("");
   });
 
-  it("saves required fields with whole years and preserves catalog selections", async () => {
+  it("trims provided fields, preserves zero, and keeps catalog selections", async () => {
     const saved = {
       ...profile,
       bio: "A short bio",
