@@ -106,8 +106,11 @@ and branch names, coverage policy, and future full-stack testing plan, see
 The frontend includes professional profile editing at `/marketer/profile`, service management at
 `/marketer/services`, a private performance summary at `/marketer/dashboard`, and signed-in service
 viewing at `/marketers/[id]/services`. Open **Marketer workspace** from the existing dashboard.
-These live routes use proposed backend endpoints. Until those endpoints are implemented, they show
-explicit unavailable or eligibility states; they never substitute sample data.
+Profile management, service management, and private performance statistics use the published backend
+endpoints. Creator-facing discovery at `/marketers` uses the backend marketer-search contract, including
+price, expertise, campus, experience, availability, rating-sort, and pagination parameters. The legacy
+`/marketers/[id]/services` viewer remains explicitly unavailable until a public marketer-by-ID catalog
+endpoint exists; live pages never substitute sample data.
 
 To review all frontend interactions with fictional data, enable the local demo:
 
@@ -122,7 +125,23 @@ Changes stay in that browser tab's session storage across reloads. **Reset demo*
 Demo changes never call the backend. When browser storage is unavailable, edits remain in memory
 until the page reloads. The demo returns 404 unless explicitly enabled and is always disabled in production.
 
-The backend handoff, proposed response shapes, numeric-experience migration dependency, and remaining
+The marketer screens share a fluid desktop frame, with responsive cards and a profile sidebar/form
+layout. Desktop browsers use a single 72px sticky header with inline navigation at widths of
+1024px and above; narrower windows use a hamburger menu with the same destinations. Phones/tablets
+retain their compact header and fixed bottom navigation. Hidden desktop navigation is not focusable,
+and widening a desktop window closes its compact menu. The birds open a local role preview picker;
+selecting a role does not change account permissions or call the backend.
+
+Next.js automatically loads `.env.local`, including `MARKETER_DEMO_ENABLED`. Keep it `false` for
+normal development and restart the development server after changing it. Explicitly set it to `true`
+only when reviewing the demo; production always blocks the demo.
+
+On first visit the theme follows the browser/system preference. A manual light/dark choice persists separately from demo data; dialogs and confirmation controls
+follow the chosen theme. Motion is subtle and honors reduced-motion preferences. With the explicit
+demo flag enabled, the Next.js development badge is hidden so it does not cover mobile navigation;
+compile and runtime errors still appear normally.
+
+The connected backend contracts, required fields, device selection, and remaining
 full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
 
 ## Backend setup
@@ -131,3 +150,5 @@ See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migration
 admin seeding, and health checks.
 
 For the full frontend structure and dependency rules, see [docs/architecture.md](docs/architecture.md).
+
+Marketer UI refinements, unified profile tabs, lazy-loading boundaries, and measured bundle changes are documented in [docs/marketer-ui-refinement.md](docs/marketer-ui-refinement.md).

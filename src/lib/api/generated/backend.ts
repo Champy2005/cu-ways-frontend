@@ -356,11 +356,14 @@ export interface components {
             };
         };
         MarketerProfileRequest: {
-            bio: string;
-            experience_years: number;
+            /** @description Optional. Defaults to an empty string when omitted. */
+            bio?: string;
+            /** @description Optional. Defaults to 0 when omitted. */
+            experience_years?: number;
             /** @enum {string} */
             availability_status: "available" | "limited" | "unavailable";
-            availability_text: string;
+            /** @description Optional. Defaults to an empty string when omitted. */
+            availability_text?: string;
             /** @description Expertise slugs from the curated catalog. */
             expertise?: string[];
             /** @description Campus slugs from the curated catalog. */
@@ -1356,7 +1359,7 @@ export interface operations {
                 min_rating?: number;
                 min_experience_years?: number;
                 availability_status?: "available" | "limited" | "unavailable";
-                /** @description Sort by matching service price or completed-job rating. NULL prices and ratings are always placed last; ties are resolved by user ID ascending. Defaults to lowest matching service price. */
+                /** @description Sort by matching service price or completed-job rating. NULL prices and ratings are always placed last; ties are resolved by marketer name (case-sensitive, ascending), then by user ID ascending as a final deterministic fallback for marketers sharing the same name. Defaults to lowest matching service price. */
                 sort?: "price_asc" | "price_desc" | "rating_asc" | "rating_desc";
             };
             header?: never;

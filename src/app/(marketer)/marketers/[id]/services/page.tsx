@@ -1,6 +1,8 @@
+import { ApiError } from "@/lib/api/errors";
+import { EmptyState } from "@/components/feedback/empty-state";
 import { requireSession } from "@/lib/auth/guards";
 import { getPublicCatalog } from "@/features/marketers/api";
-import { ServiceCatalog } from "@/features/marketers/components/service-catalog";
+import { PublicServiceCatalog } from "@/features/marketers/components/public-service-catalog";
 import { RouteFeedback } from "@/features/marketers/components/route-feedback";
 import { marketerFailure } from "@/features/marketers/failures";
 
@@ -15,7 +17,14 @@ export default async function PublicCatalogPage({ params }: { params: Promise<{ 
   try {
     catalog = await getPublicCatalog(Number(id));
   } catch (error) {
+    if (error instanceof ApiError && error.code === "feature_unavailable")
+      return (
+        <EmptyState
+          title="Service catalog coming soon"
+          description="Public service catalogs are not available yet."
+        />
+      );
     return <RouteFeedback kind={marketerFailure(error)} />;
   }
-  return <ServiceCatalog {...catalog} />;
+  return <PublicServiceCatalog {...catalog} />;
 }

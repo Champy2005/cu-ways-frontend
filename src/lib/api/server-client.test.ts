@@ -15,7 +15,7 @@ beforeEach(() => {
 describe("server API envelope handling", () => {
   it("rejects a successful response without a data envelope", async () => {
     mocks.fetchBackend.mockResolvedValue(Response.json({ status: "success" }));
-    await expect(serverApiGet("/api/v1/marketers/me")).rejects.toMatchObject({
+    await expect(serverApiGet("/api/v1/me/marketer-profile")).rejects.toMatchObject({
       code: "request_failed",
     });
   });

@@ -5,6 +5,7 @@ import {
   getDemoSnapshot,
   initialDemoState,
   resetDemo,
+  saveDemoContact,
 } from "./store";
 
 beforeEach(() => {
@@ -21,7 +22,8 @@ describe("isolated marketer demo", () => {
       await demoActions.saveProfile({
         bio: "Kept in memory",
         experience_years: 1,
-        availability_text: null,
+        availability_text: "Weekdays",
+        availability_status: "available",
       });
       expect(getDemoSnapshot().profile.bio).toBe("Kept in memory");
     } finally {
@@ -32,8 +34,9 @@ describe("isolated marketer demo", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     await demoActions.saveProfile({
       bio: "Saved demo bio",
-      experience_years: 0.5,
-      availability_text: null,
+      experience_years: 0,
+      availability_text: "Weekdays",
+      availability_status: "available",
     });
     const created = await demoActions.createService({
       service_type: "Custom outreach",
@@ -45,9 +48,9 @@ describe("isolated marketer demo", () => {
       scope_text: null,
       price: "125.50",
     });
-    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v1"));
+    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2"));
     expect(persisted.profile.bio).toBe("Saved demo bio");
-    expect(persisted.profile.experience_years).toBe(0.5);
+    expect(persisted.profile.experience_years).toBe(0);
     expect(persisted.services[0]).toMatchObject({
       service_type: "Updated outreach",
       price: "125.50",
@@ -56,6 +59,23 @@ describe("isolated marketer demo", () => {
     expect(getDemoSnapshot().services).toHaveLength(initialDemoState.services.length);
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
+  });
+
+  it("uses backend defaults for omitted profile fields and persists the cleared values", async () => {
+    const saved = await demoActions.saveProfile({ availability_status: "limited" });
+    expect(saved).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited",
+    });
+    const persisted = decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2"));
+    expect(persisted.profile).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited",
+    });
   });
 
   it("reset restores fixtures without retaining private form changes", async () => {
@@ -84,4 +104,42 @@ describe("isolated marketer demo", () => {
   ])("recovers malformed saved state", (raw) => {
     expect(decodeDemoState(raw)).toEqual(initialDemoState);
   });
+});
+
+it("restores old sessions without losing profile or service edits", () => {
+  const old = {
+    ...initialDemoState,
+    contact: undefined,
+    profile: { ...initialDemoState.profile, bio: "Saved before upgrade" },
+    services: [
+      {
+        service_id: 42,
+        service_type: "Saved before upgrade",
+        scope_text: null,
+        price: "125.00",
+        created_at: "2026-09-01T09:00:00Z",
+      },
+    ],
+  };
+  const restored = decodeDemoState(JSON.stringify(old));
+  expect(restored.contact).toEqual(initialDemoState.contact);
+  expect(restored.profile.bio).toBe("Saved before upgrade");
+  expect(restored.services).toEqual([
+    { ...old.services[0], updated_at: old.services[0].created_at },
+  ]);
+});
+it("persists contact changes in the session and resets both profile sections", async () => {
+  await saveDemoContact({ phone: "123", line_id: null });
+  expect(decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2")).contact.phone).toBe(
+    "123",
+  );
+  await demoActions.saveProfile({
+    bio: "Changed",
+    experience_years: 0,
+    availability_text: "Weekdays",
+    availability_status: "available",
+  });
+  resetDemo();
+  expect(getDemoSnapshot().contact).toEqual(initialDemoState.contact);
+  expect(getDemoSnapshot().profile).toEqual(initialDemoState.profile);
 });

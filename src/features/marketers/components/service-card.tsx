@@ -1,3 +1,5 @@
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Box, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,24 +15,24 @@ export interface ServiceCardProps {
 /** Display-only by default; management callbacks are provided only by the owner catalog. */
 export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
   return (
-    <article className="flex min-w-0 flex-col rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-5 sm:p-6">
+    <Card className="mk-card mk-service-card flex flex-col gap-0">
       <div className="mb-5 flex items-center justify-between gap-3">
-        <div className="flex size-10 items-center justify-center rounded-xl bg-[#e42278]/10 text-[var(--mk-accent)]">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--mk-service-soft)] text-[var(--mk-service-color)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--mk-service-color)_22%,transparent)]">
           <Box className="size-5" aria-hidden="true" />
         </div>
-        <span className="rounded-full bg-[#15803d]/10 px-2.5 py-1 text-xs font-medium text-[var(--mk-success,#15803d)]">
+        <Badge className="rounded-full bg-[var(--mk-positive-soft)] px-2.5 py-1 text-xs font-medium text-[var(--mk-success)]">
           Published
-        </span>
+        </Badge>
       </div>
       <h2 className="text-lg leading-snug font-semibold break-words text-[var(--mk-text)]">
         {service.service_type}
       </h2>
-      <p className="mt-3 mb-6 flex-1 text-sm leading-6 break-words whitespace-pre-wrap text-[var(--mk-muted)]">
+      <p className="mk-service-scope mt-3 mb-6 flex-1 break-words whitespace-pre-wrap text-[var(--mk-muted)]">
         {service.scope_text?.trim() ? service.scope_text : "Not specified"}
       </p>
       <div className="border-t border-[var(--mk-border)] pt-4">
         <p className="mb-1 text-xs text-[var(--mk-muted)]">Standard pricing</p>
-        <p className="text-2xl font-semibold tracking-tight text-[var(--mk-text)]">
+        <p className="mk-service-price text-2xl font-semibold tracking-tight">
           ฿{formatBahtAmount(service.price)}
         </p>
         {(onEdit || onDelete) && (
@@ -40,7 +42,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
                 variant="outline"
                 onClick={onEdit}
                 aria-label={`Edit ${service.service_type}`}
-                className="h-10 flex-1 border-[var(--mk-border)] bg-transparent text-[var(--mk-text)] hover:bg-[var(--mk-bg)]"
+                className="mk-secondary-button mk-edit-button flex-1"
               >
                 <Pencil aria-hidden="true" />
                 Edit service
@@ -51,7 +53,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
                 variant="ghost"
                 onClick={onDelete}
                 aria-label={`Delete ${service.service_type}`}
-                className="size-10 text-[var(--mk-danger,#b91c1c)] hover:bg-red-500/10"
+                className="size-11 rounded-xl text-[var(--mk-danger,#b91c1c)] hover:bg-red-500/10"
               >
                 <Trash2 aria-hidden="true" />
               </Button>
@@ -59,6 +61,6 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
           </div>
         )}
       </div>
-    </article>
+    </Card>
   );
 }

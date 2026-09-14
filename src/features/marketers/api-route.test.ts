@@ -1,3 +1,4 @@
+import { initialDemoState } from "./demo/store";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PUT as saveProfile } from "@/app/api/marketer/route";
@@ -15,9 +16,21 @@ vi.mock("@/lib/auth/origin", () => ({ isAllowedFrontendOrigin: vi.fn() }));
 vi.mock("@/lib/auth/session", () => ({ getSession: vi.fn() }));
 
 const input = { service_type: "Custom distribution", scope_text: null, price: "50.00" };
-const service = { ...input, service_id: 7, user_id: 2, created_at: "2026-09-06T00:00:00Z" };
-const profileInput = { bio: null, experience_years: 1.5, availability_text: null };
-const profile = { ...profileInput, user_id: 2, name: "Demo marketer" };
+const service = {
+  ...input,
+  service_id: 7,
+  created_at: "2026-09-06T00:00:00Z",
+  updated_at: "2026-09-06T00:00:00Z",
+};
+const profileInput = {
+  bio: "Bio",
+  experience_years: 1,
+  availability_text: "Weekdays",
+  availability_status: "available" as const,
+  expertise: [],
+  campuses: [],
+};
+const profile = { ...initialDemoState.profile, ...profileInput, name: "Demo marketer" };
 const context = { params: Promise.resolve({ id: "7" }) };
 
 function request(method: string, body?: unknown): Request {
@@ -76,13 +89,41 @@ describe("marketer mutation BFF boundary", () => {
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ status: "success", data: profile });
     expect(fetchBackend).toHaveBeenCalledWith(
-      "/api/v1/marketers/me",
+      "/api/v1/me/marketer-profile",
       expect.objectContaining({
-        method: "PUT",
+        method: "PATCH",
         headers: { Authorization: "Bearer test-session" },
         body: JSON.stringify(profileInput),
       }),
     );
+  });
+
+  it("forwards omitted optional profile values and rejects explicit nulls", async () => {
+    const partialInput = { availability_status: "limited" as const };
+    const defaultedProfile = {
+      ...profile,
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+      availability_status: "limited" as const,
+    };
+    vi.mocked(fetchBackend).mockResolvedValueOnce(upstream(defaultedProfile));
+    const response = await saveProfile(request("PUT", partialInput));
+    expect(response.status).toBe(200);
+    expect(fetchBackend).toHaveBeenCalledWith(
+      "/api/v1/me/marketer-profile",
+      expect.objectContaining({ body: JSON.stringify(partialInput) }),
+    );
+    expect((await response.json()).data).toMatchObject({
+      bio: "",
+      experience_years: 0,
+      availability_text: "",
+    });
+
+    expect(
+      (await saveProfile(request("PUT", { availability_status: "available", bio: null }))).status,
+    ).toBe(422);
+    expect(fetchBackend).toHaveBeenCalledTimes(1);
   });
 
   it("publishes and edits service announcements", async () => {
@@ -92,8 +133,8 @@ describe("marketer mutation BFF boundary", () => {
     const response = await update(request("PUT", { ...input, price: "75.00" }), context);
     expect(await response.json()).toMatchObject({ data: { service_id: 7, price: "75.00" } });
     expect(fetchBackend).toHaveBeenLastCalledWith(
-      "/api/v1/services/7",
-      expect.objectContaining({ method: "PUT" }),
+      "/api/v1/me/services/7",
+      expect.objectContaining({ method: "PATCH" }),
     );
   });
 
@@ -133,13 +174,13 @@ describe("marketer mutation BFF boundary", () => {
     expect(await response.json()).toEqual(error);
   });
 
-  it("passes through a successful empty 204 deletion response", async () => {
-    vi.mocked(fetchBackend).mockResolvedValue(new Response(null, { status: 204 }));
+  it("validates the backend deletion confirmation and returns an empty BFF response", async () => {
+    vi.mocked(fetchBackend).mockResolvedValue(upstream({ service_id: 7, deleted: true }));
     const response = await remove(request("DELETE"), context);
     expect(response.status).toBe(204);
     expect(await response.text()).toBe("");
     expect(fetchBackend).toHaveBeenCalledWith(
-      "/api/v1/services/7",
+      "/api/v1/me/services/7",
       expect.objectContaining({ method: "DELETE", body: undefined }),
     );
   });
@@ -153,3 +194,11 @@ describe("marketer mutation BFF boundary", () => {
     expect((await remove(request("DELETE"), context)).status).toBe(502);
   });
 });
+
+it.each([{ service_id: 8, deleted: true }, { service_id: 7, deleted: false }, null])(
+  "rejects an invalid deletion confirmation %j",
+  async (data) => {
+    vi.mocked(fetchBackend).mockResolvedValue(upstream(data));
+    expect((await remove(request("DELETE"), context)).status).toBe(502);
+  },
+);

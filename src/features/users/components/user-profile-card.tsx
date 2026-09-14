@@ -1,12 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useContactForm } from "@/features/users/use-contact-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getDisplayError } from "@/lib/api/errors";
 import { updateCurrentUser } from "@/features/users/browser-api";
-import { contactValidationMessage, normalizeContactUpdate } from "@/features/users/schemas";
 import type { User } from "@/features/users/types";
 
 type UserProfileCardProps = {
@@ -14,38 +12,8 @@ type UserProfileCardProps = {
 };
 
 export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
-  const [user, setUser] = useState(initialUser);
-  const [phone, setPhone] = useState(initialUser.phone ?? "");
-  const [lineID, setLineID] = useState(initialUser.line_id ?? "");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = normalizeContactUpdate({ phone, line_id: lineID });
-    const validationError = contactValidationMessage(input);
-    if (validationError) {
-      setError(validationError);
-      setSuccess(null);
-      return;
-    }
-
-    setIsPending(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      const updatedUser = await updateCurrentUser(input);
-      setUser(updatedUser);
-      setPhone(updatedUser.phone ?? "");
-      setLineID(updatedUser.line_id ?? "");
-      setSuccess("Contact information saved.");
-    } catch (requestError) {
-      setError(getDisplayError(requestError));
-    } finally {
-      setIsPending(false);
-    }
-  }
+  const { user, phone, lineID, error, success, isPending, setPhone, setLineID, handleSubmit } =
+    useContactForm(initialUser, updateCurrentUser);
 
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
@@ -67,11 +35,12 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
               className="text-xs font-medium uppercase tracking-wide text-zinc-500"
               htmlFor="profile-phone"
             >
-              Phone
+              Phone number <span aria-hidden="true">*</span>
             </label>
             <Input
               id="profile-phone"
               className="mt-2"
+              required
               autoComplete="tel"
               maxLength={20}
               placeholder="Not provided"
@@ -104,9 +73,7 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
             </p>
           </div>
         </div>
-        <p className="mt-3 text-xs text-zinc-500">
-          Both fields are optional. Your email remains available as a contact channel.
-        </p>
+        <p className="mt-3 text-xs text-zinc-500">Phone number is required. LINE ID is optional.</p>
         {error ? (
           <p className="mt-4 text-sm text-red-700" role="alert">
             {error}

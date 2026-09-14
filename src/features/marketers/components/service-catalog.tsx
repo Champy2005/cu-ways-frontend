@@ -6,11 +6,23 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { MarketerActions, Service } from "@/features/marketers/types";
 
-import { DeleteServiceDialog } from "./delete-service-dialog";
 import { ServiceCard } from "./service-card";
-import { ServiceDialog } from "./service-dialog";
+import { lazy, Suspense, type SyntheticEvent } from "react";
+const loadEditor = () => import("./catalog-dialog");
+const CatalogDialog = lazy(() =>
+  loadEditor().then((module) => ({ default: module.CatalogDialog })),
+);
+function preloadEditor() {
+  void loadEditor().catch(() => {
+    /* Opening the dialog retries loading. */
+  });
+}
 
-type ServiceEditor = { type: "create" } | { type: "edit" | "delete"; service: Service };
+function preloadOnIntent(event: SyntheticEvent) {
+  if ((event.target as Element).closest("button")) preloadEditor();
+}
+
+export type ServiceEditor = { type: "create" } | { type: "edit" | "delete"; service: Service };
 
 export interface ServiceCatalogProps {
   services: Service[];
@@ -63,21 +75,25 @@ export function ServiceCatalog({
   }
 
   return (
-    <section aria-labelledby="service-catalog-heading">
-      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <section
+      aria-labelledby="service-catalog-heading"
+      onPointerOver={actions ? preloadOnIntent : undefined}
+      onFocus={actions ? preloadOnIntent : undefined}
+    >
+      <div className="mk-page-heading flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-[var(--mk-accent)] uppercase">
+          <p className="mk-eyebrow">
             {actions ? "Your professional workspace" : "Service catalog"}
           </p>
           <h1
             ref={headingRef}
             tabIndex={-1}
             id="service-catalog-heading"
-            className="text-[28px] leading-tight font-semibold tracking-tight break-words text-[var(--mk-text)] sm:text-3xl"
+            className="mk-page-title break-words"
           >
             {actions ? "My services" : `${marketer.name}’s services`}
           </h1>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--mk-muted)]">
+          <p className="mk-page-description">
             {actions
               ? "Turn your campus connections into opportunities. Create packages that show creators what you can do."
               : "Explore published packages, delivery scope, and standard pricing."}
@@ -87,7 +103,7 @@ export function ServiceCatalog({
           <Button
             ref={publishRef}
             onClick={() => openEditor({ type: "create" })}
-            className="h-11 rounded-xl bg-[#e42278] px-5 text-white hover:bg-[#ca1566]"
+            className="mk-publish-button"
           >
             <Plus aria-hidden="true" />
             Publish a service
@@ -97,7 +113,7 @@ export function ServiceCatalog({
       {notice && (
         <p
           role="status"
-          className="mb-5 rounded-xl border border-emerald-600/20 bg-emerald-600/10 px-4 py-3 text-sm text-[var(--mk-success,#15803d)]"
+          className="mb-5 rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_22%,transparent)] bg-[var(--mk-positive-soft)] px-4 py-3 text-sm text-[var(--mk-success)]"
         >
           {notice}
         </p>
@@ -111,7 +127,7 @@ export function ServiceCatalog({
       {services.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[var(--mk-border)] bg-[var(--mk-surface)] px-6 py-14 text-center">
           <Box
-            className="mx-auto mb-5 size-11 text-[var(--mk-accent)]"
+            className="mx-auto mb-5 size-11 text-[var(--mk-muted)]"
             strokeWidth={1.5}
             aria-hidden="true"
           />
@@ -123,7 +139,7 @@ export function ServiceCatalog({
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mk-service-grid">
           {services.map((service) => (
             <ServiceCard
               key={service.service_id}
@@ -135,61 +151,28 @@ export function ServiceCatalog({
         </div>
       )}
       {actions && editor && (
-        <CatalogDialog
-          editor={editor}
-          actions={actions}
-          finalFocus={finalFocus}
-          onClose={() => setEditor(null)}
-          onSaved={saveService}
-          onDeleted={(service) =>
-            applyServices(
-              services.filter((item) => item.service_id !== service.service_id),
-              "Service deleted successfully.",
-            )
+        <Suspense
+          fallback={
+            <p role="status" className="py-4">
+              Loading service editor...
+            </p>
           }
-        />
+        >
+          <CatalogDialog
+            editor={editor}
+            actions={actions}
+            finalFocus={finalFocus}
+            onClose={() => setEditor(null)}
+            onSaved={saveService}
+            onDeleted={(service) =>
+              applyServices(
+                services.filter((item) => item.service_id !== service.service_id),
+                "Service deleted successfully.",
+              )
+            }
+          />
+        </Suspense>
       )}
     </section>
-  );
-}
-
-function CatalogDialog({
-  editor,
-  actions,
-  onSaved,
-  onDeleted,
-  onClose,
-  finalFocus,
-}: {
-  editor: ServiceEditor;
-  actions: NonNullable<ServiceCatalogProps["actions"]>;
-  onSaved: (service: Service) => void;
-  onDeleted: (service: Service) => void;
-  onClose: () => void;
-  finalFocus: () => HTMLElement | null;
-}) {
-  if (editor.type === "delete") {
-    return (
-      <DeleteServiceDialog
-        service={editor.service}
-        onDelete={actions.deleteService}
-        onDeleted={() => onDeleted(editor.service)}
-        onClose={onClose}
-        finalFocus={finalFocus}
-      />
-    );
-  }
-  return (
-    <ServiceDialog
-      service={editor.type === "edit" ? editor.service : undefined}
-      onSave={
-        editor.type === "edit"
-          ? (input) => actions.updateService(editor.service.service_id, input)
-          : actions.createService
-      }
-      onSaved={onSaved}
-      onClose={onClose}
-      finalFocus={finalFocus}
-    />
   );
 }

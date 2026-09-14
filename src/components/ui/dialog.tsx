@@ -28,6 +28,27 @@ function Dialog(props: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root {...props} />;
 }
 
+function DialogPortal(props: DialogPrimitive.Portal.Props) {
+  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
+}
+
+function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) {
+  return (
+    <DialogPrimitive.Backdrop
+      data-slot="dialog-overlay"
+      className={cn(
+        "fixed inset-0 z-50 bg-foreground/40 transition-opacity data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function DialogPopup({ className, ...props }: DialogPrimitive.Popup.Props) {
+  return <DialogPrimitive.Popup data-slot="dialog-content" className={className} {...props} />;
+}
+
 function DialogTrigger({ className, ...props }: DialogPrimitive.Trigger.Props) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" className={className} {...props} />;
 }
@@ -82,11 +103,8 @@ function DialogContent({
   ...props
 }: DialogPrimitive.Popup.Props & VariantProps<typeof dialogPopupVariants>) {
   return (
-    <DialogPrimitive.Portal>
-      <DialogPrimitive.Backdrop
-        data-slot="dialog-backdrop"
-        className="fixed inset-0 z-50 bg-foreground/40 transition-opacity data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
-      />
+    <DialogPortal>
+      <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(dialogPopupVariants({ position, className }))}
@@ -94,7 +112,7 @@ function DialogContent({
       >
         {children}
       </DialogPrimitive.Popup>
-    </DialogPrimitive.Portal>
+    </DialogPortal>
   );
 }
 
@@ -106,6 +124,9 @@ export {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
+  DialogPopup,
+  DialogPortal,
   DialogTitle,
   DialogTrigger,
   dialogPopupVariants,

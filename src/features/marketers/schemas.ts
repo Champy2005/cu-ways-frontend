@@ -30,13 +30,51 @@ function hasExactKeys(value: Record<string, unknown>, keys: string[]): boolean {
   return Object.keys(value).length === keys.length && keys.every((key) => key in value);
 }
 
+export const AVAILABILITY_STATUSES = ["available", "limited", "unavailable"] as const;
+
+function profileText(value: unknown): value is string {
+  return typeof value === "string" && value.length <= 5000;
+}
+function experienceYears(value: unknown): value is number {
+  return isNonnegativeNumber(value) && Number.isInteger(value) && value <= 80;
+}
+function isAvailabilityStatus(value: unknown): value is (typeof AVAILABILITY_STATUSES)[number] {
+  return AVAILABILITY_STATUSES.some((status) => status === value);
+}
+function optionalField(
+  value: Record<string, unknown>,
+  key: string,
+  validate: (field: unknown) => boolean,
+): boolean {
+  return !Object.prototype.hasOwnProperty.call(value, key) || validate(value[key]);
+}
+function slugList(value: unknown): boolean {
+  return (
+    value === undefined ||
+    (Array.isArray(value) &&
+      value.every(
+        (slug) => typeof slug === "string" && slug.trim().length > 0 && slug.length <= 80,
+      ))
+  );
+}
 export function validateProfileInput(value: unknown): value is ProfileInput {
   if (!isRecord(value)) return false;
+  const allowed = [
+    "bio",
+    "experience_years",
+    "availability_status",
+    "availability_text",
+    "expertise",
+    "campuses",
+  ];
   return (
-    hasExactKeys(value, ["bio", "experience_years", "availability_text"]) &&
-    isNullableText(value.bio) &&
-    (value.experience_years === null || isNonnegativeNumber(value.experience_years)) &&
-    isNullableText(value.availability_text)
+    Object.keys(value).every((key) => allowed.includes(key)) &&
+    optionalField(value, "bio", profileText) &&
+    optionalField(value, "experience_years", experienceYears) &&
+    optionalField(value, "availability_text", profileText) &&
+    isAvailabilityStatus(value.availability_status) &&
+    slugList(value.expertise) &&
+    slugList(value.campuses)
   );
 }
 
@@ -50,6 +88,7 @@ export function validateServiceInput(value: unknown): value is ServiceInput {
     hasExactKeys(value, ["service_type", "scope_text", "price"]) &&
     isServiceType(value.service_type) &&
     isNullableText(value.scope_text) &&
+    (value.scope_text === null || value.scope_text.length <= 5000) &&
     isServicePrice(value.price)
   );
 }
@@ -58,21 +97,29 @@ export function parseProfileForm(input: {
   bio: string;
   experience_years: string;
   availability_text: string;
+  availability_status: string;
 }): FormResult<ProfileInput> {
+  const bio = input.bio.trim();
   const years = input.experience_years.trim();
-  if (years && (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(years) || !Number.isFinite(Number(years)))) {
-    return {
-      success: false,
-      errors: { experience_years: "Enter a valid number of years, zero or greater." },
-    };
-  }
+  const availabilityText = input.availability_text.trim();
+  const errors: Partial<Record<keyof ProfileInput, string>> = {};
+  if (bio.length > 5000) errors.bio = "Bio must be 5,000 characters or fewer.";
+  if (availabilityText.length > 5000)
+    errors.availability_text = "Availability details must be 5,000 characters or fewer.";
+  if (years && (!/^\d+$/.test(years) || Number(years) > 80))
+    errors.experience_years = "Enter a whole number of years from 0 to 80.";
+  const status = isAvailabilityStatus(input.availability_status)
+    ? input.availability_status
+    : undefined;
+  if (!status) errors.availability_status = "Choose your availability status.";
+  if (Object.keys(errors).length || !status) return { success: false, errors };
+  const data: ProfileInput = { availability_status: status };
+  if (bio) data.bio = bio;
+  if (years) data.experience_years = Number(years);
+  if (availabilityText) data.availability_text = availabilityText;
   return {
     success: true,
-    data: {
-      bio: input.bio.trim() || null,
-      experience_years: years ? Number(years) : null,
-      availability_text: input.availability_text.trim() || null,
-    },
+    data,
   };
 }
 
@@ -94,6 +141,8 @@ export function parseServiceForm(input: {
       ? "Service name must be 100 characters or fewer."
       : "Choose a service type or enter a custom service name.";
   }
+  if (input.scope_text.length > 5000)
+    errors.scope_text = "Scope must be 5,000 characters or fewer.";
   if (!isServicePrice(price)) {
     errors.price = "Enter a price from ฿0 to ฿99,999,999.99 with at most two decimal places.";
   }

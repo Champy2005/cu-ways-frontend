@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# figma ui and layout
+/figma
+
+# serena local mcp
+/.serena

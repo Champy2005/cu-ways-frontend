@@ -1,3 +1,4 @@
+import { initialDemoState } from "../demo/store";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -5,11 +6,12 @@ import { PerformanceDashboard } from "@/features/marketers/components/performanc
 import type { MarketerProfile } from "@/features/marketers/types";
 
 const profile: MarketerProfile = {
+  ...initialDemoState.profile,
   user_id: 5,
   name: "Nila Example",
-  bio: null,
-  experience_years: null,
-  availability_text: null,
+  bio: "Campus outreach",
+  experience_years: 0,
+  availability_text: "Weekdays",
 };
 
 afterEach(cleanup);
