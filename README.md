@@ -106,9 +106,11 @@ and branch names, coverage policy, and future full-stack testing plan, see
 The frontend includes professional profile editing at `/marketer/profile`, service management at
 `/marketer/services`, a private performance summary at `/marketer/dashboard`, and signed-in service
 viewing at `/marketers/[id]/services`. Open **Marketer workspace** from the existing dashboard.
-Profile and service management use the published backend endpoints. Private performance statistics
-and public creator catalogs remain explicitly unavailable until dedicated endpoints are implemented;
-live pages never substitute sample data.
+Profile management, service management, and private performance statistics use the published backend
+endpoints. Creator-facing discovery at `/marketers` uses the backend marketer-search contract, including
+price, expertise, campus, experience, availability, rating-sort, and pagination parameters. The legacy
+`/marketers/[id]/services` viewer remains explicitly unavailable until a public marketer-by-ID catalog
+endpoint exists; live pages never substitute sample data.
 
 To review all frontend interactions with fictional data, enable the local demo:
 

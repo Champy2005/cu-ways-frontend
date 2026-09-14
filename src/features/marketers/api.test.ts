@@ -19,8 +19,20 @@ describe("marketer server queries", () => {
     vi.mocked(serverApiGet).mockRejectedValueOnce(error);
     await expect(getMyProfile()).rejects.toBe(error);
   });
-  it("does not request endpoints that do not exist", async () => {
-    await expect(getMyStats()).rejects.toMatchObject({ code: "feature_unavailable" });
+  it("uses the published private statistics endpoint", async () => {
+    vi.mocked(serverApiGet).mockResolvedValueOnce({
+      total_completed_jobs: 3,
+      average_rating: 4.5,
+      total_earnings: "1250.00",
+    });
+    await expect(getMyStats()).resolves.toEqual({
+      total_jobs_completed: 3,
+      average_rating: 4.5,
+      total_earnings: "1250.00",
+    });
+    expect(serverApiGet).toHaveBeenLastCalledWith("/api/v1/me/statistics");
+  });
+  it("does not request a public catalog endpoint that does not exist", async () => {
     await expect(getPublicCatalog(2)).rejects.toMatchObject({ code: "feature_unavailable" });
     await expect(getPublicCatalog(-1)).rejects.toMatchObject({ status: 404 });
     expect(serverApiGet).not.toHaveBeenCalled();

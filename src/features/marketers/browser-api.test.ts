@@ -4,7 +4,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { liveMarketerActions } from "@/features/marketers/browser-api";
 
 const input = { service_type: "Campus distribution", scope_text: null, price: "250.00" };
-const service = { ...input, service_id: 7, created_at: "2026-09-06T00:00:00Z" };
+const service = {
+  ...input,
+  service_id: 7,
+  created_at: "2026-09-06T00:00:00Z",
+  updated_at: "2026-09-06T00:00:00Z",
+};
 
 afterEach(() => vi.unstubAllGlobals());
 

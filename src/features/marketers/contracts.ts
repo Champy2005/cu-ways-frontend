@@ -82,13 +82,18 @@ export function readService(value: unknown): Service {
     scope_text: value.scope_text,
     price: value.price,
   };
-  if (!validateServiceInput(input) || typeof value.created_at !== "string") {
+  if (
+    !validateServiceInput(input) ||
+    typeof value.created_at !== "string" ||
+    typeof value.updated_at !== "string"
+  ) {
     return invalidContract();
   }
   return {
     service_id: value.service_id,
     ...input,
     created_at: value.created_at,
+    updated_at: value.updated_at,
   };
 }
 
@@ -99,18 +104,21 @@ export function readServices(value: unknown): Service[] {
 
 export function readMarketerStats(value: unknown): MarketerStats {
   if (!isRecord(value)) return invalidContract();
-  const { total_jobs_completed, average_rating, total_earnings } = value;
-  if (!isNonnegativeNumber(total_jobs_completed) || !Number.isSafeInteger(total_jobs_completed)) {
+  const { total_completed_jobs, average_rating, total_earnings } = value;
+  if (!isNonnegativeNumber(total_completed_jobs) || !Number.isSafeInteger(total_completed_jobs)) {
     return invalidContract();
   }
   if (
-    !isNonnegativeNumber(average_rating) ||
-    average_rating > 5 ||
+    (average_rating !== null && (!isNonnegativeNumber(average_rating) || average_rating > 5)) ||
     !isDecimalAmount(total_earnings)
   ) {
     return invalidContract();
   }
-  return { total_jobs_completed, average_rating, total_earnings };
+  return {
+    total_jobs_completed: total_completed_jobs,
+    average_rating: average_rating ?? 0,
+    total_earnings,
+  };
 }
 
 export function readPublicCatalog(value: unknown): PublicCatalog {

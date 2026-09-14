@@ -14,6 +14,7 @@ const service: Service = {
   scope_text: "LINE groups\n30 responses in three days",
   price: "599.00",
   created_at: "2026-09-01T00:00:00Z",
+  updated_at: "2026-09-01T00:00:00Z",
 };
 
 function setup(services: Service[] = [service]) {

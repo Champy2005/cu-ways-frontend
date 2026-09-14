@@ -15,6 +15,7 @@ const service = {
   scope_text: null,
   price: "50.00",
   created_at: "2026-09-06T00:00:00Z",
+  updated_at: "2026-09-06T00:00:00Z",
 };
 const profile = initialDemoState.profile;
 
@@ -38,6 +39,7 @@ describe("backend marketer response contracts", () => {
     expect(() => readService({ ...service, price: 50 })).toThrow();
     expect(() => readService({ ...service, service_id: -1 })).toThrow();
     expect(() => readService({ ...service, created_at: null })).toThrow();
+    expect(() => readService({ ...service, updated_at: null })).toThrow();
   });
 
   it("projects only public fields from catalog and nested services", () => {
@@ -60,11 +62,15 @@ describe("backend marketer response contracts", () => {
   });
 
   it("distinguishes valid zero statistics from unavailable values", () => {
-    const stats = { total_jobs_completed: 0, average_rating: 0, total_earnings: "0.00" };
-    expect(readMarketerStats(stats)).toEqual(stats);
-    expect(() => readMarketerStats({ ...stats, average_rating: null })).toThrow();
+    const stats = { total_completed_jobs: 0, average_rating: 0, total_earnings: "0.00" };
+    expect(readMarketerStats(stats)).toEqual({
+      total_jobs_completed: 0,
+      average_rating: 0,
+      total_earnings: "0.00",
+    });
+    expect(readMarketerStats({ ...stats, average_rating: null }).average_rating).toBe(0);
     expect(() => readMarketerStats({ ...stats, average_rating: 5.1 })).toThrow();
-    expect(() => readMarketerStats({ ...stats, total_jobs_completed: 1.5 })).toThrow();
+    expect(() => readMarketerStats({ ...stats, total_completed_jobs: 1.5 })).toThrow();
     expect(() => readMarketerStats({ ...stats, total_earnings: 0 })).toThrow();
     expect(readMarketerStats({ ...stats, total_earnings: "100000000.00" }).total_earnings).toBe(
       "100000000.00",

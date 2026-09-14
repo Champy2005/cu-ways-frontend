@@ -16,7 +16,12 @@ vi.mock("@/lib/auth/origin", () => ({ isAllowedFrontendOrigin: vi.fn() }));
 vi.mock("@/lib/auth/session", () => ({ getSession: vi.fn() }));
 
 const input = { service_type: "Custom distribution", scope_text: null, price: "50.00" };
-const service = { ...input, service_id: 7, created_at: "2026-09-06T00:00:00Z" };
+const service = {
+  ...input,
+  service_id: 7,
+  created_at: "2026-09-06T00:00:00Z",
+  updated_at: "2026-09-06T00:00:00Z",
+};
 const profileInput = {
   bio: "Bio",
   experience_years: 1,

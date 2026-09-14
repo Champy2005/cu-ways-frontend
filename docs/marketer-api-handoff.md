@@ -14,6 +14,8 @@ edited by hand. The Go backend and database are not required for frontend unit c
 | Create service                   | `POST /api/services`        | `POST /api/v1/me/services`           |
 | Edit service                     | `PUT /api/services/{id}`    | `PATCH /api/v1/me/services/{id}`     |
 | Delete service                   | `DELETE /api/services/{id}` | `DELETE /api/v1/me/services/{id}`    |
+| Read private performance         | Server query                | `GET /api/v1/me/statistics`          |
+| Search marketers                 | Server query                | `GET /api/v1/marketers`              |
 | Save contact information         | `PUT /api/profile`          | `PUT /api/v1/users/{session.userId}` |
 
 Browser adapter PUT methods are preserved for compatibility; their server implementations translate
@@ -33,6 +35,12 @@ delete returns `200` with `{ service_id, deleted: true }`. The adapter validates
 confirmation before returning an empty `204` to the browser. Failed/malformed responses never remove
 a service from the displayed list. Saves retain drafts on failure and reflect confirmed responses.
 
+The private statistics response uses `total_completed_jobs`, nullable `average_rating`, and a
+decimal-string `total_earnings`. The frontend maps the job count to its dashboard view model and shows
+an unrated account as `0.00`; it never exposes private earnings on creator-facing routes. Marketer
+discovery forwards only parameters published by the generated search contract. Repeated expertise and
+campus filters remain repeated query parameters, and the unused keyword field is not sent upstream.
+
 ## Required identity fields
 
 Registration requires first name, last name, phone number, and email, with visible asterisks and
@@ -48,11 +56,11 @@ business validation for other clients.
 
 ## Unavailable features
 
-There is no dedicated private statistics endpoint or public marketer-by-ID service catalog endpoint
-in the current backend contract. Live pages show explicit unavailable states and do not call the
-previous proposed URLs, fabricate zero totals, or substitute preview data. The creator-facing search
-API is not used to approximate an individual catalog. Jobs, Messages, discovery, surveys, and role
-switching remain outside this migration.
+There is no public marketer-by-ID service catalog endpoint in the current backend contract. The legacy
+`/marketers/[id]/services` page shows an explicit unavailable state and does not approximate the owner
+catalog from search results. Creator-facing discovery and detail pages use `GET /api/v1/marketers`;
+the temporary detail lookup searches the first 100 marketers until a direct endpoint exists. Recent
+job history, individual reviews, messaging, and hiring actions remain unavailable.
 
 ## Device-specific navigation
 
@@ -77,7 +85,8 @@ marked preview-only in the demo.
 Run `pnpm check` for formatting, lint, route types/TypeScript, unit coverage, dependency audit, and a
 production build. Tests cover required registration/contact fields, request paths and methods,
 profile onboarding, catalog-selection preservation, service CRUD, malformed deletion confirmations,
-permission failures, unavailable endpoints, draft retention, preview isolation, and device selection.
+private-statistics decoding, discovery query mapping, permission failures, unavailable endpoints,
+draft retention, preview isolation, and device selection.
 Browser verification should use desktop and mobile user agents independently at 375, 767, 768, and
 1440px in both themes. Intercept upstream fetches inside the frontend process to exercise real pages
 and BFF adapters without starting Go, Docker, or PostgreSQL.

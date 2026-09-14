@@ -5,7 +5,7 @@ export type ProfileInput = components["schemas"]["MarketerProfileRequest"];
 export type Service = components["schemas"]["Service"];
 export type ServiceInput = Required<components["schemas"]["CreateServiceRequest"]>;
 
-/** Preview-only contracts until dedicated backend endpoints are published. */
+/** UI projection of the published private statistics response. */
 export interface MarketerStats {
   total_jobs_completed: number;
   average_rating: number;

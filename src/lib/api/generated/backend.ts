@@ -188,6 +188,26 @@ export interface paths {
         patch: operations["updateMyService"];
         trace?: never;
     };
+    "/api/v1/me/statistics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get my completed-job statistics
+         * @description Returns statistics for completed jobs whose accepted offer belongs to the authenticated marketer. Earnings include only paid payments, and the average excludes jobs without a review.
+         */
+        get: operations["getMyMarketerStatistics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/marketers": {
         parameters: {
             query?: never;
@@ -382,6 +402,8 @@ export interface components {
             price: string;
             /** Format: date-time */
             created_at: string;
+            /** Format: date-time */
+            updated_at: string;
         };
         CreateServiceRequest: {
             service_type: string;
@@ -411,6 +433,21 @@ export interface components {
                 /** Format: int32 */
                 service_id: number;
                 deleted: boolean;
+            };
+        };
+        MarketerStatisticsResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** Format: int64 */
+                total_completed_jobs: number;
+                /**
+                 * Format: double
+                 * @description Null when none of the completed jobs has a review.
+                 */
+                average_rating: number | null;
+                /** @example 12500.00 */
+                total_earnings: string;
             };
         };
         CreateSurveyRequest: {
@@ -1169,7 +1206,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Service deleted. */
+            /** @description Service owned by the authenticated marketer was soft-deleted. */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1196,7 +1233,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Service not found. */
+            /** @description Service is missing, removed, or owned by another marketer. */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1222,7 +1259,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Service updated. */
+            /** @description Service owned by the authenticated marketer was updated. */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1249,7 +1286,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Service not found. */
+            /** @description Service is missing, removed, or owned by another marketer. */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1260,6 +1297,44 @@ export interface operations {
             };
             /** @description Request validation failed. */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getMyMarketerStatistics: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Marketer performance statistics. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketerStatisticsResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description A marketer profile is required. */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1281,8 +1356,8 @@ export interface operations {
                 min_rating?: number;
                 min_experience_years?: number;
                 availability_status?: "available" | "limited" | "unavailable";
-                /** @description Defaults to lowest matching service price, then rating. */
-                sort?: "price_asc" | "rating_desc";
+                /** @description Sort by matching service price or completed-job rating. NULL prices and ratings are always placed last; ties are resolved by user ID ascending. Defaults to lowest matching service price. */
+                sort?: "price_asc" | "price_desc" | "rating_asc" | "rating_desc";
             };
             header?: never;
             path?: never;

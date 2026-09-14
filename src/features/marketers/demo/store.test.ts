@@ -94,12 +94,22 @@ it("restores old sessions without losing profile or service edits", () => {
     ...initialDemoState,
     contact: undefined,
     profile: { ...initialDemoState.profile, bio: "Saved before upgrade" },
-    services: [],
+    services: [
+      {
+        service_id: 42,
+        service_type: "Saved before upgrade",
+        scope_text: null,
+        price: "125.00",
+        created_at: "2026-09-01T09:00:00Z",
+      },
+    ],
   };
   const restored = decodeDemoState(JSON.stringify(old));
   expect(restored.contact).toEqual(initialDemoState.contact);
   expect(restored.profile.bio).toBe("Saved before upgrade");
-  expect(restored.services).toEqual([]);
+  expect(restored.services).toEqual([
+    { ...old.services[0], updated_at: old.services[0].created_at },
+  ]);
 });
 it("persists contact changes in the session and resets both profile sections", async () => {
   await saveDemoContact({ phone: "123", line_id: null });

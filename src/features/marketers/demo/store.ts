@@ -44,6 +44,7 @@ export const initialDemoState: DemoState = {
         "Distribution channels: Campus common areas and faculty notice boards\nTarget respondents: Chulalongkorn undergraduate students\nExpected delivery: 30–50 responses over 3 days\nProof: Posting screenshots and distribution summary",
       price: "599.00",
       created_at: "2026-09-01T09:00:00Z",
+      updated_at: "2026-09-01T09:00:00Z",
     },
     {
       service_id: 2,
@@ -52,6 +53,7 @@ export const initialDemoState: DemoState = {
         "Thoughtful sharing across student LINE communities. Includes two follow-up posts and a summary of outreach activity.",
       price: "350.00",
       created_at: "2026-09-02T09:00:00Z",
+      updated_at: "2026-09-02T09:00:00Z",
     },
   ],
   stats: { total_jobs_completed: 24, average_rating: 4.8, total_earnings: "12400.00" },
@@ -81,7 +83,8 @@ function validStoredService(value: unknown): value is Service {
     !isRecord(value) ||
     !Number.isSafeInteger(value.service_id) ||
     Number(value.service_id) < 1 ||
-    typeof value.created_at !== "string"
+    typeof value.created_at !== "string" ||
+    typeof value.updated_at !== "string"
   )
     return false;
   return validateServiceInput({
@@ -95,19 +98,21 @@ export function decodeDemoState(raw: string | null): DemoState {
   if (!raw) return initialDemoState;
   try {
     const value: unknown = JSON.parse(raw);
-    if (
-      !isRecord(value) ||
-      !validStoredProfile(value.profile) ||
-      !Array.isArray(value.services) ||
-      !value.services.every(validStoredService)
-    )
+    if (!isRecord(value) || !validStoredProfile(value.profile) || !Array.isArray(value.services))
       return initialDemoState;
-    if (new Set(value.services.map((service) => service.service_id)).size !== value.services.length)
+    // Older demo sessions predate service update timestamps; retain their saved edits.
+    const services = value.services.map((service: unknown) =>
+      isRecord(service) && service.updated_at === undefined
+        ? { ...service, updated_at: service.created_at }
+        : service,
+    );
+    if (!services.every(validStoredService)) return initialDemoState;
+    if (new Set(services.map((service) => service.service_id)).size !== services.length)
       return initialDemoState;
     return {
       contact: restoreContact(value.contact),
       profile: value.profile,
-      services: value.services,
+      services,
       stats: initialDemoState.stats,
       revision: 0,
     };
@@ -180,10 +185,12 @@ export const demoActions: MarketerActions = {
   async createService(input) {
     if (!validateServiceInput(input)) throw new Error("Check your service fields.");
     const current = getDemoSnapshot();
+    const timestamp = new Date().toISOString();
     const service: Service = {
       ...input,
       service_id: Math.max(0, ...current.services.map((entry) => entry.service_id)) + 1,
-      created_at: new Date().toISOString(),
+      created_at: timestamp,
+      updated_at: timestamp,
     };
     saveState({ ...current, services: [service, ...current.services] });
     return service;
@@ -192,7 +199,11 @@ export const demoActions: MarketerActions = {
     requireService(id);
     if (!validateServiceInput(input)) throw new Error("Check your service fields.");
     const current = getDemoSnapshot();
-    const service = { ...current.services.find((entry) => entry.service_id === id)!, ...input };
+    const service = {
+      ...current.services.find((entry) => entry.service_id === id)!,
+      ...input,
+      updated_at: new Date().toISOString(),
+    };
     saveState({
       ...current,
       services: current.services.map((entry) => (entry.service_id === id ? service : entry)),
