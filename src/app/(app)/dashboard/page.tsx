@@ -11,6 +11,11 @@ export default function DashboardPage() {
       <div className="mt-8 grid gap-4 md:grid-cols-3">
         {[
           ["Profile", "Manage your personal information.", "/profile"],
+          [
+            "Marketer workspace",
+            "Manage your professional profile, services, and performance.",
+            "/marketer/dashboard",
+          ],
           ["Surveys", "Share your perspective and discover surveys.", "/surveys"],
           ["Jobs", "Explore opportunities and active work.", "/jobs"],
         ].map(([title, description, href]) => (

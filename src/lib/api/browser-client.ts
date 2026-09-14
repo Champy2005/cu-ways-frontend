@@ -20,6 +20,8 @@ export async function browserApiRequest<T>(path: string, init: RequestInit = {})
     throw apiErrorFromResponse(response.status, payload);
   }
 
+  if (response.status === 204) return undefined as T;
+
   if (!hasData(payload)) {
     throw apiErrorFromResponse(response.status, payload);
   }
