@@ -54,20 +54,28 @@ export function MarketerTheme({
 }
 export function MarketerLogo() {
   const theme = useContext(ThemeContext);
+  const darkSelected = theme === "dark";
   return (
-    <picture>
-      {theme === "system" && (
-        <source media="(prefers-color-scheme: dark)" srcSet="/marketer-assets/logo-dark.svg" />
-      )}
+    <span className="mk-logo-stack">
       <Image
-        src={theme === "dark" ? "/marketer-assets/logo-dark.svg" : "/marketer-assets/logo.svg"}
+        src="/marketer-assets/logo.svg"
         width={152}
         height={42}
-        alt="CU Ways"
-        className="mk-logo"
+        alt={darkSelected ? "" : "CU Ways"}
+        aria-hidden={darkSelected}
+        className="mk-logo mk-logo-light"
         loading="eager"
       />
-    </picture>
+      <Image
+        src="/marketer-assets/logo-dark.svg"
+        width={152}
+        height={42}
+        alt={darkSelected ? "CU Ways" : ""}
+        aria-hidden={!darkSelected}
+        className="mk-logo mk-logo-dark"
+        loading="eager"
+      />
+    </span>
   );
 }
 export function MarketerThemeToggle() {

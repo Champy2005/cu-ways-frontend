@@ -113,7 +113,7 @@ export function ServiceCatalog({
       {notice && (
         <p
           role="status"
-          className="mb-5 rounded-xl border border-[color-mix(in_srgb,var(--mk-accent)_22%,transparent)] bg-[color-mix(in_srgb,var(--mk-accent)_8%,transparent)] px-4 py-3 text-sm text-[var(--mk-accent)]"
+          className="mb-5 rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_22%,transparent)] bg-[var(--mk-positive-soft)] px-4 py-3 text-sm text-[var(--mk-success)]"
         >
           {notice}
         </p>
@@ -127,7 +127,7 @@ export function ServiceCatalog({
       {services.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[var(--mk-border)] bg-[var(--mk-surface)] px-6 py-14 text-center">
           <Box
-            className="mx-auto mb-5 size-11 text-[var(--mk-accent)]"
+            className="mx-auto mb-5 size-11 text-[var(--mk-muted)]"
             strokeWidth={1.5}
             aria-hidden="true"
           />

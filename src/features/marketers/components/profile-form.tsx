@@ -149,7 +149,7 @@ export function ProfileForm(props: ProfileFormProps) {
           </p>
         ) : null}
         {form.success ? (
-          <p role="status" className="text-[var(--mk-accent)]">
+          <p role="status" className="text-[var(--mk-success)]">
             Professional information saved.
           </p>
         ) : null}

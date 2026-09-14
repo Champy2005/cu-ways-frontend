@@ -27,36 +27,36 @@ const cardClassName = "mk-card mk-card-padding gap-0";
 function PerformanceStats({ stats }: { stats: MarketerStats }) {
   return (
     <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-      <Card className={cn(cardClassName, "mk-stat-card col-span-2 sm:col-span-1")}>
+      <Card className={cn(cardClassName, "mk-stat-card mk-stat-earnings col-span-2 sm:col-span-1")}>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <dt className="mk-stat-label">Total earnings</dt>
-          <span className="inline-flex items-center gap-1 text-[11px] text-[var(--mk-muted)]">
+          <span className="mk-stat-private inline-flex items-center gap-1 text-[11px]">
             <Eye aria-hidden="true" className="size-3" /> Only visible to you
           </span>
         </div>
         <dd className="mk-stat-value mt-4 flex items-baseline gap-2 tabular-nums">
-          <span aria-hidden="true" className="text-3xl text-[var(--mk-accent)]">
+          <span aria-hidden="true" className="text-3xl text-[var(--mk-secondary)]">
             ฿
           </span>
           <span className="min-w-0 wrap-anywhere">{formatBahtAmount(stats.total_earnings)}</span>
           <span className="sr-only">Thai baht</span>
         </dd>
       </Card>
-      <Card className={cn(cardClassName, "mk-stat-card")}>
+      <Card className={cn(cardClassName, "mk-stat-card mk-stat-completed")}>
         <dt className="mk-stat-label">Completed jobs</dt>
         <dd className="mk-stat-value mt-4 flex items-center gap-2 tabular-nums">
-          <CheckSquare2 aria-hidden="true" className="size-6 shrink-0 text-[var(--mk-accent)]" />
+          <CheckSquare2 aria-hidden="true" className="size-6 shrink-0 text-[var(--mk-success)]" />
           <span className="min-w-0 wrap-anywhere">
             {stats.total_jobs_completed.toLocaleString("en-TH")}
           </span>
         </dd>
       </Card>
-      <Card className={cn(cardClassName, "mk-stat-card")}>
+      <Card className={cn(cardClassName, "mk-stat-card mk-stat-rating")}>
         <dt className="mk-stat-label">Average rating</dt>
         <dd className="mk-stat-value mt-4 flex flex-wrap items-center gap-1.5 tabular-nums">
           <Star
             aria-hidden="true"
-            className="size-6 fill-[var(--mk-accent)] text-[var(--mk-accent)]"
+            className="size-6 fill-[var(--mk-caution)] text-[var(--mk-caution)]"
           />
           {stats.average_rating.toFixed(2)}
           <span className="text-xs font-normal text-[var(--mk-muted)]">/ 5.0</span>
@@ -98,8 +98,8 @@ function RecentJobs({ jobs }: { jobs: RecentJob[] }) {
                     className={cn(
                       "inline-flex items-center gap-1.5",
                       job.status === "Completed"
-                        ? "text-[var(--mk-accent)]"
-                        : "text-[var(--mk-muted)]",
+                        ? "border-[color-mix(in_srgb,var(--mk-success)_28%,var(--mk-border))] bg-[var(--mk-positive-soft)] text-[var(--mk-success)]"
+                        : "border-[color-mix(in_srgb,var(--mk-caution)_28%,var(--mk-border))] bg-[var(--mk-caution-soft)] text-[var(--mk-caution)]",
                     )}
                   >
                     <span aria-hidden="true" className="size-2 rounded-full bg-current" />
@@ -107,7 +107,7 @@ function RecentJobs({ jobs }: { jobs: RecentJob[] }) {
                   </Badge>
                 </div>
               </div>
-              <p className="max-w-[45%] text-right text-lg font-medium wrap-anywhere tabular-nums">
+              <p className="mk-job-price max-w-[45%] text-right text-lg font-medium wrap-anywhere tabular-nums">
                 ฿{formatBahtAmount(job.price)}
               </p>
             </li>

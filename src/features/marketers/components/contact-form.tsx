@@ -73,7 +73,7 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
           </FieldError>
         )}
         {form.success && (
-          <p role="status" className="text-sm text-[var(--mk-accent)]">
+          <p role="status" className="text-sm text-[var(--mk-success)]">
             {form.success}
           </p>
         )}

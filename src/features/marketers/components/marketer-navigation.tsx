@@ -51,6 +51,7 @@ export function MarketerNavigation({
           key={id}
           href={demo ? `/demo/marketer?view=${id}` : `/marketer/${id}`}
           aria-current={active === id ? "page" : undefined}
+          data-view={id}
           className="mk-nav-link"
           prefetch={demo ? false : undefined}
           onClick={(event) => {

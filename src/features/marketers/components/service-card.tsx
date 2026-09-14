@@ -17,10 +17,10 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
   return (
     <Card className="mk-card mk-service-card flex flex-col gap-0">
       <div className="mb-5 flex items-center justify-between gap-3">
-        <div className="flex size-10 items-center justify-center rounded-xl bg-[#e42278]/10 text-[var(--mk-accent)]">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--mk-service-soft)] text-[var(--mk-service-color)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--mk-service-color)_22%,transparent)]">
           <Box className="size-5" aria-hidden="true" />
         </div>
-        <Badge className="rounded-full bg-[color-mix(in_srgb,var(--mk-accent)_10%,transparent)] px-2.5 py-1 text-xs font-medium text-[var(--mk-accent)]">
+        <Badge className="rounded-full bg-[var(--mk-positive-soft)] px-2.5 py-1 text-xs font-medium text-[var(--mk-success)]">
           Published
         </Badge>
       </div>
@@ -32,7 +32,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
       </p>
       <div className="border-t border-[var(--mk-border)] pt-4">
         <p className="mb-1 text-xs text-[var(--mk-muted)]">Standard pricing</p>
-        <p className="text-2xl font-semibold tracking-tight text-[var(--mk-text)]">
+        <p className="mk-service-price text-2xl font-semibold tracking-tight">
           ฿{formatBahtAmount(service.price)}
         </p>
         {(onEdit || onDelete) && (
@@ -42,7 +42,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
                 variant="outline"
                 onClick={onEdit}
                 aria-label={`Edit ${service.service_type}`}
-                className="mk-secondary-button flex-1"
+                className="mk-secondary-button mk-edit-button flex-1"
               >
                 <Pencil aria-hidden="true" />
                 Edit service

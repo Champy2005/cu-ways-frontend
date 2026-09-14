@@ -61,6 +61,7 @@ export default function MarketerMobileMenu({
             <DropdownMenuItem
               key={id}
               aria-current={selected === id ? "page" : undefined}
+              data-view={id}
               render={
                 <Link
                   href={demo ? `/demo/marketer?view=${id}` : `/marketer/${id}`}
