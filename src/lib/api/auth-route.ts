@@ -4,6 +4,7 @@ import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
 import { extractData, isRecord } from "@/lib/api/envelope";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
+import { getSessionClaims } from "@/lib/auth/token";
 import {
   validateLoginInput,
   normalizeRegisterInput,
@@ -92,6 +93,7 @@ export async function handleAuthRequest(
 
   const safeAuthData = { ...authData };
   delete safeAuthData.access_token;
+  safeAuthData.role = getSessionClaims(token)?.role ?? null;
   const safePayload = { ...payload, data: safeAuthData };
   const response = NextResponse.json(safePayload, { status: upstream.status });
   response.cookies.set({
