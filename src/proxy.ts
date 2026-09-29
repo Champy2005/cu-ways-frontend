@@ -28,5 +28,6 @@ export const config = {
     "/admin/:path*",
     "/marketer/:path*",
     "/marketers/:path*",
+    "/creator/:path*",
   ],
 };
