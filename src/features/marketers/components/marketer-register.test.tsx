@@ -6,7 +6,7 @@ import { MarketerRegister } from "./marketer-register";
 afterEach(cleanup);
 
 describe("MarketerRegister", () => {
-  it("invites a first-time marketer to create the account through profile onboarding", () => {
+  it("invites a first-time marketer to the create account page", () => {
     render(<MarketerRegister />);
 
     expect(
@@ -14,7 +14,7 @@ describe("MarketerRegister", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Create" })).toHaveAttribute(
       "href",
-      "/marketer/profile",
+      "/marketer/create-account",
     );
   });
 });

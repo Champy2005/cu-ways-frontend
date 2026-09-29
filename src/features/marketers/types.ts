@@ -26,3 +26,6 @@ export interface MarketerActions {
 
 export type FormResult<T> =
   { success: true; data: T } | { success: false; errors: Partial<Record<keyof T, string>> };
+
+/** Profile screens either edit an existing marketer or create the marketer account. */
+export type ProfileMode = "settings" | "create";

@@ -5,7 +5,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { isRecord } from "@/lib/api/envelope";
 import { parseProfileForm } from "@/features/marketers/schemas";
-import type { MarketerProfile, ProfileInput } from "@/features/marketers/types";
+import type { MarketerProfile, ProfileInput, ProfileMode } from "@/features/marketers/types";
 
 type ProfileFields = Record<
   "bio" | "experience_years" | "availability_text" | "availability_status",
@@ -16,6 +16,8 @@ export type ProfileFieldErrors = Partial<
 >;
 
 export type ProfileFormProps = {
+  /** "create" words the submit and success text as marketer account creation. */
+  mode?: ProfileMode;
   profile: MarketerProfile;
   onSave: (input: ProfileInput) => Promise<MarketerProfile>;
   onProfileChange?: (profile: MarketerProfile) => void;
@@ -47,11 +49,18 @@ function profileFieldErrors(error: unknown): ProfileFieldErrors {
   return errors;
 }
 
-export function useProfessionalProfile({ profile, onSave, onProfileChange }: ProfileFormProps) {
+export function useProfessionalProfile({
+  mode = "settings",
+  profile,
+  onSave,
+  onProfileChange,
+}: ProfileFormProps) {
   const [values, setValues] = useState(() => profileFields(profile));
   const [errors, setErrors] = useState<ProfileFieldErrors>({});
   const [requestError, setRequestError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  // The mode can change once the account exists, so remember which kind of save succeeded.
+  const [savedMode, setSavedMode] = useState<ProfileMode>("settings");
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
 
@@ -81,6 +90,7 @@ export function useProfessionalProfile({ profile, onSave, onProfileChange }: Pro
         campuses: profile.campuses.map((option) => option.slug),
       });
       setValues(profileFields(savedProfile));
+      setSavedMode(mode);
       onProfileChange?.(savedProfile);
       setSuccess(true);
     } catch (error) {
@@ -92,5 +102,6 @@ export function useProfessionalProfile({ profile, onSave, onProfileChange }: Pro
     }
   }
 
-  return { values, errors, requestError, success, pending, change, submit };
+  const createdAccount = success && savedMode === "create";
+  return { values, errors, requestError, success, createdAccount, pending, change, submit };
 }

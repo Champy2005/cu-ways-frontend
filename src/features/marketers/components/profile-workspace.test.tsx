@@ -5,8 +5,12 @@ import { initialDemoState } from "../demo/store";
 import type { ProfileInput } from "../types";
 import type { UpdateUserRequest } from "@/features/users/types";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
-beforeEach(() => window.history.replaceState(null, "", "/marketer/profile"));
+const push = vi.hoisted(() => vi.fn());
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push, refresh: vi.fn() }) }));
+beforeEach(() => {
+  push.mockClear();
+  window.history.replaceState(null, "", "/marketer/profile");
+});
 afterEach(cleanup);
 
 function setup(overrides: Partial<React.ComponentProps<typeof ProfileWorkspace>> = {}) {
@@ -108,5 +112,20 @@ describe("Unified profile", () => {
     await waitFor(() => expect(button).not.toBeDisabled());
     expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
     expect(screen.getByRole("alert")).toHaveTextContent("Your changes are still here");
+  });
+
+  it("creates the marketer account and continues to the dashboard", async () => {
+    const { saveProfile } = setup({ mode: "create", onboarding: true });
+    expect(screen.getByRole("heading", { name: "Create marketer account" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
+    await waitFor(() => expect(push).toHaveBeenCalledWith("/marketer/dashboard"));
+    expect(saveProfile).toHaveBeenCalledTimes(1);
+  });
+
+  it("stays on profile settings after saving", async () => {
+    setup();
+    fireEvent.click(screen.getByRole("button", { name: "Confirm changes" }));
+    await screen.findByText("Professional information saved.");
+    expect(push).not.toHaveBeenCalled();
   });
 });

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-/** First-time marketer landing: account creation continues in the profile onboarding form. */
+/** First-time marketer landing: account creation continues on /marketer/create-account. */
 export function MarketerRegister() {
   return (
     <section
@@ -24,7 +24,7 @@ export function MarketerRegister() {
         Create the marketer account
       </h1>
       <Link
-        href="/marketer/profile"
+        href="/marketer/create-account"
         className="mk-blue-button mt-6 inline-flex w-full max-w-52 items-center justify-center text-sm font-medium"
       >
         Create
