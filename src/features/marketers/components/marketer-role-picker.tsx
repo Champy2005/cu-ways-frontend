@@ -1,62 +1,52 @@
 "use client";
 
-import { MarketerRoleBirds } from "./marketer-role-birds";
-import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import { MarketerRoleBirds } from "./marketer-role-birds";
+
+type Role = "Marketer" | "Creator";
+
+const workspaceHref: Record<Role, string> = {
+  Marketer: "/marketer/dashboard",
+  Creator: "/creator/dashboard",
+};
+
+/**
+ * One click switches to the other role's workspace. With `preview`, the switch stays local
+ * (the demo has no session to navigate with) and never changes the account.
+ */
 export function MarketerRolePicker({
   initialRole = "Marketer",
+  preview = false,
 }: {
-  initialRole?: "Marketer" | "Creator";
+  initialRole?: Role;
+  preview?: boolean;
 }) {
-  const [role, setRole] = useState<string>(initialRole);
-  const portal = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const [role, setRole] = useState<Role>(initialRole);
+  const next: Role = role === "Marketer" ? "Creator" : "Marketer";
   return (
-    <div className="mk-role-picker" ref={portal}>
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger
-          aria-label={`Switch role preview, current: ${role}`}
-          render={<Button variant="ghost" className="mk-role-trigger" />}
-        >
-          <MarketerRoleBirds role={role} />
-          <span className="mk-role-caption">
-            <span>{role}</span>
-            <small>Preview only</small>
-          </span>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          container={portal}
-          align="end"
-          sideOffset={10}
-          className="mk-role-menu"
-        >
-          <p className="px-2 py-2 text-xs text-[var(--mk-muted)]">
-            Preview only — your account stays unchanged.
-          </p>
-          <DropdownMenuRadioGroup
-            value={role}
-            onValueChange={(value) => {
-              setRole(value);
-            }}
-          >
-            <DropdownMenuRadioItem value="Marketer" closeOnClick className="min-h-11">
-              Marketer
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="Creator" closeOnClick className="min-h-11">
-              Creator
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="mk-role-picker">
+      <Button
+        variant="ghost"
+        className="mk-role-trigger"
+        aria-label={`Switch to ${next}, current: ${role}`}
+        onClick={() => {
+          // Moving the birds first lets the switch animate while the next workspace loads.
+          setRole(next);
+          if (!preview) router.push(workspaceHref[next]);
+        }}
+      >
+        <MarketerRoleBirds role={role} />
+        <span className="mk-role-caption">
+          <span>{role}</span>
+          <small>{preview ? "Preview only" : `Switch to ${next}`}</small>
+        </span>
+      </Button>
       <span className="sr-only" role="status">
-        {role} preview selected. Your account is unchanged.
+        {preview ? `${role} preview selected. Your account is unchanged.` : `${role} workspace`}
       </span>
     </div>
   );

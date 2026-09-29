@@ -3,12 +3,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MarketerShell } from "./marketer-shell";
 
+const push = vi.hoisted(() => vi.fn());
+
 vi.mock("next/navigation", () => ({
   usePathname: () => "/marketer/services",
-  useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
+  useRouter: () => ({ push, refresh: vi.fn() }),
 }));
 
 beforeEach(() => {
+  push.mockClear();
   localStorage.clear();
   window.history.replaceState(null, "", "/");
   vi.stubGlobal("matchMedia", (query: string) => {
@@ -73,34 +76,26 @@ describe("MarketerShell navigation and theme", () => {
     await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
-  it("previews both roles without requests or session changes and resets on remount", async () => {
+  it("switches to the creator workspace in one click", () => {
+    render(<MarketerShell>Live workspace</MarketerShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Switch to Creator, current: Marketer" }));
+    expect(push).toHaveBeenCalledOnce();
+    expect(push).toHaveBeenCalledWith("/creator/dashboard");
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+  });
+
+  it("previews both roles in the demo without navigation, requests, or session changes", () => {
     const fetch = vi.fn();
     vi.stubGlobal("fetch", fetch);
     const cookie = document.cookie;
-    const first = render(<MarketerShell>Role preview</MarketerShell>);
-    fireEvent.click(screen.getByRole("button", { name: "Switch role preview, current: Marketer" }));
-    fireEvent.click(await screen.findByRole("menuitemradio", { name: "Creator" }));
-    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
-    const trigger = screen.getByRole("button", { name: "Switch role preview, current: Creator" });
-    await waitFor(() => expect(trigger).toHaveFocus());
+    render(<MarketerShell demo>Role preview</MarketerShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Switch to Creator, current: Marketer" }));
     expect(screen.getByRole("status")).toHaveTextContent("Creator preview selected");
-    fireEvent.click(trigger);
-    expect(await screen.findByRole("menuitemradio", { name: "Creator" })).toHaveAttribute(
-      "aria-checked",
-      "true",
-    );
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Marketer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Switch to Marketer, current: Creator" }));
     expect(screen.getByRole("status")).toHaveTextContent("Marketer preview selected");
+    expect(push).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
     expect(document.cookie).toBe(cookie);
-    first.unmount();
-    render(<MarketerShell>Role preview</MarketerShell>);
-    const reset = screen.getByRole("button", { name: "Switch role preview, current: Marketer" });
-    reset.focus();
-    fireEvent.click(reset);
-    fireEvent.keyDown(await screen.findByRole("menu"), { key: "Escape" });
-    await waitFor(() => expect(reset).toHaveFocus());
-    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
   it.each([375, 767, 768, 1440])("never mounts a mobile bar on desktop at %ipx", (width) => {

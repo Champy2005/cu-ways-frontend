@@ -43,7 +43,7 @@ export function MarketerShell({
               </Link>
             )}
             <MarketerThemeToggle />
-            <MarketerRolePicker />
+            <MarketerRolePicker preview={demo} />
             <MarketerMobileMenu demo={demo} initialView={demoView} device={device} />
           </div>
         </div>
