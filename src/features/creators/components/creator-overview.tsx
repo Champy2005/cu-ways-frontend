@@ -17,6 +17,7 @@ export function CreatorOverview({ name }: { name: string }) {
           name={name}
           roleLabel="Creator"
           mascotSrc="/marketer-assets/mascot-pink.svg"
+          tone="pink"
         />
         <section aria-labelledby="creator-discovery">
           <h2 id="creator-discovery" className="mk-section-title">
