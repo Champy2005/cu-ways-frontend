@@ -1,5 +1,5 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MarketerShell } from "./marketer-shell";
 
@@ -9,6 +9,10 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/marketer/services",
   useRouter: () => ({ push, refresh: vi.fn() }),
 }));
+
+// The hamburger menu is lazy-loaded. Warm its module once so a cold import on a slow CI runner
+// cannot eat into the per-query wait of whichever test opens the menu first.
+beforeAll(() => import("./marketer-mobile-dropdown"));
 
 beforeEach(() => {
   push.mockClear();
