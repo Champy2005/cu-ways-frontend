@@ -32,7 +32,7 @@ export function AppShell({ children, role }: AppShellProps) {
             <Link className={navLinkClass} href="/profile">
               Profile
             </Link>
-            <Link className={navLinkClass} href="/marketers">
+            <Link className={navLinkClass} href="/creator/discovery">
               Marketers
             </Link>
             <Link className={navLinkClass} href="/surveys">

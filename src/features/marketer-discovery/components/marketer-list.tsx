@@ -50,7 +50,10 @@ export function MarketerList({ marketers, query }: MarketerListProps) {
         icon={<SearchX className="size-6" aria-hidden="true" />}
         action={
           showReset ? (
-            <Link href="/marketers" className={buttonVariants({ variant: "outline", size: "lg" })}>
+            <Link
+              href="/creator/discovery"
+              className={buttonVariants({ variant: "outline", size: "lg" })}
+            >
               Clear search and filters
             </Link>
           ) : null
