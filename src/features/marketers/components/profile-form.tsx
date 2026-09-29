@@ -29,6 +29,7 @@ function FieldError({ id, error }: { id: string; error?: string }) {
 }
 export function ProfileForm(props: ProfileFormProps) {
   const form = useProfessionalProfile(props);
+  const creating = props.mode === "create";
   const id = useId();
   const portal = useRef<HTMLDivElement>(null);
   return (
@@ -148,12 +149,18 @@ export function ProfileForm(props: ProfileFormProps) {
         ) : null}
         {form.success ? (
           <p role="status" className="text-[var(--mk-success)]">
-            Professional information saved.
+            {form.createdAccount ? "Marketer account created." : "Professional information saved."}
           </p>
         ) : null}
       </div>
       <Button type="submit" disabled={form.pending} className="mk-primary-button mk-profile-submit">
-        {form.pending ? "Saving changes…" : "Confirm changes"}
+        {creating
+          ? form.pending
+            ? "Creating account…"
+            : "Create account"
+          : form.pending
+            ? "Saving changes…"
+            : "Confirm changes"}
       </Button>
     </form>
   );
