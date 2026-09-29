@@ -1,10 +1,9 @@
-import { ApiError } from "@/lib/api/errors";
 import { requireSession } from "@/lib/auth/guards";
 import { getMyProfile } from "@/features/marketers/api";
 import { getUser } from "@/features/users/api";
 import { LiveProfile } from "@/features/marketers/components/live-profile";
 import { RouteFeedback } from "@/features/marketers/components/route-feedback";
-import { marketerFailure } from "@/features/marketers/failures";
+import { isMissingMarketerProfile, marketerFailure } from "@/features/marketers/failures";
 
 export const metadata = { title: "Profile settings | CU Ways" };
 export default async function MarketerProfilePage({
@@ -19,10 +18,7 @@ export default async function MarketerProfilePage({
     searchParams,
   ]);
   const onboarding =
-    professional.status === "rejected" &&
-    professional.reason instanceof ApiError &&
-    professional.reason.status === 404 &&
-    professional.reason.code === "marketer_profile_not_found";
+    professional.status === "rejected" && isMissingMarketerProfile(professional.reason);
   const professionalFailure =
     professional.status === "rejected" && !onboarding
       ? marketerFailure(professional.reason)
