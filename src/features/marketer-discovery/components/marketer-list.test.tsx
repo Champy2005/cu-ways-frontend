@@ -47,7 +47,7 @@ describe("MarketerList", () => {
     expect(screen.getByRole("heading", { name: /No marketers match “zzz”/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Clear search and filters" })).toHaveAttribute(
       "href",
-      "/marketers",
+      "/creator/discovery",
     );
   });
 

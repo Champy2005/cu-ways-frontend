@@ -19,7 +19,8 @@ const CAMPUS_VALUES = CAMPUS_OPTIONS.map((option) => option.value);
 const AVAILABILITY_VALUES: string[] = AVAILABILITY_OPTIONS.map((option) => option.value);
 const SORT_VALUES: string[] = SORT_OPTIONS.map((option) => option.value);
 
-const DISCOVERY_PATH = "/marketers";
+const DISCOVERY_PATH = "/creator/discovery";
+const MARKETER_DETAIL_PATH = "/marketers";
 const MAX_KEYWORD_LENGTH = 100;
 
 export const EMPTY_MARKETER_QUERY: MarketerQuery = {
@@ -192,7 +193,7 @@ export function buildDiscoveryHref(query: MarketerQuery): string {
 /** Marketer link that stashes the discovery query in a single opaque `ref` param. */
 export function buildMarketerHref(marketerID: number, query: MarketerQuery): string {
   const search = serializeMarketerQuery(query);
-  const base = `${DISCOVERY_PATH}/${marketerID}`;
+  const base = `${MARKETER_DETAIL_PATH}/${marketerID}`;
   return search ? `${base}?ref=${encodeURIComponent(search)}` : base;
 }
 
@@ -202,7 +203,7 @@ export function buildMarketerHrefFromRef(
   ref: string | string[] | undefined,
 ): string {
   const value = firstValue(ref);
-  const base = `${DISCOVERY_PATH}/${marketerID}`;
+  const base = `${MARKETER_DETAIL_PATH}/${marketerID}`;
   return value ? `${base}?ref=${encodeURIComponent(value)}` : base;
 }
 
@@ -213,14 +214,14 @@ export function buildMarketerSubPageHref(
   ref: string | string[] | undefined,
 ): string {
   const value = firstValue(ref);
-  const base = `${DISCOVERY_PATH}/${marketerID}/${segment}`;
+  const base = `${MARKETER_DETAIL_PATH}/${marketerID}/${segment}`;
   return value ? `${base}?ref=${encodeURIComponent(value)}` : base;
 }
 
 /**
  * Rebuilds the discovery URL from an untrusted `ref`. The result is always
  * reconstructed from the allowlisted keys above and always prefixed with
- * `/marketers`, so a hostile `ref` can never redirect off-route or off-site.
+ * `/creator/discovery`, so a hostile `ref` can never redirect off-route or off-site.
  */
 export function buildBackHref(ref: string | string[] | undefined): string {
   return buildDiscoveryHref(parseMarketerQuery(new URLSearchParams(firstValue(ref))));

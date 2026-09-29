@@ -24,7 +24,7 @@ describe("MarketerSearchPanel", () => {
     fireEvent.change(screen.getByLabelText("Search marketers"), { target: { value: "food" } });
     fireEvent.submit(screen.getByRole("search"));
 
-    expect(push).toHaveBeenCalledWith("/marketers?q=food", { scroll: false });
+    expect(push).toHaveBeenCalledWith("/creator/discovery?q=food", { scroll: false });
   });
 
   it("seeds the input from the query already in the URL", () => {
@@ -60,6 +60,8 @@ describe("MarketerSearchPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Remove Data Collection filter" }));
 
-    expect(push).toHaveBeenCalledWith("/marketers?q=food&sort=rating_desc", { scroll: false });
+    expect(push).toHaveBeenCalledWith("/creator/discovery?q=food&sort=rating_desc", {
+      scroll: false,
+    });
   });
 });

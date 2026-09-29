@@ -127,7 +127,7 @@ describe("marketer filter chips", () => {
 
 describe("marketer navigation hrefs", () => {
   it("builds a bare discovery href when nothing is applied", () => {
-    expect(buildDiscoveryHref(EMPTY_MARKETER_QUERY)).toBe("/marketers");
+    expect(buildDiscoveryHref(EMPTY_MARKETER_QUERY)).toBe("/creator/discovery");
     expect(buildMarketerHref(3, EMPTY_MARKETER_QUERY)).toBe("/marketers/3");
   });
 
@@ -157,7 +157,7 @@ describe("marketer navigation hrefs", () => {
       "q=ok&next=//evil.example",
       ["//evil.example", "q=ok"],
     ]) {
-      expect(buildBackHref(hostile).startsWith("/marketers")).toBe(true);
+      expect(buildBackHref(hostile).startsWith("/creator/discovery")).toBe(true);
     }
   });
 });

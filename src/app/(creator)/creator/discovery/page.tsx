@@ -13,7 +13,7 @@ import {
 } from "@/features/marketer-discovery/schemas";
 import type { MarketerSummary } from "@/features/marketer-discovery/types";
 
-export default async function CreatorDiscoverPage({
+export default async function CreatorDiscoveryPage({
   searchParams,
 }: {
   searchParams: Promise<RawSearchParams>;
@@ -38,7 +38,7 @@ export default async function CreatorDiscoverPage({
       <MarketerPageHeader
         title="Marketer Discovery"
         subtitle="Search Marketer"
-        backHref="/dashboard"
+        backHref="/creator/dashboard"
       />
       {/* Remounts on every query change so the inputs resync without an effect. */}
       <MarketerSearchPanel key={serializeMarketerQuery(query)} query={query} />
