@@ -11,8 +11,12 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 
-export function MarketerRolePicker() {
-  const [role, setRole] = useState("Marketer");
+export function MarketerRolePicker({
+  initialRole = "Marketer",
+}: {
+  initialRole?: "Marketer" | "Creator";
+}) {
+  const [role, setRole] = useState<string>(initialRole);
   const portal = useRef<HTMLDivElement>(null);
   return (
     <div className="mk-role-picker" ref={portal}>
