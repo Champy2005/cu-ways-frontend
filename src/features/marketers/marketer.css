@@ -328,6 +328,10 @@ body:has(.marketer-theme) {
 .mk-mobile-menu-trigger {
   display: none;
 }
+/* Workspaces without a desktop navigation bar keep the menu at every width. */
+.mk-mobile-menu-trigger.mk-menu-always {
+  display: inline-flex;
+}
 .mk-navigation-menu {
   display: grid;
   gap: 0.5rem;
