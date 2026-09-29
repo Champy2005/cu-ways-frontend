@@ -129,8 +129,9 @@ The marketer screens share a fluid desktop frame, with responsive cards and a pr
 layout. Desktop browsers use a single 72px sticky header with inline navigation at widths of
 1024px and above; narrower windows use a hamburger menu with the same destinations. Phones/tablets
 retain their compact header and fixed bottom navigation. Hidden desktop navigation is not focusable,
-and widening a desktop window closes its compact menu. The birds open a local role preview picker;
-selecting a role does not change account permissions or call the backend.
+and widening a desktop window closes its compact menu. Clicking the birds switches between
+`/marketer/dashboard` and `/creator/dashboard` in one step (in the demo it only previews the other
+role); switching does not change account permissions or call the backend.
 
 Next.js automatically loads `.env.local`, including `MARKETER_DEMO_ENABLED`. Keep it `false` for
 normal development and restart the development server after changing it. Explicitly set it to `true`
