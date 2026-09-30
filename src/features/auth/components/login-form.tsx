@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ export function LoginForm() {
   const [values, setValues] = useState<LoginRequest>({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function update(field: keyof LoginRequest, value: string) {
     setValues((current) => ({ ...current, [field]: value }));
@@ -32,8 +34,8 @@ export function LoginForm() {
     setIsPending(true);
     setError(null);
     try {
-      await login(values);
-      router.push("/dashboard");
+      const session = await login(values);
+      router.push(session.role === "admin" ? "/admin" : "/dashboard");
       router.refresh();
     } catch (requestError) {
       setError(getDisplayError(requestError));
@@ -61,14 +63,25 @@ export function LoginForm() {
         <label className="mb-2 block text-sm font-medium text-zinc-800" htmlFor="login-password">
           Password
         </label>
-        <Input
-          id="login-password"
-          type="password"
-          autoComplete="current-password"
-          value={values.password}
-          onChange={(event) => update("password", event.target.value)}
-          required
-        />
+        <div className="relative">
+          <Input
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={values.password}
+            onChange={(event) => update("password", event.target.value)}
+            className="pr-9"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((current) => !current)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-zinc-500 hover:text-zinc-800"
+          >
+            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
       </div>
       {error ? (
         <p className="text-sm text-red-700" role="alert">
