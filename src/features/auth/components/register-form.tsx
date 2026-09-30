@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getDisplayError } from "@/lib/api/errors";
+import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { register } from "@/features/auth/api";
 import {
   registrationFieldErrors,
@@ -40,10 +40,10 @@ const fields = [
   },
   {
     key: "phone",
-    label: "Phone number",
+    label: "Phone number (optional)",
     autoComplete: "tel",
     type: "tel",
-    required: true,
+    required: false,
     maxLength: 20,
   },
   {
@@ -93,7 +93,13 @@ export function RegisterForm() {
       router.push("/dashboard");
       router.refresh();
     } catch (requestError) {
-      setError(getDisplayError(requestError));
+      if (requestError instanceof ApiError && requestError.code === "email_already_exists") {
+        setErrors((current) => ({ ...current, email: requestError.message }));
+      } else if (requestError instanceof ApiError && requestError.code === "phone_already_exists") {
+        setErrors((current) => ({ ...current, phone: requestError.message }));
+      } else {
+        setError(getDisplayError(requestError));
+      }
     } finally {
       submitting.current = false;
       setIsPending(false);
