@@ -154,6 +154,21 @@ compile and runtime errors still appear normally.
 The connected backend contracts, required fields, device selection, and remaining
 full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
 
+## Direct invitations and custom offers (US20 / US21)
+
+With the local demo flag enabled, open `/demo/marketer?view=invitations` to review invitation
+search, Pending/Responded tabs, accept/decline confirmations, optional decline explanations,
+custom price offers with delivery dates and messages, and final offer withdrawal. Direct offer
+preview: `/demo/marketer?view=offer&requestId=request-063`.
+
+Changes persist in this tab's session storage; **Reset demo** restores all preview fixtures.
+The preview uses a fixed 7 October 2026 reference date and never calls the backend. Production
+always blocks it. The authenticated `/marketer/invitations` and `/marketer/offer/create` routes
+show an unavailable state until APIs exist. US23 is deferred until US22 is ready.
+
+See [the integration handoff](docs/invitations-api-handoff.md) for behavior, backend requirements,
+and preview browser-test instructions.
+
 ## Backend setup
 
 See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migrations, API endpoints,

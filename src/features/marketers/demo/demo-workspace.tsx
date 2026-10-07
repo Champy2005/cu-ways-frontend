@@ -7,17 +7,27 @@ import { Button } from "@/components/ui/button";
 
 import { getDemoView } from "../components/marketer-navigation";
 import { getDemoSnapshot, getServerDemoSnapshot, resetDemo, subscribeDemo } from "./store";
+import { resetInvitationsDemo } from "@/features/job-invitations/demo/store";
 
 const ProfileView = lazy(() => import("./profile-view"));
 const DashboardView = lazy(() => import("./dashboard-view"));
 const CatalogView = lazy(() => import("./catalog-view"));
 const ViewerView = lazy(() => import("./viewer-view"));
+const InvitationsView = lazy(() => import("./invitations-view"));
 
 const subscribeHydration = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
 
-export function DemoWorkspace({ view }: { view: string }) {
+export function DemoWorkspace({
+  view,
+  requestId,
+  tab,
+}: {
+  view: string;
+  requestId?: string;
+  tab?: string;
+}) {
   const hydrated = useSyncExternalStore(subscribeHydration, clientReady, serverReady);
   const state = useSyncExternalStore(subscribeDemo, getDemoSnapshot, getServerDemoSnapshot);
   const selected = getDemoView(useLocalQuery("view", view));
@@ -41,7 +51,10 @@ export function DemoWorkspace({ view }: { view: string }) {
           variant="ghost"
           className="mk-reset-demo text-xs text-[var(--mk-muted)]"
           aria-label="Reset demo"
-          onClick={resetDemo}
+          onClick={() => {
+            resetInvitationsDemo();
+            resetDemo();
+          }}
         >
           <RotateCcw size={13} />
           <span>Reset demo</span>
@@ -54,11 +67,14 @@ export function DemoWorkspace({ view }: { view: string }) {
           </p>
         }
       >
-        <div key={`${selected}-${state.revision}`}>
+        <div key={`${selected === "offer" ? "invitations" : selected}-${state.revision}`}>
           {selected === "dashboard" && <DashboardView state={state} />}
           {selected === "profile" && <ProfileView state={state} />}
           {selected === "services" && <CatalogView state={state} />}
           {selected === "viewer" && <ViewerView state={state} />}
+          {(selected === "invitations" || selected === "offer") && (
+            <InvitationsView view={selected} requestId={requestId} tab={tab} />
+          )}
         </div>
       </Suspense>
     </>

@@ -68,7 +68,8 @@ describe("ServiceCatalog", () => {
   it("validates missing type and price without publishing", async () => {
     const { actions } = setup([]);
     fireEvent.click(screen.getByRole("button", { name: "Publish a service" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Publish" }));
+    // Allow the lazy dialog to load on a cold, instrumented test run.
+    fireEvent.click(await screen.findByRole("button", { name: "Publish" }, { timeout: 5000 }));
     expect(
       await screen.findByText("Choose a service type or enter a custom service name."),
     ).toBeInTheDocument();
