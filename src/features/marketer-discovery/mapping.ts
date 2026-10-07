@@ -12,18 +12,20 @@ import type {
  * Discovery URL state -> GET /api/v1/marketers query string. The backend reads
  * repeated keys for multi-value filters (expertise=a&expertise=b), so lists are
  * appended one value at a time rather than comma-joined as in our own URLs.
- * The keyword is deliberately not sent: the backend has no keyword parameter.
  */
 export function toBackendSearchParams(
   query: MarketerQuery,
   pageSize: number = SEARCH_PAGE_SIZE,
+  page: number = 1,
 ): URLSearchParams {
   const params = new URLSearchParams();
   // Keys are checked against the generated contract, so a backend rename fails typecheck.
   const add = (key: keyof MarketerSearchParams, value: string | number) =>
     params.append(key, String(value));
 
+  if (page > 1) add("page", page);
   add("page_size", pageSize);
+  if (query.q.trim()) add("keyword", query.q.trim());
   query.expertise.forEach((slug) => add("expertise", slug));
   query.campus.forEach((slug) => add("campus", slug));
   if (query.experience !== null) add("min_experience_years", query.experience);

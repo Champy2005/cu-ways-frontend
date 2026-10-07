@@ -18,9 +18,12 @@ import type {
 
 const SEARCH_PATH = "/api/v1/marketers";
 
-export async function listMarketers(query: MarketerQuery): Promise<MarketerSearchResult> {
+export async function listMarketers(
+  query: MarketerQuery,
+  pageNumber: number = 1,
+): Promise<MarketerSearchResult> {
   const page = await serverApiGet<MarketerSearchPage>(
-    `${SEARCH_PATH}?${toBackendSearchParams(query).toString()}`,
+    `${SEARCH_PATH}?${toBackendSearchParams(query, undefined, pageNumber).toString()}`,
   );
   return { items: page.items.map(toMarketerSummary), total: page.total };
 }

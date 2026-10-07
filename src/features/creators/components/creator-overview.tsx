@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { MarketerIdentity } from "@/features/marketers/components/marketer-identity";
@@ -33,6 +33,23 @@ export function CreatorOverview({ name }: { name: string }) {
             >
               <Search aria-hidden="true" className="size-4" />
               Discover marketers
+            </Link>
+          </Card>
+        </section>
+        <section aria-labelledby="creator-job-invitations">
+          <h2 id="creator-job-invitations" className="mk-section-title">
+            Job invitations
+          </h2>
+          <Card className="mk-card mk-card-padding gap-0">
+            <p className="text-sm text-[var(--mk-muted)]">
+              Invite selected marketers to make offers on an existing job.
+            </p>
+            <Link
+              href="/creator/jobs/invite"
+              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
+            >
+              <UserPlus aria-hidden="true" className="size-4" />
+              Invite marketers
             </Link>
           </Card>
         </section>
