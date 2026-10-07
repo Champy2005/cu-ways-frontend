@@ -295,6 +295,112 @@ export interface paths {
         patch: operations["updateSurvey"];
         trace?: never;
     };
+    "/api/v1/me/surveys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List surveys owned by the authenticated Creator */
+        get: operations["listMySurveysForJobs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a Pending job with one or more owned surveys
+         * @description Creates the job and all is_used_in rows atomically. survey_ids must be non-empty, unique, and owned by the authenticated Creator. The accepted offer remains null.
+         */
+        post: operations["createJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/surveys/{surveyId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                surveyId: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Link an owned survey to an owned job */
+        post: operations["addSurveyToJob"];
+        /** Unlink a survey while keeping at least one survey on the job */
+        delete: operations["removeSurveyFromJob"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/briefs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * List current and historical brief URLs for a job
+         * @description Results are ordered newest first; the first brief is current. Older brief records are retained.
+         */
+        get: operations["listJobBriefs"];
+        put?: never;
+        /**
+         * Save a new brief URL for an owned job
+         * @description Adds an attachment_type Brief row with a server-generated timestamp. Previous briefs remain available as history.
+         */
+        post: operations["addJobBrief"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Invite marketers to make offers on a job
+         * @description Creates one Pending request per selected marketer atomically. Pending and Accepted requests count as active; declined and closed requests remain in history and allow a later invitation.
+         */
+        post: operations["createJobRequests"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -510,6 +616,89 @@ export interface components {
             /** @enum {string} */
             status: "success";
             data: components["schemas"]["Survey"];
+        };
+        SurveyListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Survey"][];
+        };
+        CreateJobRequest: {
+            survey_ids: number[];
+        };
+        Job: {
+            /** Format: int32 */
+            job_id: number;
+            /** Format: int32 */
+            user_id: number;
+            /** Format: int32 */
+            accepted_offer_id: number | null;
+            /** @enum {string} */
+            job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+            /** Format: date-time */
+            created_at: string;
+            survey_ids: number[];
+        };
+        JobResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Job"];
+        };
+        JobLinkResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** Format: int32 */
+                job_id: number;
+                /** Format: int32 */
+                survey_id: number;
+                linked: boolean;
+            };
+        };
+        CreateBriefRequest: {
+            /** Format: uri */
+            url: string;
+        };
+        Brief: {
+            /** Format: int32 */
+            attachment_id: number;
+            /** @enum {string} */
+            attachment_type: "Brief";
+            /** Format: uri */
+            url: string;
+            /** Format: date-time */
+            upload_at: string;
+        };
+        BriefResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Brief"];
+        };
+        BriefListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Brief"][];
+        };
+        CreateJobRequestsRequest: {
+            marketer_ids: number[];
+        };
+        JobRequest: {
+            /** Format: int32 */
+            job_request_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /** Format: int32 */
+            marketer_id: number;
+            /** @enum {string} */
+            request_status: "Pending" | "Accepted" | "Declined" | "Closed";
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            responded_at: string | null;
+        };
+        JobRequestListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["JobRequest"][];
         };
         DeleteSurveyResponse: {
             /** @enum {string} */
@@ -1694,6 +1883,404 @@ export interface operations {
                 };
             };
             /** @description Request validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listMySurveysForJobs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The Creator's surveys, newest first. An empty list is valid. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SurveyListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not have Creator membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    createJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateJobRequest"];
+            };
+        };
+        responses: {
+            /** @description Job and survey links created. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Creator membership or selected a survey they do not own. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description One or more selected surveys do not exist. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The request contains no surveys, invalid IDs, or duplicate IDs. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    addSurveyToJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                surveyId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Survey linked. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobLinkResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not own the job or survey. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job or survey not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Survey is already linked to the job. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    removeSurveyFromJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                surveyId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Survey unlinked. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobLinkResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not own the job. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found or survey is not linked to it. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Removing this survey would leave the job with no surveys. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listJobBriefs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Brief attachment history. An empty list is valid. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BriefListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not own the job. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    addJobBrief: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBriefRequest"];
+            };
+        };
+        responses: {
+            /** @description Brief saved. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BriefResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not own the job. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description URL must be an absolute HTTP or HTTPS URL. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    createJobRequests: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateJobRequestsRequest"];
+            };
+        };
+        responses: {
+            /** @description Requests created. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobRequestListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not own the job or lacks Creator membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description An active request already exists for a selected marketer. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request is empty, contains duplicate IDs, or selects an unavailable marketer. */
             422: {
                 headers: {
                     [name: string]: unknown;
