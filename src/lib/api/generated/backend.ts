@@ -228,6 +228,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/marketers/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a marketer's detailed profile
+         * @description Returns the marketer profile, active service listings, completed-job count, and average rating. Completed jobs are matched through the marketer's accepted offers. The average uses only ratings from 1 to 5 and is null when no qualifying review exists.
+         */
+        get: operations["getMarketerDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/surveys": {
         parameters: {
             query?: never;
@@ -519,6 +539,22 @@ export interface components {
             /** Format: int64 */
             review_count: number;
             services: components["schemas"]["Service"][];
+        };
+        MarketerDetailResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                profile: components["schemas"]["MarketerProfile"];
+                /** @description Active service listings only. */
+                services: components["schemas"]["Service"][];
+                /** Format: int64 */
+                total_completed_jobs: number;
+                /**
+                 * Format: double
+                 * @description Null when the marketer has no qualifying review on an accepted-offer completed job.
+                 */
+                average_rating: number | null;
+            };
         };
         SuccessResponse: {
             /** @enum {string} */
@@ -1352,6 +1388,8 @@ export interface operations {
             query?: {
                 page?: number;
                 page_size?: number;
+                /** @description Case-insensitive partial match against the marketer's name, bio, or any of their non-deleted services' type/scope text. A marketer with multiple matching services still appears once. */
+                keyword?: string;
                 min_price?: number;
                 max_price?: number;
                 expertise?: string[];
@@ -1397,6 +1435,55 @@ export interface operations {
             };
             /** @description Search parameters are invalid. */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getMarketerDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed marketer profile and verified performance summary. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketerDetailResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description A creator profile or administrator role is required. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The marketer profile does not exist or belongs to a deleted user. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -13,14 +13,14 @@ Neither workflow checks out, starts, tests, or changes the backend repository or
 
 The `Frontend CI` workflow runs these jobs in parallel where possible:
 
-| Job                           | Gate                                                                                                |
-| ----------------------------- | --------------------------------------------------------------------------------------------------- |
-| PR and commit governance      | Conventional Commit PR title and commit messages; structured branch name                            |
-| Formatting, lint, and types   | Prettier, GitHub Actions syntax, strict ESLint/Next/SonarJS rules, Next route types, and TypeScript |
-| Unit tests and coverage       | The Vitest tests that exist in this repository and the initial 10% global coverage floor            |
-| Dependency vulnerability gate | Blocking High/Critical lockfile audit; optional GitHub PR dependency-diff review                    |
-| Secret scan                   | Gitleaks scan of Git history                                                                        |
-| Production build              | A strict `next build`, with pnpm-store and `.next/cache` reuse                                      |
+| Job                                | Gate                                                                                                 |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| PR and commit governance           | Conventional Commit PR title and commit messages; structured branch name                             |
+| Formatting, lint, and types        | Prettier, GitHub Actions syntax, strict ESLint/Next/SonarJS rules, Next route types, and TypeScript  |
+| Unit tests and coverage            | The Vitest tests that exist in this repository and the initial 10% global coverage floor             |
+| Dependency vulnerability gate      | Blocking High/Critical lockfile audit; optional GitHub PR dependency-diff review                     |
+| Secret scan                        | Gitleaks scan of Git history                                                                         |
+| Production build and browser smoke | A strict `next build` followed by real public UI and signed-out redirects in desktop/mobile Chromium |
 
 The last job is named **Frontend quality gate**. It succeeds only when every job in the table
 succeeds.
@@ -30,11 +30,13 @@ Dependency Review action requires the repository Dependency Graph, so it runs on
 repository Actions variable `DEPENDENCY_REVIEW_ENABLED` is exactly `true`. This prevents a missing
 GitHub repository feature from blocking a PR while keeping the lockfile vulnerability gate active.
 
-The test job does not translate backlog rows into tests and does not assume that Epics 2–4 are
-implemented. It runs only committed `*.test.ts` and `*.test.tsx` files. The initial tests cover
-pure Epic 1 validation and API-envelope behavior already present in the frontend. Async Server
-Components and real authentication journeys need an eventual browser/full-stack suite; they are
-not part of this gate today.
+The test job runs committed `src/**/*.test.ts` and `src/**/*.test.tsx` tests for validation,
+API envelopes and adapters, discovery/marketer behavior, and components, plus focused tooling
+invariants. It does not translate unfinished backlog rows into placeholder tests. The build job
+then drives the actual public UI, invalid authentication forms, and signed-out route redirects
+with Playwright. It uploads HTML, JSON/JUnit, screenshots, diagnostics, and failed traces even
+when the browser step fails. Real successful authentication and database side effects still need
+a separate full-stack suite.
 
 Coverage currently includes reusable code under `src/components`, `src/features`, and `src/lib`,
 while generated API types and type-only files are excluded. The 10% floor is intentionally modest
@@ -125,6 +127,10 @@ pnpm check
 
 Useful narrower commands are `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test`,
 `pnpm test:coverage`, and `pnpm build`.
+
+For reports and runtime proof, use `pnpm test:report`, `pnpm test:tooling`, and (after a production
+build) `pnpm test:e2e`. See [verification.md](verification.md) for installation, artifacts,
+targeted traces, import-boundary enforcement, and nonmutating API contract checks.
 
 ## Builds, tags, and deployment
 

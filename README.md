@@ -66,19 +66,28 @@ Try the flow:
 
 ## Development commands
 
-| Command               | Purpose                                                               |
-| --------------------- | --------------------------------------------------------------------- |
-| `pnpm dev`            | Start the development server                                          |
-| `pnpm format:check`   | Verify Prettier formatting without changing files                     |
-| `pnpm lint`           | Run strict ESLint, Next.js, and complexity checks                     |
-| `pnpm typecheck`      | Generate Next route types and check TypeScript without emitting files |
-| `pnpm test`           | Run the current Vitest unit tests once                                |
-| `pnpm test:coverage`  | Run unit tests and enforce the initial coverage floor                 |
-| `pnpm security:audit` | Fail on High or Critical dependency vulnerabilities                   |
-| `pnpm check`          | Run the main local quality and dependency-security checks             |
-| `pnpm generate:api`   | Generate TypeScript contract types from the backend OpenAPI document  |
-| `pnpm build`          | Create a production build                                             |
-| `pnpm start`          | Serve the production build locally                                    |
+| Command                   | Purpose                                                               |
+| ------------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`                | Start the development server                                          |
+| `pnpm format:check`       | Verify Prettier formatting without changing files                     |
+| `pnpm lint`               | Run strict ESLint, Next.js, and complexity checks                     |
+| `pnpm typecheck`          | Generate Next route types and check TypeScript without emitting files |
+| `pnpm test`               | Run the current Vitest unit tests once                                |
+| `pnpm test:report`        | Run Vitest with machine-readable JSON and JUnit evidence              |
+| `pnpm test:tooling`       | Verify the client/server import rule                                  |
+| `pnpm test:coverage`      | Run unit tests and enforce the initial coverage floor                 |
+| `pnpm security:audit`     | Fail on High or Critical dependency vulnerabilities                   |
+| `pnpm check`              | Run the main local quality and dependency-security checks             |
+| `pnpm generate:api`       | Generate TypeScript contract types from the backend OpenAPI document  |
+| `pnpm generate:api:check` | Check generated API types without rewriting them                      |
+| `pnpm build`              | Create a production build                                             |
+| `pnpm start`              | Serve the production build locally                                    |
+| `pnpm test:e2e`           | Drive the real production public UI in desktop/mobile Chromium        |
+| `pnpm test:e2e:trace`     | Retain traces for an explicit runtime verification run                |
+
+Run `pnpm exec playwright install chromium` once, then `pnpm build` before browser checks.
+See [docs/verification.md](docs/verification.md) for targeted commands, evidence paths,
+the workspace runner, test boundaries, and the verification verdict contract.
 
 ## Continuous integration
 

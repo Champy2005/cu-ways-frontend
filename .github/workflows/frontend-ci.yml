@@ -183,6 +183,9 @@ jobs:
       - name: Run current frontend tests with coverage
         run: pnpm test:coverage
 
+      - name: Verify client and server import rule
+        run: pnpm test:tooling
+
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -254,7 +257,7 @@ jobs:
           args: git --redact --no-banner /github/workspace
 
   build:
-    name: Production build
+    name: Production build and browser smoke
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -290,6 +293,21 @@ jobs:
         env:
           BACKEND_API_URL: http://127.0.0.1:8081
         run: pnpm build
+
+      - name: Install Chromium for real UI verification
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Verify public UI and signed-out session guards
+        run: pnpm test:e2e
+
+      - name: Upload browser verification evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: frontend-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/verification/e2e/
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Package verified build output
         if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) }}
