@@ -52,6 +52,22 @@
 .ji-creator {
   font-weight: 600;
 }
+.ji-sent-time {
+  color: var(--mk-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+}
+.ji-sent-time[data-status="Pending"] {
+  color: var(--mk-caution);
+}
+.ji-sent-time[data-status="Accepted"] {
+  color: var(--mk-positive);
+}
+.ji-sent-time[data-status="Declined"] {
+  color: var(--mk-error);
+}
 .ji-job-id {
   font-size: 0.75rem;
   margin-top: 0.35rem;
@@ -200,27 +216,18 @@
   gap: 1.25rem;
   align-items: start;
 }
-.ji-status {
+.ji-status-text {
   color: var(--mk-muted);
-  border-color: var(--mk-border);
-  background: var(--mk-field);
-  flex-shrink: 0;
+  font-weight: 600;
 }
-.ji-status[data-status="Accepted"] {
+.ji-status-text[data-status="Accepted"] {
   color: var(--mk-positive);
-  border-color: var(--mk-positive);
-  background: var(--mk-positive-soft);
 }
-.ji-status[data-status="Pending"] {
+.ji-status-text[data-status="Pending"] {
   color: var(--mk-caution);
-  border-color: var(--mk-caution);
-  background: var(--mk-caution-soft);
 }
-.ji-status[data-status="Declined"],
-.ji-status[data-status="Rejected"] {
+.ji-status-text[data-status="Rejected"] {
   color: var(--mk-error);
-  border-color: var(--mk-error);
-  background: var(--mk-coral-soft);
 }
 .ji-response-time {
   font-size: 0.75rem;
@@ -274,6 +281,71 @@
 .ji-feedback[data-error="true"] {
   border-color: var(--mk-error);
   background: var(--mk-coral-soft);
+}
+.ji-toast-region {
+  position: fixed;
+  top: 5.5rem;
+  right: 1rem;
+  width: min(26rem, calc(100vw - 2rem));
+  z-index: 50;
+  pointer-events: none;
+}
+.ji-toast {
+  pointer-events: auto;
+  margin: 0;
+  background: color-mix(in srgb, var(--mk-positive) 10%, var(--mk-surface));
+  box-shadow: var(--mk-shadow);
+  animation: ji-toast-enter 180ms ease-out;
+}
+.ji-toast[data-error="true"] {
+  background: color-mix(in srgb, var(--mk-error) 10%, var(--mk-surface));
+}
+.ji-toast[data-closing="true"] {
+  animation: ji-toast-exit 180ms ease-in forwards;
+  pointer-events: none;
+}
+@keyframes ji-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+.ji-toast[data-error="true"] > svg {
+  color: var(--mk-error);
+}
+.ji-modal .ji-toast-region {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  width: auto;
+  transform: none;
+  z-index: 80;
+}
+.ji-toast button {
+  flex-shrink: 0;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
+@keyframes ji-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ji-toast,
+  .ji-toast[data-closing="true"] {
+    animation: none;
+  }
 }
 .ji-modal {
   position: fixed;
@@ -407,6 +479,11 @@
   width: 100%;
 }
 @media (max-width: 700px) {
+  .ji-toast-region {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
   .ji-grid {
     grid-template-columns: minmax(0, 1fr);
   }

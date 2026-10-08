@@ -1,4 +1,5 @@
 import { isRecord } from "@/lib/api/envelope";
+import { bangkokDate } from "../format";
 import type { Invitation, Offer } from "../types";
 import { validDecline, validateOffer } from "../validation";
 import { initialState, type InvitationDemoState } from "./transitions";
@@ -51,7 +52,9 @@ function restoreOffer(value: unknown, requests: Invitation[]): Offer | null {
   if (value.status === "Withdrawn" ? !isTimestamp(value.withdrawnAt) : value.withdrawnAt !== null)
     return null;
   const input = { price: value.price, deliveryDate: value.deliveryDate, message: value.message };
-  if (Object.keys(validateOffer(input, request.job.deadline)).length) return null;
+  // Saved offers retain the date rule that applied when they were submitted.
+  if (Object.keys(validateOffer(input, request.job.deadline, bangkokDate(value.createdAt))).length)
+    return null;
   return {
     ...input,
     id: value.id,

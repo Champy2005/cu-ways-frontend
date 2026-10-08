@@ -4,17 +4,19 @@ import { FileText, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Invitation, Offer } from "../types";
-import { formatDate, formatPrice } from "../format";
-import { StatusBadge } from "./shared";
+import { formatDate, formatPrice, formatSentDate, formatSentTime } from "../format";
+import { OfferStatusText } from "./shared";
 
 export function InvitationCard({
   request,
+  referenceTime,
   offer,
   onRespond,
   onOffer,
   onBrief,
 }: {
   request: Invitation;
+  referenceTime: string;
   offer?: Offer;
   onRespond: (request: Invitation, mode: "accept" | "decline", trigger: HTMLElement) => void;
   onOffer: (id: string) => void;
@@ -25,12 +27,19 @@ export function InvitationCard({
       <CardContent className="ji-request">
         <div className="ji-card-top">
           <p className="ji-creator">{request.creator}</p>
-          <StatusBadge status={request.status} />
+          <time
+            className="ji-sent-time"
+            data-status={request.status}
+            dateTime={request.invitedAt}
+            title={formatSentDate(request.invitedAt)}
+            aria-label={`${formatSentTime(request.invitedAt, referenceTime)}. Status: ${request.status}`}
+            aria-description={`Sent ${formatSentDate(request.invitedAt)}`}
+          >
+            {formatSentTime(request.invitedAt, referenceTime)}
+          </time>
         </div>
         <h2>{request.job.title}</h2>
-        <p className="ji-muted ji-job-id">
-          {request.job.id} · Invited {formatDate(request.invitedAt)}
-        </p>
+        <p className="ji-muted ji-job-id">{request.job.id}</p>
         <div className="ji-tags">
           <span>{formatPrice(request.job.budget)} fixed</span>
           <span>Deadline: {formatDate(request.job.deadline)}</span>
@@ -57,18 +66,13 @@ export function InvitationCard({
         )}
         {request.status === "Declined" && (request.declineReason || request.declineNote) && (
           <p className="ji-muted ji-message">
-            {[request.declineReason, request.declineNote].filter(Boolean).join(" — ")}
+            {[request.declineReason, request.declineNote].filter(Boolean).join(". ")}
           </p>
         )}
         {offer && (
           <p className="ji-offer-status">
-            <StatusBadge status={offer.status} />
-            <span>
-              {offer.status === "Pending"
-                ? "Offer pending review"
-                : `Offer ${offer.status.toLowerCase()}`}{" "}
-              · {formatPrice(offer.price)}
-            </span>
+            <OfferStatusText status={offer.status} />
+            <span>· {formatPrice(offer.price)}</span>
           </p>
         )}
         {request.status === "Pending" && (

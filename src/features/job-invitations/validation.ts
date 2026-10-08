@@ -19,12 +19,18 @@ export function isCalendarDate(value: unknown): value is string {
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
 }
 
-export function validateOffer(input: OfferInput, deadline: string): OfferErrors {
+export function validateOffer(
+  input: OfferInput,
+  deadline: string,
+  minimumDate: string,
+): OfferErrors {
   const errors: OfferErrors = {};
   if (!isOfferPrice(input.price.trim()))
     errors.price = "Enter a price from ฿0 to ฿99,999,999.99 with at most two decimal places.";
   if (!isCalendarDate(input.deliveryDate))
     errors.deliveryDate = "Choose an estimated delivery date.";
+  else if (input.deliveryDate < minimumDate)
+    errors.deliveryDate = "Delivery date cannot be before today.";
   else if (input.deliveryDate > deadline)
     errors.deliveryDate = "Delivery date cannot be after the job deadline.";
   if (input.message.length > MESSAGE_LIMIT)

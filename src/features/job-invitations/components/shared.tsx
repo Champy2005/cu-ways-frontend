@@ -4,9 +4,8 @@ import { ArrowLeft, CheckCircle2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { formatDate, formatPrice } from "../format";
-import type { JobSummary as Job, OfferStatus, RequestStatus } from "../types";
+import type { JobSummary as Job, OfferStatus } from "../types";
 
 export function PageHeading({
   title,
@@ -55,11 +54,11 @@ export function JobSummary({ job }: { job: Job }) {
   );
 }
 
-export function StatusBadge({ status }: { status: OfferStatus | RequestStatus }) {
+export function OfferStatusText({ status }: { status: OfferStatus }) {
   return (
-    <Badge variant="outline" className="ji-status" data-status={status}>
-      {status}
-    </Badge>
+    <span className="ji-status-text" data-status={status}>
+      {status === "Pending" ? "Offer pending review" : `Offer ${status.toLowerCase()}`}
+    </span>
   );
 }
 

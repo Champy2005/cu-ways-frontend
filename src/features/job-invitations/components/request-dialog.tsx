@@ -42,6 +42,7 @@ export function RequestDialog({
       destructive={declining}
       pending={action.pending}
       error={action.error}
+      onDismissError={action.dismissError}
       finalFocus={finalFocus}
       onClose={() => {
         if (!action.isPending()) onClose();

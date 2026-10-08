@@ -1,6 +1,7 @@
 import type { DeclineInput, Invitation, Offer, OfferInput } from "../types";
 import { normalizeOffer, validDecline, validateOffer } from "../validation";
 import { DEMO_NOW, initialInvitations, initialOffers } from "./fixtures";
+import { bangkokDate } from "../format";
 
 export type InvitationDemoState = {
   version: 1;
@@ -61,7 +62,7 @@ export function submitOffer(
     throw new Error(
       "An offer already exists for this invitation. Only one offer is allowed, including withdrawn offers.",
     );
-  const errors = validateOffer(input, request.job.deadline);
+  const errors = validateOffer(input, request.job.deadline, bangkokDate(DEMO_NOW));
   if (Object.keys(errors).length) throw new Error(Object.values(errors)[0]);
   const offer: Offer = {
     ...normalizeOffer(input),

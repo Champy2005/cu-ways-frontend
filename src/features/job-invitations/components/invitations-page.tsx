@@ -10,7 +10,7 @@ import type { Invitation, InvitationActions, InvitationTab, Offer } from "../typ
 import { InvitationCard } from "./invitation-card";
 import { RequestDialog } from "./request-dialog";
 import { BriefDialog } from "./brief-dialog";
-import { Feedback, PageHeading } from "./shared";
+import { PageHeading } from "./shared";
 import "../invitations.css";
 
 export function filterInvitations(requests: Invitation[], tab: InvitationTab, search: string) {
@@ -63,8 +63,8 @@ export function InvitationsPage({
   onTab,
   onOffer,
   onBack,
-  notice,
-  onDismissNotice,
+  referenceTime,
+  onNotify,
 }: {
   invitations: Invitation[];
   offers: Offer[];
@@ -73,8 +73,8 @@ export function InvitationsPage({
   onTab: (tab: InvitationTab) => void;
   onOffer: (id: string) => void;
   onBack: () => void;
-  notice: string | null;
-  onDismissNotice: () => void;
+  referenceTime: string;
+  onNotify: (message: string) => void;
 }) {
   const [search, setSearch] = useState("");
   const [selection, setSelection] = useState<{
@@ -82,7 +82,6 @@ export function InvitationsPage({
     mode: "accept" | "decline";
   } | null>(null);
   const [brief, setBrief] = useState<Invitation | null>(null);
-  const [responseNotice, setResponseNotice] = useState<string | null>(null);
   const trigger = useRef<HTMLElement | null>(null);
   const respondedTab = useRef<HTMLButtonElement>(null);
   const pendingCount = invitations.filter((entry) => entry.status === "Pending").length;
@@ -95,7 +94,7 @@ export function InvitationsPage({
     setSelection(null);
     setSearch("");
     onTab("responded");
-    setResponseNotice(
+    onNotify(
       accepted
         ? "Invitation accepted. You can now submit your custom offer."
         : "Invitation declined. Your response has been saved.",
@@ -108,16 +107,6 @@ export function InvitationsPage({
         subtitle="Invitations sent by creators"
         onBack={onBack}
       />
-      {(notice || responseNotice) && (
-        <Feedback
-          onDismiss={() => {
-            onDismissNotice();
-            setResponseNotice(null);
-          }}
-        >
-          {notice || responseNotice}
-        </Feedback>
-      )}
       <Tabs
         value={tab}
         onValueChange={(value) => {
@@ -147,6 +136,7 @@ export function InvitationsPage({
               <InvitationCard
                 key={request.id}
                 request={request}
+                referenceTime={referenceTime}
                 offer={offers.find((entry) => entry.requestId === request.id)}
                 onOffer={onOffer}
                 onRespond={(entry, mode, element) => {

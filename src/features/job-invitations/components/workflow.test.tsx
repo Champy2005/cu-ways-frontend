@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DemoWorkspace } from "@/features/marketers/demo/demo-workspace";
 import { initialState } from "../demo/transitions";
+import { DEMO_NOW } from "../demo/fixtures";
 import { demoInvitationActions, getSnapshot, resetInvitationsDemo } from "../demo/store";
 import { InvitationsPage, filterInvitations } from "./invitations-page";
 import { OfferPage } from "./offer-page";
@@ -47,6 +48,11 @@ describe("invitation and offer preview", () => {
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Confirm" }),
     );
     await screen.findByText("Invitation accepted. You can now submit your custom offer.");
+    expect(
+      screen
+        .getByText("Invitation accepted. You can now submit your custom offer.")
+        .closest(".ji-toast"),
+    ).not.toBeNull();
     expect(screen.getByRole("tab", { name: "Pending (1)" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Responded (5)" })).toHaveAttribute(
       "aria-selected",
@@ -67,6 +73,8 @@ describe("invitation and offer preview", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Submit Offer" }));
     await screen.findByText(/Offer submitted successfully!/);
+    expect(screen.getByRole("heading", { name: "Direct Invitations" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Dismiss notification" })).toBeInTheDocument();
     expect(getSnapshot().offers.at(-1)).toMatchObject({
       price: "9000.00",
       message: "Faculty LINE groups",
@@ -83,7 +91,7 @@ describe("invitation and offer preview", () => {
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Withdraw Offer" }),
     );
     await screen.findByRole("heading", { name: "Direct Invitations" });
-    expect(campaignCard().getByText("Withdrawn", { exact: true })).toBeInTheDocument();
+    expect(campaignCard().getByText("Offer withdrawn", { exact: true })).toBeInTheDocument();
     fireEvent.click(campaignCard().getByRole("button", { name: "View Offer" }));
     await screen.findByText("Offer withdrawn");
     expect(screen.queryByRole("button", { name: "Withdraw Offer" })).not.toBeInTheDocument();
@@ -111,6 +119,9 @@ describe("invitation and offer preview", () => {
     });
     fireEvent.click(dialog.getByRole("button", { name: "Decline Request" }));
     await screen.findByText("Invitation declined. Your response has been saved.");
+    expect(
+      screen.getByText("Invitation declined. Your response has been saved.").closest(".ji-toast"),
+    ).not.toBeNull();
     expect(getSnapshot().invitations[0]).toMatchObject({
       declineReason: "Schedule conflict",
       declineNote: "Already booked",
@@ -157,8 +168,8 @@ describe("edge states and failures", () => {
           onTab={vi.fn()}
           onOffer={vi.fn()}
           onBack={vi.fn()}
-          notice={null}
-          onDismissNotice={vi.fn()}
+          referenceTime={DEMO_NOW}
+          onNotify={vi.fn()}
         />,
       );
       expect(
@@ -183,6 +194,7 @@ describe("edge states and failures", () => {
   ])("blocks a missing or ineligible offer request", (request) => {
     render(
       <OfferPage
+        minimumDate="2026-10-07"
         request={request}
         actions={demoInvitationActions}
         onBack={vi.fn()}
@@ -201,12 +213,14 @@ describe("edge states and failures", () => {
         }),
     );
     const onBack = vi.fn();
+    const onSubmitted = vi.fn();
     render(
       <OfferPage
+        minimumDate="2026-10-07"
         request={initialState.invitations[2]}
         actions={{ ...demoInvitationActions, submit }}
         onBack={onBack}
-        onSubmitted={vi.fn()}
+        onSubmitted={onSubmitted}
       />,
     );
     fireEvent.change(screen.getByLabelText("Proposed Price (THB) *"), { target: { value: "0" } });
@@ -219,32 +233,78 @@ describe("edge states and failures", () => {
     expect(submit).toHaveBeenCalledOnce();
     await act(async () => reject(new Error("An offer already exists for this invitation.")));
     expect(screen.getByRole("alert")).toHaveTextContent("already exists");
+    expect(onSubmitted).not.toHaveBeenCalled();
+    expect(screen.queryByText(/Offer submitted successfully!/)).not.toBeInTheDocument();
     expect(screen.getByLabelText("Proposed Price (THB) *")).toHaveValue("0");
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.getByRole("alertdialog")).toHaveTextContent("Discard your offer draft?");
     fireEvent.click(screen.getByRole("button", { name: "Keep Editing" }));
     expect(onBack).not.toHaveBeenCalled();
   });
-  it("shows inactive-request errors inside the confirmation", async () => {
-    const accept = vi.fn().mockRejectedValue(new Error("This invitation is no longer pending."));
-    const responded = vi.fn();
+  it.each(["accept", "decline"] as const)(
+    "shows %s errors as a toast inside the confirmation",
+    async (mode) => {
+      const accept = vi.fn().mockRejectedValue(new Error("This invitation is no longer pending."));
+      const responded = vi.fn();
+      render(
+        <RequestDialog
+          request={initialState.invitations[0]}
+          mode={mode}
+          actions={{ ...demoInvitationActions, accept, decline: accept }}
+          onClose={vi.fn()}
+          onResponded={responded}
+          finalFocus={() => null}
+        />,
+      );
+      if (mode === "decline") {
+        fireEvent.change(screen.getByLabelText("Note (optional)"), {
+          target: { value: "Keep this note" },
+        });
+      }
+      fireEvent.click(
+        screen.getByRole("button", { name: mode === "accept" ? "Confirm" : "Decline Request" }),
+      );
+      const error = await screen.findByRole("alert");
+      expect(error).toHaveTextContent("no longer pending");
+      expect(screen.getByRole("alertdialog")).toContainElement(error);
+      expect(error.querySelector(".ji-toast")).not.toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
+      expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+      if (mode === "decline")
+        expect(screen.getByLabelText("Note (optional)")).toHaveValue("Keep this note");
+      expect(responded).not.toHaveBeenCalled();
+    },
+  );
+  it("keeps the offer and withdrawal dialog on failure, and allows retry", async () => {
+    const withdraw = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("Withdrawal failed. Please try again."))
+      .mockResolvedValueOnce(undefined);
+    const onWithdrawn = vi.fn();
     render(
-      <RequestDialog
-        request={initialState.invitations[0]}
-        mode="accept"
-        actions={{ ...demoInvitationActions, accept }}
-        onClose={vi.fn()}
-        onResponded={responded}
-        finalFocus={() => null}
+      <OfferPage
+        minimumDate="2026-10-07"
+        request={initialState.invitations[3]}
+        offer={initialState.offers[0]}
+        actions={{ ...demoInvitationActions, withdraw }}
+        onBack={vi.fn()}
+        onSubmitted={vi.fn()}
+        onWithdrawn={onWithdrawn}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("no longer pending");
-    expect(responded).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Withdraw Offer" }));
+    const dialog = within(screen.getByRole("alertdialog"));
+    fireEvent.click(dialog.getByRole("button", { name: "Withdraw Offer" }));
+    expect(await dialog.findByRole("alert")).toHaveTextContent("Withdrawal failed");
+    expect(screen.getByLabelText("Proposed Price (THB) *")).toHaveValue("9000.00");
+    expect(onWithdrawn).not.toHaveBeenCalled();
+    fireEvent.click(dialog.getByRole("button", { name: "Withdraw Offer" }));
+    await waitFor(() => expect(onWithdrawn).toHaveBeenCalledOnce());
   });
   it("announces invalid date and price fields after interaction", () => {
     render(
       <OfferPage
+        minimumDate="2026-10-07"
         request={initialState.invitations[2]}
         actions={demoInvitationActions}
         onBack={vi.fn()}
@@ -256,6 +316,10 @@ describe("edge states and failures", () => {
     fireEvent.blur(price);
     expect(price).toHaveAttribute("aria-invalid", "true");
     const delivery = screen.getByLabelText("Estimated Delivery *");
+    expect(delivery).toHaveAttribute("min", "2026-10-07");
+    fireEvent.change(delivery, { target: { value: "2026-10-06" } });
+    fireEvent.blur(delivery);
+    expect(screen.getByText("Delivery date cannot be before today.")).toBeInTheDocument();
     fireEvent.change(delivery, { target: { value: "2026-10-29" } });
     fireEvent.blur(delivery);
     expect(delivery).toHaveAttribute("aria-invalid", "true");

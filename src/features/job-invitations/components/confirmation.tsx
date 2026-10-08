@@ -10,7 +10,8 @@ import {
   AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Feedback } from "./shared";
+import { NotificationToast } from "./notification-toast";
+import type { FeatureNotification } from "../notifications";
 
 export function Confirmation({
   title,
@@ -20,6 +21,7 @@ export function Confirmation({
   cancelLabel = "Cancel",
   pending = false,
   error,
+  onDismissError,
   destructive = false,
   onConfirm,
   onClose,
@@ -31,7 +33,8 @@ export function Confirmation({
   confirmLabel: string;
   cancelLabel?: string;
   pending?: boolean;
-  error?: string | null;
+  error?: FeatureNotification | null;
+  onDismissError?: () => void;
   destructive?: boolean;
   onConfirm: () => void;
   onClose: () => void;
@@ -54,7 +57,9 @@ export function Confirmation({
             {description}
           </AlertDialogDescription>
           {children}
-          {error && <Feedback error>{error}</Feedback>}
+          {error && onDismissError && (
+            <NotificationToast notification={error} onDismiss={onDismissError} />
+          )}
           <div className="ji-actions">
             <Button variant="outline" className="ji-secondary" disabled={pending} onClick={onClose}>
               {cancelLabel}

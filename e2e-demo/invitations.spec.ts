@@ -14,6 +14,8 @@ test("invitation to offer journey, themes, reload, and final withdrawal", async 
   const card = page.locator('[data-slot="card"]').filter({
     has: page.getByRole("heading", { name: "Campus Sustainability Campaign", exact: true }),
   });
+  await expect(card.locator(".ji-sent-time")).toContainText("Invited");
+  await expect(card.locator(".ji-sent-time")).toHaveAttribute("data-status", "Pending");
   await page.screenshot({ path: testInfo.outputPath("invitations-light.png"), fullPage: true });
   await card.getByRole("button", { name: "Accept Request" }).click();
   const dialog = page.getByRole("alertdialog");
@@ -37,6 +39,22 @@ test("invitation to offer journey, themes, reload, and final withdrawal", async 
   await page.screenshot({ path: testInfo.outputPath("offer-light.png"), fullPage: true });
   await page.getByRole("button", { name: "Submit Offer", exact: true }).click();
   await expect(page.getByText(/Offer submitted successfully!/)).toBeVisible();
+  const toast = page.locator(".ji-toast");
+  await expect(page.getByRole("heading", { name: "Direct Invitations" })).toBeFocused();
+  await expect(toast).toContainText("฿9,000");
+  await expect(card.locator(".ji-sent-time")).toHaveAttribute("data-status", "Accepted");
+  await toast.hover();
+  await page.screenshot({
+    path: testInfo.outputPath("submission-toast-light.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: /dark/i }).click();
+  await page.screenshot({ path: testInfo.outputPath("submission-toast-dark.png"), fullPage: true });
+  const toastBounds = await toast.boundingBox();
+  expect(toastBounds!.x).toBeGreaterThanOrEqual(0);
+  expect(toastBounds!.x + toastBounds!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+  await expect(toast).toBeHidden({ timeout: 8000 });
+  await page.getByRole("button", { name: /light/i }).click();
   await page.reload();
   await card.getByRole("button", { name: "View Offer" }).click();
   await expect(page.getByLabel("Proposed Price (THB) *")).toHaveValue("9000.00");
@@ -48,7 +66,7 @@ test("invitation to offer journey, themes, reload, and final withdrawal", async 
     .getByRole("alertdialog")
     .getByRole("button", { name: "Withdraw Offer", exact: true })
     .click();
-  await expect(card.getByText("Withdrawn", { exact: true })).toBeVisible();
+  await expect(card.getByText("Offer withdrawn", { exact: true })).toBeVisible();
   await card.getByRole("button", { name: "View Offer" }).click();
   await expect(page.getByText("Offer withdrawn", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Submit Offer", exact: true })).toHaveCount(0);

@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { NotificationToast } from "@/features/job-invitations/components/notification-toast";
+import { DEMO_NOW } from "@/features/job-invitations/demo/fixtures";
+import {
+  createNotification,
+  type FeatureNotification,
+} from "@/features/job-invitations/notifications";
 import { InvitationsPage } from "@/features/job-invitations/components/invitations-page";
 import { OfferPage } from "@/features/job-invitations/components/offer-page";
-import { formatPrice } from "@/features/job-invitations/format";
+import { bangkokDate, formatPrice } from "@/features/job-invitations/format";
 import {
   demoInvitationActions,
   getSnapshot,
@@ -25,7 +31,11 @@ export default function InvitationsView({
   const selectedId = useLocalQuery("requestId", requestId ?? "");
   const selectedTab =
     useLocalQuery("tab", tab ?? "pending") === "responded" ? "responded" : "pending";
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<FeatureNotification | null>(null);
+  const dismissNotice = useCallback(() => setNotice(null), []);
+  function notify(message: string) {
+    setNotice(createNotification(message, "success"));
+  }
   const content = useRef<HTMLDivElement>(null);
   useEffect(() => {
     content.current?.querySelector<HTMLElement>("h1")?.focus({ preventScroll: true });
@@ -36,16 +46,24 @@ export default function InvitationsView({
   }
   return (
     <div ref={content}>
+      <NotificationToast notification={notice} onDismiss={dismissNotice} />
       {view === "offer" ? (
         <OfferPage
           key={`${selectedId}-${state.revision}`}
           request={state.invitations.find((entry) => entry.id === selectedId)}
           offer={state.offers.find((entry) => entry.requestId === selectedId)}
           actions={demoInvitationActions}
+          minimumDate={bangkokDate(DEMO_NOW)}
           onBack={backToInvitations}
           onSubmitted={(price) => {
-            setNotice(
+            notify(
               `Offer submitted successfully! Your proposed price of ${formatPrice(price)} has been sent for review.`,
+            );
+            backToInvitations();
+          }}
+          onWithdrawn={() => {
+            notify(
+              "Offer withdrawn successfully. You cannot submit another offer for this invitation.",
             );
             backToInvitations();
           }}
@@ -63,8 +81,8 @@ export default function InvitationsView({
             setLocalQueries({ view: "offer", requestId: id, tab: "responded" });
           }}
           onBack={() => setLocalQueries({ view: "dashboard", requestId: null, tab: null })}
-          notice={notice}
-          onDismissNotice={() => setNotice(null)}
+          referenceTime={DEMO_NOW}
+          onNotify={notify}
         />
       )}
     </div>

@@ -44,7 +44,7 @@ export function DemoWorkspace({
         <div className="flex min-w-0 items-center gap-3">
           <span className="mk-demo-badge">Demo</span>
           <span className="text-xs leading-5 text-[var(--mk-muted)]">
-            Demo data — changes stay in this browser session.
+            Demo data. Changes stay in this browser session.
           </span>
         </div>
         <Button

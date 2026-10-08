@@ -15,6 +15,7 @@ export function OfferFields({
   id,
   update,
   onBlur,
+  minimumDate,
 }: {
   values: OfferInput;
   errors: OfferErrors;
@@ -23,6 +24,7 @@ export function OfferFields({
   id: string;
   update: (key: keyof OfferInput, value: string) => void;
   onBlur: (key: keyof OfferInput) => void;
+  minimumDate: string;
 }) {
   return (
     <div className="ji-fields">
@@ -57,6 +59,7 @@ export function OfferFields({
           id={`${id}-delivery`}
           className="ji-input"
           type="date"
+          min={readOnly ? undefined : minimumDate}
           max={job.deadline}
           value={values.deliveryDate}
           readOnly={readOnly}
@@ -66,7 +69,7 @@ export function OfferFields({
           onBlur={() => onBlur("deliveryDate")}
         />
         <FieldDescription id={`${id}-delivery-help`}>
-          Deliver on or before {formatDate(job.deadline)}.
+          Deliver between {formatDate(minimumDate)} and {formatDate(job.deadline)}.
         </FieldDescription>
         <p id={`${id}-delivery-error`} className="ji-field-error">
           {errors.deliveryDate}

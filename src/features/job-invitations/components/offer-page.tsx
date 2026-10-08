@@ -4,10 +4,11 @@ import { useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import type { Invitation, InvitationActions, Offer, OfferErrors, OfferInput } from "../types";
 import { validateOffer } from "../validation";
-import { formatDate, formatPrice } from "../format";
+import { bangkokDate, formatDate, formatPrice } from "../format";
 import { Confirmation } from "./confirmation";
 import { OfferFields } from "./offer-fields";
-import { Feedback, JobSummary, PageHeading, StatusBadge } from "./shared";
+import { Feedback, JobSummary, PageHeading, OfferStatusText } from "./shared";
+import { NotificationToast } from "./notification-toast";
 import { useAction } from "./use-action";
 import "../invitations.css";
 
@@ -19,12 +20,16 @@ function OfferForm({
   actions,
   onBack,
   onSubmitted,
+  onWithdrawn,
+  minimumDate,
 }: {
   request: Invitation;
   offer?: Offer;
   actions: InvitationActions;
   onBack: () => void;
   onSubmitted: (price: string) => void;
+  onWithdrawn: () => void;
+  minimumDate: string;
 }) {
   const id = useId();
   const [values, setValues] = useState<OfferInput>(() =>
@@ -38,7 +43,7 @@ function OfferForm({
   const form = useRef<HTMLFormElement>(null);
   const cancelButton = useRef<HTMLButtonElement>(null);
   const withdrawButton = useRef<HTMLButtonElement>(null);
-  const errors = validateOffer(values, request.job.deadline);
+  const errors = offer ? {} : validateOffer(values, request.job.deadline, minimumDate);
   const visibleErrors: OfferErrors = Object.fromEntries(
     Object.entries(errors).filter(([field]) => touched[field as keyof OfferInput]),
   );
@@ -71,9 +76,9 @@ function OfferForm({
       <PageHeading title={offer ? "Your Offer" : "Submit Your Offer"} onBack={cancel} />
       {offer && (
         <div className="ji-existing" role="status">
-          <StatusBadge status={offer.status} />
+          <OfferStatusText status={offer.status} />
           <strong>
-            {offer.status === "Withdrawn" ? "Offer withdrawn" : "Offer already submitted"}
+            {offer.status === "Withdrawn" ? "Withdrawal is final" : "Offer already submitted"}
           </strong>
           <p>
             You submitted {formatPrice(offer.price)} on {formatDate(offer.createdAt)}. Only one
@@ -96,9 +101,12 @@ function OfferForm({
             id={id}
             update={update}
             onBlur={(key) => setTouched((current) => ({ ...current, [key]: true }))}
+            minimumDate={minimumDate}
           />
         </fieldset>
-        {action.error && !dialog && <Feedback error>{action.error}</Feedback>}
+        {!dialog && (
+          <NotificationToast notification={action.error} onDismiss={action.dismissError} />
+        )}
         <div className="ji-actions">
           {offer?.status === "Pending" ? (
             <Button
@@ -158,6 +166,7 @@ function OfferForm({
           destructive
           pending={action.pending}
           error={action.error}
+          onDismissError={action.dismissError}
           onClose={() => {
             if (!action.isPending()) setDialog(null);
           }}
@@ -166,7 +175,7 @@ function OfferForm({
               () => actions.withdraw(request.id),
               () => {
                 setDialog(null);
-                onBack();
+                onWithdrawn();
               },
             );
           }}
@@ -183,12 +192,16 @@ export function OfferPage({
   actions,
   onBack,
   onSubmitted,
+  onWithdrawn = onBack,
+  minimumDate = bangkokDate(),
 }: {
   request?: Invitation;
   offer?: Offer;
   actions: InvitationActions;
   onBack: () => void;
   onSubmitted: (price: string) => void;
+  onWithdrawn?: () => void;
+  minimumDate?: string;
 }) {
   if (!request || request.status !== "Accepted")
     return (
@@ -212,6 +225,8 @@ export function OfferPage({
       actions={actions}
       onBack={onBack}
       onSubmitted={onSubmitted}
+      onWithdrawn={onWithdrawn}
+      minimumDate={minimumDate}
     />
   );
 }
