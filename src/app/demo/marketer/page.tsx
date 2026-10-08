@@ -16,15 +16,15 @@ export const dynamic = "force-dynamic";
 export default async function MarketerDemoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string }>;
+  searchParams: Promise<{ view?: string; requestId?: string; tab?: string }>;
 }) {
   if (!isMarketerDemoEnabled()) notFound();
-  const { view } = await searchParams;
+  const { view, requestId, tab } = await searchParams;
   const device = navigationDevice((await headers()).get("user-agent"));
   return (
     <div className={inter.variable}>
       <MarketerShell device={device} demo demoView={view}>
-        <DemoWorkspace view={view ?? "dashboard"} />
+        <DemoWorkspace view={view ?? "dashboard"} requestId={requestId} tab={tab} />
       </MarketerShell>
     </div>
   );
