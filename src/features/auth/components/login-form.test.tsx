@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { LoginForm } from "./login-form";
 import { login } from "../api";
+import { ApiError } from "@/lib/api/errors";
 vi.mock("../api", () => ({ login: vi.fn() }));
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
@@ -36,5 +37,31 @@ describe("password visibility toggle", () => {
     expect(password).toHaveAttribute("type", "text");
     fireEvent.click(screen.getByRole("button", { name: "Hide password" }));
     expect(password).toHaveAttribute("type", "password");
+  });
+});
+
+describe("login error states", () => {
+  it("shows per-field errors and disables Sign in until a field is edited", () => {
+    render(<LoginForm />);
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "maiouan99gmail.com" } });
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    expect(screen.getByText("Enter a valid email.")).toBeInTheDocument();
+    expect(screen.getByText("Enter your password.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "mali@example.test" } });
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeEnabled();
+  });
+
+  it("shows the incorrect-credentials banner on a 401", async () => {
+    vi.mocked(login).mockRejectedValue(
+      new ApiError(401, "invalid_credentials", "invalid email or password"),
+    );
+    render(<LoginForm />);
+    fillForm();
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    expect(
+      await screen.findByText("Incorrect email or password. Please try again."),
+    ).toBeInTheDocument();
+    expect(navigation.push).not.toHaveBeenCalled();
   });
 });

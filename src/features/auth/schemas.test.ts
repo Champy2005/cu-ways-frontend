@@ -5,7 +5,7 @@ import {
   accountStepErrors,
   contactStepErrors,
   experienceStepErrors,
-  loginValidationMessage,
+  loginFieldErrors,
   normalizeRegisterInput,
   registerValidationMessage,
   registrationPayload,
@@ -33,9 +33,14 @@ describe("authentication input validation", () => {
   it("rejects malformed emails and short passwords", () => {
     expect(validateLoginInput({ email: "not-an-email", password: "short" })).toBe(false);
     expect(validateRegisterInput({ ...validRegistration, password: "short" })).toBe(false);
-    expect(loginValidationMessage({ email: validRegistration.email, password: "short" })).toBe(
-      "Password must be between 8 and 128 characters.",
-    );
+  });
+
+  it("reports per-field login errors", () => {
+    expect(loginFieldErrors({ email: "maiouan99gmail.com", password: "" })).toEqual({
+      email: "Enter a valid email.",
+      password: "Enter your password.",
+    });
+    expect(loginFieldErrors({ email: validRegistration.email, password: "x" })).toEqual({});
   });
 
   it("rejects a blank phone after normalization", () => {
