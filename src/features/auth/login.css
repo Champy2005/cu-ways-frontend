@@ -1,32 +1,38 @@
-/* Login screen, sampled from the SE UX/UI "(US-002) login_ped" frames (light and dark). */
+/* Login screen, measured from the SE UX/UI "(US-002) login_ped" frames (375px mobile, Inter). */
 .login-page {
   --login-bg: #fafafa;
   --login-text: #0d111a;
+  --login-subtitle: #0d111a;
   --login-card: #ffffff;
+  --login-card-shadow: 0 2px 3px rgb(0 0 0 / 0.25);
   --login-field-border: #e0e0e0;
+  --login-placeholder: #888888;
   --login-field-icon: #9a9a9a;
   --login-brand: #e42278;
-  --login-brand-disabled: #e8a3c3;
+  --login-brand-disabled: #f5a3c8;
   --login-error: #d63a3a;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 1.25rem 3rem;
+  padding: 28px 22px 48px;
   background: var(--login-bg);
   color: var(--login-text);
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   .login-page {
     --login-bg: #0d111a;
     --login-text: #ffffff;
+    --login-subtitle: #f9f9f9;
+    --login-card-shadow: none;
   }
 }
 
 .login-logo {
   align-self: flex-start;
-  height: 2.25rem;
+  height: 25px;
   width: auto;
 }
 .login-logo-dark {
@@ -42,53 +48,56 @@
 }
 
 .login-title {
-  margin-top: 2.5rem;
-  font-size: 2.25rem;
+  margin-top: 49px;
+  font-size: 32px;
   font-weight: 500;
-  line-height: 1.1;
+  line-height: 39px;
 }
 .login-subtitle {
-  margin-top: 0.5rem;
-  font-size: 1rem;
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--login-subtitle);
 }
 
 .login-card {
   position: relative;
-  margin-top: 2.5rem;
+  margin-top: 43px;
   width: 100%;
-  max-width: 24rem;
-  border-radius: 1rem;
+  max-width: 306px;
+  border-radius: 14px;
   background: var(--login-card);
-  padding: 1.25rem;
+  box-shadow: var(--login-card-shadow);
+  padding: 15px 25px 11px 25px;
   color: #0d111a;
 }
 .login-mascot {
   position: absolute;
-  right: -0.75rem;
-  top: -3.75rem;
-  width: 5.25rem;
+  right: -45px;
+  top: -63px;
+  width: 112px;
   height: auto;
   transform: scaleX(-1);
 }
 .login-card-title {
-  margin-bottom: 0.75rem;
-  font-size: 1.125rem;
+  margin-bottom: 9px;
+  font-size: 17px;
   font-weight: 500;
+  line-height: 21px;
 }
 
 .login-field + .login-field {
-  margin-top: 0.875rem;
+  margin-top: 14px;
 }
 .login-input-wrap {
-  position: relative;
   display: flex;
-  height: 2.5rem;
+  height: 32px;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   border: 1px solid var(--login-field-border);
-  border-radius: 0.625rem;
+  border-radius: 10px;
   background: #ffffff;
-  padding: 0 0.625rem;
+  padding: 0 8px;
 }
 .login-input-wrap:focus-within {
   border-color: var(--login-brand);
@@ -104,39 +113,43 @@
   min-width: 0;
   flex: 1;
   background: transparent;
-  font-size: 0.9375rem;
+  font-size: 13px;
+  line-height: 135%;
   outline: none;
 }
 .login-input::placeholder {
-  color: var(--login-field-icon);
+  color: var(--login-placeholder);
 }
 .login-eye {
   display: flex;
   cursor: pointer;
 }
+/* Figma draws these at ~8px, too small to read in a browser, so 11px here. */
 .login-field-error {
-  margin-top: 0.25rem;
+  margin-top: 2px;
   text-align: right;
-  font-size: 0.75rem;
+  font-size: 11px;
+  line-height: 13px;
   color: var(--login-error);
 }
 .login-alert {
-  margin-top: 0.75rem;
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 6px;
+  font-size: 12px;
   color: var(--login-error);
 }
 
 .login-submit {
   display: block;
-  margin: 1.25rem 0 0 auto;
-  height: 2.75rem;
-  width: 60%;
-  border-radius: 0.75rem;
+  margin: 26px 0 0 auto;
+  height: 57px;
+  width: 185px;
+  max-width: 100%;
+  border-radius: 12px;
   background: var(--login-brand);
-  font-size: 1.25rem;
+  font-size: 24px;
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;
@@ -147,8 +160,8 @@
 }
 
 .login-register {
-  margin-top: 1rem;
-  font-size: 0.875rem;
+  margin-top: 16px;
+  font-size: 14px;
 }
 .login-register a {
   font-weight: 600;

@@ -66,7 +66,7 @@ export function LoginForm() {
         <h2 className="login-card-title">Sign in</h2>
         <div className="login-field">
           <div className="login-input-wrap" data-invalid={Boolean(fieldErrors.email)}>
-            <CircleUserRound size={22} aria-hidden />
+            <CircleUserRound size={20} aria-hidden />
             <input
               id="login-email"
               className="login-input"
@@ -87,7 +87,7 @@ export function LoginForm() {
         </div>
         <div className="login-field">
           <div className="login-input-wrap" data-invalid={Boolean(fieldErrors.password)}>
-            <Lock size={22} aria-hidden />
+            <Lock size={20} aria-hidden />
             <input
               id="login-password"
               className="login-input"
@@ -105,7 +105,7 @@ export function LoginForm() {
               onClick={() => setShowPassword((current) => !current)}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+              {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
             </button>
           </div>
           {fieldErrors.password ? (
@@ -116,7 +116,7 @@ export function LoginForm() {
         </div>
         {error ? (
           <p className="login-alert" role="alert">
-            <CircleAlert size={18} aria-hidden />
+            <CircleAlert size={14} aria-hidden />
             {error}
           </p>
         ) : null}
