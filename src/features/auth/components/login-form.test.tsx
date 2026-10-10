@@ -52,6 +52,15 @@ describe("login error states", () => {
     expect(screen.getByRole("button", { name: "Sign in" })).toBeEnabled();
   });
 
+  it("shows the banner without calling the API for a password outside 8-128 chars", () => {
+    render(<LoginForm />);
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "mali@example.test" } });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "short" } });
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    expect(screen.getByText("Incorrect email or password. Please try again.")).toBeInTheDocument();
+    expect(login).not.toHaveBeenCalled();
+  });
+
   it("shows the incorrect-credentials banner on a 401", async () => {
     vi.mocked(login).mockRejectedValue(
       new ApiError(401, "invalid_credentials", "invalid email or password"),

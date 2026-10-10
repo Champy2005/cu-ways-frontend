@@ -41,6 +41,12 @@ export function LoginForm() {
       setFieldErrors(errors);
       return;
     }
+    // The backend rejects passwords outside 8-128 chars, so none can be correct: fail locally
+    // with the generic message instead of sending a request (and without revealing the policy).
+    if (values.password.length < 8 || values.password.length > 128) {
+      setError(INVALID_CREDENTIALS_MESSAGE);
+      return;
+    }
 
     setIsPending(true);
     setError(null);
