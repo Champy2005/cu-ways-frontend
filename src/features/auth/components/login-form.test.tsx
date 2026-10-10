@@ -1,31 +1,40 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-
-import { LoginForm } from "@/features/auth/components/login-form";
-
-const push = vi.fn();
-const refresh = vi.fn();
-const login = vi.fn();
-
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push, refresh }) }));
-vi.mock("@/features/auth/api", () => ({ login: (input: unknown) => login(input) }));
-
-afterEach(() => {
-  cleanup();
-  vi.clearAllMocks();
-});
-
-describe("LoginForm", () => {
-  it("opens the creator dashboard after signing in", async () => {
-    login.mockResolvedValue({ user: { user_id: 1 } });
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { LoginForm } from "./login-form";
+import { login } from "../api";
+vi.mock("../api", () => ({ login: vi.fn() }));
+const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+beforeEach(() => vi.resetAllMocks());
+afterEach(cleanup);
+function fillForm() {
+  fireEvent.change(screen.getByLabelText("Email"), { target: { value: "mali@example.test" } });
+  fireEvent.change(screen.getByLabelText("Password"), { target: { value: "test-password" } });
+}
+describe("login redirect", () => {
+  it("redirects a regular user to the dashboard", async () => {
+    vi.mocked(login).mockResolvedValue({ role: "user" } as Awaited<ReturnType<typeof login>>);
     render(<LoginForm />);
-    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "jane@example.com" } });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "correct horse battery staple" },
-    });
-    fireEvent.submit(screen.getByRole("button", { name: /sign in/i }).closest("form")!);
-
-    await waitFor(() => expect(push).toHaveBeenCalledWith("/creator/dashboard"));
-    expect(push).not.toHaveBeenCalledWith("/dashboard");
+    fillForm();
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/dashboard"));
+  });
+  it("redirects an admin to the admin area", async () => {
+    vi.mocked(login).mockResolvedValue({ role: "admin" } as Awaited<ReturnType<typeof login>>);
+    render(<LoginForm />);
+    fillForm();
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/admin"));
+  });
+});
+describe("password visibility toggle", () => {
+  it("reveals and hides the password", () => {
+    render(<LoginForm />);
+    const password = screen.getByLabelText("Password");
+    expect(password).toHaveAttribute("type", "password");
+    fireEvent.click(screen.getByRole("button", { name: "Show password" }));
+    expect(password).toHaveAttribute("type", "text");
+    fireEvent.click(screen.getByRole("button", { name: "Hide password" }));
+    expect(password).toHaveAttribute("type", "password");
   });
 });
