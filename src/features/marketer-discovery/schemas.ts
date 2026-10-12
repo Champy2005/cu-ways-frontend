@@ -21,7 +21,8 @@ const SORT_VALUES: string[] = SORT_OPTIONS.map((option) => option.value);
 
 const DISCOVERY_PATH = "/creator/discovery";
 const MARKETER_DETAIL_PATH = "/marketers";
-const MAX_KEYWORD_LENGTH = 100;
+/** The backend rejects longer keywords with a 422. */
+export const MAX_KEYWORD_LENGTH = 100;
 
 export const EMPTY_MARKETER_QUERY: MarketerQuery = {
   q: "",

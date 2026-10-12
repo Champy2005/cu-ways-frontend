@@ -11,6 +11,7 @@ import {
   activeFilterChips,
   buildDiscoveryHref,
   EMPTY_MARKETER_QUERY,
+  MAX_KEYWORD_LENGTH,
   removeFilter,
   type FilterChip as FilterChipData,
 } from "@/features/marketer-discovery/schemas";
@@ -69,7 +70,8 @@ export function MarketerSearchPanel({ query }: MarketerSearchPanelProps) {
             id="marketer-search"
             name="q"
             type="search"
-            placeholder="Discovery Creator"
+            placeholder="Search by name, bio, or service"
+            maxLength={MAX_KEYWORD_LENGTH}
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
             className="h-10 rounded-full border-transparent bg-background pl-11 shadow-card"
