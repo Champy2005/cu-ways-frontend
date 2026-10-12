@@ -30,6 +30,11 @@ Dependency Review action requires the repository Dependency Graph, so it runs on
 repository Actions variable `DEPENDENCY_REVIEW_ENABLED` is exactly `true`. This prevents a missing
 GitHub repository feature from blocking a PR while keeping the lockfile vulnerability gate active.
 
+Advisory exceptions live in `pnpm-workspace.yaml` under `auditConfig.ignoreGhsas`, one GHSA per
+entry with a comment giving the reason. Add one only when no patched release exists and the
+vulnerable package is unreachable from the built app (for example, dev tooling only). Prefer an
+`overrides` pin whenever a patched version does exist, and remove the exception once it is fixed.
+
 The test job runs committed `src/**/*.test.ts` and `src/**/*.test.tsx` tests for validation,
 API envelopes and adapters, discovery/marketer behavior, and components, plus focused tooling
 invariants. It does not translate unfinished backlog rows into placeholder tests. The build job

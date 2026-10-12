@@ -10,3 +10,10 @@ overrides:
   # GHSA-qw65-cvwx-89v3 / GHSA-58mr-gqgx-xq4g fast-uri authority and host-confusion advisories;
   # transitive via shadcn's ajv, which accepts any fast-uri 3.x.
   fast-uri: 3.1.8
+auditConfig:
+  ignoreGhsas:
+    # GHSA-vfj7-8cjw-p6xm braces stack-exhaustion DoS. No patched release exists (3.0.3 is the
+    # latest). Reached only through dev tooling (shadcn CLI and eslint-config-next, via
+    # fast-glob > micromatch), which matches file globs our own team writes; nothing in the
+    # built app imports it. Remove this entry once braces publishes a fix.
+    - GHSA-vfj7-8cjw-p6xm
