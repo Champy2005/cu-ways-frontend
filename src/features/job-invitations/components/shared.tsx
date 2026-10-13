@@ -11,14 +11,16 @@ export function PageHeading({
   title,
   subtitle,
   onBack,
+  backLabel = "Back to invitations",
 }: {
   title: string;
   subtitle?: string;
   onBack: () => void;
+  backLabel?: string;
 }) {
   return (
     <header className="ji-heading">
-      <Button variant="ghost" size="icon" aria-label="Back to invitations" onClick={onBack}>
+      <Button variant="ghost" size="icon" aria-label={backLabel} onClick={onBack}>
         <ArrowLeft aria-hidden="true" />
       </Button>
       <div>

@@ -257,6 +257,7 @@
 }
 .ji-empty img {
   margin-bottom: 1rem;
+  filter: grayscale(1);
 }
 .ji-feedback {
   display: flex;

@@ -106,6 +106,7 @@ export function InvitationsPage({
         title="Direct Invitations"
         subtitle="Invitations sent by creators"
         onBack={onBack}
+        backLabel="Back to overview"
       />
       <Tabs
         value={tab}

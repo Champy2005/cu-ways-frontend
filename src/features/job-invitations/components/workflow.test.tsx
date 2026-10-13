@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DemoWorkspace } from "@/features/marketers/demo/demo-workspace";
+import { MarketerNavigation } from "@/features/marketers/components/marketer-navigation";
 import { initialState } from "../demo/transitions";
 import { DEMO_NOW } from "../demo/fixtures";
 import { demoInvitationActions, getSnapshot, resetInvitationsDemo } from "../demo/store";
@@ -96,7 +97,60 @@ describe("invitation and offer preview", () => {
     await screen.findByText("Offer withdrawn");
     expect(screen.queryByRole("button", { name: "Withdraw Offer" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Submit Offer" })).not.toBeInTheDocument();
+    const footer = within(document.querySelector(".ji-actions") as HTMLElement);
+    expect(footer.getAllByRole("button")).toHaveLength(1);
+    expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
+    fireEvent.click(footer.getByRole("button", { name: "Back to Invitations" }));
+    await screen.findByRole("heading", { name: "Direct Invitations" });
+    expect(screen.getByRole("tab", { name: "Responded (5)" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
+
+  it("defaults to Pending after leaving an explicit Responded link and after a reload", async () => {
+    window.history.replaceState(null, "", "/demo/marketer?view=invitations&tab=responded");
+    const page = render(
+      <>
+        <MarketerNavigation demo selected="invitations" />
+        <DemoWorkspace view="invitations" tab="responded" />
+      </>,
+    );
+    await screen.findByRole("heading", { name: "Direct Invitations" });
+    expect(screen.getByRole("tab", { name: "Responded (4)" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Back to overview" }));
+    await screen.findByRole("heading", { name: "Overview" });
+    fireEvent.click(screen.getByRole("link", { name: "Invitations" }));
+    await screen.findByRole("heading", { name: "Direct Invitations" });
+    expect(new URLSearchParams(window.location.search).has("tab")).toBe(false);
+    expect(screen.getByRole("tab", { name: "Pending (2)" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    page.unmount();
+    render(<DemoWorkspace view="invitations" />);
+    await screen.findByRole("heading", { name: "Direct Invitations" });
+    expect(screen.getByRole("tab", { name: "Pending (2)" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it.each(["", "invalid"])(
+    "selects Pending for tab query %s despite a Responded initial prop",
+    async (tab) => {
+      window.history.replaceState(null, "", `/demo/marketer?view=invitations&tab=${tab}`);
+      render(<DemoWorkspace view="invitations" tab="responded" />);
+      await screen.findByRole("heading", { name: "Direct Invitations" });
+      expect(screen.getByRole("tab", { name: "Pending (2)" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+    },
+  );
 
   it("searches within tabs, previews briefs, declines with a reason, and resets", async () => {
     render(<DemoWorkspace view="invitations" />);
@@ -136,17 +190,53 @@ describe("invitation and offer preview", () => {
     window.history.replaceState(null, "", "/demo/marketer?view=offer&requestId=request-063");
     render(<DemoWorkspace view="offer" requestId="request-063" />);
     await screen.findByRole("heading", { name: "Submit Your Offer" });
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to invitations" }));
     await screen.findByRole("heading", { name: "Direct Invitations" });
     act(() => {
       window.history.replaceState(null, "", "/demo/marketer?view=offer&requestId=request-074");
       window.dispatchEvent(new PopStateEvent("popstate"));
     });
     await screen.findByText("Offer already submitted");
+    act(() => {
+      window.history.replaceState(null, "", "/demo/marketer?view=offer");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+    expect(await screen.findByRole("alert")).toHaveTextContent("could not be found");
+    fireEvent.click(screen.getByRole("button", { name: "Back to invitations" }));
+    await screen.findByRole("heading", { name: "Direct Invitations" });
   });
 });
 
 describe("edge states and failures", () => {
+  it.each([undefined, "Pending", "Accepted", "Rejected", "Withdrawn"] as const)(
+    "renders the expected footer actions for offer status %s",
+    (status) => {
+      const onBack = vi.fn();
+      const { container } = render(
+        <OfferPage
+          minimumDate="2026-10-07"
+          request={initialState.invitations[3]}
+          offer={status ? { ...initialState.offers[0], status } : undefined}
+          actions={demoInvitationActions}
+          onBack={onBack}
+          onSubmitted={vi.fn()}
+        />,
+      );
+      const footer = within(container.querySelector(".ji-actions") as HTMLElement);
+      expect(footer.getAllByRole("button").map((button) => button.textContent)).toEqual(
+        !status
+          ? ["Cancel", "Submit Offer"]
+          : status === "Pending"
+            ? ["Withdraw Offer", "Back to Invitations"]
+            : ["Back to Invitations"],
+      );
+      if (status) {
+        expect(screen.getByLabelText("Proposed Price (THB) *")).toHaveAttribute("readonly");
+        fireEvent.click(footer.getByRole("button", { name: "Back to Invitations" }));
+        expect(onBack).toHaveBeenCalledOnce();
+      }
+    },
+  );
   it("filters by creator/title and distinguishes pending from responded", () => {
     expect(
       filterInvitations(initialState.invitations, "pending", " arts ").map((entry) => entry.id),

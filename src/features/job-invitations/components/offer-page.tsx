@@ -119,7 +119,7 @@ function OfferForm({
             >
               Withdraw Offer
             </Button>
-          ) : (
+          ) : !offer ? (
             <Button
               ref={cancelButton}
               type="button"
@@ -128,12 +128,12 @@ function OfferForm({
               disabled={action.pending}
               onClick={cancel}
             >
-              {offer ? "Back to Invitations" : "Cancel"}
+              Cancel
             </Button>
-          )}
+          ) : null}
           {offer ? (
             <Button type="button" className="ji-primary" onClick={onBack} disabled={action.pending}>
-              Close
+              Back to Invitations
             </Button>
           ) : (
             <Button

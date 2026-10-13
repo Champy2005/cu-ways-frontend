@@ -12,8 +12,24 @@ export const STORAGE_KEY = "cuways-job-invitations-demo-v1";
 const EVENT = "cuways-job-invitations-demo-change";
 let snapshot = initialState;
 let lastStored: string | null | undefined;
+let unsaved = false;
+
+function persistSnapshot() {
+  try {
+    const serialized = JSON.stringify(snapshot);
+    sessionStorage.setItem(STORAGE_KEY, serialized);
+    lastStored = serialized;
+    unsaved = false;
+  } catch {
+    // Retry on a later read or mutation without discarding local edits.
+  }
+}
 
 export function getSnapshot(): InvitationDemoState {
+  if (unsaved) {
+    persistSnapshot();
+    return snapshot;
+  }
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw !== lastStored) {
@@ -41,13 +57,8 @@ export function subscribe(callback: () => void) {
 
 function save(state: InvitationDemoState) {
   snapshot = state;
-  try {
-    const serialized = JSON.stringify(state);
-    sessionStorage.setItem(STORAGE_KEY, serialized);
-    lastStored = serialized;
-  } catch {
-    // Do not discard edits when persistence is unavailable.
-  }
+  unsaved = true;
+  persistSnapshot();
   window.dispatchEvent(new Event(EVENT));
 }
 

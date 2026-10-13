@@ -28,9 +28,9 @@ export default function InvitationsView({
   tab?: string;
 }) {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const selectedId = useLocalQuery("requestId", requestId ?? "");
+  const selectedId = useLocalQuery("requestId", requestId ?? "", "");
   const selectedTab =
-    useLocalQuery("tab", tab ?? "pending") === "responded" ? "responded" : "pending";
+    useLocalQuery("tab", tab ?? "pending", "pending") === "responded" ? "responded" : "pending";
   const [notice, setNotice] = useState<FeatureNotification | null>(null);
   const dismissNotice = useCallback(() => setNotice(null), []);
   function notify(message: string) {

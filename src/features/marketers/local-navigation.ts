@@ -27,10 +27,10 @@ export function setLocalQueries(values: Record<string, string | null>) {
   window.dispatchEvent(new Event(eventName));
 }
 
-export function useLocalQuery(key: string, initial: string) {
+export function useLocalQuery(key: string, initial: string, clientFallback = initial) {
   return useSyncExternalStore(
     subscribe,
-    () => new URLSearchParams(window.location.search).get(key) ?? initial,
+    () => new URLSearchParams(window.location.search).get(key) ?? clientFallback,
     () => initial,
   );
 }
