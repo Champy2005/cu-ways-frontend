@@ -8,10 +8,11 @@ import {
   useRef,
   useState,
   useTransition,
+  type Dispatch,
   type RefObject,
+  type SetStateAction,
 } from "react";
 
-import { EmptyState } from "@/components/feedback/empty-state";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -28,23 +29,30 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   loadJobInviteMarketersPage,
+  loadJobSentInvitations,
   sendJobRequests,
   type JobInviteMarketersPageState,
   type JobRequestActionState,
 } from "@/features/jobs/actions";
-import type { JobInviteMarketer } from "@/features/jobs/types";
+import { isActiveJobInvitation } from "@/features/jobs/types";
+import type { JobInviteMarketer, SentJobInvitation } from "@/features/jobs/types";
 
 type JobInviteSelectorProps = {
   jobId: number;
   marketers: JobInviteMarketer[];
   totalMarketers: number;
   pageSize: number;
+  marketersError?: string;
+  sentInvitations: SentJobInvitation[];
+  sentInvitationsFresh: boolean;
+  sentInvitationsError?: string;
 };
 
 type MarketerOptionProps = {
   marketer: JobInviteMarketer;
   checked: boolean;
   disabled: boolean;
+  invitationStatus?: "Pending" | "Accepted";
   onChange: (marketerId: number, checked: boolean) => void;
 };
 
@@ -60,7 +68,13 @@ type ConfirmationDialogProps = {
 
 const INITIAL_ACTION_STATE: JobRequestActionState = { status: "idle" };
 
-function MarketerOption({ marketer, checked, disabled, onChange }: MarketerOptionProps) {
+function MarketerOption({
+  marketer,
+  checked,
+  disabled,
+  invitationStatus,
+  onChange,
+}: MarketerOptionProps) {
   const rating =
     marketer.average_rating === null
       ? "No ratings yet"
@@ -85,6 +99,11 @@ function MarketerOption({ marketer, checked, disabled, onChange }: MarketerOptio
           <span className="block truncate text-sm font-semibold text-[var(--mk-text)]">
             {marketer.display_name}
           </span>
+          {invitationStatus ? (
+            <span className="mt-1 inline-flex rounded-full border border-[var(--mk-border)] bg-[var(--mk-field)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--mk-muted)]">
+              {invitationStatus} invitation
+            </span>
+          ) : null}
           <span className="mt-1.5 flex items-center gap-1 text-xs text-[var(--mk-caution)]">
             <Star aria-hidden="true" className="size-3.5 fill-current" />
             <span>{rating}</span>
@@ -125,6 +144,7 @@ function MarketerOptions({
   keyword,
   selectedMarketersById,
   disabled,
+  activeStatusByMarketerId,
   onChange,
 }: {
   marketers: JobInviteMarketer[];
@@ -133,6 +153,7 @@ function MarketerOptions({
   keyword: string;
   selectedMarketersById: Map<number, JobInviteMarketer>;
   disabled: boolean;
+  activeStatusByMarketerId: Map<number, "Pending" | "Accepted">;
   onChange: (marketerId: number, checked: boolean) => void;
 }) {
   if (searchFailed) {
@@ -175,7 +196,8 @@ function MarketerOptions({
           key={marketer.marketer_id}
           marketer={marketer}
           checked={selectedMarketersById.has(marketer.marketer_id)}
-          disabled={disabled}
+          disabled={disabled || activeStatusByMarketerId.has(marketer.marketer_id)}
+          invitationStatus={activeStatusByMarketerId.get(marketer.marketer_id)}
           onChange={onChange}
         />
       ))}
@@ -183,10 +205,158 @@ function MarketerOptions({
   );
 }
 
+function MarketerSearchToolbar({
+  selectedCount,
+  totalAvailable,
+  isBusy,
+  search,
+  onClear,
+  onSearchChange,
+}: {
+  selectedCount: number;
+  totalAvailable: number;
+  isBusy: boolean;
+  search: string;
+  onClear: () => void;
+  onSearchChange: (value: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 id="choose-marketers-heading" className="sr-only">
+          Choose marketers
+        </h2>
+        <p className="text-sm text-[var(--mk-muted)]">{totalAvailable} marketers available</p>
+      </div>
+      {selectedCount > 0 ? (
+        <Button type="button" variant="ghost" size="sm" disabled={isBusy} onClick={onClear}>
+          Clear selection
+        </Button>
+      ) : null}
+      <div className="w-full sm:max-w-xs">
+        <div className="relative">
+          <label htmlFor="job-marketer-filter" className="sr-only">
+            Search marketers by name, bio, or service
+          </label>
+          <Input
+            id="job-marketer-filter"
+            type="search"
+            value={search}
+            maxLength={100}
+            onChange={(event) => onSearchChange(event.target.value)}
+            placeholder="Search by name, bio, or service"
+            className="h-12 rounded-xl pr-11 text-base"
+          />
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-[var(--mk-muted)]"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InvitationSelectionFeedback({
+  selectionError,
+  pageError,
+  isBusy,
+  isLoadingPage,
+  onRetry,
+}: {
+  selectionError: string | null;
+  pageError: string | null;
+  isBusy: boolean;
+  isLoadingPage: boolean;
+  onRetry: () => void;
+}) {
+  return (
+    <>
+      {selectionError ? (
+        <p className="text-sm text-destructive" role="alert">
+          {selectionError}
+        </p>
+      ) : null}
+      {pageError ? (
+        <div className="mk-error-notice rounded-xl p-4" role="alert">
+          <p className="font-semibold">Marketers could not be loaded</p>
+          <p className="mt-1 text-sm">{pageError}</p>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-3"
+            disabled={isBusy}
+            onClick={onRetry}
+          >
+            {isLoadingPage ? "Loading…" : "Retry marketer search"}
+          </Button>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function MarketerPagination({
+  total,
+  page,
+  pageSize,
+  pageCount,
+  isBusy,
+  isLoadingPage,
+  onPageChange,
+}: {
+  total: number;
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  isBusy: boolean;
+  isLoadingPage: boolean;
+  onPageChange: (nextPage: number) => void;
+}) {
+  if (total === 0) return null;
+
+  return (
+    <nav
+      aria-label="Marketer pages"
+      className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--mk-border)] pt-4"
+    >
+      <p className="text-sm text-[var(--mk-muted)]" role="status">
+        Showing {Math.min((page - 1) * pageSize + 1, total)}–{Math.min(page * pageSize, total)} of{" "}
+        {total} marketers · Page {page} of {pageCount}
+      </p>
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={isBusy || page <= 1}
+          onClick={() => onPageChange(page - 1)}
+        >
+          Previous page
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={isBusy || page >= pageCount}
+          onClick={() => onPageChange(page + 1)}
+        >
+          {isLoadingPage ? "Loading…" : "Next page"}
+        </Button>
+      </div>
+    </nav>
+  );
+}
+
 function JobRequestFeedback({ state }: { state: JobRequestActionState }) {
   switch (state.status) {
     case "duplicate":
       return null;
+    case "reconcile":
+      return (
+        <div className="mk-error-notice rounded-xl p-4" role="alert">
+          <p className="font-semibold">Invitation status needs a refresh</p>
+          <p className="mt-1 text-sm">{state.message}</p>
+        </div>
+      );
     case "error":
       return (
         <div className="mk-error-notice rounded-xl p-4" role="alert">
@@ -200,9 +370,9 @@ function JobRequestFeedback({ state }: { state: JobRequestActionState }) {
           className="rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_28%,var(--mk-border))] bg-[var(--mk-positive-soft)] p-4 text-sm text-[var(--mk-success)]"
           role="status"
         >
-          {state.createdCount === 1
+          {state.requests.length === 1
             ? "Request sent to 1 marketer."
-            : `Requests sent to ${state.createdCount} marketers.`}
+            : `Requests sent to ${state.requests.length} marketers.`}
         </p>
       );
     default:
@@ -210,16 +380,204 @@ function JobRequestFeedback({ state }: { state: JobRequestActionState }) {
   }
 }
 
+function invitationStatusClass(status: SentJobInvitation["request_status"]): string {
+  switch (status) {
+    case "Pending":
+      return "border-[color-mix(in_srgb,var(--mk-caution)_30%,var(--mk-border))] bg-[var(--mk-caution-soft)] text-[var(--mk-caution)]";
+    case "Accepted":
+      return "border-[color-mix(in_srgb,var(--mk-success)_30%,var(--mk-border))] bg-[var(--mk-positive-soft)] text-[var(--mk-success)]";
+    case "Declined":
+      return "border-[color-mix(in_srgb,var(--mk-error)_28%,var(--mk-border))] bg-[color-mix(in_srgb,var(--mk-error)_10%,var(--mk-surface))] text-[var(--mk-error)]";
+    case "Closed":
+      return "border-[var(--mk-border)] bg-[var(--mk-field)] text-[var(--mk-muted)]";
+  }
+}
+
+function SentInvitationCard({ invitation }: { invitation: SentJobInvitation }) {
+  return (
+    <li className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4">
+      <div className="min-w-0">
+        <p className="truncate font-semibold text-[var(--mk-text)]">{invitation.marketer_name}</p>
+        <p className="mt-1 text-xs text-[var(--mk-muted)]">
+          Sent {invitation.created_at.slice(0, 10)}
+        </p>
+      </div>
+      <span
+        className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${invitationStatusClass(invitation.request_status)}`}
+      >
+        {invitation.request_status}
+      </span>
+    </li>
+  );
+}
+
+function DirectInvitationsSection({
+  invitations,
+  isFresh,
+  error,
+  isRefreshing,
+  onRefresh,
+}: {
+  invitations: SentJobInvitation[];
+  isFresh: boolean;
+  error: string | null;
+  isRefreshing: boolean;
+  onRefresh: () => void;
+}) {
+  return (
+    <section aria-labelledby="direct-invitations-heading" className="space-y-4">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--mk-border)] pb-4">
+        <div>
+          <h2
+            id="direct-invitations-heading"
+            className="text-lg font-semibold text-[var(--mk-text)]"
+          >
+            Direct Invitations
+          </h2>
+          <p className="mt-1 text-sm text-[var(--mk-muted)]">
+            Review invitations already sent for this job.
+          </p>
+        </div>
+        <a
+          href="#choose-marketers-heading"
+          className="mk-primary-button inline-flex min-h-11 items-center justify-center px-4 text-sm font-semibold"
+        >
+          Invite Marketers
+        </a>
+      </div>
+
+      {!isFresh ? (
+        <div className="mk-error-notice rounded-xl p-4" role="alert">
+          <p className="font-semibold">Current invitation statuses are unavailable</p>
+          <p className="mt-1 text-sm">
+            {error ?? "Refresh current invitations before sending more requests."}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-3"
+            disabled={isRefreshing}
+            onClick={onRefresh}
+          >
+            {isRefreshing ? "Refreshing…" : "Refresh invitations"}
+          </Button>
+        </div>
+      ) : invitations.length === 0 ? (
+        <Card className="mk-card mk-card-padding gap-2">
+          <p className="font-semibold">No invitations sent yet</p>
+          <p className="text-sm leading-6 text-[var(--mk-muted)]">
+            Choose marketers below to send the first direct invitation for this job.
+          </p>
+        </Card>
+      ) : (
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {invitations.map((invitation) => (
+            <SentInvitationCard key={invitation.job_request_id} invitation={invitation} />
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+type StateSetter<Value> = Dispatch<SetStateAction<Value>>;
+
+type RequestResultSetters = {
+  setState: StateSetter<JobRequestActionState>;
+  setConfirmationOpen: StateSetter<boolean>;
+  setSentInvitations: StateSetter<SentJobInvitation[]>;
+  setSentInvitationsFresh: StateSetter<boolean>;
+  setSentInvitationsError: StateSetter<string | null>;
+  setSelectedMarketersById: StateSetter<Map<number, JobInviteMarketer>>;
+  setDuplicateMarketerNames: StateSetter<string[]>;
+  setDuplicateRefreshFailed: StateSetter<boolean>;
+  setDuplicateDialogOpen: StateSetter<boolean>;
+};
+
+function applyRequestResult(
+  result: JobRequestActionState,
+  selectedMarketers: JobInviteMarketer[],
+  setters: RequestResultSetters,
+) {
+  setters.setState(result);
+  setters.setConfirmationOpen(false);
+
+  switch (result.status) {
+    case "success": {
+      const namesById = new Map<number, string>(
+        selectedMarketers.map((marketer) => [marketer.marketer_id, marketer.display_name]),
+      );
+      const createdInvitations: SentJobInvitation[] = result.requests
+        .map((request) => ({
+          ...request,
+          marketer_name: namesById.get(request.marketer_id) ?? `Marketer #${request.marketer_id}`,
+        }))
+        .sort((left, right) => right.job_request_id - left.job_request_id);
+      setters.setSentInvitations((current) => [...createdInvitations, ...current]);
+      setters.setSentInvitationsFresh(true);
+      setters.setSentInvitationsError(null);
+      setters.setSelectedMarketersById(new Map());
+      setters.setDuplicateMarketerNames([]);
+      setters.setDuplicateDialogOpen(false);
+      return;
+    }
+    case "duplicate":
+      if (result.refreshStatus === "success") {
+        applyRefreshedDuplicate(result, selectedMarketers, setters);
+      } else {
+        setters.setSentInvitationsFresh(false);
+        setters.setSentInvitationsError(result.message);
+        setters.setDuplicateMarketerNames([]);
+        setters.setDuplicateRefreshFailed(true);
+        setters.setDuplicateDialogOpen(true);
+      }
+      return;
+    case "reconcile":
+      setters.setSentInvitationsFresh(false);
+      setters.setSentInvitationsError(result.message);
+      setters.setDuplicateDialogOpen(false);
+      return;
+    default:
+      setters.setDuplicateDialogOpen(false);
+  }
+}
+
+function applyRefreshedDuplicate(
+  result: Extract<JobRequestActionState, { status: "duplicate"; refreshStatus: "success" }>,
+  selectedMarketers: JobInviteMarketer[],
+  setters: RequestResultSetters,
+) {
+  const conflictingIds = new Set(result.conflictingMarketerIds);
+  const conflictingNames = selectedMarketers
+    .filter((marketer) => conflictingIds.has(marketer.marketer_id))
+    .map((marketer) => marketer.display_name);
+  setters.setSentInvitations(result.sentInvitations);
+  setters.setSentInvitationsFresh(true);
+  setters.setSentInvitationsError(null);
+  setters.setSelectedMarketersById((current) => {
+    const next = new Map(current);
+    for (const marketerId of conflictingIds) next.delete(marketerId);
+    return next;
+  });
+  setters.setDuplicateMarketerNames(conflictingNames);
+  setters.setDuplicateRefreshFailed(false);
+  setters.setDuplicateDialogOpen(true);
+}
+
 function DuplicateRequestDialog({
   open,
   onOpenChange,
   onReview,
   portalContainer,
+  marketerNames,
+  refreshFailed,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onReview: () => void;
   portalContainer: RefObject<HTMLDivElement | null>;
+  marketerNames: string[];
+  refreshFailed: boolean;
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -231,10 +589,22 @@ function DuplicateRequestDialog({
               Active Invitation Already Exists
             </AlertDialogTitle>
             <AlertDialogDescription className="text-sm leading-6 text-[var(--mk-muted)]">
-              An active invitation exists for one or more selected marketers. Duplicate invitations
-              cannot be sent.
+              {refreshFailed
+                ? "The server rejected this batch because an active invitation exists, but current statuses could not be refreshed. Refresh the invitation list before trying again."
+                : marketerNames.length > 0
+                  ? "These selected marketers already have an active invitation. They were removed from your selection."
+                  : "The invitation status changed while you were sending. Review the current list before trying again."}
             </AlertDialogDescription>
           </AlertDialogHeader>
+          {marketerNames.length > 0 ? (
+            <ul aria-label="Marketers with active invitations" className="-mt-2 space-y-1 text-sm">
+              {marketerNames.map((name) => (
+                <li key={name} className="rounded-lg bg-[var(--mk-field)] px-3 py-2">
+                  {name}
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <AlertDialogFooter className="-mx-6 -mb-6 border-0 bg-transparent p-0">
             <Button type="button" className="mk-primary-button w-full" onClick={onReview}>
               Review Selection
@@ -312,10 +682,22 @@ export function JobInviteSelector({
   marketers: initialMarketers,
   totalMarketers: initialTotalMarketers,
   pageSize: initialPageSize,
+  sentInvitations: initialSentInvitations,
+  sentInvitationsFresh: initialSentInvitationsFresh,
+  sentInvitationsError: initialSentInvitationsError,
+  marketersError: initialMarketersError,
 }: JobInviteSelectorProps) {
   const [state, setState] = useState<JobRequestActionState>(INITIAL_ACTION_STATE);
   const [isSending, startSendTransition] = useTransition();
   const [isLoadingPage, startPageTransition] = useTransition();
+  const [isRefreshingInvitations, startRefreshTransition] = useTransition();
+  const [sentInvitations, setSentInvitations] = useState(initialSentInvitations);
+  const [sentInvitationsFresh, setSentInvitationsFresh] = useState(initialSentInvitationsFresh);
+  const [sentInvitationsError, setSentInvitationsError] = useState<string | null>(
+    initialSentInvitationsFresh
+      ? null
+      : (initialSentInvitationsError ?? "Refresh before sending more invitations."),
+  );
   const [pageData, setPageData] = useState({
     marketers: initialMarketers,
     page: 1,
@@ -328,9 +710,11 @@ export function JobInviteSelector({
   >(() => new Map());
   const [search, setSearch] = useState("");
   const [selectionError, setSelectionError] = useState<string | null>(null);
-  const [pageError, setPageError] = useState<string | null>(null);
+  const [pageError, setPageError] = useState<string | null>(initialMarketersError ?? null);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
+  const [duplicateMarketerNames, setDuplicateMarketerNames] = useState<string[]>([]);
+  const [duplicateRefreshFailed, setDuplicateRefreshFailed] = useState(false);
   const portalContainer = useRef<HTMLDivElement>(null);
   const latestPageRequest = useRef(0);
 
@@ -340,10 +724,20 @@ export function JobInviteSelector({
     () => [...selectedMarketersById.values()],
     [selectedMarketersById],
   );
+  const activeStatusByMarketerId = useMemo(() => {
+    const result = new Map<number, "Pending" | "Accepted">();
+    for (const invitation of sentInvitations) {
+      if (invitation.request_status === "Pending" || invitation.request_status === "Accepted") {
+        result.set(invitation.marketer_id, invitation.request_status);
+      }
+    }
+    return result;
+  }, [sentInvitations]);
   const searchIsStale = pageData.keyword !== search.trim();
-  const isBusy = isSending || isLoadingPage || searchIsStale;
+  const isBusy = isSending || isLoadingPage || isRefreshingInvitations || searchIsStale;
 
   const toggleMarketer = (marketerId: number, checked: boolean) => {
+    if (!sentInvitationsFresh || activeStatusByMarketerId.has(marketerId)) return;
     const marketer = marketers.find((item) => item.marketer_id === marketerId);
     setSelectedMarketersById((current) => {
       const next = new Map(current);
@@ -361,6 +755,61 @@ export function JobInviteSelector({
     setSelectionError(null);
     setState(INITIAL_ACTION_STATE);
     setDuplicateDialogOpen(false);
+  };
+
+  const refreshInvitations = () => {
+    startRefreshTransition(async () => {
+      let result: Awaited<ReturnType<typeof loadJobSentInvitations>>;
+      try {
+        result = await loadJobSentInvitations(jobId);
+      } catch {
+        result = {
+          status: "error",
+          message:
+            "Current invitations could not be refreshed. Check your connection and try again.",
+        };
+      }
+      startRefreshTransition(() => {
+        if (result.status === "error") {
+          setSentInvitationsFresh(false);
+          setSentInvitationsError(result.message);
+          return;
+        }
+
+        const activeIds = new Set(
+          result.items.filter(isActiveJobInvitation).map((invitation) => invitation.marketer_id),
+        );
+        const conflictingSelected = selectedMarketers.filter((marketer) =>
+          activeIds.has(marketer.marketer_id),
+        );
+        setSentInvitations(result.items);
+        setSentInvitationsFresh(true);
+        setSentInvitationsError(null);
+        setSelectedMarketersById((current) => {
+          const next = new Map(current);
+          for (const marketerId of activeIds) next.delete(marketerId);
+          return next;
+        });
+        if (conflictingSelected.length > 0) {
+          setDuplicateMarketerNames(conflictingSelected.map((marketer) => marketer.display_name));
+          setDuplicateRefreshFailed(false);
+          setState({
+            status: "duplicate",
+            refreshStatus: "success",
+            sentInvitations: result.items,
+            conflictingMarketerIds: conflictingSelected.map((marketer) => marketer.marketer_id),
+            message:
+              "Current invitation statuses are refreshed. Active invitations were removed from your selection.",
+          });
+          setDuplicateDialogOpen(true);
+        } else {
+          setState(INITIAL_ACTION_STATE);
+          setDuplicateMarketerNames([]);
+          setDuplicateRefreshFailed(false);
+          setDuplicateDialogOpen(false);
+        }
+      });
+    });
   };
 
   const loadPage = useCallback((nextPage: number, keyword: string) => {
@@ -408,8 +857,23 @@ export function JobInviteSelector({
   };
 
   const openConfirmation = () => {
+    if (!sentInvitationsFresh) {
+      setSelectionError("Refresh current invitations before sending.");
+      return;
+    }
     if (selectedMarketersById.size === 0) {
       setSelectionError("Select at least one marketer to continue.");
+      return;
+    }
+    if (selectedMarketers.some((marketer) => activeStatusByMarketerId.has(marketer.marketer_id))) {
+      setSelectedMarketersById((current) => {
+        const next = new Map(current);
+        for (const marketerId of activeStatusByMarketerId.keys()) next.delete(marketerId);
+        return next;
+      });
+      setSelectionError(
+        "Active invitations were removed from your selection. Review the updated statuses.",
+      );
       return;
     }
     setSelectionError(null);
@@ -417,6 +881,18 @@ export function JobInviteSelector({
   };
 
   const sendRequests = () => {
+    if (!sentInvitationsFresh) {
+      setConfirmationOpen(false);
+      setSelectionError("Refresh current invitations before sending.");
+      return;
+    }
+    if (selectedMarketers.some((marketer) => activeStatusByMarketerId.has(marketer.marketer_id))) {
+      setConfirmationOpen(false);
+      setSelectionError(
+        "Active invitations were removed from your selection. Review the updated statuses.",
+      );
+      return;
+    }
     const marketerIds = selectedMarketers.map((marketer) => marketer.marketer_id);
     startSendTransition(async () => {
       let result: JobRequestActionState;
@@ -428,125 +904,72 @@ export function JobInviteSelector({
           message: "The request could not be completed. Please try again.",
         };
       }
-      startSendTransition(() => {
-        setState(result);
-        setConfirmationOpen(false);
-        setDuplicateDialogOpen(result.status === "duplicate");
-        if (result.status === "success") setSelectedMarketersById(new Map());
-      });
+      startSendTransition(() =>
+        applyRequestResult(result, selectedMarketers, {
+          setState,
+          setConfirmationOpen,
+          setSentInvitations,
+          setSentInvitationsFresh,
+          setSentInvitationsError,
+          setSelectedMarketersById,
+          setDuplicateMarketerNames,
+          setDuplicateRefreshFailed,
+          setDuplicateDialogOpen,
+        }),
+      );
     });
   };
-
-  if (totalMarketers === 0 && pageData.keyword === "") {
-    return (
-      <Card className="mk-card mk-card-padding">
-        <EmptyState
-          title="No marketers are available yet"
-          description="Marketers will appear here once they publish a profile and service listing."
-        />
-      </Card>
-    );
-  }
 
   return (
     <>
       <div ref={portalContainer} />
+      <DirectInvitationsSection
+        invitations={sentInvitations}
+        isFresh={sentInvitationsFresh}
+        error={sentInvitationsError}
+        isRefreshing={isRefreshingInvitations}
+        onRefresh={refreshInvitations}
+      />
       <section aria-labelledby="choose-marketers-heading" className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 id="choose-marketers-heading" className="sr-only">
-              Choose marketers
-            </h2>
-            <p className="text-sm text-[var(--mk-muted)]">{totalMarketers} marketers available</p>
-          </div>
-          {selectedMarketersById.size > 0 ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={isBusy}
-              onClick={clearSelection}
-            >
-              Clear selection
-            </Button>
-          ) : null}
-          <div className="w-full sm:max-w-xs">
-            <div className="relative">
-              <label htmlFor="job-marketer-filter" className="sr-only">
-                Search marketers by name, bio, or service
-              </label>
-              <Input
-                id="job-marketer-filter"
-                type="search"
-                value={search}
-                maxLength={100}
-                onChange={(event) => updateSearch(event.target.value)}
-                placeholder="Search by name, bio, or service"
-                className="h-12 rounded-xl pr-11 text-base"
-              />
-              <Search
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-[var(--mk-muted)]"
-              />
-            </div>
-          </div>
-        </div>
-
-        {selectionError ? (
-          <p className="text-sm text-destructive" role="alert">
-            {selectionError}
-          </p>
-        ) : null}
-        {pageError ? (
-          <div className="mk-error-notice rounded-xl p-4" role="alert">
-            <p className="font-semibold">Marketers could not be loaded</p>
-            <p className="mt-1 text-sm">{pageError}</p>
-          </div>
-        ) : null}
+        <MarketerSearchToolbar
+          selectedCount={selectedMarketersById.size}
+          totalAvailable={totalMarketers}
+          isBusy={isBusy}
+          search={search}
+          onClear={clearSelection}
+          onSearchChange={updateSearch}
+        />
+        <InvitationSelectionFeedback
+          selectionError={selectionError}
+          pageError={pageError}
+          isBusy={isBusy}
+          isLoadingPage={isLoadingPage}
+          onRetry={() => loadPage(page, search.trim())}
+        />
         <JobRequestFeedback state={state} />
 
         <div role="group" aria-label="Select marketers to invite" className="min-w-0">
           <MarketerOptions
             marketers={marketers}
             isLoading={searchIsStale || isLoadingPage}
-            searchFailed={searchIsStale && pageError !== null}
+            searchFailed={pageError !== null && (searchIsStale || pageData.marketers.length === 0)}
             keyword={pageData.keyword}
             selectedMarketersById={selectedMarketersById}
-            disabled={isBusy}
+            disabled={isBusy || !sentInvitationsFresh}
+            activeStatusByMarketerId={activeStatusByMarketerId}
             onChange={toggleMarketer}
           />
         </div>
 
-        {totalMarketers > 0 ? (
-          <nav
-            aria-label="Marketer pages"
-            className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--mk-border)] pt-4"
-          >
-            <p className="text-sm text-[var(--mk-muted)]" role="status">
-              Showing {Math.min((page - 1) * pageSize + 1, totalMarketers)}–
-              {Math.min(page * pageSize, totalMarketers)} of {totalMarketers} marketers · Page{" "}
-              {page} of {pageCount}
-            </p>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isBusy || page <= 1}
-                onClick={() => loadPage(page - 1, search.trim())}
-              >
-                Previous page
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isBusy || page >= pageCount}
-                onClick={() => loadPage(page + 1, search.trim())}
-              >
-                {isLoadingPage ? "Loading…" : "Next page"}
-              </Button>
-            </div>
-          </nav>
-        ) : null}
+        <MarketerPagination
+          total={totalMarketers}
+          page={page}
+          pageSize={pageSize}
+          pageCount={pageCount}
+          isBusy={isBusy}
+          isLoadingPage={isLoadingPage}
+          onPageChange={(nextPage) => loadPage(nextPage, search.trim())}
+        />
       </section>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--mk-border)] bg-[color-mix(in_srgb,var(--mk-surface)_96%,transparent)] px-[var(--mk-gutter)] pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:sticky sm:inset-x-auto sm:z-20 sm:mx-auto sm:mt-5 sm:w-full sm:max-w-5xl">
@@ -561,7 +984,7 @@ export function JobInviteSelector({
           <Button
             type="button"
             className="mk-primary-button w-full justify-center font-semibold"
-            disabled={isBusy || selectedMarketersById.size === 0}
+            disabled={isBusy || !sentInvitationsFresh || selectedMarketersById.size === 0}
             onClick={openConfirmation}
           >
             {isSending ? "Sending…" : "Review & Send"}
@@ -583,6 +1006,8 @@ export function JobInviteSelector({
         onOpenChange={setDuplicateDialogOpen}
         onReview={() => setDuplicateDialogOpen(false)}
         portalContainer={portalContainer}
+        marketerNames={duplicateMarketerNames}
+        refreshFailed={duplicateRefreshFailed}
       />
     </>
   );

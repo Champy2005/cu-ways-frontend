@@ -5,9 +5,11 @@ import { JobInviteSelector } from "@/features/jobs/components/job-invite-selecto
 
 const sendJobRequests = vi.fn();
 const loadJobInviteMarketersPage = vi.fn();
+const loadJobSentInvitations = vi.fn();
 
 vi.mock("@/features/jobs/actions", () => ({
   loadJobInviteMarketersPage: (...args: unknown[]) => loadJobInviteMarketersPage(...args),
+  loadJobSentInvitations: (...args: unknown[]) => loadJobSentInvitations(...args),
   sendJobRequests: (...args: unknown[]) => sendJobRequests(...args),
 }));
 
@@ -28,15 +30,67 @@ const marketers = [
   },
 ];
 
+function sentInvitation(
+  marketerId: number,
+  marketerName: string,
+  requestStatus: "Pending" | "Accepted" | "Declined" | "Closed",
+) {
+  return {
+    job_request_id: marketerId + 100,
+    job_id: 8,
+    marketer_id: marketerId,
+    request_status: requestStatus,
+    created_at: "2026-10-01T10:00:00Z",
+    responded_at: requestStatus === "Pending" ? null : "2026-10-02T10:00:00Z",
+    marketer_name: marketerName,
+  } as const;
+}
+
+function createdRequest(marketerId: number) {
+  return {
+    job_request_id: marketerId + 200,
+    job_id: 8,
+    marketer_id: marketerId,
+    request_status: "Pending" as const,
+    created_at: "2026-10-03T10:00:00Z",
+    responded_at: null,
+  };
+}
+
+function renderSelector(
+  overrides: Partial<{
+    marketers: typeof marketers;
+    totalMarketers: number;
+    pageSize: number;
+    marketersError: string;
+    sentInvitations: ReturnType<typeof sentInvitation>[];
+    sentInvitationsFresh: boolean;
+    sentInvitationsError: string;
+  }> = {},
+) {
+  return render(
+    <JobInviteSelector
+      jobId={8}
+      marketers={marketers}
+      totalMarketers={2}
+      pageSize={100}
+      sentInvitations={[]}
+      sentInvitationsFresh
+      {...overrides}
+    />,
+  );
+}
+
 afterEach(() => {
   cleanup();
   sendJobRequests.mockReset();
   loadJobInviteMarketersPage.mockReset();
+  loadJobSentInvitations.mockReset();
 });
 
 describe("JobInviteSelector", () => {
   it("requires a selection and reviews the chosen marketers before sending", () => {
-    render(<JobInviteSelector jobId={8} marketers={marketers} totalMarketers={2} pageSize={100} />);
+    renderSelector();
 
     expect(screen.getByRole("button", { name: "Review & Send" })).toBeDisabled();
     fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
@@ -47,30 +101,115 @@ describe("JobInviteSelector", () => {
     expect(within(screen.getByRole("alertdialog")).getByText("Mali S.")).toBeInTheDocument();
   });
 
-  it("shows a duplicate request alert when the backend rejects an active request", async () => {
+  it("shows persisted named requests and blocks only Pending or Accepted marketers", () => {
+    renderSelector({
+      sentInvitations: [
+        sentInvitation(11, "Mali S.", "Pending"),
+        sentInvitation(12, "Anan K.", "Accepted"),
+      ],
+    });
+
+    expect(screen.getByRole("heading", { name: "Direct Invitations" })).toBeInTheDocument();
+    const directInvitations = screen.getByRole("region", { name: "Direct Invitations" });
+    expect(within(directInvitations).getByText("Mali S.")).toBeInTheDocument();
+    expect(within(directInvitations).getByText("Anan K.")).toBeInTheDocument();
+    expect(within(directInvitations).getByText("Pending")).toBeInTheDocument();
+    expect(within(directInvitations).getByText("Accepted")).toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeDisabled();
+    expect(screen.getByRole("checkbox", { name: "Select Anan K." })).toBeDisabled();
+    expect(screen.getByText("Pending invitation")).toBeInTheDocument();
+    expect(screen.getByText("Accepted invitation")).toBeInTheDocument();
+  });
+
+  it("allows declined and closed invitations to be resent", async () => {
+    sendJobRequests.mockResolvedValue({
+      status: "success",
+      requests: [createdRequest(11), createdRequest(12)],
+    });
+    renderSelector({
+      sentInvitations: [
+        sentInvitation(11, "Mali S.", "Declined"),
+        sentInvitation(12, "Anan K.", "Closed"),
+      ],
+    });
+
+    const maliCheckbox = screen.getByRole("checkbox", { name: "Select Mali S." });
+    const ananCheckbox = screen.getByRole("checkbox", { name: "Select Anan K." });
+    expect(maliCheckbox).toBeEnabled();
+    expect(ananCheckbox).toBeEnabled();
+    fireEvent.click(maliCheckbox);
+    fireEvent.click(ananCheckbox);
+    expect(maliCheckbox).toBeChecked();
+    expect(ananCheckbox).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: "Review & Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Send Invitation" }));
+
+    await waitFor(() => expect(sendJobRequests).toHaveBeenCalledWith(8, [11, 12]));
+    expect(await screen.findByText("Requests sent to 2 marketers.")).toBeInTheDocument();
+  });
+
+  it("shows named conflicts, removes only active IDs, and retains other selected marketers", async () => {
     sendJobRequests.mockResolvedValue({
       status: "duplicate",
-      message: "One or more selected marketers already have an active request for this job.",
+      refreshStatus: "success",
+      message: "Active invitation exists.",
+      sentInvitations: [sentInvitation(11, "Mali S.", "Pending")],
+      conflictingMarketerIds: [11],
     });
-    render(<JobInviteSelector jobId={8} marketers={marketers} totalMarketers={2} pageSize={100} />);
+    renderSelector();
 
+    fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Select Anan K." }));
     fireEvent.click(screen.getByRole("button", { name: "Review & Send" }));
     fireEvent.click(screen.getByRole("button", { name: "Send Invitation" }));
 
-    expect(
-      await screen.findByRole("heading", { name: "Active Invitation Already Exists" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/An active invitation exists for one or more selected marketers/),
-    ).toBeInTheDocument();
+    const duplicateHeading = await screen.findByRole("heading", {
+      name: "Active Invitation Already Exists",
+    });
+    const duplicateDialog = duplicateHeading.closest<HTMLElement>('[role="alertdialog"]');
+    expect(duplicateDialog).not.toBeNull();
+    if (!duplicateDialog) throw new Error("Expected a duplicate invitation dialog");
+    expect(within(duplicateDialog).getByText("Mali S.")).toBeInTheDocument();
+    expect(sendJobRequests).toHaveBeenCalledWith(8, [11, 12]);
     fireEvent.click(screen.getByRole("button", { name: "Review Selection" }));
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeDisabled();
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).not.toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Select Anan K." })).toBeChecked();
   });
 
-  it("shows success after sending and clears the submitted selection", async () => {
-    sendJobRequests.mockResolvedValue({ status: "success", createdCount: 1 });
-    render(<JobInviteSelector jobId={8} marketers={marketers} totalMarketers={2} pageSize={100} />);
+  it("blocks resubmission after a failed conflict refresh, then recovers from a fresh read", async () => {
+    sendJobRequests.mockResolvedValue({
+      status: "duplicate",
+      refreshStatus: "error",
+      message: "Current invitation status could not be refreshed.",
+    });
+    renderSelector();
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
+    fireEvent.click(screen.getByRole("button", { name: "Review & Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Send Invitation" }));
+    await screen.findByRole("heading", { name: "Active Invitation Already Exists" });
+    fireEvent.click(screen.getByRole("button", { name: "Review Selection" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Current invitation status could not be refreshed",
+    );
+    expect(screen.getByRole("button", { name: "Review & Send" })).toBeDisabled();
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeDisabled();
+
+    loadJobSentInvitations.mockResolvedValue({ status: "success", items: [] });
+    fireEvent.click(screen.getByRole("button", { name: "Refresh invitations" }));
+
+    await waitFor(() => {
+      expect(loadJobSentInvitations).toHaveBeenCalledWith(8);
+      expect(screen.getByRole("button", { name: "Review & Send" })).toBeEnabled();
+    });
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeChecked();
+  });
+
+  it("shows success and retains returned requests as named Pending rows", async () => {
+    sendJobRequests.mockResolvedValue({ status: "success", requests: [createdRequest(11)] });
+    renderSelector();
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
     fireEvent.click(screen.getByRole("button", { name: "Review & Send" }));
@@ -78,6 +217,11 @@ describe("JobInviteSelector", () => {
 
     expect(await screen.findByText("Request sent to 1 marketer.")).toBeInTheDocument();
     expect(screen.getByRole("checkbox", { name: "Select Mali S." })).not.toBeChecked();
+    expect(
+      within(screen.getByRole("region", { name: "Direct Invitations" })).getByText("Mali S."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Pending")).toBeInTheDocument();
+    expect(loadJobSentInvitations).not.toHaveBeenCalled();
   });
 
   it("searches marketers across pages with the backend keyword search", async () => {
@@ -96,13 +240,11 @@ describe("JobInviteSelector", () => {
       total: 1,
       keyword: "field research",
     });
-    render(<JobInviteSelector jobId={8} marketers={marketers} totalMarketers={2} pageSize={100} />);
+    renderSelector();
 
     fireEvent.change(
       screen.getByRole("searchbox", { name: "Search marketers by name, bio, or service" }),
-      {
-        target: { value: "field research" },
-      },
+      { target: { value: "field research" } },
     );
 
     expect(await screen.findByRole("checkbox", { name: "Select Prawit M." })).toBeInTheDocument();
@@ -126,10 +268,11 @@ describe("JobInviteSelector", () => {
       total: 101,
       keyword: "",
     });
-    sendJobRequests.mockResolvedValue({ status: "success", createdCount: 2 });
-    render(
-      <JobInviteSelector jobId={8} marketers={marketers} totalMarketers={101} pageSize={100} />,
-    );
+    sendJobRequests.mockResolvedValue({
+      status: "success",
+      requests: [createdRequest(11), createdRequest(113)],
+    });
+    renderSelector({ totalMarketers: 101 });
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
     fireEvent.click(screen.getByRole("button", { name: "Next page" }));
@@ -145,5 +288,14 @@ describe("JobInviteSelector", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Send Invitation" }));
 
     await waitFor(() => expect(sendJobRequests).toHaveBeenCalledWith(8, [11, 113]));
+    expect(await screen.findByText("Requests sent to 2 marketers.")).toBeInTheDocument();
+    const directInvitations = screen.getByRole("region", { name: "Direct Invitations" });
+    expect(within(directInvitations).getByText("Mali S.")).toBeInTheDocument();
+    expect(within(directInvitations).getByText("Chai N.")).toBeInTheDocument();
+    expect(
+      within(directInvitations)
+        .getAllByRole("listitem")
+        .map((invitation) => invitation.querySelector("p")?.textContent),
+    ).toEqual(["Chai N.", "Mali S."]);
   });
 });

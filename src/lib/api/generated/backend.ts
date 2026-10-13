@@ -332,6 +332,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List jobs owned by the authenticated Creator
+         * @description Jobs are ordered by created_at descending and then job_id descending. Each job includes its linked survey IDs and titles, ordered by survey_id ascending. An empty list is valid.
+         */
+        get: operations["listMyJobs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * Get a Creator-owned job summary
+         * @description Returns the job's linked surveys ordered by survey_id ascending. The authenticated user must have active Creator membership and own the job.
+         */
+        get: operations["getJob"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/jobs/{id}/surveys/{surveyId}": {
         parameters: {
             query?: never;
@@ -388,7 +430,11 @@ export interface paths {
             };
             cookie?: never;
         };
-        get?: never;
+        /**
+         * List invitation history for a Creator-owned job
+         * @description Includes all request statuses, newest first by created_at and then job_request_id. Responses include marketer names only and do not expose contact or profile details. The authenticated user must have active Creator membership and own the job.
+         */
+        get: operations["listJobRequests"];
         put?: never;
         /**
          * Invite marketers to make offers on a job
@@ -717,6 +763,30 @@ export interface components {
             status: "success";
             data: components["schemas"]["Job"];
         };
+        JobSurveySummary: {
+            /** Format: int32 */
+            survey_id: number;
+            title: string;
+        };
+        CreatorJobSummary: {
+            /** Format: int32 */
+            job_id: number;
+            /** @enum {string} */
+            job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+            /** Format: date-time */
+            created_at: string;
+            surveys: components["schemas"]["JobSurveySummary"][];
+        };
+        CreatorJobSummaryResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["CreatorJobSummary"];
+        };
+        CreatorJobSummaryListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["CreatorJobSummary"][];
+        };
         JobLinkResponse: {
             /** @enum {string} */
             status: "success";
@@ -821,6 +891,26 @@ export interface components {
             /** @enum {string} */
             status: "success";
             data: components["schemas"]["JobRequest"][];
+        };
+        SentJobRequest: {
+            /** Format: int32 */
+            job_request_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /** Format: int32 */
+            marketer_id: number;
+            /** @enum {string} */
+            request_status: "Pending" | "Accepted" | "Declined" | "Closed";
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            responded_at: string | null;
+            marketer_name: string;
+        };
+        SentJobRequestListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["SentJobRequest"][];
         };
         DeleteSurveyResponse: {
             /** @enum {string} */
@@ -2113,6 +2203,93 @@ export interface operations {
             };
         };
     };
+    listMyJobs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The Creator's job summaries. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatorJobSummaryListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not have active Creator membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The job summary. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatorJobSummaryResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not have active Creator membership or does not own the job. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     addSurveyToJob: {
         parameters: {
             query?: never;
@@ -2333,6 +2510,55 @@ export interface operations {
             };
             /** @description URL must be an absolute HTTP or HTTPS URL. */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listJobRequests: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The job's invitation history. An empty list is valid. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SentJobRequestListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller does not have active Creator membership or does not own the job. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
