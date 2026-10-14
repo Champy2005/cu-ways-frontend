@@ -39,7 +39,8 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe("RegisterWizard", () => {
+// The first test loads the whole wizard; under coverage that alone can pass the 5s default.
+describe("RegisterWizard", { timeout: 20_000 }, () => {
   it("signs a creator up after step 2 and opens the creator workspace", async () => {
     render(<RegisterWizard />);
     fillAccount("Creator");

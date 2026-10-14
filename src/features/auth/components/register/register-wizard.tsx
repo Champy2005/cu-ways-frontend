@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { AccountStep } from "@/features/auth/components/register/account-step";
@@ -174,6 +175,15 @@ export function RegisterWizard() {
           className={layout.actions}
         />
       </form>
+      {step === "account" && (
+        // Not in the Figma frames; keeps sign-up from being a dead end for existing users.
+        <p className="mt-[16px] text-[12px] text-[var(--rg-ink-soft)]">
+          Already have an account?{" "}
+          <Link href="/login" className="font-semibold text-[var(--rg-ink)] underline">
+            Sign in
+          </Link>
+        </p>
+      )}
     </div>
   );
 }
