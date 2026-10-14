@@ -1,0 +1,85 @@
+/*
+ * Settings > Contact Information (US-003). Values read from the Figma layers of
+ * "(US-003) - setting contact_ped" (frames L - l 508:3294, save changed,
+ * invalid phone num, phone num taken).
+ */
+.contact-settings {
+  --cs-page: #f9f9f9;
+  --cs-card: #ffffff;
+  --cs-ink: #0d111a;
+  --cs-ink-60: rgba(13, 17, 26, 0.6);
+  --cs-ink-55: rgba(13, 17, 26, 0.55);
+  --cs-muted: #7a7a7a;
+  --cs-placeholder: #888888;
+  --cs-icon: #bababa;
+  --cs-border: rgba(224, 224, 224, 0.8);
+  --cs-readonly-fill: #e9e9e9;
+  --cs-readonly-border: rgba(122, 122, 122, 0.8);
+  --cs-accent: #e42278;
+  --cs-error: #e14242;
+  --cs-error-border: rgba(225, 66, 66, 0.8);
+  --cs-error-icon: rgba(225, 66, 66, 0.75);
+  --cs-success-text: #22a65f;
+  --cs-success-fill: #efffed;
+  --cs-success-border: rgba(34, 166, 95, 0.8);
+  --cs-success-icon: #2ce07f;
+  --cs-failed-text: #e52525;
+  --cs-failed-fill: #ffd5d5;
+  --cs-failed-border: rgba(244, 37, 37, 0.8);
+  --cs-failed-icon: #f42525;
+
+  background: var(--cs-page);
+  color: var(--cs-ink);
+}
+
+.contact-settings-card {
+  background: var(--cs-card);
+  border-radius: 14px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Inputs: 250x32, radius 10, 1px border, Inter Regular 13 / 135%, text 40px in. */
+.contact-settings-input {
+  height: 32px;
+  width: 250px;
+  border: 1px solid var(--cs-border);
+  border-radius: 10px;
+  background: var(--cs-card);
+  padding: 0 12px 0 40px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--cs-ink);
+  outline: none;
+}
+.contact-settings-input::placeholder {
+  color: var(--cs-placeholder);
+}
+.contact-settings-input:focus-visible {
+  border-color: var(--cs-ink-60);
+}
+.contact-settings-input[aria-invalid="true"] {
+  border-color: var(--cs-error-border);
+}
+.contact-settings-input[readonly] {
+  background: var(--cs-readonly-fill);
+  border-color: var(--cs-readonly-border);
+  color: var(--cs-muted);
+}
+
+.contact-settings-save {
+  height: 31px;
+  width: 254px;
+  border-radius: 15px;
+  background: var(--cs-accent);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.contact-settings-save:disabled {
+  opacity: 0.45;
+}
+.contact-settings-save:focus-visible,
+.contact-settings-back:focus-visible {
+  outline: 2px solid var(--cs-ink);
+  outline-offset: 2px;
+}

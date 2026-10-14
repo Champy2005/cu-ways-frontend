@@ -92,9 +92,9 @@ describe("sign-up wizard steps", () => {
   it("requires a phone, accepting the xxx-xxx-xxxx format", () => {
     expect(contactStepErrors({ ...filled, phone: "" }).phone).toBe("Phone number is required.");
     expect(contactStepErrors({ ...filled, phone: "081 234 5678" })).toEqual({});
-    expect(contactStepErrors({ ...filled, phone: "08x-234" }).phone).toBe(
-      "Enter a valid phone number.",
-    );
+    for (const phone of ["08x-234", "081-234-567", "081-234-56789"]) {
+      expect(contactStepErrors({ ...filled, phone }).phone).toBe("Phone number must be 10 digits");
+    }
     expect(contactStepErrors({ ...filled, line_id: "x".repeat(51) }).line_id).toBe(
       "Enter a valid Line ID.",
     );

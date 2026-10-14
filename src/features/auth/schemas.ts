@@ -180,7 +180,7 @@ export function contactStepErrors(input: RegistrationFields): RegistrationErrors
   const errors: RegistrationErrors = {};
   const phone = phoneDigits(input.phone.trim());
   if (!phone) errors.phone = "Phone number is required.";
-  else if (!/^[0-9]{1,20}$/.test(phone)) errors.phone = "Enter a valid phone number.";
+  else if (!/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits";
   if (input.line_id.trim().length > 50) errors.line_id = "Enter a valid Line ID.";
   return errors;
 }
