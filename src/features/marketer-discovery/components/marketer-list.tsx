@@ -22,8 +22,9 @@ function emptyStateCopy(query: MarketerQuery): { title: string; description: str
   if (query.q) {
     return {
       title: `No marketers match “${query.q}”`,
+      // Keyword search matches name, bio, and service text, not expertise (that is a filter).
       description:
-        "Check the spelling, or search for a service or area of expertise instead of a name.",
+        "Check the spelling, or try part of a name or service. To narrow by expertise, use Filter.",
     };
   }
   if (hasActiveFilters(query)) {

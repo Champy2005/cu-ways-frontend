@@ -1,5 +1,3 @@
-import { Info } from "lucide-react";
-
 import { InlineError } from "@/components/feedback/inline-error";
 import { getDisplayError } from "@/lib/api/errors";
 import { listMarketers } from "@/features/marketer-discovery/api";
@@ -29,10 +27,6 @@ export default async function CreatorDiscoveryPage({
     errorMessage = getDisplayError(error);
   }
 
-  // The keyword stays in the box but is not applied, so the list's empty state
-  // must not claim that nothing matched it.
-  const listQuery = { ...query, q: "" };
-
   return (
     <div className="mx-auto w-full max-w-5xl">
       <MarketerPageHeader
@@ -42,20 +36,8 @@ export default async function CreatorDiscoveryPage({
       />
       {/* Remounts on every query change so the inputs resync without an effect. */}
       <MarketerSearchPanel key={serializeMarketerQuery(query)} query={query} />
-      {query.q ? (
-        <p
-          role="status"
-          className="mb-4 flex items-start gap-2 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground"
-        >
-          <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          <span>
-            Keyword search isn&apos;t supported by the backend yet, so &ldquo;{query.q}&rdquo; is
-            not applied. Results match your filters only.
-          </span>
-        </p>
-      ) : null}
       {errorMessage === null ? (
-        <MarketerList marketers={marketers} query={listQuery} />
+        <MarketerList marketers={marketers} query={query} />
       ) : (
         <InlineError message={errorMessage} />
       )}
