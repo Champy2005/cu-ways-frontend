@@ -411,8 +411,17 @@ export interface components {
             email: string;
             /** Format: password */
             password: string;
-            phone?: string | null;
+            /** @description Digits only. Must be unique across accounts. */
+            phone: string;
             line_id?: string | null;
+            marketer_profile?: components["schemas"]["RegisterMarketerProfile"];
+        };
+        /** @description Sent only when signing up as a Marketer. The account also keeps its Creator membership. Availability status starts as `available`; expertise and campuses are added later from the marketer profile. */
+        RegisterMarketerProfile: {
+            bio?: string;
+            /** Format: int32 */
+            experience_years?: number;
+            availability_text?: string;
         };
         LoginRequest: {
             /** Format: email */
