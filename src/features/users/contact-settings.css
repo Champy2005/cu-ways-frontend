@@ -28,12 +28,13 @@
   --cs-failed-border: rgba(244, 37, 37, 0.8);
   --cs-failed-icon: #f42525;
 
-  background: var(--cs-page);
-  color: var(--cs-ink);
+  /* The page background comes from the creator theme; the card stays white in
+     both themes, as in the D - frames. */
 }
 
 .contact-settings-card {
   background: var(--cs-card);
+  color: var(--cs-ink);
   border-radius: 14px;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
 }
@@ -78,8 +79,7 @@
 .contact-settings-save:disabled {
   opacity: 0.45;
 }
-.contact-settings-save:focus-visible,
-.contact-settings-back:focus-visible {
+.contact-settings-save:focus-visible {
   outline: 2px solid var(--cs-ink);
   outline-offset: 2px;
 }

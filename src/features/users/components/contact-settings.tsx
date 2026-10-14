@@ -2,8 +2,9 @@
 
 import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { Check, ChevronLeft, Mail, MessageCircle, Phone } from "lucide-react";
+import { Check, Mail, MessageCircle, Phone } from "lucide-react";
+
+import { MarketerPageHeader } from "@/features/marketer-discovery/components/marketer-page-header";
 
 import { updateCurrentUser } from "@/features/users/browser-api";
 import type { ContactProfile } from "@/features/users/types";
@@ -102,26 +103,19 @@ export function ContactSettings({ user: initialUser }: { user: ContactProfile })
   const form = useContactSettings(initialUser, updateCurrentUser);
 
   return (
-    <section className="contact-settings relative -mx-6 -mt-10 pb-10 sm:mx-auto sm:mt-0 sm:max-w-[375px]">
-      <header className="relative h-[60px]">
-        <Link
-          href="/dashboard"
-          aria-label="Back to dashboard"
-          className="contact-settings-back absolute top-[32px] left-[21px] grid size-[24px] place-items-center rounded"
-        >
-          <ChevronLeft className="size-[22px]" strokeWidth={2} aria-hidden="true" />
-        </Link>
-        <div className="absolute top-[30px] left-[60px]">
-          <h1 className="text-[14px] leading-[17px] font-medium">Settings</h1>
-          <p className="text-[11px] leading-[13px] text-[var(--cs-ink-55)]">Contact Information</p>
-        </div>
-      </header>
+    <section className="contact-settings relative pb-10">
+      <MarketerPageHeader
+        title="Settings"
+        subtitle="Contact Information"
+        backHref="/creator/dashboard"
+        backLabel="Back to overview"
+      />
 
       <form
         noValidate
         onSubmit={form.handleSubmit}
         aria-labelledby="contact-settings-title"
-        className="contact-settings-card relative z-10 mt-[67px] ml-[38px] w-[305px] pt-[19px] pb-[13px] pl-[22px]"
+        className="contact-settings-card relative z-10 mx-auto mt-[43px] w-[305px] pt-[19px] pb-[13px] pl-[22px]"
       >
         {form.banner && <Banner banner={form.banner} />}
         <h2
