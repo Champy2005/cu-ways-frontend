@@ -2,7 +2,7 @@ import { MarketerNavigation } from "../components/marketer-navigation";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DemoWorkspace } from "./demo-workspace";
 import { initialDemoState, resetDemo } from "./store";
@@ -28,6 +28,11 @@ function visit(label: "Overview" | "Services" | "Profile" | "Creator view") {
 const noNetwork = vi.fn<typeof fetch>(() =>
   Promise.reject(new Error("The demo must never call fetch.")),
 );
+
+beforeAll(async () => {
+  // Hydration assertions cover saved state, independently of cold module compilation.
+  await Promise.all([import("./profile-view"), import("./catalog-view")]);
+});
 
 beforeEach(() => {
   window.history.replaceState(null, "", "/demo/marketer");
