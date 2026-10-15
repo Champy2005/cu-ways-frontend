@@ -35,10 +35,15 @@ import {
   type JobRequestActionState,
 } from "@/features/jobs/actions";
 import { isActiveJobInvitation } from "@/features/jobs/types";
-import type { JobInviteMarketer, SentJobInvitation } from "@/features/jobs/types";
+import type {
+  CreatorJobSummary,
+  JobInviteMarketer,
+  SentJobInvitation,
+} from "@/features/jobs/types";
 
 type JobInviteSelectorProps = {
   jobId: number;
+  jobStatus?: CreatorJobSummary["job_status"];
   marketers: JobInviteMarketer[];
   totalMarketers: number;
   pageSize: number;
@@ -346,7 +351,13 @@ function MarketerPagination({
   );
 }
 
-function JobRequestFeedback({ state }: { state: JobRequestActionState }) {
+function JobRequestFeedback({
+  state,
+  canInvite,
+}: {
+  state: JobRequestActionState;
+  canInvite: boolean;
+}) {
   switch (state.status) {
     case "duplicate":
       return null;
@@ -355,6 +366,23 @@ function JobRequestFeedback({ state }: { state: JobRequestActionState }) {
         <div className="mk-error-notice rounded-xl p-4" role="alert">
           <p className="font-semibold">Invitation status needs a refresh</p>
           <p className="mt-1 text-sm">{state.message}</p>
+        </div>
+      );
+    case "job_not_pending":
+      return (
+        <div className="mk-error-notice rounded-xl p-4" role="alert">
+          <p className="font-semibold">Invitations are closed for this job</p>
+          <p className="mt-1 text-sm">{state.message}</p>
+        </div>
+      );
+    case "idle":
+      return canInvite ? null : (
+        <div className="mk-error-notice rounded-xl p-4" role="status">
+          <p className="font-semibold">Invitations are closed for this job</p>
+          <p className="mt-1 text-sm">
+            Invitations can only be sent while a job is pending. Your sent invitation history
+            remains available.
+          </p>
         </div>
       );
     case "error":
@@ -416,12 +444,14 @@ function DirectInvitationsSection({
   isFresh,
   error,
   isRefreshing,
+  canInvite,
   onRefresh,
 }: {
   invitations: SentJobInvitation[];
   isFresh: boolean;
   error: string | null;
   isRefreshing: boolean;
+  canInvite: boolean;
   onRefresh: () => void;
 }) {
   return (
@@ -438,12 +468,14 @@ function DirectInvitationsSection({
             Review invitations already sent for this job.
           </p>
         </div>
-        <a
-          href="#choose-marketers-heading"
-          className="mk-primary-button inline-flex min-h-11 items-center justify-center px-4 text-sm font-semibold"
-        >
-          Invite Marketers
-        </a>
+        {canInvite ? (
+          <a
+            href="#choose-marketers-heading"
+            className="mk-primary-button inline-flex min-h-11 items-center justify-center px-4 text-sm font-semibold"
+          >
+            Invite Marketers
+          </a>
+        ) : null}
       </div>
 
       {!isFresh ? (
@@ -464,9 +496,13 @@ function DirectInvitationsSection({
         </div>
       ) : invitations.length === 0 ? (
         <Card className="mk-card mk-card-padding gap-2">
-          <p className="font-semibold">No invitations sent yet</p>
+          <p className="font-semibold">
+            {canInvite ? "No invitations sent yet" : "No invitations were sent for this job"}
+          </p>
           <p className="text-sm leading-6 text-[var(--mk-muted)]">
-            Choose marketers below to send the first direct invitation for this job.
+            {canInvite
+              ? "Choose marketers below to send the first direct invitation for this job."
+              : "This job is no longer pending, so invitations cannot be sent."}
           </p>
         </Card>
       ) : (
@@ -679,6 +715,7 @@ function ConfirmationDialog({
 
 export function JobInviteSelector({
   jobId,
+  jobStatus = "Pending",
   marketers: initialMarketers,
   totalMarketers: initialTotalMarketers,
   pageSize: initialPageSize,
@@ -687,6 +724,7 @@ export function JobInviteSelector({
   sentInvitationsError: initialSentInvitationsError,
   marketersError: initialMarketersError,
 }: JobInviteSelectorProps) {
+  const [closedJobId, setClosedJobId] = useState<number | null>(null);
   const [state, setState] = useState<JobRequestActionState>(INITIAL_ACTION_STATE);
   const [isSending, startSendTransition] = useTransition();
   const [isLoadingPage, startPageTransition] = useTransition();
@@ -734,10 +772,11 @@ export function JobInviteSelector({
     return result;
   }, [sentInvitations]);
   const searchIsStale = pageData.keyword !== search.trim();
+  const canInvite = jobStatus === "Pending" && closedJobId !== jobId;
   const isBusy = isSending || isLoadingPage || isRefreshingInvitations || searchIsStale;
 
   const toggleMarketer = (marketerId: number, checked: boolean) => {
-    if (!sentInvitationsFresh || activeStatusByMarketerId.has(marketerId)) return;
+    if (!canInvite || !sentInvitationsFresh || activeStatusByMarketerId.has(marketerId)) return;
     const marketer = marketers.find((item) => item.marketer_id === marketerId);
     setSelectedMarketersById((current) => {
       const next = new Map(current);
@@ -857,6 +896,7 @@ export function JobInviteSelector({
   };
 
   const openConfirmation = () => {
+    if (!canInvite) return;
     if (!sentInvitationsFresh) {
       setSelectionError("Refresh current invitations before sending.");
       return;
@@ -881,6 +921,10 @@ export function JobInviteSelector({
   };
 
   const sendRequests = () => {
+    if (!canInvite) {
+      setConfirmationOpen(false);
+      return;
+    }
     if (!sentInvitationsFresh) {
       setConfirmationOpen(false);
       setSelectionError("Refresh current invitations before sending.");
@@ -904,7 +948,7 @@ export function JobInviteSelector({
           message: "The request could not be completed. Please try again.",
         };
       }
-      startSendTransition(() =>
+      startSendTransition(() => {
         applyRequestResult(result, selectedMarketers, {
           setState,
           setConfirmationOpen,
@@ -915,8 +959,9 @@ export function JobInviteSelector({
           setDuplicateMarketerNames,
           setDuplicateRefreshFailed,
           setDuplicateDialogOpen,
-        }),
-      );
+        });
+        if (result.status === "job_not_pending") setClosedJobId(jobId);
+      });
     });
   };
 
@@ -928,6 +973,7 @@ export function JobInviteSelector({
         isFresh={sentInvitationsFresh}
         error={sentInvitationsError}
         isRefreshing={isRefreshingInvitations}
+        canInvite={canInvite}
         onRefresh={refreshInvitations}
       />
       <section aria-labelledby="choose-marketers-heading" className="space-y-4">
@@ -946,7 +992,7 @@ export function JobInviteSelector({
           isLoadingPage={isLoadingPage}
           onRetry={() => loadPage(page, search.trim())}
         />
-        <JobRequestFeedback state={state} />
+        <JobRequestFeedback state={state} canInvite={canInvite} />
 
         <div role="group" aria-label="Select marketers to invite" className="min-w-0">
           <MarketerOptions
@@ -955,7 +1001,7 @@ export function JobInviteSelector({
             searchFailed={pageError !== null && (searchIsStale || pageData.marketers.length === 0)}
             keyword={pageData.keyword}
             selectedMarketersById={selectedMarketersById}
-            disabled={isBusy || !sentInvitationsFresh}
+            disabled={isBusy || !sentInvitationsFresh || !canInvite}
             activeStatusByMarketerId={activeStatusByMarketerId}
             onChange={toggleMarketer}
           />
@@ -984,7 +1030,9 @@ export function JobInviteSelector({
           <Button
             type="button"
             className="mk-primary-button w-full justify-center font-semibold"
-            disabled={isBusy || !sentInvitationsFresh || selectedMarketersById.size === 0}
+            disabled={
+              isBusy || !canInvite || !sentInvitationsFresh || selectedMarketersById.size === 0
+            }
             onClick={openConfirmation}
           >
             {isSending ? "Sending…" : "Review & Send"}

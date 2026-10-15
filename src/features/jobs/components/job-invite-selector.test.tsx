@@ -63,6 +63,7 @@ function renderSelector(
     totalMarketers: number;
     pageSize: number;
     marketersError: string;
+    jobStatus: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
     sentInvitations: ReturnType<typeof sentInvitation>[];
     sentInvitationsFresh: boolean;
     sentInvitationsError: string;
@@ -127,6 +128,7 @@ describe("JobInviteSelector", () => {
       requests: [createdRequest(11), createdRequest(12)],
     });
     renderSelector({
+      jobStatus: "Pending",
       sentInvitations: [
         sentInvitation(11, "Mali S.", "Declined"),
         sentInvitation(12, "Anan K.", "Closed"),
@@ -146,6 +148,55 @@ describe("JobInviteSelector", () => {
 
     await waitFor(() => expect(sendJobRequests).toHaveBeenCalledWith(8, [11, 12]));
     expect(await screen.findByText("Requests sent to 2 marketers.")).toBeInTheDocument();
+  });
+
+  it("shows closed empty-history guidance and disables inviting when the initial job is not pending", () => {
+    renderSelector({ jobStatus: "In Progress" });
+
+    expect(screen.getByText("Invitations are closed for this job")).toBeInTheDocument();
+    const directInvitations = screen.getByRole("region", { name: "Direct Invitations" });
+    expect(
+      within(directInvitations).getByText("No invitations were sent for this job"),
+    ).toBeInTheDocument();
+    expect(
+      within(directInvitations).queryByText(
+        "Choose marketers below to send the first direct invitation for this job.",
+      ),
+    ).not.toBeInTheDocument();
+    expect(
+      within(directInvitations).getByText(
+        "This job is no longer pending, so invitations cannot be sent.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Invite Marketers" })).not.toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Review & Send" })).toBeDisabled();
+    expect(sendJobRequests).not.toHaveBeenCalled();
+  });
+
+  it("stops further invites when the backend reports that a pending job has closed", async () => {
+    sendJobRequests.mockResolvedValue({
+      status: "job_not_pending",
+      message: "This job is no longer pending, so no further invitations can be sent.",
+    });
+    renderSelector({ sentInvitations: [sentInvitation(12, "Anan K.", "Declined")] });
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Select Mali S." }));
+    fireEvent.click(screen.getByRole("button", { name: "Review & Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Send Invitation" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "This job is no longer pending, so no further invitations can be sent.",
+    );
+    const directInvitations = screen.getByRole("region", { name: "Direct Invitations" });
+    expect(within(directInvitations).getByText("Anan K.")).toBeInTheDocument();
+    expect(within(directInvitations).getByText("Declined")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Active Invitation Already Exists" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Invite Marketers" })).not.toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "Select Mali S." })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Review & Send" })).toBeDisabled();
+    expect(loadJobSentInvitations).not.toHaveBeenCalled();
+    expect(sendJobRequests).toHaveBeenCalledTimes(1);
   });
 
   it("shows named conflicts, removes only active IDs, and retains other selected marketers", async () => {

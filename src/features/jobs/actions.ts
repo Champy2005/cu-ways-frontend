@@ -27,6 +27,7 @@ export type JobRequestActionState =
     }
   | { status: "duplicate"; message: string; refreshStatus: "error" }
   | { status: "reconcile"; message: string }
+  | { status: "job_not_pending"; message: string }
   | { status: "error"; message: string };
 
 export type JobInviteMarketersPageState =
@@ -259,7 +260,13 @@ export async function sendJobRequests(
 
     return { status: "success", requests };
   } catch (error) {
-    if (error instanceof ApiError && error.status === 409) {
+    if (error instanceof ApiError && error.status === 409 && error.code === "job_not_pending") {
+      return {
+        status: "job_not_pending",
+        message: "This job is no longer pending, so no further invitations can be sent.",
+      };
+    }
+    if (error instanceof ApiError && error.status === 409 && error.code === "job_conflict") {
       return refreshAfterDuplicate(jobId, marketerIds);
     }
     return errorState(error);

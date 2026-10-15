@@ -79,6 +79,7 @@ export default async function InviteMarketersPage({ params }: { params: Promise<
 
       <JobInviteSelector
         jobId={jobId}
+        jobStatus={data.job.job_status}
         marketers={marketers}
         totalMarketers={data.marketers.status === "success" ? data.marketers.total : 0}
         pageSize={data.marketers.status === "success" ? data.marketers.pageSize : SEARCH_PAGE_SIZE}

@@ -160,6 +160,30 @@ describe("job invitation server actions", () => {
     });
   });
 
+  it("reports a closed job without refreshing invitation history", async () => {
+    vi.mocked(serverApiRequest).mockRejectedValue(
+      new ApiError(409, "job_not_pending", "the job has already been hired"),
+    );
+
+    await expect(sendJobRequests(12, [21])).resolves.toEqual({
+      status: "job_not_pending",
+      message: "This job is no longer pending, so no further invitations can be sent.",
+    });
+    expect(getJobSentInvitations).not.toHaveBeenCalled();
+  });
+
+  it("does not treat an unrelated conflict code as a duplicate invitation", async () => {
+    vi.mocked(serverApiRequest).mockRejectedValue(
+      new ApiError(409, "other_conflict", "the request conflicts with another state"),
+    );
+
+    await expect(sendJobRequests(12, [21])).resolves.toEqual({
+      status: "error",
+      message: "the request conflicts with another state",
+    });
+    expect(getJobSentInvitations).not.toHaveBeenCalled();
+  });
+
   it("requires a session and valid job ID when refreshing invitation history", async () => {
     vi.mocked(getJobSentInvitations).mockResolvedValue([sentRequest(21, "Pending")]);
 

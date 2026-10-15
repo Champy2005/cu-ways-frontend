@@ -447,6 +447,51 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/jobs/{id}/offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * Compare the offers submitted for a job
+         * @description Returns every offer on a job the caller owns, oldest first, with the marketer's profile and rating history. The rating uses the same rule as the marketer detail endpoint - jobs count when Completed through the marketer's accepted offer, and only 1-5 reviews contribute to average_rating. Marketers with no rated jobs return average_rating null and is_rated false.
+         */
+        get: operations["listJobOffers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/offers/{offerId}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                offerId: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Accept one offer and hire its marketer
+         * @description In one transaction that rolls back completely on any failure, marks the job Accepted with accepted_offer_id, sets the offer to Accepted, sets every other Pending offer on the job to Rejected, and closes the other marketers' Pending or Accepted job requests. The hired marketer's request stays Accepted. Only a Pending offer on a Pending job can be accepted.
+         */
+        post: operations["acceptJobOffer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/job-requests": {
         parameters: {
             query?: never;
@@ -505,6 +550,32 @@ export interface paths {
          * @description Moves a Pending request addressed to the caller to Declined and records responded_at. The body is optional; blank reason or note values are stored as null. A declined request stays in history and allows a later invitation.
          */
         post: operations["declineMyJobRequest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/job-requests/{id}/offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * List the marketer's offers for a job request
+         * @description Returns the caller's offers for one request, newest first. The first item is the current offer; withdrawn and rejected offers remain as history.
+         */
+        get: operations["listMyJobRequestOffers"];
+        put?: never;
+        /**
+         * Submit a price offer for an accepted job request
+         * @description Creates a Pending offer for a request the caller has Accepted. A request may have only one active (Pending or Accepted) offer; a Withdrawn or Rejected offer allows a new one. The price is a non-negative decimal string with at most two decimal places, up to 99999999.99; zero is valid. The delivery date is a YYYY-MM-DD date that cannot be before today or after the job deadline (the earliest linked survey deadline), using the Asia/Bangkok calendar.
+         */
+        post: operations["submitMyJobRequestOffer"];
         delete?: never;
         options?: never;
         head?: never;
@@ -880,6 +951,78 @@ export interface components {
                     deadline: string | null;
                 }[];
                 brief: components["schemas"]["Brief"] | null;
+            };
+        };
+        SubmitOfferRequest: {
+            /** @example 9000.00 */
+            offered_price: string;
+            /**
+             * Format: date
+             * @example 2026-10-25
+             */
+            delivery_date: string;
+            message?: string | null;
+        };
+        Offer: {
+            /** Format: int32 */
+            offer_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /** Format: int32 */
+            job_request_id: number | null;
+            /** Format: int32 */
+            marketer_id: number;
+            /** @example 9000.00 */
+            offered_price: string;
+            /** Format: date */
+            delivery_date: string | null;
+            message: string | null;
+            /** @enum {string} */
+            offer_status: "Pending" | "Accepted" | "Rejected" | "Withdrawn";
+            /** Format: date-time */
+            created_at: string;
+        };
+        OfferResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Offer"];
+        };
+        OfferListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Offer"][];
+        };
+        MarketerRating: {
+            /** Format: double */
+            average_rating: number | null;
+            /** Format: int64 */
+            review_count: number;
+            /** Format: int64 */
+            completed_jobs: number;
+            is_rated: boolean;
+        };
+        JobOfferComparison: components["schemas"]["Offer"] & {
+            marketer: components["schemas"]["MarketerProfile"];
+            rating: components["schemas"]["MarketerRating"];
+        };
+        JobOfferComparisonListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["JobOfferComparison"][];
+        };
+        AcceptOfferResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** Format: int32 */
+                job_id: number;
+                /** @enum {string} */
+                job_status: "Accepted";
+                /** Format: int32 */
+                accepted_offer_id: number;
+                offer: components["schemas"]["Offer"];
+                rejected_offer_ids: number[];
+                closed_job_request_ids: number[];
             };
         };
         MarketerJobRequestListResponse: {
@@ -2288,6 +2431,15 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
+            /** @description The job ID is not a positive int32. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
         };
     };
     addSurveyToJob: {
@@ -2566,6 +2718,15 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
+            /** @description The job ID is not a positive int32. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
         };
     };
     createJobRequests: {
@@ -2619,7 +2780,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description An active request already exists for a selected marketer. */
+            /** @description An active request already exists for a selected marketer (code job_conflict), or the job has already hired a marketer (code job_not_pending). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -2629,6 +2790,134 @@ export interface operations {
                 };
             };
             /** @description Request is empty, contains duplicate IDs, or selects an unavailable marketer. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listJobOffers: {
+        parameters: {
+            query?: {
+                status?: "Pending" | "Accepted" | "Rejected" | "Withdrawn";
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Offers for the job. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOfferComparisonListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Creator membership (code creator_required) or does not own the job (code forbidden). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found (code job_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid job ID or unknown status filter. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    acceptJobOffer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                offerId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Offer accepted. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AcceptOfferResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Creator membership (code creator_required) or does not own the job (code forbidden). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job not found (code job_not_found) or the offer does not belong to the job (code offer_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The job already has an accepted offer or is closed (code job_not_pending), or the offer is not Pending (code offer_not_pending). */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid job or offer ID. */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -2807,6 +3096,126 @@ export interface operations {
                 };
             };
             /** @description Unknown decline reason, a note longer than 300 characters, or unknown body fields. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listMyJobRequestOffers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Offers for the request. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OfferListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description No request with this ID is addressed to the caller (code job_request_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    submitMyJobRequestOffer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubmitOfferRequest"];
+            };
+        };
+        responses: {
+            /** @description Offer submitted. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OfferResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description No request with this ID is addressed to the caller (code job_request_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The job has already hired a marketer (code job_not_pending), the request is not Accepted (code job_request_not_accepted), or it already has an active offer (code offer_already_exists). */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Malformed body (code validation_error) or an invalid price, delivery date, or message (code invalid_offer; the message names the problem). */
             422: {
                 headers: {
                     [name: string]: unknown;
