@@ -1,71 +1,121 @@
 # Invitations and custom offers (US20 / US21)
 
-The screens are interactive frontend previews. US23 (creator acceptance) is deferred until US22
-is available. No invitation/offer backend endpoint has been published in the current OpenAPI file.
-The live `/marketer/invitations` and `/marketer/offer/create` routes require a session and show an
-unavailable state. They do not substitute fictional records for live data.
+## Live workflow
 
-## Preview
+`/marketer/invitations` lists the authenticated marketer's received requests. Pending and Responded
+tabs support search by job ID, survey title, and creator. Accept/decline confirmations persist the
+response and backend timestamp. Accepting signals interest; it does not hire the marketer.
+Declines support the backend's optional reason and 300-character note.
 
-Enable `MARKETER_DEMO_ENABLED=true` in local development and restart the server. Open
-`/demo/marketer?view=invitations`. Offer screens use
-`/demo/marketer?view=offer&requestId=request-063`; `request-074` has an existing offer.
-The preview is disabled in production, even when the flag is set.
+The empty/search state uses the same gray mascot, spacing, text and clear-search action as the
+demo. Touch users refresh by pulling down and releasing at the top of the invitation list.
+An indicator appears only during the gesture/loading; short, sideways, upward, cancelled and
+multi-touch gestures do not refresh. Normal scrolling below the top is unaffected. No permanent
+refresh button/panel appears on either healthy live screen. Actual failures expose a small retry
+action, while success feedback uses the existing toast.
 
-The preview stores its own versioned data under `cuways-job-invitations-demo-v1` in session storage.
-It preserves edits across navigation and reloads, falls back to memory when storage is blocked,
-and validates stored content before restoring it. Reset demo restores these fixtures and the
-existing marketer fixtures without altering the theme. The reference clock is fixed at
-7 October 2026, 19:00 Bangkok time. Displayed timestamps are demo values, not a live audit trail.
-Briefs are local fictional previews; survey URLs are absent rather than fabricated.
+`/marketer/offer/create?requestId=<positive-int32>` loads the owned invitation and current offer.
+Initial submission requires an Accepted request, a Pending job, and a successfully loaded empty
+offer list. Price is a decimal string from 0 to 99999999.99 with up to two fractional digits.
+Delivery is required, using today's Bangkok calendar date and the earliest survey deadline when
+one exists. The optional message is limited to 300 Unicode code points after trimming, like the
+backend. An elapsed job deadline prevents new submission.
 
-## Required backend capabilities
+All existing offers are read-only, including Accepted/Rejected/Withdrawn records and offers for
+Closed requests. US24 withdrawal and replacement submission are deliberately excluded. The backend
+already supports replacement eligibility, but this frontend release does not expose that action.
 
-These are capability requirements, not agreed HTTP paths or wire schemas:
+The live UI derives its heading from the linked survey title (first title plus a count for multiple
+surveys), with Job #ID underneath. Deadline and Target are the only two tags. Compact survey
+summaries expand through a keyboard-accessible details disclosure; metadata and safe external URLs
+remain available there. Invitation statuses appear near the actions as Awaiting your response,
+Invitation accepted, Invitation declined, or Invitation closed. Job lifecycle status is used for
+eligibility and contextual explanations, rather than a competing status tag. Offer views emphasize
+the offer status; an accepted offer explicitly means the marketer has been hired. Saved offers show
+read-only values, and creation fields show validation on blur while preserving drafts.
 
-- List invitations owned by the authenticated marketer, with job identifier/title, creator,
-  invitation message and timestamp, budget, deadline, survey metadata/links, response target,
-  brief information, request status, and response timestamp.
-- Accept or decline a Pending invitation. Record the response timestamp. Decline supports an
-  optional reason and optional note. Reasons shown are Schedule conflict, Budget too low,
-  Target audience mismatch, and Fully booked; the preview limits the note to 300 characters.
-- Retrieve the existing offer for an invitation, including price, estimated delivery date,
-  optional message, status, creation timestamp, and withdrawal timestamp where applicable.
-- Submit an offer only for an Accepted invitation. Price is a non-negative decimal with at
-  most two fractional digits and a maximum of 99,999,999.99 THB. Zero is valid. Delivery is a
-  required calendar date no later than the job deadline. The message is optional, maximum
-  300 characters. A successful new offer is Pending.
-- Withdraw only a Pending offer. Withdrawal is final: a withdrawn offer still counts toward
-  the one-offer-per-invitation constraint, and a replacement offer is forbidden.
-- Return distinguishable errors for missing/unauthorized resources, inactive requests,
-  duplicate offers, invalid fields, and offers no longer eligible for withdrawal.
-
-The backend must enforce ownership, state transitions, uniqueness, monetary/date validation,
-and timestamps transactionally. Accepting an invitation indicates interest; it does not hire
-the marketer or move the job into progress. The extra Figma fields and withdrawal behavior were
-explicitly requested in addition to the backlog's original price-only offer story.
+The live UI has no separate stored job title, creator budget, or creator invitation message. Missing optional
+data is shown as Not specified; a missing brief is shown as No brief attached. Only HTTP(S) external
+links are rendered, with new-tab isolation. The marketer's optional offer message remains supported.
 
 ## Integration boundary
 
-`src/features/job-invitations/types.ts` contains frontend view models and the asynchronous
-`InvitationActions` callbacks. UI components receive data and callbacks and do not access storage.
-The demo adapter is isolated under that feature's `demo/` directory. The marketer demo host
-composes the feature and handles its URL state.
+The `live/` feature uses generated backend types, runtime response validation, server reads, and
+same-origin BFF mutations. JWTs remain in the existing HttpOnly session boundary. Browser mutations
+require the configured frontend origin. The backend remains authoritative for membership,
+ownership, state transitions and persistence.
 
-When the backend contract is published, generate its types using `pnpm generate:api`, map its
-responses into these view models, and implement server reads and same-origin BFF mutations using
-the existing API/session clients. Refresh authoritative data after mutations; handle stale-state
-conflicts without reporting success or losing drafts. Do not reuse the demo store for live data.
-The current decimal strings, status names, and callback parameters are not a backend contract.
+| Backend endpoint                          | Frontend usage                              |
+| ----------------------------------------- | ------------------------------------------- |
+| GET /api/v1/me/job-requests               | Initial server reads and refresh snapshots  |
+| POST /api/v1/me/job-requests/{id}/accept  | POST /api/job-requests/{id}/accept          |
+| POST /api/v1/me/job-requests/{id}/decline | POST /api/job-requests/{id}/decline         |
+| GET /api/v1/me/job-requests/{id}/offers   | Parallel reads for Accepted/Closed requests |
+| POST /api/v1/me/job-requests/{id}/offers  | POST /api/job-requests/{id}/offers          |
+
+GET `/api/job-requests`, optionally with `requestId`, supplies uncached refresh snapshots using the
+same server loader. Offer lookup failures are distinct from an empty list and prevent submission.
+Confirmed mutation responses update local state before refreshing authoritative data. If that
+refresh fails, the UI says the change was saved and blocks further mutations until a successful
+refresh. A partial offer-lookup failure also counts as a failed refresh: known saved offers stay
+visible and read-only, and the saved warning remains through unsuccessful retries. Successful
+invitation refreshes update relative invitation ages against the current time.
+Conflicts refresh status without claiming success; failed submissions preserve drafts.
+Duplicate clicks are blocked while requests are pending.
+
+## Existing fictional preview
+
+The existing demo is unchanged. Enable `MARKETER_DEMO_ENABLED=true` locally and visit
+`/demo/marketer?view=invitations` or `/demo/marketer?view=offer&requestId=request-063`.
+It uses a fixed 7 October 2026 clock, session-storage fixtures, fictional briefs and preview-only
+fields/actions. Its final-withdrawal rule is legacy preview behavior, not the US24 contract.
+It never calls the backend and is always disabled in production. Live modules never import its store.
 
 ## Verification
 
-Unit/component tests cover validation, transitions, persistence, reset, blocked/corrupt storage,
-direct links, navigation, and action failures. The preview tests assert no `fetch` requests.
-`pnpm exec playwright test --config=playwright.demo.config.ts` runs the workflow against a separate
-development server on port 3101, on desktop and mobile. This config never changes the production
-demo gate or the existing production E2E configuration.
+### Manual testing before Creator setup screens exist
 
-If bundled Chromium is unavailable, set `PLAYWRIGHT_CHANNEL=msedge` to use an installed Edge
-browser. On hosts with a restricted temporary directory, `PWTEST_CACHE_DIR` can point to
-`.artifacts/playwright-cache` inside the repository.
+With the existing migrated backend running locally, run `pnpm setup:us2021` and then `pnpm dev`.
+The frontend-owned script calls only existing APIs and restricts its target to loopback URLs.
+It creates fresh synthetic Creator/Marketer accounts and four invitation scenarios (two Pending,
+one Accepted without an offer, one Accepted with a saved Pending offer), plus an empty-inbox
+Marketer. Login credentials and job/request IDs are saved to the printed path under ignored
+`.artifacts/manual-us2021/`; no tokens are written to disk and passwords are not printed to logs.
+Each run creates a new credential file and leaves existing accounts and records unchanged.
+Use the `marketer`, `emptyMarketer`, or `creator` login details from that file in the normal app.
+The sample external links use `example.test` and are intentionally placeholders in the test data.
+Set `BACKEND_API_URL` to override the default `http://127.0.0.1:8081`.
+
+### Automated checks
+
+Run `pnpm generate:api:check`, `pnpm check`, and `pnpm test:e2e` for contract freshness, frontend
+gates, and existing production public browser checks. Focused tests under `live/` cover API and
+origin/session boundaries, malformed responses, optional fields, Unicode/date/price validation,
+conflicts, duplicate prevention, read-only offers, failed lookup/refresh, and draft preservation.
+Gesture tests verify the release threshold, top-of-scroll requirement, cancellation, input targets,
+multi-touch rejection and single-flight behavior. The live mobile browser check dispatches real
+touch input and proves a newly created invitation appears without reloading the document.
+
+For real persistence evidence, start the existing migrated local backend and PostgreSQL, then run:
+
+```powershell
+pnpm build
+pnpm exec playwright test --config=playwright.live.config.ts
+```
+
+The separate opt-in suite runs the production frontend on port 3102 with the demo disabled and
+uses the backend at `http://127.0.0.1:8081` (`LIVE_BACKEND_API_URL` can override to another loopback
+development URL). It creates uniquely named synthetic creator/marketer accounts, surveys, jobs,
+briefs and invitations through existing APIs, then logs in through the actual UI. Desktop/mobile
+checks exercise accept, submit, reload, decline, empty inbox and another marketer's isolation, with
+backend reads confirming saved values. Fixture records remain as synthetic local development data;
+the suite never deletes unrelated records. No database or backend-code changes are required.
+
+Authenticated traces/video are disabled to avoid recording credentials and tokens; failure
+screenshots contain synthetic account data only. Reports stay in ignored `.artifacts/verification/`.
+No mocked/demo test or build alone establishes backend persistence. Missing runtime evidence must
+be reported as incomplete, not a pass.
+
+Existing demo regression command: `pnpm exec playwright test --config=playwright.demo.config.ts`.
+Set `PLAYWRIGHT_CHANNEL=msedge` if using installed Edge instead of bundled Chromium. On restricted
+Windows hosts, point TEMP/TMP and `PWTEST_CACHE_DIR` to owned ignored directories under `.artifacts`.
