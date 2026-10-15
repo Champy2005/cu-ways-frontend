@@ -43,6 +43,10 @@ describe("CreatorShell", () => {
       "aria-current",
       "page",
     );
+    expect(menu.getByRole("menuitem", { name: "Settings" })).toHaveAttribute(
+      "href",
+      "/creator/settings",
+    );
     expect(menu.getByRole("menuitem", { name: "Workspace" })).toHaveAttribute("href", "/dashboard");
     expect(menu.getByRole("menuitem", { name: "Sign out" })).toBeInTheDocument();
   });

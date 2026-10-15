@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, Home, LogOut, Menu, Search } from "lucide-react";
+import { ArrowLeft, Home, LogOut, Menu, Search, Settings } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { useLogout } from "@/components/layout/use-logout";
 export const creatorViews = [
   { href: "/creator/dashboard", label: "Overview", icon: Home },
   { href: "/creator/discovery", label: "Marketer discovery", icon: Search },
+  { href: "/creator/settings", label: "Settings", icon: Settings },
 ] as const;
 
 export function CreatorMenu() {

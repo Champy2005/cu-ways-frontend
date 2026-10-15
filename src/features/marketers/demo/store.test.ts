@@ -129,9 +129,9 @@ it("restores old sessions without losing profile or service edits", () => {
   ]);
 });
 it("persists contact changes in the session and resets both profile sections", async () => {
-  await saveDemoContact({ phone: "123", line_id: null });
+  await saveDemoContact({ phone: "0898765432", line_id: null });
   expect(decodeDemoState(sessionStorage.getItem("cuways-marketer-demo-v2")).contact.phone).toBe(
-    "123",
+    "0898765432",
   );
   await demoActions.saveProfile({
     bio: "Changed",

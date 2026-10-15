@@ -70,13 +70,13 @@ describe("Unified profile", () => {
       "aria-selected",
       "true",
     );
-    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "0898765432" } });
     select("In-depth information");
     act(() => {
       window.history.replaceState(null, "", "/marketer/profile?tab=basic");
       window.dispatchEvent(new PopStateEvent("popstate"));
     });
-    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("0898765432");
     expect(screen.getByRole("tab", { name: "Basic information" })).toHaveAttribute(
       "aria-selected",
       "true",
@@ -102,7 +102,7 @@ describe("Unified profile", () => {
     );
     setup({ saveContact });
     select("Basic information");
-    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "0898765432" } });
     const button = screen.getByRole("button", { name: "Save contact information" });
     fireEvent.submit(button.closest("form")!);
     fireEvent.submit(button.closest("form")!);
@@ -110,7 +110,7 @@ describe("Unified profile", () => {
     expect(button).toBeDisabled();
     await act(async () => reject(new Error("Network unavailable")));
     await waitFor(() => expect(button).not.toBeDisabled());
-    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("0898765432");
     expect(screen.getByRole("alert")).toHaveTextContent("Your changes are still here");
   });
 

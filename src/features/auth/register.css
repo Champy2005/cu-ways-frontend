@@ -1,0 +1,197 @@
+/*
+ * Sign-up wizard (US-001). Values come from the Figma design context of the
+ * "(US-001) - Register_ped" section; node ids are noted where a value is first used.
+ */
+.register-flow {
+  /* L - l 479:2571 */
+  --rg-page: #f9f9f9;
+  --rg-card: #ffffff;
+  --rg-card-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+  --rg-ink: #0d111a;
+  --rg-ink-soft: rgba(13, 17, 26, 0.8);
+  --rg-ink-muted: #3c4047; /* step 3 subtitle, 502:2169 */
+  --rg-label: #888888;
+  --rg-placeholder: #888888;
+  --rg-input-border: #e0e0e0;
+  --rg-input-border-filled: #888888; /* 488:2020 */
+  --rg-outline: #d9d9d9;
+  --rg-error: #e14242; /* 488:1957, 497:2386 */
+  --rg-disabled: #d9d9d9;
+  --rg-creator: #e42278;
+  --rg-creator-soft: #ed7bac;
+  --rg-marketer: #429ec3;
+  --rg-loading-opacity: 0.45; /* 502:1898 */
+  /* Simple Design System tokens on the Checkbox Field / "I'm not sure" nodes */
+  --rg-sds-text: #1e1e1e;
+  --rg-sds-brand: #2c2c2c;
+  --rg-sds-on-brand: #f5f5f5;
+  --rg-sds-tertiary: #b3b3b3;
+
+  background: var(--rg-page);
+  color: var(--rg-ink);
+}
+
+.register-card {
+  background: var(--rg-card);
+  border-radius: 14px;
+  box-shadow: var(--rg-card-shadow);
+}
+
+/* Inputs: step 1 is 25px / 11px, steps 2-3 are 30px / 12px. */
+.register-input {
+  width: 100%;
+  border: 1px solid var(--rg-input-border);
+  border-radius: 10px;
+  background: var(--rg-card);
+  color: var(--rg-ink);
+  padding: 0 11px;
+  line-height: 1.35;
+  outline: none;
+}
+.register-input::placeholder {
+  color: var(--rg-placeholder);
+}
+.register-input:focus-visible {
+  border-color: var(--rg-input-border-filled);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--rg-ink) 15%, transparent);
+}
+.register-input[aria-invalid="true"] {
+  border-color: var(--rg-error);
+}
+.register-input--compact {
+  height: 25px;
+  font-size: 11px;
+}
+.register-input--regular {
+  height: 30px;
+  font-size: 12px;
+}
+
+/* Primary action: 185x57, radius 14, Inter SemiBold 24 white. */
+.register-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 57px;
+  width: 185px;
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  background: var(--rg-ink);
+  transition: opacity 120ms ease;
+}
+.register-primary[data-tone="creator"] {
+  background: var(--rg-creator);
+}
+.register-primary[data-tone="marketer"] {
+  background: var(--rg-marketer);
+}
+.register-primary[data-loading="true"] {
+  opacity: var(--rg-loading-opacity);
+  color: rgba(255, 255, 255, 0.8);
+}
+.register-primary:disabled:not([data-loading="true"]) {
+  background: var(--rg-disabled);
+}
+.register-primary:focus-visible,
+.register-back:focus-visible,
+.register-role:focus-visible,
+.register-unsure:focus-visible {
+  outline: 2px solid var(--rg-ink);
+  outline-offset: 2px;
+}
+
+/* Back: 71x48, radius 14, white; outlined except on step 2 (500:1895). */
+.register-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 71px;
+  border-radius: 14px;
+  background: var(--rg-card);
+  color: var(--rg-outline);
+}
+.register-back[data-outlined="true"] {
+  border: 1px solid var(--rg-outline);
+}
+.register-back:disabled {
+  cursor: default;
+}
+
+/* Role cards: 123x57, radius 14 (479:2590 / 479:2591). */
+.register-role {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 57px;
+  border-radius: 14px;
+  font-size: 15px;
+}
+.register-role[data-role="creator"] {
+  background: var(--rg-card);
+  border: 2px solid var(--rg-ink);
+  color: var(--rg-creator);
+}
+.register-role[data-role="marketer"] {
+  background: var(--rg-ink);
+  color: #ffffff;
+}
+/* The design has no selected state; mark the choice with the role colour. */
+.register-role[aria-checked="true"]::after,
+.register-unsure[aria-checked="true"]::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 18px;
+  border: 2px solid var(--rg-role-ring, var(--rg-ink));
+  pointer-events: none;
+}
+.register-role[data-role="creator"],
+.register-unsure {
+  --rg-role-ring: var(--rg-creator);
+}
+.register-role[data-role="marketer"] {
+  --rg-role-ring: var(--rg-marketer);
+}
+
+/* "I'm not sure": SDS Input styling (479:2588). */
+.register-unsure {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0.75px solid var(--rg-outline);
+  border-radius: 6px;
+  background: var(--rg-card);
+  height: 30px; /* py 9px + 12px line in 479:2588; the bird fills the height */
+  padding: 0 12px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--rg-sds-text);
+}
+
+/* Stepper "upcoming" dot: 30px #0D111A circle, 1px white stroke (502:2200). */
+.register-step-upcoming {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 9999px;
+  background: var(--rg-ink);
+  box-shadow: 0 0 0 1px #ffffff inset;
+}
+
+/* Checkbox Field: SDS brand fill when checked. */
+.register-checkbox {
+  border-color: var(--rg-sds-brand);
+}
+.register-checkbox[data-checked] {
+  background: var(--rg-sds-brand);
+  border-color: var(--rg-sds-brand);
+  color: var(--rg-sds-on-brand);
+}

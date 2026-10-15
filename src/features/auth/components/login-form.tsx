@@ -33,7 +33,7 @@ export function LoginForm() {
     setError(null);
     try {
       await login(values);
-      router.push("/dashboard");
+      router.push("/creator/dashboard");
       router.refresh();
     } catch (requestError) {
       setError(getDisplayError(requestError));

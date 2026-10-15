@@ -401,6 +401,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/job-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List job requests sent to the authenticated marketer
+         * @description Returns the requests addressed to the caller, newest first, with the job context needed to decide on each one. The job deadline is the earliest linked survey deadline and target_responses sums the linked surveys' desired responses; either is null when no survey sets it. The brief is the newest Brief attachment.
+         */
+        get: operations["listMyJobRequests"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/job-requests/{id}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Accept a pending job request
+         * @description Moves a Pending request addressed to the caller to Accepted and records responded_at. Accepting signals interest so the marketer can submit an offer; it does not hire the marketer or change the job status.
+         */
+        post: operations["acceptMyJobRequest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/job-requests/{id}/decline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decline a pending job request
+         * @description Moves a Pending request addressed to the caller to Declined and records responded_at. The body is optional; blank reason or note values are stored as null. A declined request stays in history and allows a later invitation.
+         */
+        post: operations["declineMyJobRequest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -411,8 +475,17 @@ export interface components {
             email: string;
             /** Format: password */
             password: string;
-            phone?: string | null;
+            /** @description A 10-digit Thai mobile number, digits only. Must be unique across accounts. */
+            phone: string;
             line_id?: string | null;
+            marketer_profile?: components["schemas"]["RegisterMarketerProfile"];
+        };
+        /** @description Sent only when signing up as a Marketer. The account also keeps its Creator membership. Availability status starts as `available`; expertise and campuses are added later from the marketer profile. */
+        RegisterMarketerProfile: {
+            bio?: string;
+            /** Format: int32 */
+            experience_years?: number;
+            availability_text?: string;
         };
         LoginRequest: {
             /** Format: email */
@@ -451,7 +524,8 @@ export interface components {
             name?: string;
             /** Format: email */
             email?: string;
-            phone?: string | null;
+            /** @description A 10-digit Thai mobile number, digits only. Can be changed but not removed. */
+            phone?: string;
             line_id?: string | null;
         };
         UserResponse: {
@@ -694,6 +768,54 @@ export interface components {
             created_at: string;
             /** Format: date-time */
             responded_at: string | null;
+            /** @enum {string|null} */
+            decline_reason?: "Schedule conflict" | "Budget too low" | "Target audience mismatch" | "Fully booked" | null;
+            decline_note?: string | null;
+        };
+        JobRequestResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["JobRequest"];
+        };
+        DeclineJobRequestRequest: {
+            /** @enum {string|null} */
+            reason?: "Schedule conflict" | "Budget too low" | "Target audience mismatch" | "Fully booked" | null;
+            note?: string | null;
+        };
+        MarketerJobRequest: components["schemas"]["JobRequest"] & {
+            job: {
+                /** Format: int32 */
+                job_id: number;
+                /** @enum {string} */
+                job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+                creator: {
+                    /** Format: int32 */
+                    user_id: number;
+                    name: string;
+                };
+                /** Format: date-time */
+                deadline: string | null;
+                /** Format: int32 */
+                target_responses: number | null;
+                surveys: {
+                    /** Format: int32 */
+                    survey_id: number;
+                    title: string;
+                    description: string | null;
+                    survey_link: string;
+                    target_group: string | null;
+                    /** Format: int32 */
+                    desired_responses: number | null;
+                    /** Format: date-time */
+                    deadline: string | null;
+                }[];
+                brief: components["schemas"]["Brief"] | null;
+            };
+        };
+        MarketerJobRequestListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["MarketerJobRequest"][];
         };
         JobRequestListResponse: {
             /** @enum {string} */
@@ -2281,6 +2403,184 @@ export interface operations {
                 };
             };
             /** @description Request is empty, contains duplicate IDs, or selects an unavailable marketer. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listMyJobRequests: {
+        parameters: {
+            query?: {
+                status?: "Pending" | "Accepted" | "Declined" | "Closed";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Requests addressed to the marketer. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketerJobRequestListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The status filter is not a known request status. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    acceptMyJobRequest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Request accepted. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobRequestResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description No request with this ID is addressed to the caller (code job_request_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The request is no longer Pending (code job_request_not_pending). */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    declineMyJobRequest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DeclineJobRequestRequest"];
+            };
+        };
+        responses: {
+            /** @description Request declined. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobRequestResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description No request with this ID is addressed to the caller (code job_request_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The request is no longer Pending (code job_request_not_pending). */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unknown decline reason, a note longer than 300 characters, or unknown body fields. */
             422: {
                 headers: {
                     [name: string]: unknown;
