@@ -85,7 +85,10 @@ describe("DemoWorkspace integration", () => {
           });
         });
         if (view === "profile") {
-          expect(await serverView.findByLabelText(/^Bio/)).toHaveValue(stored.profile.bio);
+          // Cold lazy imports can exceed the default one-second query timeout.
+          expect(await serverView.findByLabelText(/^Bio/, {}, { timeout: 5000 })).toHaveValue(
+            stored.profile.bio,
+          );
           expect(await serverView.findByLabelText(/^Years of experience/)).toHaveValue("1");
           expect(await serverView.findByLabelText(/^Availability text/)).toHaveValue(
             "Monday evenings",
