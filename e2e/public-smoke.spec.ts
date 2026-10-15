@@ -14,8 +14,11 @@ test("public-auth: landing navigation and invalid login remain usable", async ({
   await page.getByLabel("Password", { exact: true }).fill("short");
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByRole("main").getByRole("alert")).toHaveText(
-    "Password must be between 8 and 128 characters.",
+    "Incorrect email or password. Please try again.",
   );
+  // Per the Figma error state, Sign in stays greyed out until the user edits a field.
+  await expect(page.getByRole("button", { name: "Sign in", exact: true })).toBeDisabled();
+  await page.getByLabel("Password", { exact: true }).fill("short2");
   await expect(page.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
   await expect(page).toHaveURL(/\/login$/);
   expect(mutations, "Invalid credentials must not send an API mutation").toEqual([]);

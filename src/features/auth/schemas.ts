@@ -81,12 +81,11 @@ function validMarketerProfile(value: unknown): boolean {
   );
 }
 
-export function loginValidationMessage(input: LoginRequest): string | null {
-  if (!validEmail(input.email)) return "Enter a valid email address.";
-  if (input.password.length < 8 || input.password.length > 128) {
-    return "Password must be between 8 and 128 characters.";
-  }
-  return null;
+export function loginFieldErrors(input: LoginRequest): { email?: string; password?: string } {
+  const errors: { email?: string; password?: string } = {};
+  if (!validEmail(input.email)) errors.email = "Enter a valid email.";
+  if (!input.password) errors.password = "Enter your password.";
+  return errors;
 }
 
 export function registerValidationMessage(input: RegisterRequest): string | null {
