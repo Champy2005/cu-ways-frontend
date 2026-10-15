@@ -13,12 +13,12 @@ function fillForm() {
   fireEvent.change(screen.getByLabelText("Password"), { target: { value: "test-password" } });
 }
 describe("login redirect", () => {
-  it("redirects a regular user to the dashboard", async () => {
+  it("redirects a regular user to the creator dashboard", async () => {
     vi.mocked(login).mockResolvedValue({ role: "user" } as Awaited<ReturnType<typeof login>>);
     render(<LoginForm />);
     fillForm();
     fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
-    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/dashboard"));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/creator/dashboard"));
   });
   it("redirects an admin to the admin area", async () => {
     vi.mocked(login).mockResolvedValue({ role: "admin" } as Awaited<ReturnType<typeof login>>);

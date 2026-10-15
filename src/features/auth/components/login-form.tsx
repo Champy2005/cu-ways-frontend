@@ -52,7 +52,7 @@ export function LoginForm() {
     setError(null);
     try {
       const session = await login(values);
-      router.push(session.role === "admin" ? "/admin" : "/dashboard");
+      router.push(session.role === "admin" ? "/admin" : "/creator/dashboard");
       router.refresh();
     } catch (requestError) {
       setError(
