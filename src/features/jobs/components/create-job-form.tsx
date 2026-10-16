@@ -7,6 +7,10 @@ import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "reac
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  JobCreatedView,
+  type JobCreatedDetails,
+} from "@/features/jobs/components/job-created-view";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
 import { MOCK_JOB_SURVEYS } from "@/features/jobs/mock-job-surveys";
 import {
@@ -139,6 +143,7 @@ function JobSurveySummary({
 }
 
 export function CreateJobForm() {
+  const [createdJob, setCreatedJob] = useState<JobCreatedDetails | null>(null);
   const [selectingSurveys, setSelectingSurveys] = useState(false);
   const [selectedSurveyIds, setSelectedSurveyIds] = useState<string[]>([]);
   const [values, setValues] = useState<CreateJobValues>({
@@ -174,6 +179,20 @@ export function CreateJobForm() {
     event.preventDefault();
     setValidationAttempted(true);
     setAlertDismissed(false);
+    if (Object.keys(createJobFieldErrors(values, selectedSurveyIds)).length > 0) return;
+
+    // Frontend confirmation only until the create-job API supports the form fields.
+    setCreatedJob({
+      title: values.title.trim(),
+      compensation: values.budget.trim(),
+      deadline: values.deadline,
+      surveyCount: selectedSurveyIds.length,
+      status: "Pending",
+    });
+  }
+
+  if (createdJob) {
+    return <JobCreatedView job={createdJob} onEdit={() => setCreatedJob(null)} />;
   }
 
   return (
