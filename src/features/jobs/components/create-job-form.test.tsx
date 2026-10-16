@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 
@@ -193,6 +193,87 @@ describe("CreateJobForm validation", () => {
     expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("");
     fireEvent.submit(screen.getByRole("form", { name: "Create Job" }));
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
     expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue("Campus campaign");
+  });
+});
+
+describe("CreateJobForm confirmation", () => {
+  it("shows submitted details with Pending tracking and lets the user edit them", () => {
+    render(<CreateJobForm />);
+    fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
+      target: { value: "Campus Sustainability Campaign" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "Description" }), {
+      target: { value: "Recruit students for our campaign." },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "Budget / compensation" }), {
+      target: { value: "฿8,500 fixed" },
+    });
+    fireEvent.change(document.getElementById("job-deadline")!, {
+      target: { value: "2026-10-28" },
+    });
+    openSurveySelector();
+    fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Green Habits 2026" }));
+    fireEvent.click(screen.getByRole("button", { name: "Use 2 surveys" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+
+    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(screen.queryByRole("form", { name: "Create Job" })).not.toBeInTheDocument();
+    const overview = within(screen.getByRole("region", { name: "Job overview" }));
+    expect(overview.getByText("Campus Sustainability Campaign")).toBeInTheDocument();
+    expect(overview.getByText("฿8,500 fixed")).toBeInTheDocument();
+    expect(overview.getByText("28 Oct 2026")).toBeInTheDocument();
+    expect(overview.getByText("2 surveys")).toBeInTheDocument();
+    expect(overview.getByText("Pending")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Your job has been created with Pending status.",
+    );
+    const tracking = within(screen.getByRole("region", { name: "Status tracking" }));
+    expect(tracking.getByText("Job details and 2 surveys saved")).toBeInTheDocument();
+    expect(tracking.getByText("Awaiting offers").closest("li")).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+    expect(tracking.getByText("Offer accepted")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View Job" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss job created notification" }));
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue(
+      "Campus Sustainability Campaign",
+    );
+    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue(
+      "Recruit students for our campaign.",
+    );
+    expect(screen.getByRole("textbox", { name: "Budget / compensation" })).toHaveValue(
+      "฿8,500 fixed",
+    );
+    expect(document.getElementById("job-deadline")).toHaveValue("2026-10-28");
+    fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
+      target: { value: "Updated campaign" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "Budget / compensation" }), {
+      target: { value: "฿12,000 fixed" },
+    });
+    fireEvent.change(document.getElementById("job-deadline")!, {
+      target: { value: "2026-11-10" },
+    });
+    openSurveySelector();
+    expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
+    fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
+    fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+
+    const updatedOverview = within(screen.getByRole("region", { name: "Job overview" }));
+    expect(updatedOverview.getByText("Updated campaign")).toBeInTheDocument();
+    expect(updatedOverview.getByText("฿12,000 fixed")).toBeInTheDocument();
+    expect(updatedOverview.getByText("10 Nov 2026")).toBeInTheDocument();
+    expect(updatedOverview.getByText("1 survey")).toBeInTheDocument();
+    expect(updatedOverview.getByText("Pending")).toBeInTheDocument();
   });
 });
