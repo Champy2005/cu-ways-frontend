@@ -1,0 +1,26 @@
+.deadlineInput {
+  position: relative;
+  display: block;
+}
+
+.deadlineInput:invalid:not(:focus),
+.deadlineInput:invalid:not(:focus)::-webkit-datetime-edit {
+  color: transparent;
+}
+
+.deadlineInput:valid ~ .deadlinePlaceholder,
+.deadlineInput:focus ~ .deadlinePlaceholder {
+  display: none;
+}
+
+/* Keep the native picker accessible across the whole field beneath the custom icon. */
+.deadlineInput::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+}
