@@ -4,6 +4,12 @@ export type CreatorJobSummary = components["schemas"]["CreatorJobSummary"];
 export type JobRequestRecord = components["schemas"]["JobRequest"];
 export type SentJobInvitation = components["schemas"]["SentJobRequest"];
 
+export type JobSurveyOption = {
+  id: string;
+  title: string;
+  targetResponses: number;
+};
+
 export type JobInviteMarketer = {
   marketer_id: number;
   display_name: string;
