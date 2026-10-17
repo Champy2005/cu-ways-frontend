@@ -1,9 +1,15 @@
-import { afterEach, describe, expect, it } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import { CreatorJobPicker } from "@/features/jobs/components/creator-job-picker";
 
-afterEach(cleanup);
+const router = vi.hoisted(() => ({ refresh: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => router }));
+
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 describe("CreatorJobPicker", () => {
   it("shows owned jobs with survey names, statuses, and links to their invite routes", () => {
@@ -43,7 +49,7 @@ describe("CreatorJobPicker", () => {
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 
-  it("shows a load error and a useful return route", () => {
+  it("shows a load error with a retry that refreshes server data and a useful return route", () => {
     render(<CreatorJobPicker state={{ status: "error", message: "Your session expired." }} />);
 
     expect(screen.getByRole("alert")).toHaveTextContent("Your session expired.");
@@ -52,5 +58,8 @@ describe("CreatorJobPicker", () => {
       "/creator/dashboard",
     );
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
+    expect(router.refresh).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Reload your jobs" }));
+    expect(router.refresh).toHaveBeenCalledOnce();
   });
 });
