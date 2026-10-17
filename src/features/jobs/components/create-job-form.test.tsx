@@ -1,9 +1,32 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { useEffect, useState } from "react";
 
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
+import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
+import { saveJobDraft } from "@/features/jobs/job-draft";
 
-afterEach(cleanup);
+const router = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => router }));
+
+function CreateJobFlow() {
+  const [path, setPath] = useState("/creator/jobs/create");
+  useEffect(() => {
+    router.push.mockImplementation(setPath);
+  }, []);
+  const url = new URL(path, "http://localhost");
+  const editId = url.searchParams.get("edit");
+  if (editId) return <JobDraftPage jobId={editId} edit />;
+  if (url.pathname === "/creator/jobs/create") return <CreateJobForm />;
+  return <JobDraftPage jobId={url.pathname.split("/").at(-1)!} />;
+}
+
+afterEach(() => {
+  cleanup();
+  sessionStorage.clear();
+  router.push.mockReset();
+  vi.restoreAllMocks();
+});
 
 function openSurveySelector() {
   fireEvent.click(screen.getByRole("button", { name: "Edit selected surveys" }));
@@ -11,7 +34,7 @@ function openSurveySelector() {
 
 describe("CreateJobForm survey selection", () => {
   it("starts empty, follows checkbox changes, and saves only the chosen surveys", () => {
-    render(<CreateJobForm />);
+    render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
       target: { value: "My draft job" },
     });
@@ -41,7 +64,7 @@ describe("CreateJobForm survey selection", () => {
   });
 
   it("restores saved checks for editing and discards changes when going back", () => {
-    render(<CreateJobForm />);
+    render(<CreateJobFlow />);
     openSurveySelector();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("button", { name: "Back to create job" }));
@@ -88,7 +111,7 @@ const requiredErrors = {
 
 describe("CreateJobForm validation", () => {
   it("shows missing-field errors without requiring or clearing the description", () => {
-    render(<CreateJobForm />);
+    render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Description" }), {
       target: { value: "Recruit students for a campus campaign." },
     });
@@ -121,7 +144,7 @@ describe("CreateJobForm validation", () => {
   it.each(["title", "budget", "deadline", "surveys"] as const)(
     "highlights only the missing %s field and preserves other values",
     (missingField) => {
-      render(<CreateJobForm />);
+      render(<CreateJobFlow />);
       const values = {
         title: "Campus Sustainability Campaign",
         budget: "8,500 fixed",
@@ -160,7 +183,7 @@ describe("CreateJobForm validation", () => {
   );
 
   it("clears only corrected errors and enables retry when all required fields are complete", () => {
-    render(<CreateJobForm />);
+    render(<CreateJobFlow />);
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
       target: { value: "   " },
@@ -201,7 +224,7 @@ describe("CreateJobForm validation", () => {
 
 describe("CreateJobForm confirmation", () => {
   it("shows submitted details with Pending tracking and lets the user edit them", () => {
-    render(<CreateJobForm />);
+    const { unmount } = render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
       target: { value: "Campus Sustainability Campaign" },
     });
@@ -221,6 +244,8 @@ describe("CreateJobForm confirmation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
 
     expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/1");
+    const jobPath = router.push.mock.lastCall![0] as string;
     expect(screen.queryByRole("form", { name: "Create Job" })).not.toBeInTheDocument();
     const overview = within(screen.getByRole("region", { name: "Job overview" }));
     expect(overview.getByText("Campus Sustainability Campaign")).toBeInTheDocument();
@@ -275,5 +300,70 @@ describe("CreateJobForm confirmation", () => {
     expect(updatedOverview.getByText("10 Nov 2026")).toBeInTheDocument();
     expect(updatedOverview.getByText("1 survey")).toBeInTheDocument();
     expect(updatedOverview.getByText("Pending")).toBeInTheDocument();
+    expect(router.push).toHaveBeenLastCalledWith(jobPath);
+
+    // Reloading the destination reads the same tab-local draft, without the form mounted.
+    unmount();
+    render(<JobDraftPage jobId={jobPath.split("/").at(-1)!} />);
+    expect(screen.getByRole("heading", { name: "Updated campaign" })).toBeInTheDocument();
+    expect(screen.getByText("฿12,000 fixed")).toBeInTheDocument();
+  });
+
+  it("offers a return to the form for an unavailable or malformed draft", () => {
+    sessionStorage.setItem("cuways-job-draft:999", "{invalid json");
+    render(<JobDraftPage jobId="999" />);
+
+    expect(screen.getByRole("heading", { name: "Job preview not available" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create a job" })).toHaveAttribute(
+      "href",
+      "/creator/jobs/create",
+    );
+    expect(screen.queryByRole("heading", { name: "Job created" })).not.toBeInTheDocument();
+  });
+
+  it("previews the accepted offer UI without changing the saved Pending job", () => {
+    const jobId = saveJobDraft(
+      {
+        title: "Campus Sustainability Campaign",
+        description: "Recruit students for our campaign.",
+        budget: "฿8,500 fixed",
+        deadline: "2026-10-28",
+      },
+      ["SV-104", "SV-118"],
+    );
+    const savedDraft = sessionStorage.getItem(`cuways-job-draft:${jobId}`);
+    const { rerender } = render(<JobDraftPage jobId={String(jobId)} previewAccepted />);
+
+    expect(screen.getByRole("heading", { name: "Job details" })).toBeInTheDocument();
+    expect(screen.getByText("Offer accepted for this job")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "A marketer's offer has been accepted. The job is now in progress.",
+    );
+    const overview = within(screen.getByRole("region", { name: "Job overview" }));
+    expect(overview.getByText("Campus Sustainability Campaign")).toBeInTheDocument();
+    expect(overview.getByText("฿8,500 fixed")).toBeInTheDocument();
+    expect(overview.getByText("28 Oct 2026")).toBeInTheDocument();
+    expect(overview.getByText("2 surveys")).toBeInTheDocument();
+    expect(overview.getByText("Accepted")).toBeInTheDocument();
+    const tracking = within(screen.getByRole("region", { name: "Status tracking" }));
+    expect(tracking.getAllByRole("listitem")).toHaveLength(3);
+    expect(tracking.getByText("All required details completed")).toBeInTheDocument();
+    expect(tracking.getByText("A marketer has been selected")).toBeInTheDocument();
+    expect(tracking.getByText("In Progress").closest("li")).toHaveAttribute("aria-current", "step");
+    expect(tracking.getByText("Work is currently underway")).toBeInTheDocument();
+    expect(tracking.queryByText("Awaiting offers")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Edit" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View Job" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss offer accepted notification" }));
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(sessionStorage.getItem(`cuways-job-draft:${jobId}`)).toBe(savedDraft);
+
+    rerender(<JobDraftPage jobId={String(jobId)} />);
+    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(screen.getByText("Pending")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Your job has been created");
+    expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Share" })).not.toBeInTheDocument();
   });
 });

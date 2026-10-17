@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ChevronLeft, Circle, CircleCheck, Clock3, X } from "lucide-react";
+import { Check, ChevronLeft, Circle, CircleCheck, Clock3, Share2, Smile, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,40 @@ export type JobCreatedDetails = {
   compensation: string;
   deadline: string;
   surveyCount: number;
-  status: "Pending";
+  status: "Pending" | "Accepted";
 };
 
-function JobStatusTracking({ surveyCount }: { surveyCount: number }) {
+function JobStatusTracking({
+  surveyCount,
+  offerAccepted,
+}: {
+  surveyCount: number;
+  offerAccepted: boolean;
+}) {
+  const steps = offerAccepted
+    ? [
+        { title: "Job created", description: "All required details completed", state: "complete" },
+        { title: "Offer accepted", description: "A marketer has been selected", state: "complete" },
+        { title: "In Progress", description: "Work is currently underway", state: "current" },
+      ]
+    : [
+        {
+          title: "Job created",
+          description: `Job details and ${surveyCount} ${surveyCount === 1 ? "survey" : "surveys"} saved`,
+          state: "complete",
+        },
+        {
+          title: "Awaiting offers",
+          description: "Visible to marketers to submit offers",
+          state: "current",
+        },
+        {
+          title: "Offer accepted",
+          description: "Select a marketer to begin work",
+          state: "upcoming",
+        },
+      ];
+
   return (
     <Card
       role="region"
@@ -26,46 +56,55 @@ function JobStatusTracking({ surveyCount }: { surveyCount: number }) {
       <h2 id="job-status-heading" className="text-base leading-5 font-bold">
         Status tracking
       </h2>
-      <p className="mt-0.5 text-[11px] text-[var(--mk-muted)]">Last updated just now</p>
+      <p className="mt-0.5 text-[11px] text-[var(--mk-muted)]">
+        {offerAccepted ? "Updated just now" : "Last updated just now"}
+      </p>
 
       <ol className="mt-2.5">
-        <li className="relative flex gap-3 pb-4">
-          <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-[var(--mk-success)] text-white">
-            <Check aria-hidden="true" className="size-3" strokeWidth={3} />
-          </span>
-          <span
-            aria-hidden="true"
-            className="absolute top-6 bottom-1 left-2 w-px bg-[var(--mk-success)]"
-          />
-          <div>
-            <p className="text-xs leading-4 font-bold">Job created</p>
-            <p className="mt-0.5 text-[11px] leading-4 text-[var(--mk-muted)]">
-              Job details and {surveyCount} {surveyCount === 1 ? "survey" : "surveys"} saved
-            </p>
-          </div>
-        </li>
-        <li aria-current="step" className="relative flex gap-3 pb-4">
-          <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-[var(--mk-action)]">
-            <span className="size-1.5 rounded-full bg-white" />
-          </span>
-          <span
-            aria-hidden="true"
-            className="absolute top-6 bottom-1 left-2 w-px bg-[var(--mk-border)]"
-          />
-          <div>
-            <p className="text-xs leading-4 font-bold">Awaiting offers</p>
-            <p className="mt-0.5 text-[11px] leading-4 text-[var(--mk-muted)]">
-              Visible to marketers to submit offers
-            </p>
-          </div>
-        </li>
-        <li className="flex gap-3 text-[var(--mk-muted)]">
-          <Circle aria-hidden="true" className="size-[18px] shrink-0" />
-          <div>
-            <p className="text-xs leading-4 font-bold">Offer accepted</p>
-            <p className="mt-0.5 text-[11px] leading-4">Select a marketer to begin work</p>
-          </div>
-        </li>
+        {steps.map((step, index) => (
+          <li
+            key={step.title}
+            aria-current={step.state === "current" ? "step" : undefined}
+            className={cn(
+              "relative flex gap-3",
+              index < steps.length - 1 && "pb-4",
+              step.state === "upcoming" && "text-[var(--mk-muted)]",
+            )}
+          >
+            {step.state === "upcoming" ? (
+              <Circle aria-hidden="true" className="size-[18px] shrink-0" />
+            ) : (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "flex size-[18px] shrink-0 items-center justify-center rounded-full text-white",
+                  step.state === "complete" ? "bg-[var(--mk-success)]" : "bg-[var(--mk-action)]",
+                )}
+              >
+                {step.state === "complete" ? (
+                  <Check className="size-3" strokeWidth={3} />
+                ) : (
+                  <span className="size-1.5 rounded-full bg-white" />
+                )}
+              </span>
+            )}
+            {index < steps.length - 1 && (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute top-6 bottom-1 left-2 w-px",
+                  step.state === "complete" ? "bg-[var(--mk-success)]" : "bg-[var(--mk-border)]",
+                )}
+              />
+            )}
+            <div>
+              <p className="text-xs leading-4 font-bold">{step.title}</p>
+              <p className="mt-0.5 text-[11px] leading-4 text-[var(--mk-muted)]">
+                {step.description}
+              </p>
+            </div>
+          </li>
+        ))}
       </ol>
     </Card>
   );
@@ -73,6 +112,8 @@ function JobStatusTracking({ surveyCount }: { surveyCount: number }) {
 
 export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit: () => void }) {
   const [showNotification, setShowNotification] = useState(true);
+  const offerAccepted = job.status === "Accepted";
+  const notificationTitle = offerAccepted ? "Offer accepted" : "Job created";
   const deadline = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "short",
@@ -95,9 +136,11 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
             id="job-created-heading"
             className="text-lg leading-6 font-bold text-[var(--mk-text)]"
           >
-            Job created
+            {offerAccepted ? "Job details" : "Job created"}
           </h1>
-          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">Saved to your jobs</p>
+          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">
+            {offerAccepted ? "Offer accepted for this job" : "Saved to your jobs"}
+          </p>
         </div>
       </header>
 
@@ -112,17 +155,18 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
               className="size-[18px] shrink-0 text-[var(--mk-success)]"
             />
             <div className="min-w-0 flex-1 text-xs text-[var(--mk-text)]">
-              <p className="pr-5 font-bold">Job created</p>
+              <p className="pr-5 font-bold">{notificationTitle}</p>
               <p className="mt-0.5 text-[11px] leading-4 text-[var(--mk-muted)]">
-                Your job has been created with Pending status. Marketers can now view and submit
-                offers.
+                {offerAccepted
+                  ? "A marketer's offer has been accepted. The job is now in progress."
+                  : "Your job has been created with Pending status. Marketers can now view and submit offers."}
               </p>
             </div>
             <Button
               type="button"
               variant="ghost"
               size="icon-xs"
-              aria-label="Dismiss job created notification"
+              aria-label={`Dismiss ${notificationTitle.toLowerCase()} notification`}
               onClick={() => setShowNotification(false)}
               className="absolute top-2 right-2 text-[var(--mk-muted)]"
             >
@@ -142,17 +186,31 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
           >
             Job overview
           </h2>
-          <div className="mt-3 flex items-end justify-between gap-3">
+          <div
+            className={cn(
+              "mt-3 flex",
+              offerAccepted ? "flex-col gap-1" : "items-end justify-between gap-3",
+            )}
+          >
             <h3 className="min-w-0 text-lg leading-5 font-bold wrap-break-word">{job.title}</h3>
             <span
               className={cn(
                 "inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-xs leading-4 font-semibold",
-                "border-[#d99015] bg-[#fff6d2] text-[#d99015]",
-                "[[data-theme=dark]_&]:border-[#f9c46a] [[data-theme=dark]_&]:bg-[#363636] [[data-theme=dark]_&]:text-[#f9c46a]",
-                "[@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:border-[#f9c46a] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:bg-[#363636] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:text-[#f9c46a]",
+                offerAccepted && "self-end",
+                offerAccepted
+                  ? "border-[var(--mk-positive)] bg-[var(--mk-positive-soft)] text-[var(--mk-positive)]"
+                  : [
+                      "border-[#d99015] bg-[#fff6d2] text-[#d99015]",
+                      "[[data-theme=dark]_&]:border-[#f9c46a] [[data-theme=dark]_&]:bg-[#363636] [[data-theme=dark]_&]:text-[#f9c46a]",
+                      "[@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:border-[#f9c46a] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:bg-[#363636] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:text-[#f9c46a]",
+                    ],
               )}
             >
-              <Clock3 aria-hidden="true" className="size-3" />
+              {offerAccepted ? (
+                <Smile aria-hidden="true" className="size-3" />
+              ) : (
+                <Clock3 aria-hidden="true" className="size-3" />
+              )}
               {job.status}
             </span>
           </div>
@@ -178,22 +236,23 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
           </dl>
         </Card>
 
-        <JobStatusTracking surveyCount={job.surveyCount} />
+        <JobStatusTracking surveyCount={job.surveyCount} offerAccepted={offerAccepted} />
 
         <div className="grid grid-cols-2 gap-3">
           <Button
             type="button"
             variant="ghost"
-            onClick={onEdit}
+            onClick={offerAccepted ? undefined : onEdit}
             className="h-11 rounded-[14px] border border-[var(--mk-border)] bg-[var(--mk-surface)] text-sm font-bold text-[var(--mk-text)] shadow-card hover:bg-[var(--mk-hover)]"
           >
-            Edit
+            {offerAccepted ? "View Job" : "Edit"}
           </Button>
           <Button
             type="button"
             className="h-11 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white shadow-card hover:bg-[var(--mk-action-hover)]"
           >
-            View Job
+            {offerAccepted && <Share2 aria-hidden="true" className="size-4" />}
+            {offerAccepted ? "Share" : "View Job"}
           </Button>
         </div>
       </div>
