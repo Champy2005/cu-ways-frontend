@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, BriefcaseBusiness } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { ReloadJobsButton } from "@/features/jobs/components/reload-jobs-button";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 
 export type CreatorJobsPageState =
@@ -77,12 +78,7 @@ export function CreatorJobPicker({ state }: { state: CreatorJobsPageState }) {
           <div className="mk-error-notice rounded-xl p-4" role="alert">
             <p className="font-semibold">Your jobs could not be loaded</p>
             <p className="mt-1 text-sm">{state.message}</p>
-            <a
-              href="/creator/jobs/invite"
-              className="mt-3 inline-flex text-sm font-semibold underline underline-offset-4"
-            >
-              Reload your jobs
-            </a>
+            <ReloadJobsButton />
             <Link
               href="/creator/dashboard"
               className="mt-2 block text-sm font-semibold underline underline-offset-4"
