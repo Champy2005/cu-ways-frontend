@@ -3,12 +3,19 @@ import { serverApiGet } from "@/lib/api/server-client";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
-import { validateSentJobInvitations } from "@/features/jobs/types";
+import { validateJobOffers, validateSentJobInvitations } from "@/features/jobs/types";
 import type {
   CreatorJobSummary,
   JobInviteMarketer,
+  JobOfferComparison,
+  OfferStatus,
   SentJobInvitation,
 } from "@/features/jobs/types";
+
+export type JobOffersInitialData = {
+  job: CreatorJobSummary;
+  offers: { status: "success"; items: JobOfferComparison[] } | { status: "error"; message: string };
+};
 
 export type JobInviteInitialData = {
   job: CreatorJobSummary;
@@ -97,4 +104,32 @@ export async function loadJobInviteInitialData(jobId: number): Promise<JobInvite
             message: "Marketers could not be loaded. Check your connection and try again.",
           },
   };
+}
+
+export async function getJobOffers(
+  jobId: number,
+  status?: OfferStatus,
+): Promise<JobOfferComparison[]> {
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
+  const response = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/offers${query}`);
+  return validateJobOffers(response, jobId);
+}
+
+export async function loadJobOffersInitialData(jobId: number): Promise<JobOffersInitialData> {
+  const job = await getCreatorJob(jobId);
+  try {
+    const offers = await getJobOffers(jobId);
+    return {
+      job,
+      offers: { status: "success", items: offers },
+    };
+  } catch (error) {
+    return {
+      job,
+      offers: {
+        status: "error",
+        message: readFailureMessage(error, "Offers could not be loaded. Refresh and try again."),
+      },
+    };
+  }
 }
