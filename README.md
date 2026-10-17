@@ -169,6 +169,24 @@ show an unavailable state until APIs exist. US23 is deferred until US22 is ready
 See [the integration handoff](docs/invitations-api-handoff.md) for behavior, backend requirements,
 and preview browser-test instructions.
 
+## Creator jobs and linked surveys
+
+The survey selector loads the signed-in Creator's surveys from `GET /api/v1/me/surveys`
+and searches their names locally. Creating a job posts the selected numeric survey IDs
+to `POST /api/v1/jobs` and opens the returned backend job ID. Details and linked surveys
+are loaded from `GET /api/v1/jobs/{id}` on every visit.
+
+Adding and removing links use `POST` and `DELETE /api/v1/jobs/{id}/surveys/{surveyId}`.
+The UI blocks removing the final survey and selecting already-linked surveys; the backend
+enforces ownership, the minimum link count, and uniqueness. Each mutation reloads saved
+links, including after conflicts or partial failures. Replacing a selection adds links
+before removing old ones. Multiple link requests are not a single atomic batch.
+
+The current job API does not accept title, description, compensation, or deadline.
+These form details are cached in this browser tab, scoped to the signed-in Creator and
+backend job ID. Losing that optional cache does not remove the job or its survey links.
+Job creation and survey changes never use locally generated preview IDs.
+
 ## Backend setup
 
 See the [backend README](../cu-ways-backend/README.md) for PostgreSQL, migrations, API endpoints,

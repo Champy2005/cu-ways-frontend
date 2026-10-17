@@ -1,11 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useEffect, useState } from "react";
 
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
 import { saveJobDraft } from "@/features/jobs/job-draft";
 import { loadJobSurveys } from "@/features/jobs/actions";
+import {
+  createPendingJob,
+  loadSavedJob,
+  saveJobSurveySelection,
+} from "@/features/jobs/job-actions";
 import type { JobSurveyOption } from "@/features/jobs/types";
 
 // Mock data for these tests only; the live selector loads surveys from the API.
@@ -19,8 +24,43 @@ const mockSurveyOptions: JobSurveyOption[] = [
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
 vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
+vi.mock("@/features/jobs/job-actions", () => ({
+  createPendingJob: vi.fn(),
+  loadSavedJob: vi.fn(),
+  saveJobSurveySelection: vi.fn(),
+}));
+
+let mockSavedIds: string[];
+const mockSavedState = () => ({
+  status: "success" as const,
+  creatorId: 4,
+  job: {
+    job_id: 41,
+    job_status: "Pending" as const,
+    created_at: "2026-10-01T10:00:00Z",
+    surveys: mockSurveyOptions
+      .filter((survey) => mockSavedIds.includes(survey.id))
+      .map((survey) => ({ survey_id: Number(survey.id), title: survey.title })),
+  },
+});
 
 beforeEach(() => {
+  mockSavedIds = ["104", "118"];
+  vi.mocked(createPendingJob)
+    .mockReset()
+    .mockImplementation(async (ids) => {
+      mockSavedIds = ids;
+      return { status: "success", jobId: 41, creatorId: 4 };
+    });
+  vi.mocked(loadSavedJob)
+    .mockReset()
+    .mockImplementation(async () => mockSavedState());
+  vi.mocked(saveJobSurveySelection)
+    .mockReset()
+    .mockImplementation(async (_id, ids) => {
+      mockSavedIds = ids;
+      return mockSavedState();
+    });
   vi.mocked(loadJobSurveys).mockReset();
   vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
 });
@@ -47,6 +87,19 @@ afterEach(() => {
 async function openSurveySelector() {
   fireEvent.click(screen.getByRole("button", { name: "Edit selected surveys" }));
   await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
+}
+
+async function completeJobForm() {
+  fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
+    target: { value: "Campus campaign" },
+  });
+  fireEvent.change(screen.getByRole("textbox", { name: "Budget / compensation" }), {
+    target: { value: "8,500 fixed" },
+  });
+  fireEvent.change(document.getElementById("job-deadline")!, { target: { value: "2026-10-28" } });
+  await openSurveySelector();
+  fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
+  fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
 }
 
 describe("CreateJobForm survey selection", () => {
@@ -233,13 +286,81 @@ describe("CreateJobForm validation", () => {
     expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("");
     fireEvent.submit(screen.getByRole("form", { name: "Create Job" }));
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Job created" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
-    expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue("Campus campaign");
+    expect(await screen.findByRole("textbox", { name: "Job title" })).toHaveValue(
+      "Campus campaign",
+    );
   });
 });
 
 describe("CreateJobForm confirmation", () => {
+  it("blocks duplicate submissions while creation is pending", async () => {
+    let resolve!: (value: Awaited<ReturnType<typeof createPendingJob>>) => void;
+    vi.mocked(createPendingJob).mockReturnValue(
+      new Promise((done) => {
+        resolve = done;
+      }),
+    );
+    render(<CreateJobFlow />);
+    await completeJobForm();
+    const form = screen.getByRole("form", { name: "Create Job" });
+    fireEvent.submit(form);
+    fireEvent.submit(form);
+    expect(createPendingJob).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Saving…" })).toBeDisabled();
+    await act(async () => resolve({ status: "success", jobId: 41, creatorId: 4 }));
+    await screen.findByRole("heading", { name: "Job created" });
+  });
+
+  it("preserves entered values and selections after a rejected creation", async () => {
+    vi.mocked(createPendingJob).mockResolvedValue({
+      status: "error",
+      message: "You do not own a selected survey.",
+    });
+    render(<CreateJobFlow />);
+    await completeJobForm();
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("do not own");
+    expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue("Campus campaign");
+    expect(screen.getByText("1 survey selected")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+    expect(router.push).not.toHaveBeenCalled();
+    expect(sessionStorage.length).toBe(0);
+  });
+
+  it("opens the persisted job even when optional form metadata cannot be cached", async () => {
+    render(<CreateJobFlow />);
+    await completeJobForm();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("Storage unavailable");
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+    await screen.findByRole("heading", { name: "Job created" });
+    expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
+    expect(screen.getByRole("heading", { name: "Job #41" })).toBeInTheDocument();
+    expect(createPendingJob).toHaveBeenCalledTimes(1);
+  });
+
+  it("blocks another creation when the server response is uncertain", async () => {
+    vi.mocked(createPendingJob).mockResolvedValue({
+      status: "reconcile",
+      message: "Check your jobs before creating another job.",
+    });
+    render(<CreateJobFlow />);
+    await completeJobForm();
+    fireEvent.submit(screen.getByRole("form", { name: "Create Job" }));
+    await screen.findByRole("alert");
+    expect(screen.getByRole("button", { name: "Create Job" })).toBeDisabled();
+    fireEvent.submit(screen.getByRole("form", { name: "Create Job" }));
+    expect(createPendingJob).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("link", { name: "Check your jobs" })).toHaveAttribute(
+      "href",
+      "/creator/jobs/invite",
+    );
+    await waitFor(() => expect(router.push).not.toHaveBeenCalled());
+  });
+
   it("shows submitted details with Pending tracking and lets the user edit them", async () => {
     const { unmount } = render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
@@ -260,8 +381,9 @@ describe("CreateJobForm confirmation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Use 2 surveys" }));
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
 
-    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
-    expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/1");
+    expect(await screen.findByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(createPendingJob).toHaveBeenCalledExactlyOnceWith(["104", "118"]);
+    expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
     const jobPath = router.push.mock.lastCall![0] as string;
     expect(screen.queryByRole("form", { name: "Create Job" })).not.toBeInTheDocument();
     const overview = within(screen.getByRole("region", { name: "Job overview" }));
@@ -285,7 +407,7 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
-    expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue(
+    expect(await screen.findByRole("textbox", { name: "Job title" })).toHaveValue(
       "Campus Sustainability Campaign",
     );
     expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue(
@@ -309,28 +431,33 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
-    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
-    const updatedOverview = within(screen.getByRole("region", { name: "Job overview" }));
+    const updatedOverview = within(await screen.findByRole("region", { name: "Job overview" }));
     expect(updatedOverview.getByText("Updated campaign")).toBeInTheDocument();
     expect(updatedOverview.getByText("฿12,000 fixed")).toBeInTheDocument();
     expect(updatedOverview.getByText("10 Nov 2026")).toBeInTheDocument();
     expect(updatedOverview.getByText("1 survey")).toBeInTheDocument();
     expect(updatedOverview.getByText("Pending")).toBeInTheDocument();
     expect(router.push).toHaveBeenLastCalledWith(jobPath);
+    expect(createPendingJob).toHaveBeenCalledTimes(1);
+    expect(saveJobSurveySelection).toHaveBeenCalledExactlyOnceWith("41", ["118"]);
 
     // Reloading the destination reads the same tab-local draft, without the form mounted.
     unmount();
     render(<JobDraftPage jobId={jobPath.split("/").at(-1)!} />);
-    expect(screen.getByRole("heading", { name: "Updated campaign" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Updated campaign" })).toBeInTheDocument();
     expect(screen.getByText("฿12,000 fixed")).toBeInTheDocument();
   });
 
   it("offers a return to the form for an unavailable or malformed draft", async () => {
-    sessionStorage.setItem("cuways-job-draft:999", "{invalid json");
+    vi.mocked(loadSavedJob).mockResolvedValueOnce({
+      status: "error",
+      message: "This job is not available.",
+    });
     render(<JobDraftPage jobId="999" />);
 
-    expect(screen.getByRole("heading", { name: "Job preview not available" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Job not available" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Create a job" })).toHaveAttribute(
       "href",
       "/creator/jobs/create",
@@ -347,11 +474,14 @@ describe("CreateJobForm confirmation", () => {
         deadline: "2026-10-28",
       },
       ["104", "118"],
+      41,
+      mockSurveyOptions,
+      4,
     );
-    const savedDraft = sessionStorage.getItem(`cuways-job-draft:${jobId}`);
+    const savedDraft = sessionStorage.getItem(`cuways-job-form:4:${jobId}`);
     const { rerender } = render(<JobDraftPage jobId={String(jobId)} previewAccepted />);
 
-    expect(screen.getByRole("heading", { name: "Job details" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Job details" })).toBeInTheDocument();
     expect(screen.getByText("Offer accepted for this job")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
       "A marketer's offer has been accepted. The job is now in progress.",
@@ -374,7 +504,7 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.getByRole("button", { name: "Share" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Dismiss offer accepted notification" }));
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
-    expect(sessionStorage.getItem(`cuways-job-draft:${jobId}`)).toBe(savedDraft);
+    expect(sessionStorage.getItem(`cuways-job-form:4:${jobId}`)).toBe(savedDraft);
 
     rerender(<JobDraftPage jobId={String(jobId)} />);
     expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();

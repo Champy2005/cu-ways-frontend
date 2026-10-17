@@ -6,14 +6,16 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import type { CreatorJobSummary } from "@/features/jobs/types";
 import { cn } from "@/lib/utils";
 
 export type JobCreatedDetails = {
+  id?: number;
   title: string;
   compensation: string;
   deadline: string;
   surveyCount: number;
-  status: "Pending" | "Accepted";
+  status: CreatorJobSummary["job_status"];
 };
 
 function JobStatusTracking({
@@ -110,16 +112,30 @@ function JobStatusTracking({
   );
 }
 
-export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit: () => void }) {
-  const [showNotification, setShowNotification] = useState(true);
-  const offerAccepted = job.status === "Accepted";
-  const notificationTitle = offerAccepted ? "Offer accepted" : "Job created";
-  const deadline = new Intl.DateTimeFormat("en-GB", {
+function JobDeadline({ value }: { value: string }) {
+  if (!value) return <>Not provided</>;
+  const formatted = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
     timeZone: "UTC",
-  }).format(new Date(`${job.deadline}T00:00:00Z`));
+  }).format(new Date(`${value}T00:00:00Z`));
+  return <time dateTime={value}>{formatted}</time>;
+}
+
+export function JobCreatedView({
+  job,
+  onEdit,
+  canEdit = true,
+}: {
+  job: JobCreatedDetails;
+  onEdit: () => void;
+  canEdit?: boolean;
+}) {
+  const [showNotification, setShowNotification] = useState(true);
+  const offerAccepted = job.status === "Accepted";
+  const showOfferTracking = ["Pending", "Accepted"].includes(job.status);
+  const notificationTitle = offerAccepted ? "Offer accepted" : "Job created";
 
   return (
     <section aria-labelledby="job-created-heading" className="mx-auto w-full max-w-md">
@@ -136,7 +152,7 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
             id="job-created-heading"
             className="text-lg leading-6 font-bold text-[var(--mk-text)]"
           >
-            {offerAccepted ? "Job details" : "Job created"}
+            {job.status === "Pending" ? "Job created" : "Job details"}
           </h1>
           <p className="mt-0.5 text-xs text-[var(--mk-muted)]">
             {offerAccepted ? "Offer accepted for this job" : "Saved to your jobs"}
@@ -145,7 +161,7 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
       </header>
 
       <div className="space-y-4">
-        {showNotification && (
+        {showNotification && showOfferTracking && (
           <div
             role="status"
             className="relative flex items-center gap-2.5 rounded-[14px] border border-[var(--mk-success)] bg-[var(--mk-positive-soft)] p-3 shadow-card"
@@ -214,6 +230,7 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
               {job.status}
             </span>
           </div>
+          {job.id && <p className="mt-1 text-[11px] text-[var(--mk-muted)]">Job #{job.id}</p>}
           <dl className="mt-3 space-y-2.5 border-t border-[var(--mk-border)] pt-3 text-xs">
             <div className="flex items-start justify-between gap-4">
               <dt className="shrink-0 text-[var(--mk-muted)]">Compensation</dt>
@@ -224,7 +241,7 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
             <div className="flex items-start justify-between gap-4">
               <dt className="text-[var(--mk-muted)]">Deadline</dt>
               <dd className="text-right font-semibold">
-                <time dateTime={job.deadline}>{deadline}</time>
+                <JobDeadline value={job.deadline} />
               </dd>
             </div>
             <div className="flex items-start justify-between gap-4">
@@ -236,13 +253,18 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
           </dl>
         </Card>
 
-        <JobStatusTracking surveyCount={job.surveyCount} offerAccepted={offerAccepted} />
+        {showOfferTracking ? (
+          <JobStatusTracking surveyCount={job.surveyCount} offerAccepted={offerAccepted} />
+        ) : (
+          <p className="text-sm text-[var(--mk-muted)]">Current status: {job.status}</p>
+        )}
 
         <div className="grid grid-cols-2 gap-3">
           <Button
             type="button"
             variant="ghost"
             onClick={offerAccepted ? undefined : onEdit}
+            disabled={!offerAccepted && !canEdit}
             className="h-11 rounded-[14px] border border-[var(--mk-border)] bg-[var(--mk-surface)] text-sm font-bold text-[var(--mk-text)] shadow-card hover:bg-[var(--mk-hover)]"
           >
             {offerAccepted ? "View Job" : "Edit"}

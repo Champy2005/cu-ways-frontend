@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CalendarDays, ChevronLeft, ChevronRight, CircleAlert, Clipboard, X } from "lucide-react";
-import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
+import { createPendingJob, saveJobSurveySelection } from "@/features/jobs/job-actions";
 import { saveJobDraft, type JobDraft } from "@/features/jobs/job-draft";
 import { surveyDisplayId } from "@/features/jobs/survey-options";
 import {
@@ -143,22 +144,23 @@ function JobSurveySummary({
 
 export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
   const router = useRouter();
+  const startingDraft = initialDraft ?? {
+    values: { title: "", description: "", budget: "", deadline: "" },
+    selectedSurveyIds: [],
+    surveys: [],
+  };
+  const busy = useRef(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [reconcile, setReconcile] = useState(false);
   const [navigationError, setNavigationError] = useState<string | null>(null);
   const [selectingSurveys, setSelectingSurveys] = useState(false);
   const [selectedSurveyIds, setSelectedSurveyIds] = useState<string[]>(
-    initialDraft?.selectedSurveyIds ?? [],
+    startingDraft.selectedSurveyIds,
   );
   const [surveyOptions, setSurveyOptions] = useState<readonly JobSurveyOption[]>(
-    initialDraft?.surveys ?? [],
+    startingDraft.surveys ?? [],
   );
-  const [values, setValues] = useState<CreateJobValues>(
-    initialDraft?.values ?? {
-      title: "",
-      description: "",
-      budget: "",
-      deadline: "",
-    },
-  );
+  const [values, setValues] = useState<CreateJobValues>(startingDraft.values);
   const [validationAttempted, setValidationAttempted] = useState(false);
   const [alertDismissed, setAlertDismissed] = useState(false);
   const errors: CreateJobFieldErrors = validationAttempted
@@ -187,20 +189,46 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
     };
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy.current || reconcile) return;
     setValidationAttempted(true);
     setAlertDismissed(false);
     if (Object.keys(createJobFieldErrors(values, selectedSurveyIds)).length > 0) return;
 
     setNavigationError(null);
+    busy.current = true;
+    setSubmitting(true);
+    let saved = false;
     try {
-      const jobId = saveJobDraft(values, selectedSurveyIds, initialDraft?.id, surveyOptions);
+      const result = initialDraft
+        ? await saveJobSurveySelection(String(initialDraft.id), selectedSurveyIds)
+        : await createPendingJob(selectedSurveyIds);
+      if (result.status !== "success") {
+        setNavigationError(result.message);
+        setReconcile(result.status === "reconcile");
+        return;
+      }
+      if ("notice" in result && result.notice) {
+        setNavigationError(result.notice);
+        return;
+      }
+      const jobId = "jobId" in result ? result.jobId : result.job.job_id;
+      try {
+        saveJobDraft(values, selectedSurveyIds, jobId, surveyOptions, result.creatorId);
+      } catch {
+        // A cache failure must not turn a persisted job into a failed creation/retry.
+      }
+      saved = true;
       router.push(`/creator/jobs/${encodeURIComponent(jobId)}`);
     } catch {
-      setNavigationError(
-        "The job preview could not be opened. Your entered values remain on this form. Please try again.",
-      );
+      setNavigationError("The save could not be confirmed. Check your job before trying again.");
+      setReconcile(!initialDraft);
+    } finally {
+      if (!saved) {
+        busy.current = false;
+        setSubmitting(false);
+      }
     }
   }
 
@@ -236,105 +264,117 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
           noValidate
           onSubmit={handleSubmit}
           aria-labelledby="create-job-heading"
+          aria-busy={submitting}
           className="space-y-3.5"
         >
-          {(hasErrors || navigationError) && !alertDismissed && (
-            <JobValidationAlert
-              onDismiss={() => setAlertDismissed(true)}
-              message={navigationError ?? undefined}
-            />
-          )}
+          <fieldset disabled={submitting || reconcile} className="space-y-3.5">
+            {(hasErrors || navigationError) && !alertDismissed && (
+              <JobValidationAlert
+                onDismiss={() => setAlertDismissed(true)}
+                message={navigationError ?? undefined}
+              />
+            )}
 
-          <JobFormField id="job-title" label="Job title" required error={errors.title}>
-            <Input
-              {...requiredInputProps("title")}
-              id="job-title"
-              placeholder="Enter a clear job title"
-              className={fieldClassName}
-            />
-          </JobFormField>
-
-          <JobFormField id="job-description" label="Description">
-            <Textarea
-              id="job-description"
-              name="description"
-              value={values.description}
-              onChange={(event) => {
-                setValues((current) => ({ ...current, description: event.target.value }));
-              }}
-              placeholder="Recruit students, share two research surveys and deliver a short insight summary."
-              rows={2}
-              className="min-h-[72px] resize-y rounded-xl border-transparent bg-[var(--mk-field)] px-3 py-2.5 text-sm leading-5 text-[var(--mk-text)] shadow-[var(--mk-shadow)] placeholder:text-[var(--mk-muted)] md:text-sm"
-            />
-          </JobFormField>
-
-          <JobFormField
-            id="job-budget"
-            label="Budget / compensation"
-            required
-            error={errors.budget}
-          >
-            <Input
-              {...requiredInputProps("budget")}
-              id="job-budget"
-              placeholder="e.g. ฿5,000 fixed"
-              className={fieldClassName}
-            />
-          </JobFormField>
-
-          <JobFormField id="job-deadline" label="Deadline" required error={errors.deadline}>
-            <div className="relative">
+            <JobFormField id="job-title" label="Job title" required error={errors.title}>
               <Input
-                {...requiredInputProps("deadline")}
-                id="job-deadline"
-                type="date"
-                className={`${fieldClassName} ${styles.deadlineInput} pr-11`}
+                {...requiredInputProps("title")}
+                id="job-title"
+                placeholder="Enter a clear job title"
+                className={fieldClassName}
               />
-              <span
-                aria-hidden="true"
-                className={`${styles.deadlinePlaceholder} pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-[var(--mk-muted)]`}
-              >
-                Select a deadline
-              </span>
-              <CalendarDays
-                aria-hidden="true"
-                className={cn(
-                  "pointer-events-none absolute top-1/2 right-3 size-[18px] -translate-y-1/2 text-[var(--mk-accent)]",
-                  errors.deadline && "text-destructive",
-                )}
+            </JobFormField>
+
+            <JobFormField id="job-description" label="Description">
+              <Textarea
+                id="job-description"
+                name="description"
+                value={values.description}
+                onChange={(event) => {
+                  setValues((current) => ({ ...current, description: event.target.value }));
+                }}
+                placeholder="Recruit students, share two research surveys and deliver a short insight summary."
+                rows={2}
+                className="min-h-[72px] resize-y rounded-xl border-transparent bg-[var(--mk-field)] px-3 py-2.5 text-sm leading-5 text-[var(--mk-text)] shadow-[var(--mk-shadow)] placeholder:text-[var(--mk-muted)] md:text-sm"
               />
-            </div>
-          </JobFormField>
+            </JobFormField>
 
-          <JobSurveySummary
-            surveys={selectedSurveys}
-            error={errors.surveys}
-            onEdit={() => setSelectingSurveys(true)}
-          />
+            <JobFormField
+              id="job-budget"
+              label="Budget / compensation"
+              required
+              error={errors.budget}
+            >
+              <Input
+                {...requiredInputProps("budget")}
+                id="job-budget"
+                placeholder="e.g. ฿5,000 fixed"
+                className={fieldClassName}
+              />
+            </JobFormField>
 
-          {!hasErrors && (
-            <p className="text-xs leading-[1.25] text-[var(--mk-text)]">
-              Your job will be active with Pending status and open for marketer offers upon
-              creation.
+            <JobFormField id="job-deadline" label="Deadline" required error={errors.deadline}>
+              <div className="relative">
+                <Input
+                  {...requiredInputProps("deadline")}
+                  id="job-deadline"
+                  type="date"
+                  className={`${fieldClassName} ${styles.deadlineInput} pr-11`}
+                />
+                <span
+                  aria-hidden="true"
+                  className={`${styles.deadlinePlaceholder} pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-[var(--mk-muted)]`}
+                >
+                  Select a deadline
+                </span>
+                <CalendarDays
+                  aria-hidden="true"
+                  className={cn(
+                    "pointer-events-none absolute top-1/2 right-3 size-[18px] -translate-y-1/2 text-[var(--mk-accent)]",
+                    errors.deadline && "text-destructive",
+                  )}
+                />
+              </div>
+            </JobFormField>
+
+            <JobSurveySummary
+              surveys={selectedSurveys}
+              error={errors.surveys}
+              onEdit={() => setSelectingSurveys(true)}
+            />
+
+            {!hasErrors && (
+              <p className="text-xs leading-[1.25] text-[var(--mk-text)]">
+                Your job will be active with Pending status and open for marketer offers upon
+                creation.
+              </p>
+            )}
+            <p className="text-xs text-[var(--mk-muted)]">
+              Survey links are saved to your account. Other form details are saved in this browser
+              tab.
             </p>
-          )}
 
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-11 rounded-[14px] bg-[var(--mk-hover)] text-sm font-bold text-[var(--mk-text)] hover:bg-[var(--mk-border)]"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={hasErrors}
-              className="h-11 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white hover:bg-[var(--mk-action-hover)] disabled:bg-[var(--mk-border)] disabled:text-[var(--mk-muted)] disabled:opacity-100"
-            >
-              Create Job
-            </Button>
-          </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-11 rounded-[14px] bg-[var(--mk-hover)] text-sm font-bold text-[var(--mk-text)] hover:bg-[var(--mk-border)]"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={hasErrors || submitting || reconcile}
+                className="h-11 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white hover:bg-[var(--mk-action-hover)] disabled:bg-[var(--mk-border)] disabled:text-[var(--mk-muted)] disabled:opacity-100"
+              >
+                {submitting ? "Saving…" : initialDraft ? "Save changes" : "Create Job"}
+              </Button>
+            </div>
+          </fieldset>
+          {reconcile && (
+            <Link href="/creator/jobs/invite" className="text-sm text-[var(--mk-accent)] underline">
+              Check your jobs
+            </Link>
+          )}
         </form>
       </section>
       {selectingSurveys && (
