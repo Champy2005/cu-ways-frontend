@@ -25,26 +25,25 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("UserProfileCard", () => {
-  it("allows phone field to be empty on submit", async () => {
+  it("submits valid contact information and updates profile", async () => {
     vi.mocked(updateCurrentUser).mockResolvedValue({
       ...mockUser,
-      phone: null,
+      phone: "0898765432",
       line_id: null,
     });
 
     render(<UserProfileCard user={mockUser} />);
 
     const phoneField = screen.getByLabelText("Phone number");
-    expect(phoneField).not.toBeRequired();
 
-    fireEvent.change(phoneField, { target: { value: "" } });
+    fireEvent.change(phoneField, { target: { value: "0898765432" } });
     fireEvent.change(screen.getByLabelText("LINE ID"), { target: { value: "" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));
 
     await waitFor(() => {
       expect(updateCurrentUser).toHaveBeenCalledWith({
-        phone: null,
+        phone: "0898765432",
         line_id: null,
       });
     });

@@ -35,27 +35,18 @@ describe("contact update boundary", () => {
     expect((await PUT(request({ phone: "123", line_id: null }))).status).toBe(401);
     expect(fetchBackend).not.toHaveBeenCalled();
   });
-  it.each([12345, true, "1".repeat(21)])("rejects invalid phone %j", async (phone) => {
-    expect((await PUT(request({ phone, line_id: null }))).status).toBe(422);
-    expect(fetchBackend).not.toHaveBeenCalled();
-  });
-  it("permits null phone and forwards to backend", async () => {
-    vi.mocked(fetchBackend).mockResolvedValue(
-      Response.json({ status: "success", data: { phone: null, line_id: null } }),
-    );
-    const body = { phone: null, line_id: null };
-    expect((await PUT(request(body))).status).toBe(200);
-    expect(fetchBackend).toHaveBeenCalledWith("/api/v1/users/101", {
-      method: "PUT",
-      headers: { Authorization: "Bearer test-only-session" },
-      body: JSON.stringify(body),
-    });
-  });
+  it.each([null, "", "   ", "123", "08123456789"])(
+    "rejects a missing or non-10-digit phone %j",
+    async (phone) => {
+      expect((await PUT(request({ phone, line_id: null }))).status).toBe(422);
+      expect(fetchBackend).not.toHaveBeenCalled();
+    },
+  );
   it("updates only the session user's contact endpoint and permits LINE clearing", async () => {
     vi.mocked(fetchBackend).mockResolvedValue(
-      Response.json({ status: "success", data: { phone: "123", line_id: null } }),
+      Response.json({ status: "success", data: { phone: "0812345678", line_id: null } }),
     );
-    const body = { phone: "123", line_id: null };
+    const body = { phone: "0812345678", line_id: null };
     expect((await PUT(request(body))).status).toBe(200);
     expect(fetchBackend).toHaveBeenCalledWith("/api/v1/users/101", {
       method: "PUT",

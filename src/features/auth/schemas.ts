@@ -61,16 +61,33 @@ export function validateRegisterInput(value: unknown): value is RegisterRequest 
     input.password.length >= 8 &&
     input.password.length <= 128 &&
     phoneValid &&
-    lineIDValid
+    lineIDValid &&
+    validMarketerProfile(input.marketer_profile)
   );
 }
 
-export function loginValidationMessage(input: LoginRequest): string | null {
-  if (!validEmail(input.email)) return "Enter a valid email address.";
-  if (input.password.length < 8 || input.password.length > 128) {
-    return "Password must be between 8 and 128 characters.";
-  }
-  return null;
+function validMarketerProfile(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!value || typeof value !== "object") return false;
+  const profile = value as Record<string, unknown>;
+  const text = (field: unknown) =>
+    field === undefined || (isString(field) && field.length <= MAX_PROFILE_TEXT);
+  const years = profile.experience_years;
+  return (
+    text(profile.bio) &&
+    text(profile.availability_text) &&
+    (years === undefined ||
+      (Number.isInteger(years) &&
+        (years as number) >= 0 &&
+        (years as number) <= MAX_EXPERIENCE_YEARS))
+  );
+}
+
+export function loginFieldErrors(input: LoginRequest): { email?: string; password?: string } {
+  const errors: { email?: string; password?: string } = {};
+  if (!validEmail(input.email)) errors.email = "Enter a valid email.";
+  if (!input.password) errors.password = "Enter your password.";
+  return errors;
 }
 
 export function registerValidationMessage(input: RegisterRequest): string | null {
@@ -97,35 +114,109 @@ export function registerValidationMessage(input: RegisterRequest): string | null
   return null;
 }
 
+export const MAX_PROFILE_TEXT = 5000;
+export const MAX_EXPERIENCE_YEARS = 80;
+
+export type RegistrationRole = "creator" | "marketer";
+
+/** Everything the sign-up wizard collects, as the user typed it. */
 export type RegistrationFields = {
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
   password: string;
+  password_confirmation: string;
+  role: RegistrationRole | null;
+  accept_terms: boolean;
+  accept_privacy: boolean;
+  phone: string;
   line_id: string;
+  bio: string;
+  experience_years: string;
+  availability_text: string;
 };
-export function registrationFieldErrors(
-  input: RegistrationFields,
-): Partial<Record<keyof RegistrationFields, string>> {
-  const errors: Partial<Record<keyof RegistrationFields, string>> = {};
-  if (!input.first_name.trim()) errors.first_name = "Enter your first name.";
-  if (!input.last_name.trim()) errors.last_name = "Enter your last name.";
-  if (`${input.first_name.trim()} ${input.last_name.trim()}`.length > 100)
-    errors.last_name = "Your full name must be 100 characters or fewer.";
-  if (!validEmail(input.email)) errors.email = "Enter a valid email address.";
-  if (input.phone.trim().length > 20) errors.phone = "Enter a phone number of 1–20 characters.";
+export type RegistrationErrors = Partial<Record<keyof RegistrationFields, string>>;
+
+export const EMPTY_REGISTRATION: RegistrationFields = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+  role: null,
+  accept_terms: false,
+  accept_privacy: false,
+  phone: "",
+  line_id: "",
+  bio: "",
+  experience_years: "",
+  availability_text: "",
+};
+
+/** The design's placeholder is xxx-xxx-xxxx; the backend stores digits only. */
+export function phoneDigits(phone: string): string {
+  return phone.replace(/[\s-]/g, "");
+}
+
+/** Step 1: personal information, password, role and consent. Wording follows the design. */
+export function accountStepErrors(input: RegistrationFields): RegistrationErrors {
+  const errors: RegistrationErrors = {};
+  const first = input.first_name.trim();
+  const last = input.last_name.trim();
+  if (!first) errors.first_name = "First name is required.";
+  if (!last) errors.last_name = "Last name is required.";
+  else if (`${first} ${last}`.length > 100) errors.last_name = "Enter a valid last name.";
+  if (!input.email.trim()) errors.email = "Email is required.";
+  else if (!validEmail(input.email)) errors.email = "Enter a valid email.";
   if (input.password.length < 8 || input.password.length > 128)
-    errors.password = "Password must be between 8 and 128 characters.";
-  if (input.line_id.trim().length > 50) errors.line_id = "LINE ID must be 50 characters or fewer.";
+    errors.password = "Password must be 8–128 characters.";
+  if (!input.password_confirmation) errors.password_confirmation = "Confirm your password.";
+  else if (input.password_confirmation !== input.password)
+    errors.password_confirmation = "Passwords don’t match.";
+  if (!input.role) errors.role = "Choose a role.";
+  if (!input.accept_terms) errors.accept_terms = "Accept the Terms of Service to continue.";
+  if (!input.accept_privacy) errors.accept_privacy = "Accept the Privacy Policy to continue.";
   return errors;
 }
+
+/** Step 2: contact details. */
+export function contactStepErrors(input: RegistrationFields): RegistrationErrors {
+  const errors: RegistrationErrors = {};
+  const phone = phoneDigits(input.phone.trim());
+  if (!phone) errors.phone = "Phone number is required.";
+  else if (!/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits";
+  if (input.line_id.trim().length > 50) errors.line_id = "Enter a valid Line ID.";
+  return errors;
+}
+
+/** Step 3 (marketers only): the starting marketer profile. */
+export function experienceStepErrors(input: RegistrationFields): RegistrationErrors {
+  const errors: RegistrationErrors = {};
+  if (input.bio.trim().length > MAX_PROFILE_TEXT)
+    errors.bio = "Bio must be 5,000 characters or fewer.";
+  const years = input.experience_years.trim();
+  if (years && !(/^[0-9]+$/.test(years) && Number(years) <= MAX_EXPERIENCE_YEARS))
+    errors.experience_years = "Enter a whole number from 0 to 80.";
+  if (input.availability_text.trim().length > MAX_PROFILE_TEXT)
+    errors.availability_text = "Availability must be 5,000 characters or fewer.";
+  return errors;
+}
+
 export function registrationPayload(input: RegistrationFields): RegisterRequest {
-  return {
+  const payload: RegisterRequest = {
     name: `${input.first_name.trim()} ${input.last_name.trim()}`,
     email: input.email.trim(),
-    phone: input.phone.trim() || null,
+    phone: phoneDigits(input.phone.trim()),
     password: input.password,
     line_id: input.line_id.trim() || null,
   };
+  if (input.role === "marketer") {
+    const years = input.experience_years.trim();
+    payload.marketer_profile = {
+      bio: input.bio.trim(),
+      availability_text: input.availability_text.trim(),
+      ...(years ? { experience_years: Number(years) } : {}),
+    };
+  }
+  return payload;
 }

@@ -29,7 +29,9 @@ export default function MarketerMobileMenu({
   const portal = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const view = useLocalQuery("view", initialView ?? "dashboard");
-  const selected = demo ? getDemoView(view) : pathname.split("/").at(-1);
+  const current = demo ? getDemoView(view) : pathname.split("/").at(-1);
+  const selected =
+    current === "offer" || pathname.startsWith("/marketer/offer/") ? "invitations" : current;
   useEffect(() => {
     if (device !== "desktop") return;
     const media = window.matchMedia("(min-width: 1024px)");
