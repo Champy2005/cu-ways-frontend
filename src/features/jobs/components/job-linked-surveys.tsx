@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { RemoveJobSurveyDialog } from "@/features/jobs/components/remove-job-survey-dialog";
+import { surveyDisplayId } from "@/features/jobs/survey-options";
 
 export type LinkedJobSurvey = {
   id: string;
@@ -50,7 +51,7 @@ export function JobLinkedSurveys({
                 {survey.title}
               </h3>
               <p className="mt-0.5 text-xs leading-4 text-[var(--mk-muted)]">
-                {survey.id} · {isLastSurvey ? "Only linked survey" : "Linked"}
+                {surveyDisplayId(survey.id)} · {isLastSurvey ? "Only linked survey" : "Linked"}
                 {!isLastSurvey && survey.linkedOn && (
                   <>
                     {" "}

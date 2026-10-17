@@ -1,6 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { parseJobDraft, readJobDraftSnapshot, saveJobDraft } from "@/features/jobs/job-draft";
+import type { JobSurveyOption } from "@/features/jobs/types";
+
+// Mock data for these tests only; the live selector loads surveys from the API.
+const mockSurveyOptions: JobSurveyOption[] = [
+  { id: "104", title: "Campus Mobility Study", targetResponses: 200 },
+  { id: "118", title: "Green Habits 2026", targetResponses: 150 },
+  { id: "99", title: "Student Dining Pulse", targetResponses: 100 },
+  { id: "87", title: "Library Experience", targetResponses: 250 },
+];
 
 const values = {
   title: "Campus campaign",
@@ -60,5 +69,16 @@ describe("Job draft IDs", () => {
     expect(readJobDraftSnapshot(String(jobId))).toBe(original);
     expect(() => saveJobDraft(values, [])).toThrow("At least one survey is required.");
     expect(saveJobDraft(values, surveyIds)).toBe(2);
+  });
+
+  it("retains real survey details across reloads and edits, without storing unselected surveys", () => {
+    const id = saveJobDraft(values, ["104"], undefined, mockSurveyOptions);
+    expect(parseJobDraft(readJobDraftSnapshot(String(id)), String(id))?.surveys).toEqual([
+      mockSurveyOptions[0],
+    ]);
+    saveJobDraft({ ...values, title: "Updated campaign" }, ["104"], id);
+    expect(parseJobDraft(readJobDraftSnapshot(String(id)), String(id))?.surveys).toEqual([
+      mockSurveyOptions[0],
+    ]);
   });
 });

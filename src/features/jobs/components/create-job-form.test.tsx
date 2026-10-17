@@ -1,13 +1,29 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { useEffect, useState } from "react";
 
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
 import { saveJobDraft } from "@/features/jobs/job-draft";
+import { loadJobSurveys } from "@/features/jobs/actions";
+import type { JobSurveyOption } from "@/features/jobs/types";
+
+// Mock data for these tests only; the live selector loads surveys from the API.
+const mockSurveyOptions: JobSurveyOption[] = [
+  { id: "104", title: "Campus Mobility Study", targetResponses: 200 },
+  { id: "118", title: "Green Habits 2026", targetResponses: 150 },
+  { id: "99", title: "Student Dining Pulse", targetResponses: 100 },
+  { id: "87", title: "Library Experience", targetResponses: 250 },
+];
 
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
+vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
+
+beforeEach(() => {
+  vi.mocked(loadJobSurveys).mockReset();
+  vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
+});
 
 function CreateJobFlow() {
   const [path, setPath] = useState("/creator/jobs/create");
@@ -28,19 +44,20 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function openSurveySelector() {
+async function openSurveySelector() {
   fireEvent.click(screen.getByRole("button", { name: "Edit selected surveys" }));
+  await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
 }
 
 describe("CreateJobForm survey selection", () => {
-  it("starts empty, follows checkbox changes, and saves only the chosen surveys", () => {
+  it("starts empty, follows checkbox changes, and saves only the chosen surveys", async () => {
     render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
       target: { value: "My draft job" },
     });
     expect(screen.getByText("0 surveys selected")).toBeInTheDocument();
 
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getAllByRole("checkbox")).toHaveLength(4);
     for (const checkbox of screen.getAllByRole("checkbox")) {
       expect(checkbox).not.toBeChecked();
@@ -63,19 +80,19 @@ describe("CreateJobForm survey selection", () => {
     expect(screen.getByRole("textbox", { name: "Job title" })).toHaveValue("My draft job");
   });
 
-  it("restores saved checks for editing and discards changes when going back", () => {
+  it("restores saved checks for editing and discards changes when going back", async () => {
     render(<CreateJobFlow />);
-    openSurveySelector();
+    await openSurveySelector();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("button", { name: "Back to create job" }));
     expect(screen.getByText("0 surveys selected")).toBeInTheDocument();
 
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).not.toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
 
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).not.toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
@@ -85,14 +102,14 @@ describe("CreateJobForm survey selection", () => {
     expect(screen.getByText("Green Habits 2026")).toBeInTheDocument();
     expect(screen.queryByText("Campus Mobility Study")).not.toBeInTheDocument();
 
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Library Experience" }));
     fireEvent.click(screen.getByRole("button", { name: "Back to create job" }));
     expect(screen.getByText("1 survey selected")).toBeInTheDocument();
     expect(screen.getByText("Green Habits 2026")).toBeInTheDocument();
 
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Library Experience" })).not.toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Library Experience" }));
@@ -110,7 +127,7 @@ const requiredErrors = {
 };
 
 describe("CreateJobForm validation", () => {
-  it("shows missing-field errors without requiring or clearing the description", () => {
+  it("shows missing-field errors without requiring or clearing the description", async () => {
     render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Description" }), {
       target: { value: "Recruit students for a campus campaign." },
@@ -143,7 +160,7 @@ describe("CreateJobForm validation", () => {
 
   it.each(["title", "budget", "deadline", "surveys"] as const)(
     "highlights only the missing %s field and preserves other values",
-    (missingField) => {
+    async (missingField) => {
       render(<CreateJobFlow />);
       const values = {
         title: "Campus Sustainability Campaign",
@@ -158,7 +175,7 @@ describe("CreateJobForm validation", () => {
         }
       }
       if (missingField !== "surveys") {
-        openSurveySelector();
+        await openSurveySelector();
         fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
         fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
       }
@@ -182,7 +199,7 @@ describe("CreateJobForm validation", () => {
     },
   );
 
-  it("clears only corrected errors and enables retry when all required fields are complete", () => {
+  it("clears only corrected errors and enables retry when all required fields are complete", async () => {
     render(<CreateJobFlow />);
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
@@ -207,7 +224,7 @@ describe("CreateJobForm validation", () => {
     expect(screen.getByText(requiredErrors.surveys)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create Job" })).toBeDisabled();
 
-    openSurveySelector();
+    await openSurveySelector();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
 
@@ -223,7 +240,7 @@ describe("CreateJobForm validation", () => {
 });
 
 describe("CreateJobForm confirmation", () => {
-  it("shows submitted details with Pending tracking and lets the user edit them", () => {
+  it("shows submitted details with Pending tracking and lets the user edit them", async () => {
     const { unmount } = render(<CreateJobFlow />);
     fireEvent.change(screen.getByRole("textbox", { name: "Job title" }), {
       target: { value: "Campus Sustainability Campaign" },
@@ -237,7 +254,7 @@ describe("CreateJobForm confirmation", () => {
     fireEvent.change(document.getElementById("job-deadline")!, {
       target: { value: "2026-10-28" },
     });
-    openSurveySelector();
+    await openSurveySelector();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Green Habits 2026" }));
     fireEvent.click(screen.getByRole("button", { name: "Use 2 surveys" }));
@@ -287,7 +304,7 @@ describe("CreateJobForm confirmation", () => {
     fireEvent.change(document.getElementById("job-deadline")!, {
       target: { value: "2026-11-10" },
     });
-    openSurveySelector();
+    await openSurveySelector();
     expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
     fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
@@ -309,7 +326,7 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.getByText("฿12,000 fixed")).toBeInTheDocument();
   });
 
-  it("offers a return to the form for an unavailable or malformed draft", () => {
+  it("offers a return to the form for an unavailable or malformed draft", async () => {
     sessionStorage.setItem("cuways-job-draft:999", "{invalid json");
     render(<JobDraftPage jobId="999" />);
 
@@ -321,7 +338,7 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.queryByRole("heading", { name: "Job created" })).not.toBeInTheDocument();
   });
 
-  it("previews the accepted offer UI without changing the saved Pending job", () => {
+  it("previews the accepted offer UI without changing the saved Pending job", async () => {
     const jobId = saveJobDraft(
       {
         title: "Campus Sustainability Campaign",
@@ -329,7 +346,7 @@ describe("CreateJobForm confirmation", () => {
         budget: "฿8,500 fixed",
         deadline: "2026-10-28",
       },
-      ["SV-104", "SV-118"],
+      ["104", "118"],
     );
     const savedDraft = sessionStorage.getItem(`cuways-job-draft:${jobId}`);
     const { rerender } = render(<JobDraftPage jobId={String(jobId)} previewAccepted />);

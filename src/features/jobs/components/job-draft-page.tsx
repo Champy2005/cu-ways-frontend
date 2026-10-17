@@ -15,7 +15,8 @@ import {
   saveJobDraft,
   subscribeJobDraft,
 } from "@/features/jobs/job-draft";
-import { MOCK_JOB_SURVEYS, MOCK_JOB_SURVEY_LINKED_ON } from "@/features/jobs/mock-job-surveys";
+import { surveyDisplayId } from "@/features/jobs/survey-options";
+import type { JobSurveyOption } from "@/features/jobs/types";
 
 const serverSnapshot = () => undefined;
 
@@ -68,14 +69,13 @@ export function JobDraftPage({
 
   const linkedSurveys = draft.selectedSurveyIds.map((id) => ({
     id,
-    title: MOCK_JOB_SURVEYS.find((survey) => survey.id === id)?.title ?? id,
-    linkedOn: MOCK_JOB_SURVEY_LINKED_ON,
+    title: draft.surveys?.find((survey) => survey.id === id)?.title ?? surveyDisplayId(id),
   }));
 
-  function saveSurveys(surveyIds: string[]) {
+  function saveSurveys(surveyIds: string[], surveys: readonly JobSurveyOption[] = []) {
     if (!draft || surveyIds.length === 0) return;
     try {
-      saveJobDraft(draft.values, surveyIds, draft.id);
+      saveJobDraft(draft.values, surveyIds, draft.id, [...(draft.surveys ?? []), ...surveys]);
       setSurveyError(null);
       setSelectingSurveys(false);
     } catch {
@@ -119,7 +119,6 @@ export function JobDraftPage({
       </div>
       {selectingSurveys && (
         <JobSurveySelector
-          surveys={MOCK_JOB_SURVEYS}
           initialSelectedSurveyIds={[]}
           linkedSurveyIds={draft.selectedSurveyIds}
           backLabel="Back to job details"

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
 import { saveJobDraft, type JobDraft } from "@/features/jobs/job-draft";
-import { MOCK_JOB_SURVEYS } from "@/features/jobs/mock-job-surveys";
+import { surveyDisplayId } from "@/features/jobs/survey-options";
 import {
   createJobFieldErrors,
   type CreateJobFieldErrors,
@@ -148,6 +148,9 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
   const [selectedSurveyIds, setSelectedSurveyIds] = useState<string[]>(
     initialDraft?.selectedSurveyIds ?? [],
   );
+  const [surveyOptions, setSurveyOptions] = useState<readonly JobSurveyOption[]>(
+    initialDraft?.surveys ?? [],
+  );
   const [values, setValues] = useState<CreateJobValues>(
     initialDraft?.values ?? {
       title: "",
@@ -162,8 +165,13 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
     ? createJobFieldErrors(values, selectedSurveyIds)
     : {};
   const hasErrors = Object.keys(errors).length > 0;
-  const selectedSurveys = MOCK_JOB_SURVEYS.filter((survey) =>
-    selectedSurveyIds.includes(survey.id),
+  const selectedSurveys = selectedSurveyIds.map(
+    (id) =>
+      surveyOptions.find((survey) => survey.id === id) ?? {
+        id,
+        title: surveyDisplayId(id),
+        targetResponses: null,
+      },
   );
 
   function requiredInputProps(field: "title" | "budget" | "deadline") {
@@ -187,7 +195,7 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
 
     setNavigationError(null);
     try {
-      const jobId = saveJobDraft(values, selectedSurveyIds, initialDraft?.id);
+      const jobId = saveJobDraft(values, selectedSurveyIds, initialDraft?.id, surveyOptions);
       router.push(`/creator/jobs/${encodeURIComponent(jobId)}`);
     } catch {
       setNavigationError(
@@ -331,11 +339,11 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
       </section>
       {selectingSurveys && (
         <JobSurveySelector
-          surveys={MOCK_JOB_SURVEYS}
           initialSelectedSurveyIds={selectedSurveyIds}
           onBack={() => setSelectingSurveys(false)}
-          onSave={(surveyIds) => {
+          onSave={(surveyIds, surveys) => {
             setSelectedSurveyIds(surveyIds);
+            setSurveyOptions(surveys);
             setSelectingSurveys(false);
           }}
         />
