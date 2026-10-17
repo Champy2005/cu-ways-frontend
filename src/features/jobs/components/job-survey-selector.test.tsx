@@ -18,6 +18,93 @@ vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
 beforeEach(() => vi.mocked(loadJobSurveys).mockReset());
 afterEach(cleanup);
 
+describe("Survey selector name search", () => {
+  beforeEach(() => {
+    vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
+  });
+
+  it("filters immediately by partial name, ignoring case and surrounding whitespace", async () => {
+    render(<JobSurveySelector initialSelectedSurveyIds={[]} onBack={vi.fn()} onSave={vi.fn()} />);
+    await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
+    const search = screen.getByRole("searchbox", { name: "Search surveys" });
+
+    for (const query of ["campus", " MoBiLiTy ", "Study"]) {
+      fireEvent.change(search, { target: { value: query } });
+      expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+      expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).toBeInTheDocument();
+      expect(screen.getByText("1 available")).toBeInTheDocument();
+    }
+
+    fireEvent.change(search, { target: { value: "no matching survey" } });
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("No surveys match your search");
+    expect(screen.getByText("0 available")).toBeInTheDocument();
+
+    for (const query of ["", "   "]) {
+      fireEvent.change(search, { target: { value: query } });
+      expect(screen.getAllByRole("checkbox")).toHaveLength(4);
+      expect(screen.getByText("4 available")).toBeInTheDocument();
+      expect(screen.queryByText(/No surveys match your search/)).not.toBeInTheDocument();
+    }
+    expect(loadJobSurveys).toHaveBeenCalledOnce();
+  });
+
+  it("keeps selections across searches and saves surveys hidden by the current query", async () => {
+    const onSave = vi.fn();
+    render(
+      <JobSurveySelector initialSelectedSurveyIds={["104"]} onBack={vi.fn()} onSave={onSave} />,
+    );
+    await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
+    const search = screen.getByRole("searchbox", { name: "Search surveys" });
+
+    fireEvent.change(search, { target: { value: "green" } });
+    expect(
+      screen.queryByRole("checkbox", { name: "Campus Mobility Study" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("1 selected")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("checkbox", { name: "Green Habits 2026" }));
+
+    fireEvent.change(search, { target: { value: "" } });
+    expect(screen.getByRole("checkbox", { name: "Campus Mobility Study" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toBeChecked();
+
+    fireEvent.change(search, { target: { value: "no matching survey" } });
+    expect(screen.getByText("2 selected")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Use 2 surveys" }));
+    expect(onSave).toHaveBeenCalledExactlyOnceWith(["104", "118"], mockSurveyOptions);
+  });
+
+  it("keeps already linked surveys disabled in matching results", async () => {
+    const onSave = vi.fn();
+    render(
+      <JobSurveySelector
+        initialSelectedSurveyIds={[]}
+        linkedSurveyIds={["104"]}
+        onBack={vi.fn()}
+        onSave={onSave}
+      />,
+    );
+    await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
+    const search = screen.getByRole("searchbox", { name: "Search surveys" });
+
+    fireEvent.change(search, { target: { value: "campus" } });
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    const linkedSurvey = screen.getByRole("checkbox", { name: "Campus Mobility Study" });
+    expect(linkedSurvey).toHaveAttribute("aria-disabled", "true");
+    fireEvent.click(linkedSurvey);
+    expect(linkedSurvey).not.toBeChecked();
+    expect(screen.getByText("0 selected")).toBeInTheDocument();
+    expect(screen.getByText("Linked")).toBeInTheDocument();
+    expect(screen.getByText("0 available")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Use 0 surveys" })).toBeDisabled();
+
+    fireEvent.change(search, { target: { value: "green" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: "Green Habits 2026" }));
+    fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
+    expect(onSave).toHaveBeenCalledExactlyOnceWith(["104", "118"], mockSurveyOptions);
+  });
+});
+
 describe("Survey selector API states", () => {
   it("loads on every open, blocks saving while loading, and keeps only owned selections", async () => {
     let resolve!: (value: JobSurveysActionState) => void;

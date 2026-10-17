@@ -124,13 +124,20 @@ function SurveySelectorContent({
   onBack,
   onSave,
 }: JobSurveySelectorProps & { surveys: readonly JobSurveyOption[] }) {
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState(() =>
     initialSelectedSurveyIds.filter(
       (id) => !linkedSurveyIds.includes(id) && surveys.some((survey) => survey.id === id),
     ),
   );
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const matchingSurveys = surveys.filter((survey) =>
+    survey.title.toLowerCase().includes(normalizedQuery),
+  );
   const selectedCount = selectedIds.length;
-  const availableCount = surveys.filter((survey) => !linkedSurveyIds.includes(survey.id)).length;
+  const availableCount = matchingSurveys.filter(
+    (survey) => !linkedSurveyIds.includes(survey.id),
+  ).length;
 
   function toggleSurvey(surveyId: string, checked: boolean) {
     if (linkedSurveyIds.includes(surveyId)) return;
@@ -155,7 +162,9 @@ function SurveySelectorContent({
             id="job-survey-search"
             name="survey-search"
             type="search"
-            placeholder="Search by title or ID"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search by survey name"
             className="h-[42px] rounded-xl border-[var(--mk-border)] bg-[var(--mk-surface)] pr-11 pl-3 text-sm text-[var(--mk-text)] shadow-card placeholder:text-[var(--mk-muted)] md:text-sm"
           />
           <Search
@@ -170,7 +179,9 @@ function SurveySelectorContent({
         <div className="mb-3 flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base leading-5 font-bold text-[var(--mk-text)]">Your surveys</h2>
-            <p className="mt-0.5 text-xs text-[var(--mk-muted)]">{availableCount} available</p>
+            <p aria-live="polite" className="mt-0.5 text-xs text-[var(--mk-muted)]">
+              {availableCount} available
+            </p>
           </div>
           <p aria-live="polite" className="text-xs font-semibold text-[var(--mk-info)]">
             {selectedCount} selected
@@ -178,7 +189,7 @@ function SurveySelectorContent({
         </div>
 
         <ul className="space-y-2.5">
-          {surveys.map((survey) => {
+          {matchingSurveys.map((survey) => {
             const isLinked = linkedSurveyIds.includes(survey.id);
             return (
               <li key={survey.id}>
@@ -237,6 +248,11 @@ function SurveySelectorContent({
             );
           })}
         </ul>
+        {matchingSurveys.length === 0 && (
+          <p role="status" className="py-4 text-sm text-[var(--mk-muted)]">
+            No surveys match your search. Try another name.
+          </p>
+        )}
       </fieldset>
 
       <div className="mt-6 flex items-center gap-2.5 px-3 text-[var(--mk-info)]">
