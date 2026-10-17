@@ -20,6 +20,7 @@ export function Confirmation({
   confirmLabel,
   cancelLabel = "Cancel",
   pending = false,
+  confirmDisabled = false,
   error,
   onDismissError,
   destructive = false,
@@ -33,6 +34,7 @@ export function Confirmation({
   confirmLabel: string;
   cancelLabel?: string;
   pending?: boolean;
+  confirmDisabled?: boolean;
   error?: FeatureNotification | null;
   onDismissError?: () => void;
   destructive?: boolean;
@@ -66,7 +68,7 @@ export function Confirmation({
             </Button>
             <Button
               className={destructive ? "ji-danger" : "ji-primary"}
-              disabled={pending}
+              disabled={pending || confirmDisabled}
               onClick={onConfirm}
             >
               {pending ? "Please wait…" : confirmLabel}

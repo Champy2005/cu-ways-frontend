@@ -1,7 +1,11 @@
-import { InvitationsUnavailable } from "@/features/job-invitations/components/unavailable";
+import { renderInvitations } from "@/features/job-invitations/live/page-route";
 
 export const metadata = { title: "Submit an offer | CU Ways" };
 
-export default function CreateOfferPage() {
-  return <InvitationsUnavailable offer />;
+export default async function CreateOfferPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ requestId?: string }>;
+}) {
+  return renderInvitations((await searchParams).requestId, true);
 }

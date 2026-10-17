@@ -1,4 +1,4 @@
-// Frontend view models; the backend API contract has not been published yet.
+// Preview view models and shared form inputs. Live wire types are generated under live/types.ts.
 export type RequestStatus = "Pending" | "Accepted" | "Declined" | "Closed";
 export type OfferStatus = "Pending" | "Accepted" | "Rejected" | "Withdrawn";
 export type InvitationTab = "pending" | "responded";

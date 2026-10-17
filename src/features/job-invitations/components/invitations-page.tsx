@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Search } from "lucide-react";
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Invitation, InvitationActions, InvitationTab, Offer } from "../types";
@@ -11,6 +9,7 @@ import { InvitationCard } from "./invitation-card";
 import { RequestDialog } from "./request-dialog";
 import { BriefDialog } from "./brief-dialog";
 import { PageHeading } from "./shared";
+import { EmptyInvitations } from "./empty-invitations";
 import "../invitations.css";
 
 export function filterInvitations(requests: Invitation[], tab: InvitationTab, search: string) {
@@ -19,39 +18,6 @@ export function filterInvitations(requests: Invitation[], tab: InvitationTab, se
     (request) =>
       (tab === "pending" ? request.status === "Pending" : request.status !== "Pending") &&
       `${request.job.title} ${request.creator}`.toLocaleLowerCase().includes(query),
-  );
-}
-
-function EmptyInvitations({
-  tab,
-  searching,
-  onClear,
-}: {
-  tab: InvitationTab;
-  searching: boolean;
-  onClear: () => void;
-}) {
-  const title = searching
-    ? "No matching invitations"
-    : tab === "pending"
-      ? "All caught up! No pending requests"
-      : "No responded invitations yet";
-  const description = searching
-    ? "Try another job title or creator name."
-    : tab === "pending"
-      ? "You don’t have any direct invitations at the moment. Keep your profile updated for future opportunities."
-      : "Invitations you accept or decline will appear here.";
-  return (
-    <div className="ji-empty">
-      <Image src="/marketer-assets/mascot.svg" width={150} height={150} alt="" />
-      <h2>{title}</h2>
-      <p className="ji-muted">{description}</p>
-      {searching && (
-        <Button variant="outline" className="ji-secondary" onClick={onClear}>
-          Clear search
-        </Button>
-      )}
-    </div>
   );
 }
 
