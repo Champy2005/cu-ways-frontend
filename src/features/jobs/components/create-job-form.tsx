@@ -1,17 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CalendarDays, ChevronLeft, ChevronRight, CircleAlert, Clipboard, X } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  JobCreatedView,
-  type JobCreatedDetails,
-} from "@/features/jobs/components/job-created-view";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
+import { saveJobDraft, type JobDraft } from "@/features/jobs/job-draft";
 import { MOCK_JOB_SURVEYS } from "@/features/jobs/mock-job-surveys";
 import {
   createJobFieldErrors,
@@ -59,7 +57,7 @@ function JobFormField({
   );
 }
 
-function JobValidationAlert({ onDismiss }: { onDismiss: () => void }) {
+function JobValidationAlert({ onDismiss, message }: { onDismiss: () => void; message?: string }) {
   return (
     <div
       role="alert"
@@ -69,7 +67,8 @@ function JobValidationAlert({ onDismiss }: { onDismiss: () => void }) {
       <div className="min-w-0 flex-1 text-xs text-[var(--mk-text)]">
         <p className="font-bold">Job could not be created</p>
         <p className="mt-0.5 text-[11px] leading-4">
-          Review the highlighted required fields. Your entered values remain on this form.
+          {message ??
+            "Review the highlighted required fields. Your entered values remain on this form."}
         </p>
       </div>
       <Button
@@ -142,16 +141,21 @@ function JobSurveySummary({
   );
 }
 
-export function CreateJobForm() {
-  const [createdJob, setCreatedJob] = useState<JobCreatedDetails | null>(null);
+export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
+  const router = useRouter();
+  const [navigationError, setNavigationError] = useState<string | null>(null);
   const [selectingSurveys, setSelectingSurveys] = useState(false);
-  const [selectedSurveyIds, setSelectedSurveyIds] = useState<string[]>([]);
-  const [values, setValues] = useState<CreateJobValues>({
-    title: "",
-    description: "",
-    budget: "",
-    deadline: "",
-  });
+  const [selectedSurveyIds, setSelectedSurveyIds] = useState<string[]>(
+    initialDraft?.selectedSurveyIds ?? [],
+  );
+  const [values, setValues] = useState<CreateJobValues>(
+    initialDraft?.values ?? {
+      title: "",
+      description: "",
+      budget: "",
+      deadline: "",
+    },
+  );
   const [validationAttempted, setValidationAttempted] = useState(false);
   const [alertDismissed, setAlertDismissed] = useState(false);
   const errors: CreateJobFieldErrors = validationAttempted
@@ -181,18 +185,15 @@ export function CreateJobForm() {
     setAlertDismissed(false);
     if (Object.keys(createJobFieldErrors(values, selectedSurveyIds)).length > 0) return;
 
-    // Frontend confirmation only until the create-job API supports the form fields.
-    setCreatedJob({
-      title: values.title.trim(),
-      compensation: values.budget.trim(),
-      deadline: values.deadline,
-      surveyCount: selectedSurveyIds.length,
-      status: "Pending",
-    });
-  }
-
-  if (createdJob) {
-    return <JobCreatedView job={createdJob} onEdit={() => setCreatedJob(null)} />;
+    setNavigationError(null);
+    try {
+      const jobId = saveJobDraft(values, selectedSurveyIds, initialDraft?.id);
+      router.push(`/creator/jobs/${encodeURIComponent(jobId)}`);
+    } catch {
+      setNavigationError(
+        "The job preview could not be opened. Your entered values remain on this form. Please try again.",
+      );
+    }
   }
 
   return (
@@ -229,8 +230,11 @@ export function CreateJobForm() {
           aria-labelledby="create-job-heading"
           className="space-y-3.5"
         >
-          {hasErrors && !alertDismissed && (
-            <JobValidationAlert onDismiss={() => setAlertDismissed(true)} />
+          {(hasErrors || navigationError) && !alertDismissed && (
+            <JobValidationAlert
+              onDismiss={() => setAlertDismissed(true)}
+              message={navigationError ?? undefined}
+            />
           )}
 
           <JobFormField id="job-title" label="Job title" required error={errors.title}>
