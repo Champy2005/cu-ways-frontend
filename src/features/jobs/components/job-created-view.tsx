@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export type JobCreatedDetails = {
   title: string;
@@ -143,7 +144,14 @@ export function JobCreatedView({ job, onEdit }: { job: JobCreatedDetails; onEdit
           </h2>
           <div className="mt-3 flex items-end justify-between gap-3">
             <h3 className="min-w-0 text-lg leading-5 font-bold wrap-break-word">{job.title}</h3>
-            <span className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-[var(--mk-caution)] bg-[var(--mk-caution-soft)] px-2 py-1 text-xs leading-4 font-semibold text-[var(--mk-caution)]">
+            <span
+              className={cn(
+                "inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-xs leading-4 font-semibold",
+                "border-[#d99015] bg-[#fff6d2] text-[#d99015]",
+                "[[data-theme=dark]_&]:border-[#f9c46a] [[data-theme=dark]_&]:bg-[#363636] [[data-theme=dark]_&]:text-[#f9c46a]",
+                "[@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:border-[#f9c46a] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:bg-[#363636] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:text-[#f9c46a]",
+              )}
+            >
               <Clock3 aria-hidden="true" className="size-3" />
               {job.status}
             </span>
