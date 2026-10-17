@@ -17,10 +17,12 @@ export function JobLinkedSurveys({
   surveys,
   onAdd,
   onRemove,
+  pending = false,
 }: {
   surveys: readonly LinkedJobSurvey[];
   onAdd: () => void;
   onRemove: (surveyId: string) => void;
+  pending?: boolean;
 }) {
   const [surveyToRemove, setSurveyToRemove] = useState<LinkedJobSurvey | null>(null);
   const removeButton = useRef<HTMLButtonElement>(null);
@@ -68,6 +70,7 @@ export function JobLinkedSurveys({
             </div>
             <Button
               type="button"
+              disabled={pending}
               variant="ghost"
               aria-label={`Remove ${survey.title}`}
               aria-describedby={isLastSurvey ? "linked-surveys-requirement" : undefined}
@@ -86,6 +89,7 @@ export function JobLinkedSurveys({
       <Button
         ref={addButton}
         type="button"
+        disabled={pending}
         variant="ghost"
         onClick={onAdd}
         className="mt-5 h-12 w-full gap-2 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] text-base font-bold text-[var(--mk-accent)] shadow-card hover:bg-[var(--mk-hover)]"
@@ -104,7 +108,7 @@ export function JobLinkedSurveys({
           }}
           onConfirm={() => {
             removeButton.current = null;
-            if (surveys.length > 1) onRemove(surveyToRemove.id);
+            if (!pending && surveys.length > 1) onRemove(surveyToRemove.id);
             setSurveyToRemove(null);
           }}
           finalFocus={() =>

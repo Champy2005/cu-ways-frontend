@@ -15,11 +15,20 @@ type JobSurveySelectorProps = {
   initialSelectedSurveyIds: readonly string[];
   linkedSurveyIds?: readonly string[];
   backLabel?: string;
+  pending?: boolean;
   onBack: () => void;
   onSave: (surveyIds: string[], surveys: readonly JobSurveyOption[]) => void;
 };
 
-function SurveySelectorHeader({ onBack, backLabel }: { onBack: () => void; backLabel: string }) {
+function SurveySelectorHeader({
+  onBack,
+  backLabel,
+  pending = false,
+}: {
+  onBack: () => void;
+  backLabel: string;
+  pending?: boolean;
+}) {
   return (
     <header className="mb-7 flex items-center gap-1">
       <Button
@@ -27,6 +36,7 @@ function SurveySelectorHeader({ onBack, backLabel }: { onBack: () => void; backL
         variant="ghost"
         aria-label={backLabel}
         onClick={onBack}
+        disabled={pending}
         className="-ml-2 size-10 shrink-0 rounded-lg text-[var(--mk-text)]"
       >
         <ChevronLeft aria-hidden="true" className="size-5" />
@@ -82,6 +92,7 @@ export function JobSurveySelector(props: JobSurveySelectorProps) {
       <SurveySelectorHeader
         onBack={props.onBack}
         backLabel={props.backLabel ?? "Back to create job"}
+        pending={props.pending}
       />
       {result.status === "loading" ? (
         <p role="status" className="text-sm text-[var(--mk-muted)]">
@@ -123,6 +134,7 @@ function SurveySelectorContent({
   backLabel = "Back to create job",
   onBack,
   onSave,
+  pending = false,
 }: JobSurveySelectorProps & { surveys: readonly JobSurveyOption[] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState(() =>
@@ -140,7 +152,7 @@ function SurveySelectorContent({
   ).length;
 
   function toggleSurvey(surveyId: string, checked: boolean) {
-    if (linkedSurveyIds.includes(surveyId)) return;
+    if (pending || linkedSurveyIds.includes(surveyId)) return;
     setSelectedIds((current) =>
       checked ? [...current, surveyId] : current.filter((id) => id !== surveyId),
     );
@@ -148,7 +160,7 @@ function SurveySelectorContent({
 
   return (
     <section aria-labelledby="select-surveys-heading" className="mx-auto w-full max-w-md">
-      <SurveySelectorHeader onBack={onBack} backLabel={backLabel} />
+      <SurveySelectorHeader onBack={onBack} backLabel={backLabel} pending={pending} />
 
       <div className="mb-3 space-y-1.5">
         <label
@@ -162,6 +174,7 @@ function SurveySelectorContent({
             id="job-survey-search"
             name="survey-search"
             type="search"
+            disabled={pending}
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search by survey name"
@@ -204,7 +217,7 @@ function SurveySelectorContent({
                   <Checkbox
                     name="surveys"
                     value={survey.id}
-                    disabled={isLinked}
+                    disabled={isLinked || pending}
                     checked={!isLinked && selectedIds.includes(survey.id)}
                     onCheckedChange={(checked) => toggleSurvey(survey.id, checked)}
                     aria-labelledby={`survey-title-${survey.id}`}
@@ -265,8 +278,10 @@ function SurveySelectorContent({
 
       <Button
         type="button"
-        onClick={() => onSave([...new Set([...linkedSurveyIds, ...selectedIds])], surveys)}
-        disabled={selectedCount === 0}
+        onClick={() => {
+          if (!pending) onSave([...new Set([...linkedSurveyIds, ...selectedIds])], surveys);
+        }}
+        disabled={pending || selectedCount === 0}
         className="mt-6 h-11 w-full gap-2 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white shadow-card hover:bg-[var(--mk-action-hover)]"
       >
         <Check aria-hidden="true" className="size-4" />

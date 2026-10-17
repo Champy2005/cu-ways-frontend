@@ -1,42 +1,56 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
 import { JobLinkedSurveys } from "@/features/jobs/components/job-linked-surveys";
-import { readJobDraftSnapshot, saveJobDraft } from "@/features/jobs/job-draft";
 import { loadJobSurveys } from "@/features/jobs/actions";
+import { addJobSurveys, loadSavedJob, removeJobSurvey } from "@/features/jobs/job-actions";
+import { saveJobDraft } from "@/features/jobs/job-draft";
 import type { JobSurveyOption } from "@/features/jobs/types";
 
-// Mock data for these tests only; the live selector loads surveys from the API.
+// Mock API data for these tests only; the live page reads persisted links.
 const mockSurveyOptions: JobSurveyOption[] = [
   { id: "104", title: "Campus Mobility Study", targetResponses: 200 },
   { id: "118", title: "Green Habits 2026", targetResponses: 150 },
   { id: "99", title: "Student Dining Pulse", targetResponses: 100 },
   { id: "87", title: "Library Experience", targetResponses: 250 },
 ];
+let mockLinkedIds: string[];
+const mockSavedState = () => ({
+  status: "success" as const,
+  creatorId: 4,
+  job: {
+    job_id: 41,
+    job_status: "Pending" as const,
+    created_at: "2026-10-01T10:00:00Z",
+    surveys: mockSurveyOptions
+      .filter((survey) => mockLinkedIds.includes(survey.id))
+      .map((survey) => ({ survey_id: Number(survey.id), title: survey.title })),
+  },
+});
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
+vi.mock("@/features/jobs/job-actions", () => ({
+  loadSavedJob: vi.fn(),
+  addJobSurveys: vi.fn(),
+  removeJobSurvey: vi.fn(),
+}));
 
 beforeEach(() => {
-  vi.mocked(loadJobSurveys).mockReset();
+  vi.resetAllMocks();
+  mockLinkedIds = ["104", "118"];
   vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
+  vi.mocked(loadSavedJob).mockImplementation(async () => mockSavedState());
+  vi.mocked(addJobSurveys).mockImplementation(async (_id, ids) => {
+    mockLinkedIds = [...new Set([...mockLinkedIds, ...ids])];
+    return mockSavedState();
+  });
+  vi.mocked(removeJobSurvey).mockImplementation(async (_id, surveyId) => {
+    mockLinkedIds = mockLinkedIds.filter((id) => id !== surveyId);
+    return mockSavedState();
+  });
 });
-
-function createDraft(surveyIds = ["104", "118"]) {
-  return String(
-    saveJobDraft(
-      { title: "Campus campaign", description: "", budget: "8,500 fixed", deadline: "2026-10-28" },
-      surveyIds,
-      undefined,
-      mockSurveyOptions,
-    ),
-  );
-}
-
-async function waitForSurveys() {
-  await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
-}
 
 afterEach(() => {
   cleanup();
@@ -44,209 +58,197 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("Job linked surveys", () => {
-  it.each([false, true])("shows linked survey details for accepted preview %s", (accepted) => {
-    render(<JobDraftPage jobId={createDraft()} previewAccepted={accepted} />);
+async function openJob(previewAccepted = false) {
+  const result = render(<JobDraftPage jobId="41" previewAccepted={previewAccepted} />);
+  await screen.findByRole("region", { name: "Manage Linked Surveys" });
+  return result;
+}
 
-    const surveys = within(screen.getByRole("region", { name: "Manage Linked Surveys" }));
-    expect(surveys.getAllByRole("listitem")).toHaveLength(2);
-    expect(surveys.getByText("Campus Mobility Study")).toBeInTheDocument();
-    expect(surveys.getByText("Green Habits 2026")).toBeInTheDocument();
-    expect(surveys.queryByText("Library Experience")).not.toBeInTheDocument();
-    expect(surveys.getAllByText(/^SV-\d+ · Linked/)).toHaveLength(2);
-    expect(surveys.getByRole("button", { name: "Add existing surveys" })).toBeEnabled();
+describe("Persisted job survey links", () => {
+  it.each([false, true])(
+    "loads linked surveys from the owned job, accepted preview %s",
+    async (accepted) => {
+      await openJob(accepted);
+      const region = within(screen.getByRole("region", { name: "Manage Linked Surveys" }));
+      expect(region.getAllByRole("listitem")).toHaveLength(2);
+      expect(region.getByText("Campus Mobility Study")).toBeInTheDocument();
+      expect(region.getByText("Green Habits 2026")).toBeInTheDocument();
+      expect(loadSavedJob).toHaveBeenCalledExactlyOnceWith("41");
+    },
+  );
+
+  it("uses saved links even if cached survey selections are stale", async () => {
+    saveJobDraft(
+      { title: "Campus campaign", description: "", budget: "8,500 fixed", deadline: "2026-10-28" },
+      ["87"],
+      41,
+      mockSurveyOptions,
+      4,
+    );
+    await openJob();
+    expect(
+      screen.getByRole("button", { name: "Remove Campus Mobility Study" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Remove Library Experience" }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(screen.getByRole("region", { name: "Job overview" })).getByText("2 surveys"),
+    ).toBeInTheDocument();
   });
 
-  it("saves removals locally, updates the count, and keeps at least one survey", async () => {
-    const jobId = createDraft();
-    const { unmount } = render(<JobDraftPage jobId={jobId} />);
-    const saved = readJobDraftSnapshot(jobId);
+  it("removes the relationship through the API and retains the result after reload", async () => {
+    const { unmount } = await openJob();
     fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
     const dialog = screen.getByRole("alertdialog", { name: "Remove this survey?" });
     expect(dialog).toHaveAccessibleDescription(
       "Campus Mobility Study will no longer be available to marketers in this job. The survey itself will not be deleted.",
     );
-    expect(readJobDraftSnapshot(jobId)).toBe(saved);
     fireEvent.click(within(dialog).getByRole("button", { name: "Remove" }));
-
-    const surveys = within(screen.getByRole("region", { name: "Manage Linked Surveys" }));
-    expect(surveys.getAllByRole("listitem")).toHaveLength(1);
-    expect(surveys.queryByText("Campus Mobility Study")).not.toBeInTheDocument();
-    expect(surveys.getByRole("button", { name: "Remove Green Habits 2026" })).toBeEnabled();
-    expect(surveys.getByText("SV-118 · Only linked survey")).toBeInTheDocument();
-    const overview = within(screen.getByRole("region", { name: "Job overview" }));
-    expect(overview.getByText("1 survey")).toBeInTheDocument();
-    expect(overview.getByText("Campus campaign")).toBeInTheDocument();
-    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-    const remainingDraft = readJobDraftSnapshot(jobId);
-    fireEvent.click(surveys.getByRole("button", { name: "Remove Green Habits 2026" }));
-    const warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
-    expect(within(warning).queryByRole("button", { name: "Remove" })).not.toBeInTheDocument();
-    expect(readJobDraftSnapshot(jobId)).toBe(remainingDraft);
-    fireEvent.click(within(warning).getByRole("button", { name: "Cancel" }));
-
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("button", { name: "Remove Campus Mobility Study" }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(removeJobSurvey).toHaveBeenCalledExactlyOnceWith("41", "104");
+    expect(screen.getByText("Only linked survey", { exact: false })).toBeInTheDocument();
     unmount();
-    render(<JobDraftPage jobId={jobId} />);
-    expect(screen.getByRole("button", { name: "Remove Green Habits 2026" })).toBeEnabled();
-    expect(screen.queryByRole("button", { name: "Remove Campus Mobility Study" })).toBeNull();
+    await openJob();
+    expect(screen.getByRole("button", { name: "Remove Green Habits 2026" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Remove Campus Mobility Study" }),
+    ).not.toBeInTheDocument();
   });
 
   it.each([false, true])(
-    "opens survey selection from the last-survey warning without unlinking it, accepted preview %s",
+    "never calls removal for the last survey and opens selection via Add another, accepted preview %s",
     async (accepted) => {
-      const jobId = createDraft(["118"]);
-      const saved = readJobDraftSnapshot(jobId);
-      render(<JobDraftPage jobId={jobId} previewAccepted={accepted} />);
+      mockLinkedIds = ["118"];
+      await openJob(accepted);
       fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
-
-      const warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
-      expect(warning).toHaveAccessibleDescription(
-        "This is the last linked survey. Every job must have at least one survey, so it cannot be removed until another survey is linked.",
-      );
+      let warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
       expect(within(warning).queryByRole("button", { name: "Remove" })).not.toBeInTheDocument();
-      fireEvent.click(within(warning).getByRole("button", { name: "Add another" }));
-      await waitForSurveys();
-
+      fireEvent.click(within(warning).getByRole("button", { name: "Cancel" }));
       expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-      expect(screen.getByRole("heading", { name: "Select surveys" })).toBeInTheDocument();
-      expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toHaveAttribute(
-        "aria-disabled",
-        "true",
-      );
-      expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).not.toBeChecked();
-      expect(readJobDraftSnapshot(jobId)).toBe(saved);
-      fireEvent.click(screen.getByRole("checkbox", { name: "Green Habits 2026" }));
-      expect(screen.getByRole("button", { name: "Use 0 surveys" })).toBeDisabled();
-      fireEvent.click(screen.getByRole("button", { name: "Use 0 surveys" }));
-      expect(readJobDraftSnapshot(jobId)).toBe(saved);
-      fireEvent.click(screen.getByRole("button", { name: "Back to job details" }));
-
       fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
-      fireEvent.click(screen.getByRole("button", { name: "Add another" }));
-      await waitForSurveys();
-      expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).toHaveAttribute(
-        "aria-disabled",
-        "true",
-      );
-      expect(screen.getByRole("checkbox", { name: "Green Habits 2026" })).not.toBeChecked();
+      warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
+      fireEvent.click(within(warning).getByRole("button", { name: "Add another" }));
+      const linked = await screen.findByRole("checkbox", { name: "Green Habits 2026" });
+      expect(linked).toHaveAttribute("aria-disabled", "true");
+      fireEvent.click(linked);
+      expect(linked).not.toBeChecked();
       fireEvent.click(screen.getByRole("checkbox", { name: "Campus Mobility Study" }));
       fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
-      const surveys = within(screen.getByRole("region", { name: "Manage Linked Surveys" }));
-      expect(surveys.getAllByRole("listitem")).toHaveLength(2);
-      expect(surveys.getByText("Green Habits 2026")).toBeInTheDocument();
-      expect(surveys.getByText("Campus Mobility Study")).toBeInTheDocument();
+      await screen.findByRole("region", { name: "Manage Linked Surveys" });
+      expect(addJobSurveys).toHaveBeenCalledExactlyOnceWith("41", ["118", "104"]);
+      expect(removeJobSurvey).not.toHaveBeenCalled();
     },
   );
 
-  it("switches an open removal confirmation to the warning if only one survey remains", async () => {
-    const onRemove = vi.fn();
-    const onAdd = vi.fn();
-    const surveys = [
-      { id: "104", title: "Campus Mobility Study" },
-      { id: "118", title: "Green Habits 2026" },
-    ];
-    const { rerender } = render(
-      <JobLinkedSurveys surveys={surveys} onAdd={onAdd} onRemove={onRemove} />,
+  it("disables existing links, saves new choices, and prevents adding them twice", async () => {
+    await openJob();
+    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
+    const campus = await screen.findByRole("checkbox", { name: "Campus Mobility Study" });
+    expect(campus).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getAllByText("Linked")).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Use 0 surveys" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("checkbox", { name: "Library Experience" }));
+    fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
+    await screen.findByRole("region", { name: "Manage Linked Surveys" });
+    expect(addJobSurveys).toHaveBeenCalledExactlyOnceWith("41", ["104", "118", "87"]);
+    expect(screen.getByRole("button", { name: "Remove Library Experience" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
+    expect(await screen.findByRole("checkbox", { name: "Library Experience" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
-    expect(screen.getByRole("alertdialog", { name: "Remove this survey?" })).toBeInTheDocument();
-
-    rerender(<JobLinkedSurveys surveys={[surveys[1]]} onAdd={onAdd} onRemove={onRemove} />);
-    const warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
-    expect(within(warning).queryByRole("button", { name: "Remove" })).not.toBeInTheDocument();
-    fireEvent.click(within(warning).getByRole("button", { name: "Cancel" }));
-    expect(onRemove).not.toHaveBeenCalled();
-    expect(onAdd).not.toHaveBeenCalled();
+    expect(screen.getAllByText("Linked")).toHaveLength(3);
+    fireEvent.click(screen.getByRole("button", { name: "Back to job details" }));
+    expect(addJobSurveys).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps the surveys when cancelling or dismissing the confirmation with Escape", async () => {
-    const jobId = createDraft();
-    const saved = readJobDraftSnapshot(jobId);
-    render(<JobDraftPage jobId={jobId} />);
+  it("keeps links when cancelling or dismissing a confirmation with Escape", async () => {
+    await openJob();
     fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
     fireEvent.click(
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Cancel" }),
     );
-
-    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-    expect(readJobDraftSnapshot(jobId)).toBe(saved);
-    fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
-    const dialog = screen.getByRole("alertdialog");
-    expect(dialog).toHaveTextContent("Green Habits 2026 will no longer be available");
-    fireEvent.keyDown(dialog, { key: "Escape", code: "Escape" });
+    fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
+    fireEvent.keyDown(screen.getByRole("alertdialog"), { key: "Escape", code: "Escape" });
     await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
-    expect(readJobDraftSnapshot(jobId)).toBe(saved);
-    expect(screen.getByRole("button", { name: "Remove Green Habits 2026" })).toBeEnabled();
+    expect(removeJobSurvey).not.toHaveBeenCalled();
   });
 
-  it("marks existing surveys as linked and saves only additional choices without duplicates", async () => {
-    const jobId = createDraft();
-    render(<JobDraftPage jobId={jobId} />);
-    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
-    await waitForSurveys();
-
-    const campus = screen.getByRole("checkbox", { name: "Campus Mobility Study" });
-    const green = screen.getByRole("checkbox", { name: "Green Habits 2026" });
-    expect(campus).toHaveAttribute("aria-disabled", "true");
-    expect(campus).not.toBeChecked();
-    expect(campus).toHaveAccessibleDescription("SV-104 · Already linked");
-    expect(green).toHaveAttribute("aria-disabled", "true");
-    expect(green).not.toBeChecked();
-    expect(green).toHaveAccessibleDescription("SV-118 · Already linked");
-    expect(screen.getAllByText("Linked")).toHaveLength(2);
-    expect(screen.getByText("2 available")).toBeInTheDocument();
-    expect(screen.getByText("0 selected")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Use 0 surveys" })).toBeDisabled();
-    fireEvent.click(campus);
-    expect(campus).not.toBeChecked();
-    expect(screen.getByText("0 selected")).toBeInTheDocument();
-    expect(screen.getByRole("checkbox", { name: "Library Experience" })).not.toHaveAttribute(
-      "aria-disabled",
-      "true",
-    );
-    fireEvent.click(screen.getByRole("checkbox", { name: "Library Experience" }));
-    expect(screen.getByText("1 selected")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Back to job details" }));
-    expect(screen.queryByRole("button", { name: "Remove Library Experience" })).toBeNull();
-
-    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
-    await waitForSurveys();
-    expect(screen.getByRole("checkbox", { name: "Library Experience" })).not.toBeChecked();
-    fireEvent.click(screen.getByRole("checkbox", { name: "Library Experience" }));
-    fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
-    expect(screen.getByRole("button", { name: "Remove Library Experience" })).toBeInTheDocument();
-    const overview = within(screen.getByRole("region", { name: "Job overview" }));
-    expect(overview.getByText("3 surveys")).toBeInTheDocument();
-    expect(JSON.parse(readJobDraftSnapshot(jobId)!).selectedSurveyIds).toEqual([
-      "104",
-      "118",
-      "87",
-    ]);
-    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
-    await waitForSurveys();
-    expect(screen.getByRole("checkbox", { name: "Library Experience" })).toHaveAttribute(
-      "aria-disabled",
-      "true",
-    );
-    expect(screen.getByRole("checkbox", { name: "Library Experience" })).not.toBeChecked();
-    expect(screen.getAllByText("Linked")).toHaveLength(3);
-    expect(screen.getByRole("button", { name: "Use 0 surveys" })).toBeDisabled();
-  });
-
-  it("keeps the linked surveys and shows feedback if browser storage fails", async () => {
-    const jobId = createDraft();
-    const saved = readJobDraftSnapshot(jobId);
-    render(<JobDraftPage jobId={jobId} />);
-    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
-      throw new Error("Storage unavailable");
+  it("reconciles a backend last-survey rejection instead of removing the survey optimistically", async () => {
+    await openJob();
+    vi.mocked(removeJobSurvey).mockResolvedValue({
+      ...mockSavedState(),
+      job: {
+        ...mockSavedState().job,
+        surveys: [{ survey_id: 104, title: "Campus Mobility Study" }],
+      },
+      notice: "Keep at least one survey linked to this job.",
     });
-
     fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
     fireEvent.click(
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Remove" }),
     );
-    expect(screen.getByRole("alert")).toHaveTextContent("Your survey changes could not be saved");
-    expect(screen.getByRole("button", { name: "Remove Campus Mobility Study" })).toBeEnabled();
-    expect(readJobDraftSnapshot(jobId)).toBe(saved);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Keep at least one survey");
+    expect(
+      screen.getByRole("button", { name: "Remove Campus Mobility Study" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
+    expect(
+      screen.getByRole("alertdialog", { name: "Keep at least one survey" }),
+    ).toBeInTheDocument();
+  });
+
+  it("blocks additional changes while a link request is pending", async () => {
+    let resolve!: (value: Awaited<ReturnType<typeof removeJobSurvey>>) => void;
+    vi.mocked(removeJobSurvey).mockReturnValue(
+      new Promise((done) => {
+        resolve = done;
+      }),
+    );
+    await openJob();
+    fireEvent.click(screen.getByRole("button", { name: "Remove Campus Mobility Study" }));
+    fireEvent.click(
+      within(screen.getByRole("alertdialog")).getByRole("button", { name: "Remove" }),
+    );
+    expect(screen.getByRole("button", { name: "Add existing surveys" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Remove Green Habits 2026" })).toBeDisabled();
+    await act(async () => resolve(mockSavedState()));
+    expect(removeJobSurvey).toHaveBeenCalledTimes(1);
+  });
+
+  it("handles ownership failures and supports a read-only reload", async () => {
+    vi.mocked(loadSavedJob).mockResolvedValueOnce({
+      status: "error",
+      message: "You do not own this job.",
+    });
+    render(<JobDraftPage jobId="41" />);
+    expect(await screen.findByRole("alert")).toHaveTextContent("do not own");
+    expect(screen.queryByRole("button", { name: "Add existing surveys" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Reload job" }));
+    await screen.findByRole("region", { name: "Manage Linked Surveys" });
+    expect(addJobSurveys).not.toHaveBeenCalled();
+    expect(removeJobSurvey).not.toHaveBeenCalled();
+  });
+
+  it("switches an open confirmation to the last-survey warning when links change", () => {
+    const onRemove = vi.fn();
+    const surveys = mockSurveyOptions.slice(0, 2);
+    const { rerender } = render(
+      <JobLinkedSurveys surveys={surveys} onAdd={vi.fn()} onRemove={onRemove} />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
+    rerender(<JobLinkedSurveys surveys={[surveys[1]]} onAdd={vi.fn()} onRemove={onRemove} />);
+    expect(
+      screen.getByRole("alertdialog", { name: "Keep at least one survey" }),
+    ).toBeInTheDocument();
+    expect(
+      within(screen.getByRole("alertdialog")).queryByRole("button", { name: "Remove" }),
+    ).not.toBeInTheDocument();
+    expect(onRemove).not.toHaveBeenCalled();
   });
 });
