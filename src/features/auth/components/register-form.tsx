@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getDisplayError } from "@/lib/api/errors";
+import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { register } from "@/features/auth/api";
 import {
   registrationFieldErrors,
@@ -40,10 +40,10 @@ const fields = [
   },
   {
     key: "phone",
-    label: "Phone number",
+    label: "Phone number (optional)",
     autoComplete: "tel",
     type: "tel",
-    required: true,
+    required: false,
     maxLength: 20,
   },
   {
@@ -93,6 +93,16 @@ export function RegisterForm() {
       router.push("/dashboard");
       router.refresh();
     } catch (requestError) {
+      if (requestError instanceof ApiError) {
+        if (requestError.code === "email_already_exists") {
+          setErrors((current) => ({ ...current, email: "Email is already registered." }));
+          return;
+        }
+        if (requestError.code === "phone_already_exists") {
+          setErrors((current) => ({ ...current, phone: "Phone number is already registered." }));
+          return;
+        }
+      }
       setError(getDisplayError(requestError));
     } finally {
       submitting.current = false;
@@ -118,9 +128,18 @@ export function RegisterForm() {
               name={key}
               {...attributes}
               value={values[key]}
-              onChange={(event) =>
-                setValues((current) => ({ ...current, [key]: event.target.value }))
-              }
+              onChange={(event) => {
+                const value = event.target.value;
+                setValues((current) => ({ ...current, [key]: value }));
+                if (errors[key]) {
+                  setErrors((current) => {
+                    const next = { ...current };
+                    delete next[key];
+                    return next;
+                  });
+                }
+                if (error) setError(null);
+              }}
               aria-invalid={Boolean(errors[key])}
               aria-describedby={errors[key] ? `register-${key}-error` : undefined}
             />

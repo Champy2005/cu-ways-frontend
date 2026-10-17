@@ -12,8 +12,18 @@ type UserProfileCardProps = {
 };
 
 export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
-  const { user, phone, lineID, error, success, isPending, setPhone, setLineID, handleSubmit } =
-    useContactForm(initialUser, updateCurrentUser);
+  const {
+    user,
+    phone,
+    lineID,
+    error,
+    phoneError,
+    success,
+    isPending,
+    setPhone,
+    setLineID,
+    handleSubmit,
+  } = useContactForm(initialUser, updateCurrentUser);
 
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
@@ -35,19 +45,25 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
               className="text-xs font-medium uppercase tracking-wide text-zinc-500"
               htmlFor="profile-phone"
             >
-              Phone number <span aria-hidden="true">*</span>
+              Phone number
             </label>
             <Input
               id="profile-phone"
               className="mt-2"
-              required
               autoComplete="tel"
               maxLength={20}
               placeholder="Not provided"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               disabled={isPending}
+              aria-invalid={Boolean(phoneError)}
+              aria-describedby={phoneError ? "profile-phone-error" : undefined}
             />
+            {phoneError ? (
+              <p id="profile-phone-error" className="mt-1 text-sm text-red-700" role="alert">
+                {phoneError}
+              </p>
+            ) : null}
           </div>
           <div>
             <label
@@ -73,7 +89,7 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
             </p>
           </div>
         </div>
-        <p className="mt-3 text-xs text-zinc-500">Phone number is required. LINE ID is optional.</p>
+        <p className="mt-3 text-xs text-zinc-500">Phone number and LINE ID are optional.</p>
         {error ? (
           <p className="mt-4 text-sm text-red-700" role="alert">
             {error}

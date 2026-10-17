@@ -32,7 +32,7 @@ describe("authentication input validation", () => {
     );
   });
 
-  it("rejects a blank phone after normalization", () => {
+  it("allows a blank phone and normalizes it to null", () => {
     const normalized = normalizeRegisterInput({
       ...validRegistration,
       phone: "   ",
@@ -40,7 +40,17 @@ describe("authentication input validation", () => {
     });
 
     expect(normalized).toMatchObject({ phone: null, line_id: null });
-    expect(validateRegisterInput(normalized)).toBe(false);
-    expect(registerValidationMessage(normalized)).toContain("Phone");
+    expect(validateRegisterInput(normalized)).toBe(true);
+    expect(registerValidationMessage(normalized)).toBeNull();
+  });
+
+  it("rejects a phone that is too long", () => {
+    const tooLong = {
+      ...validRegistration,
+      phone: "1".repeat(21),
+    };
+
+    expect(validateRegisterInput(tooLong)).toBe(false);
+    expect(registerValidationMessage(tooLong)).toContain("Phone");
   });
 });
