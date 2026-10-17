@@ -51,4 +51,14 @@ describe("Job draft IDs", () => {
     expect(saveJobDraft(values, surveyIds)).toBe(2);
     expect(readJobDraftSnapshot("1")).toBe(original);
   });
+
+  it("rejects saving zero surveys and preserves the last linked survey", () => {
+    const jobId = saveJobDraft(values, surveyIds);
+    const original = readJobDraftSnapshot(String(jobId));
+
+    expect(() => saveJobDraft(values, [], jobId)).toThrow("At least one survey is required.");
+    expect(readJobDraftSnapshot(String(jobId))).toBe(original);
+    expect(() => saveJobDraft(values, [])).toThrow("At least one survey is required.");
+    expect(saveJobDraft(values, surveyIds)).toBe(2);
+  });
 });

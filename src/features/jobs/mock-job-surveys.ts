@@ -1,6 +1,8 @@
 import type { JobSurveyOption } from "@/features/jobs/types";
 
-// Temporary fixtures for the create-job UI. Replace with creator surveys when connected.
+// Temporary fixtures for the job UI. Replace with creator surveys when connected.
+export const MOCK_JOB_SURVEY_LINKED_ON = "2026-09-29";
+
 export const MOCK_JOB_SURVEYS: readonly JobSurveyOption[] = [
   {
     id: "SV-104",
