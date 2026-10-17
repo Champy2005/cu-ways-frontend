@@ -30,6 +30,7 @@ export function saveJobDraft(
   selectedSurveyIds: string[],
   existingId?: number,
 ): number {
+  if (selectedSurveyIds.length === 0) throw new Error("At least one survey is required.");
   const id = existingId ?? nextJobDraftId();
   const draft: JobDraft = {
     id,

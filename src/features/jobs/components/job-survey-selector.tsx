@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import type { JobSurveyOption } from "@/features/jobs/types";
+import { cn } from "@/lib/utils";
 
 type JobSurveySelectorProps = {
   surveys: readonly JobSurveyOption[];
   initialSelectedSurveyIds: readonly string[];
+  linkedSurveyIds?: readonly string[];
+  backLabel?: string;
   onBack: () => void;
   onSave: (surveyIds: string[]) => void;
 };
@@ -18,13 +21,19 @@ type JobSurveySelectorProps = {
 export function JobSurveySelector({
   surveys,
   initialSelectedSurveyIds,
+  linkedSurveyIds = [],
+  backLabel = "Back to create job",
   onBack,
   onSave,
 }: JobSurveySelectorProps) {
-  const [selectedIds, setSelectedIds] = useState(() => [...initialSelectedSurveyIds]);
+  const [selectedIds, setSelectedIds] = useState(() =>
+    initialSelectedSurveyIds.filter((id) => !linkedSurveyIds.includes(id)),
+  );
   const selectedCount = selectedIds.length;
+  const availableCount = surveys.filter((survey) => !linkedSurveyIds.includes(survey.id)).length;
 
   function toggleSurvey(surveyId: string, checked: boolean) {
+    if (linkedSurveyIds.includes(surveyId)) return;
     setSelectedIds((current) =>
       checked ? [...current, surveyId] : current.filter((id) => id !== surveyId),
     );
@@ -36,7 +45,7 @@ export function JobSurveySelector({
         <Button
           type="button"
           variant="ghost"
-          aria-label="Back to create job"
+          aria-label={backLabel}
           onClick={onBack}
           className="-ml-2 size-10 shrink-0 rounded-lg text-[var(--mk-text)]"
         >
@@ -80,7 +89,7 @@ export function JobSurveySelector({
         <div className="mb-3 flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base leading-5 font-bold text-[var(--mk-text)]">Your surveys</h2>
-            <p className="mt-0.5 text-xs text-[var(--mk-muted)]">{surveys.length} available</p>
+            <p className="mt-0.5 text-xs text-[var(--mk-muted)]">{availableCount} available</p>
           </div>
           <p aria-live="polite" className="text-xs font-semibold text-[var(--mk-info)]">
             {selectedCount} selected
@@ -88,35 +97,60 @@ export function JobSurveySelector({
         </div>
 
         <ul className="space-y-2.5">
-          {surveys.map((survey) => (
-            <li key={survey.id}>
-              <label className="flex min-h-14 cursor-pointer items-center gap-3 rounded-[14px] border border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 py-2.5 shadow-card transition-colors has-[[data-checked]]:border-[var(--mk-accent)]">
-                <Checkbox
-                  name="surveys"
-                  value={survey.id}
-                  checked={selectedIds.includes(survey.id)}
-                  onCheckedChange={(checked) => toggleSurvey(survey.id, checked)}
-                  aria-labelledby={`survey-title-${survey.id}`}
-                  aria-describedby={`survey-details-${survey.id}`}
-                  className="size-5 rounded-[5px] border-[var(--mk-muted)] data-checked:border-[var(--mk-action)] data-checked:bg-[var(--mk-action)] data-checked:text-white"
-                />
-                <span className="min-w-0">
-                  <span
-                    id={`survey-title-${survey.id}`}
-                    className="block text-sm leading-5 font-bold text-[var(--mk-text)]"
-                  >
-                    {survey.title}
+          {surveys.map((survey) => {
+            const isLinked = linkedSurveyIds.includes(survey.id);
+            return (
+              <li key={survey.id}>
+                <label
+                  className={cn(
+                    "flex min-h-14 items-center gap-3 rounded-[14px] border border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 py-2.5 transition-colors",
+                    isLinked
+                      ? "cursor-not-allowed"
+                      : "cursor-pointer shadow-card has-[[data-checked]]:border-[var(--mk-accent)]",
+                  )}
+                >
+                  <Checkbox
+                    name="surveys"
+                    value={survey.id}
+                    disabled={isLinked}
+                    checked={!isLinked && selectedIds.includes(survey.id)}
+                    onCheckedChange={(checked) => toggleSurvey(survey.id, checked)}
+                    aria-labelledby={`survey-title-${survey.id}`}
+                    aria-describedby={`survey-details-${survey.id}`}
+                    className={cn(
+                      "size-5 rounded-[5px] border-[var(--mk-muted)]",
+                      isLinked
+                        ? "bg-[var(--mk-field)] disabled:opacity-100"
+                        : "data-checked:border-[var(--mk-action)] data-checked:bg-[var(--mk-action)] data-checked:text-white",
+                    )}
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span
+                      id={`survey-title-${survey.id}`}
+                      className={cn(
+                        "block text-sm leading-5 font-bold",
+                        isLinked ? "text-[var(--mk-muted)]" : "text-[var(--mk-text)]",
+                      )}
+                    >
+                      {survey.title}
+                    </span>
+                    <span
+                      id={`survey-details-${survey.id}`}
+                      className="block text-xs leading-4 text-[var(--mk-muted)]"
+                    >
+                      {survey.id} ·{" "}
+                      {isLinked ? "Already linked" : `Target: ${survey.targetResponses} responses`}
+                    </span>
                   </span>
-                  <span
-                    id={`survey-details-${survey.id}`}
-                    className="block text-xs leading-4 text-[var(--mk-muted)]"
-                  >
-                    {survey.id} · Target: {survey.targetResponses} responses
-                  </span>
-                </span>
-              </label>
-            </li>
-          ))}
+                  {isLinked && (
+                    <span className="shrink-0 rounded-full border border-[var(--mk-border)] bg-[var(--mk-field)] px-2 py-0.5 text-[11px] leading-4 font-semibold text-[var(--mk-muted)]">
+                      Linked
+                    </span>
+                  )}
+                </label>
+              </li>
+            );
+          })}
         </ul>
       </fieldset>
 
@@ -130,7 +164,7 @@ export function JobSurveySelector({
 
       <Button
         type="button"
-        onClick={() => onSave(selectedIds)}
+        onClick={() => onSave([...new Set([...linkedSurveyIds, ...selectedIds])])}
         disabled={selectedCount === 0}
         className="mt-6 h-11 w-full gap-2 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white shadow-card hover:bg-[var(--mk-action-hover)]"
       >
