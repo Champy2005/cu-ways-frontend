@@ -1,33 +1,133 @@
 "use client";
 
 import { Check, ChevronLeft, CircleHelp, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { loadJobSurveys, type JobSurveysActionState } from "@/features/jobs/actions";
+import { surveyDisplayId } from "@/features/jobs/survey-options";
 import type { JobSurveyOption } from "@/features/jobs/types";
 import { cn } from "@/lib/utils";
 
 type JobSurveySelectorProps = {
-  surveys: readonly JobSurveyOption[];
   initialSelectedSurveyIds: readonly string[];
   linkedSurveyIds?: readonly string[];
   backLabel?: string;
   onBack: () => void;
-  onSave: (surveyIds: string[]) => void;
+  onSave: (surveyIds: string[], surveys: readonly JobSurveyOption[]) => void;
 };
 
-export function JobSurveySelector({
+function SurveySelectorHeader({ onBack, backLabel }: { onBack: () => void; backLabel: string }) {
+  return (
+    <header className="mb-7 flex items-center gap-1">
+      <Button
+        type="button"
+        variant="ghost"
+        aria-label={backLabel}
+        onClick={onBack}
+        className="-ml-2 size-10 shrink-0 rounded-lg text-[var(--mk-text)]"
+      >
+        <ChevronLeft aria-hidden="true" className="size-5" />
+      </Button>
+      <div>
+        <h1
+          id="select-surveys-heading"
+          className="text-lg leading-6 font-bold text-[var(--mk-text)]"
+        >
+          Select surveys
+        </h1>
+        <p className="mt-0.5 text-xs text-[var(--mk-muted)]">Choose one or more for this job</p>
+      </div>
+    </header>
+  );
+}
+
+export function JobSurveySelector(props: JobSurveySelectorProps) {
+  const [result, setResult] = useState<JobSurveysActionState | { status: "loading" }>({
+    status: "loading",
+  });
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    loadJobSurveys()
+      .then((response) => {
+        if (active) setResult(response);
+      })
+      .catch(() => {
+        if (active)
+          setResult({
+            status: "error",
+            message: "Your surveys could not be loaded. Please try again.",
+          });
+      });
+    return () => {
+      active = false;
+    };
+  }, [attempt]);
+
+  if (result.status === "success" && result.surveys.length > 0) {
+    return <SurveySelectorContent {...props} surveys={result.surveys} />;
+  }
+  function retry() {
+    setResult({ status: "loading" });
+    setAttempt((current) => current + 1);
+  }
+  return (
+    <section
+      aria-labelledby="select-surveys-heading"
+      className="mx-auto w-full max-w-md text-[var(--mk-text)]"
+    >
+      <SurveySelectorHeader
+        onBack={props.onBack}
+        backLabel={props.backLabel ?? "Back to create job"}
+      />
+      {result.status === "loading" ? (
+        <p role="status" className="text-sm text-[var(--mk-muted)]">
+          Loading your surveys…
+        </p>
+      ) : (
+        <div className="rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 shadow-card">
+          {result.status === "error" ? (
+            <div role="alert">
+              <h2 className="text-base font-bold">Your surveys could not be loaded</h2>
+              <p className="mt-2 text-sm text-[var(--mk-muted)]">{result.message}</p>
+            </div>
+          ) : (
+            <div role="status">
+              <h2 className="text-base font-bold">No surveys yet</h2>
+              <p className="mt-2 text-sm text-[var(--mk-muted)]">
+                Create a survey first, then return here to select it.
+              </p>
+            </div>
+          )}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={retry}
+            className="mt-4 border-[var(--mk-border)] text-[var(--mk-text)]"
+          >
+            {result.status === "error" ? "Try again" : "Refresh surveys"}
+          </Button>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function SurveySelectorContent({
   surveys,
   initialSelectedSurveyIds,
   linkedSurveyIds = [],
   backLabel = "Back to create job",
   onBack,
   onSave,
-}: JobSurveySelectorProps) {
+}: JobSurveySelectorProps & { surveys: readonly JobSurveyOption[] }) {
   const [selectedIds, setSelectedIds] = useState(() =>
-    initialSelectedSurveyIds.filter((id) => !linkedSurveyIds.includes(id)),
+    initialSelectedSurveyIds.filter(
+      (id) => !linkedSurveyIds.includes(id) && surveys.some((survey) => survey.id === id),
+    ),
   );
   const selectedCount = selectedIds.length;
   const availableCount = surveys.filter((survey) => !linkedSurveyIds.includes(survey.id)).length;
@@ -41,26 +141,7 @@ export function JobSurveySelector({
 
   return (
     <section aria-labelledby="select-surveys-heading" className="mx-auto w-full max-w-md">
-      <header className="mb-7 flex items-center gap-1">
-        <Button
-          type="button"
-          variant="ghost"
-          aria-label={backLabel}
-          onClick={onBack}
-          className="-ml-2 size-10 shrink-0 rounded-lg text-[var(--mk-text)]"
-        >
-          <ChevronLeft aria-hidden="true" className="size-5" />
-        </Button>
-        <div>
-          <h1
-            id="select-surveys-heading"
-            className="text-lg leading-6 font-bold text-[var(--mk-text)]"
-          >
-            Select surveys
-          </h1>
-          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">Choose one or more for this job</p>
-        </div>
-      </header>
+      <SurveySelectorHeader onBack={onBack} backLabel={backLabel} />
 
       <div className="mb-3 space-y-1.5">
         <label
@@ -138,8 +219,12 @@ export function JobSurveySelector({
                       id={`survey-details-${survey.id}`}
                       className="block text-xs leading-4 text-[var(--mk-muted)]"
                     >
-                      {survey.id} ·{" "}
-                      {isLinked ? "Already linked" : `Target: ${survey.targetResponses} responses`}
+                      {surveyDisplayId(survey.id)} ·{" "}
+                      {isLinked
+                        ? "Already linked"
+                        : survey.targetResponses === null
+                          ? "Target not specified"
+                          : `Target: ${survey.targetResponses} responses`}
                     </span>
                   </span>
                   {isLinked && (
@@ -164,7 +249,7 @@ export function JobSurveySelector({
 
       <Button
         type="button"
-        onClick={() => onSave([...new Set([...linkedSurveyIds, ...selectedIds])])}
+        onClick={() => onSave([...new Set([...linkedSurveyIds, ...selectedIds])], surveys)}
         disabled={selectedCount === 0}
         className="mt-6 h-11 w-full gap-2 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white shadow-card hover:bg-[var(--mk-action-hover)]"
       >

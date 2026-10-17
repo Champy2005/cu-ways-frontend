@@ -7,7 +7,7 @@ export type SentJobInvitation = components["schemas"]["SentJobRequest"];
 export type JobSurveyOption = {
   id: string;
   title: string;
-  targetResponses: number;
+  targetResponses: number | null;
 };
 
 export type JobInviteMarketer = {

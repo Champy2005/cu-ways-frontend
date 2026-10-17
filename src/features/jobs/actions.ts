@@ -3,7 +3,7 @@
 import type { components } from "@/lib/api/generated/backend";
 import { ApiError } from "@/lib/api/errors";
 import { serverApiRequest } from "@/lib/api/server-client";
-import { getJobSentInvitations } from "@/features/jobs/api";
+import { getCreatorSurveys, getJobSentInvitations } from "@/features/jobs/api";
 import { isActiveJobInvitation } from "@/features/jobs/types";
 import { getSession } from "@/lib/auth/session";
 import { listMarketers } from "@/features/marketer-discovery/api";
@@ -12,8 +12,29 @@ import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
 import {
   validateSentJobInvitations,
   type JobInviteMarketer,
+  type JobSurveyOption,
   type SentJobInvitation,
 } from "@/features/jobs/types";
+
+export type JobSurveysActionState =
+  { status: "success"; surveys: JobSurveyOption[] } | { status: "error"; message: string };
+
+export async function loadJobSurveys(): Promise<JobSurveysActionState> {
+  try {
+    if (!(await getSession())) {
+      return { status: "error", message: "Your session expired. Sign in again to continue." };
+    }
+    return { status: "success", surveys: await getCreatorSurveys() };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) {
+      return { status: "error", message: "Your session expired. Sign in again to continue." };
+    }
+    if (error instanceof ApiError && error.status === 403) {
+      return { status: "error", message: "Creator access is required to view your surveys." };
+    }
+    return { status: "error", message: "Your surveys could not be loaded. Please try again." };
+  }
+}
 
 export type JobRequestActionState =
   | { status: "idle" }

@@ -14,7 +14,10 @@ import {
 
 vi.mock("@/lib/auth/session", () => ({ getSession: vi.fn() }));
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn(), serverApiRequest: vi.fn() }));
-vi.mock("@/features/jobs/api", () => ({ getJobSentInvitations: vi.fn() }));
+vi.mock("@/features/jobs/api", () => ({
+  getJobSentInvitations: vi.fn(),
+  getCreatorSurveys: vi.fn(),
+}));
 vi.mock("@/features/marketer-discovery/api", () => ({ listMarketers: vi.fn() }));
 
 const sentRequest = (

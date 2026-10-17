@@ -1,9 +1,12 @@
 import { createJobFieldErrors, type CreateJobValues } from "@/features/jobs/schemas";
+import { isJobSurveyOption } from "@/features/jobs/survey-options";
+import type { JobSurveyOption } from "@/features/jobs/types";
 
 export type JobDraft = {
   id: number;
   values: CreateJobValues;
   selectedSurveyIds: string[];
+  surveys?: JobSurveyOption[];
   status: "Pending";
 };
 
@@ -29,18 +32,36 @@ export function saveJobDraft(
   values: CreateJobValues,
   selectedSurveyIds: string[],
   existingId?: number,
+  surveys?: readonly JobSurveyOption[],
 ): number {
   if (selectedSurveyIds.length === 0) throw new Error("At least one survey is required.");
   const id = existingId ?? nextJobDraftId();
+  const existing = existingId ? parseJobDraft(readJobDraftSnapshot(String(id)), String(id)) : null;
+  const options = new Map(
+    (surveys ?? existing?.surveys ?? []).map((survey) => [survey.id, survey]),
+  );
   const draft: JobDraft = {
     id,
     values: { ...values, title: values.title.trim(), budget: values.budget.trim() },
     selectedSurveyIds: [...selectedSurveyIds],
+    surveys: selectedSurveyIds.flatMap((surveyId) => {
+      const survey = options.get(surveyId);
+      return survey ? [survey] : [];
+    }),
     status: "Pending",
   };
   window.sessionStorage.setItem(`${DRAFT_KEY_PREFIX}${id}`, JSON.stringify(draft));
   window.dispatchEvent(new Event(DRAFT_CHANGE_EVENT));
   return id;
+}
+
+function validSurveyDetails(surveys: unknown, selectedIds: string[]): boolean {
+  if (surveys === undefined) return true;
+  if (!Array.isArray(surveys) || !surveys.every(isJobSurveyOption)) return false;
+  return (
+    new Set(surveys.map((survey) => survey.id)).size === surveys.length &&
+    surveys.every((survey) => selectedIds.includes(survey.id))
+  );
 }
 
 export function readJobDraftSnapshot(id: string): string | null {
@@ -81,6 +102,7 @@ export function parseJobDraft(raw: string | null, expectedId: string): JobDraft 
       new Set(draft.selectedSurveyIds).size !== draft.selectedSurveyIds.length
     )
       return null;
+    if (!validSurveyDetails(draft.surveys, draft.selectedSurveyIds)) return null;
     if (Object.keys(createJobFieldErrors(values, draft.selectedSurveyIds)).length > 0) return null;
     const date = new Date(`${values.deadline}T00:00:00Z`);
     if (date.toISOString().slice(0, 10) !== values.deadline) return null;
