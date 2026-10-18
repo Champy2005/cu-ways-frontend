@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ChevronLeft, Circle, CircleCheck, Clock3, Share2, Smile, X } from "lucide-react";
-import { useState } from "react";
+import { Check, ChevronLeft, Circle, Clock3, Share2, Smile } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  JobSuccessNotification,
+  type JobSuccessNotice,
+} from "@/features/jobs/components/job-success-notification";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 import { cn } from "@/lib/utils";
 
@@ -113,7 +116,7 @@ function JobStatusTracking({
 }
 
 function JobDeadline({ value }: { value: string }) {
-  if (!value) return <>Not provided</>;
+  if (!value) return <>-</>;
   const formatted = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "short",
@@ -127,15 +130,17 @@ export function JobCreatedView({
   job,
   onEdit,
   canEdit = true,
+  notification,
+  onDismissNotification,
 }: {
   job: JobCreatedDetails;
   onEdit: () => void;
   canEdit?: boolean;
+  notification?: JobSuccessNotice | null;
+  onDismissNotification?: () => void;
 }) {
-  const [showNotification, setShowNotification] = useState(true);
   const offerAccepted = job.status === "Accepted";
   const showOfferTracking = ["Pending", "Accepted"].includes(job.status);
-  const notificationTitle = offerAccepted ? "Offer accepted" : "Job created";
 
   return (
     <section aria-labelledby="job-created-heading" className="mx-auto w-full max-w-md">
@@ -161,35 +166,7 @@ export function JobCreatedView({
       </header>
 
       <div className="space-y-4">
-        {showNotification && showOfferTracking && (
-          <div
-            role="status"
-            className="relative flex items-center gap-2.5 rounded-[14px] border border-[var(--mk-success)] bg-[var(--mk-positive-soft)] p-3 shadow-card"
-          >
-            <CircleCheck
-              aria-hidden="true"
-              className="size-[18px] shrink-0 text-[var(--mk-success)]"
-            />
-            <div className="min-w-0 flex-1 text-xs text-[var(--mk-text)]">
-              <p className="pr-5 font-bold">{notificationTitle}</p>
-              <p className="mt-0.5 text-[11px] leading-4 text-[var(--mk-muted)]">
-                {offerAccepted
-                  ? "A marketer's offer has been accepted. The job is now in progress."
-                  : "Your job has been created with Pending status. Marketers can now view and submit offers."}
-              </p>
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              aria-label={`Dismiss ${notificationTitle.toLowerCase()} notification`}
-              onClick={() => setShowNotification(false)}
-              className="absolute top-2 right-2 text-[var(--mk-muted)]"
-            >
-              <X aria-hidden="true" className="size-3" />
-            </Button>
-          </div>
-        )}
+        <JobSuccessNotification notice={notification} onDismiss={onDismissNotification} />
 
         <Card
           role="region"
