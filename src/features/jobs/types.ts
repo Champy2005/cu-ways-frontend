@@ -69,19 +69,11 @@ export function validateSentJobInvitations(
   return value as SentJobInvitation[];
 }
 
-const VALID_OFFER_STATUSES = new Set<OfferStatus>([
-  "Pending",
-  "Accepted",
-  "Rejected",
-  "Withdrawn",
-]);
+const VALID_OFFER_STATUSES = new Set<OfferStatus>(["Pending", "Accepted", "Rejected", "Withdrawn"]);
 
 function isPositiveInt32(value: unknown): value is number {
   return (
-    typeof value === "number" &&
-    Number.isSafeInteger(value) &&
-    value > 0 &&
-    value <= 2_147_483_647
+    typeof value === "number" && Number.isSafeInteger(value) && value > 0 && value <= 2_147_483_647
   );
 }
 
