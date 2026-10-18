@@ -5,9 +5,11 @@ import { serverApiGet } from "@/lib/api/server-client";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import {
   getCreatorJobs,
+  getJobOffers,
   getJobSentInvitations,
   loadCreatorJobs,
   loadJobInviteInitialData,
+  loadJobOffersInitialData,
 } from "@/features/jobs/api";
 
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
@@ -160,6 +162,100 @@ describe("Creator job invitation data", () => {
     expect(result.invitations).toEqual({
       status: "error",
       message: "Current invitations could not be loaded. Refresh before sending any new ones.",
+    });
+  });
+
+  describe("Creator job offers comparison", () => {
+    const mockOffer = {
+      offer_id: 101,
+      job_id: 17,
+      job_request_id: 23,
+      marketer_id: 7,
+      offered_price: "2500.00",
+      delivery_date: "2026-11-01T00:00:00Z",
+      message: "Can complete survey responses quickly.",
+      offer_status: "Pending" as const,
+      created_at: "2026-10-02T10:00:00Z",
+      marketer: {
+        user_id: 7,
+        name: "Mali S.",
+        email: "mali@example.com",
+        bio: "Bio",
+        experience_years: 2,
+        availability_status: "available" as const,
+        availability_text: "Available",
+        expertise: [],
+        campuses: [],
+        created_at: "2026-01-01T00:00:00Z",
+      },
+      rating: {
+        average_rating: 4.8,
+        review_count: 5,
+        completed_jobs: 6,
+        is_rated: true,
+      },
+    };
+
+    it("fetches and validates offers for an owned job", async () => {
+      vi.mocked(serverApiGet).mockResolvedValue([mockOffer]);
+
+      const result = await getJobOffers(17);
+
+      expect(result).toEqual([mockOffer]);
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/offers");
+    });
+
+    it("appends status filter query param when provided", async () => {
+      vi.mocked(serverApiGet).mockResolvedValue([mockOffer]);
+
+      await getJobOffers(17, "Pending");
+
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/offers?status=Pending");
+    });
+
+    it("rejects invalid or malformed offer records", async () => {
+      vi.mocked(serverApiGet).mockResolvedValue([{ ...mockOffer, offer_id: "not-a-number" }]);
+
+      await expect(getJobOffers(17)).rejects.toThrow("The offers comparison response was invalid.");
+    });
+
+    it("loads job details and offers concurrently", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce(job).mockResolvedValueOnce([mockOffer]);
+
+      const result = await loadJobOffersInitialData(17);
+
+      expect(result).toEqual({
+        job,
+        offers: {
+          status: "success",
+          items: [mockOffer],
+        },
+      });
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17");
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/offers");
+    });
+
+    it("returns error state when offers fail to load but keeps job loaded", async () => {
+      vi.mocked(serverApiGet)
+        .mockResolvedValueOnce(job)
+        .mockRejectedValueOnce(new Error("Network failed"));
+
+      const result = await loadJobOffersInitialData(17);
+
+      expect(result.job).toEqual(job);
+      expect(result.offers).toEqual({
+        status: "error",
+        message: "Offers could not be loaded. Refresh and try again.",
+      });
+    });
+
+    it("fails early if the job itself cannot be loaded", async () => {
+      vi.mocked(serverApiGet).mockRejectedValueOnce(
+        new ApiError(404, "not_found", "Job not found"),
+      );
+
+      await expect(loadJobOffersInitialData(17)).rejects.toThrow("Job not found");
+      expect(serverApiGet).toHaveBeenCalledTimes(1);
     });
   });
 });

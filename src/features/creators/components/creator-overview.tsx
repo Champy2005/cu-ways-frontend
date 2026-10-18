@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, UserPlus } from "lucide-react";
+import { Briefcase, Search, UserPlus } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { MarketerIdentity } from "@/features/marketers/components/marketer-identity";
@@ -50,6 +50,23 @@ export function CreatorOverview({ name }: { name: string }) {
             >
               <UserPlus aria-hidden="true" className="size-4" />
               Invite marketers
+            </Link>
+          </Card>
+        </section>
+        <section aria-labelledby="creator-job-offers">
+          <h2 id="creator-job-offers" className="mk-section-title">
+            Job offers & bids
+          </h2>
+          <Card className="mk-card mk-card-padding gap-0">
+            <p className="text-sm text-[var(--mk-muted)]">
+              Compare marketer proposals, offered prices, and ratings to make hiring decisions.
+            </p>
+            <Link
+              href="/creator/jobs/offers"
+              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
+            >
+              <Briefcase aria-hidden="true" className="size-4" />
+              Compare job offers
             </Link>
           </Card>
         </section>

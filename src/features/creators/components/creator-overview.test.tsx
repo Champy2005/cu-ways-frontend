@@ -20,6 +20,10 @@ describe("CreatorOverview", () => {
       "href",
       "/creator/jobs/invite",
     );
+    expect(screen.getByRole("link", { name: "Compare job offers" })).toHaveAttribute(
+      "href",
+      "/creator/jobs/offers",
+    );
   });
 
   it("leaves out the marketer-only quickview and recent jobs", () => {
