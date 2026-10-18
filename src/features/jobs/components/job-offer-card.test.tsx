@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { JobOfferCard } from "@/features/jobs/components/job-offer-card";
@@ -76,15 +76,15 @@ describe("JobOfferCard", () => {
     render(<JobOfferCard comparison={baseComparison} />);
 
     expect(screen.getByRole("heading", { name: "Somchai Marketing" })).toBeInTheDocument();
-    expect(screen.getByText("• 3 years")).toBeInTheDocument();
+    expect(screen.getByText("· 3 years")).toBeInTheDocument();
     expect(screen.getByText("฿2,500")).toBeInTheDocument();
     expect(screen.getByText("Nov 15, 2026")).toBeInTheDocument();
     expect(
-      screen.getByText('"I have conducted campus surveys with 500+ participants before."'),
+      screen.getByText("I have conducted campus surveys with 500+ participants before."),
     ).toBeInTheDocument();
     expect(screen.getByText("Pending")).toBeInTheDocument();
     expect(screen.getByText("4.8")).toBeInTheDocument();
-    expect(screen.getByText("(12 reviews • 15 completed)")).toBeInTheDocument();
+    expect(screen.getByText("(12 reviews)")).toBeInTheDocument();
   });
 
   it("handles unrated state for marketers without reviews", () => {
@@ -111,41 +111,24 @@ describe("JobOfferCard", () => {
     expect(screen.queryByText(/0 reviews/)).not.toBeInTheDocument();
   });
 
-  it("expands essential marketer details on click and links to the public profile", () => {
+  it("opens full marketer details in a dialog and returns to the compact card", async () => {
     render(<JobOfferCard comparison={baseComparison} />);
-
-    // Initially collapsed
-    expect(screen.queryByTestId("expanded-details-101")).not.toBeInTheDocument();
-
-    const expandButton = screen.getByRole("button", {
-      name: /view marketer details/i,
-    });
-    expect(expandButton).toHaveAttribute("aria-expanded", "false");
-
-    // Click to expand
-    fireEvent.click(expandButton);
-
-    expect(screen.getByTestId("expanded-details-101")).toBeInTheDocument();
-    expect(expandButton).toHaveAttribute("aria-expanded", "true");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    const trigger = screen.getByRole("button", { name: /view details/i });
+    fireEvent.click(trigger);
+    const dialog = await screen.findByRole("dialog", { name: "Somchai Marketing" });
+    expect(within(dialog).getByText(baseComparison.marketer.bio)).toBeInTheDocument();
+    expect(within(dialog).getByText("available").parentElement).toHaveTextContent(
+      "available · Available for full-time survey distribution",
+    );
+    expect(within(dialog).getByText("Data Collection, Field Marketing")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "Experienced field researcher and marketer specializing in university demographics.",
-      ),
+      within(dialog).getByText("Chulalongkorn University, Thammasat University"),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("available · Available for full-time survey distribution"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Data Collection")).toBeInTheDocument();
-    expect(screen.getByText("Field Marketing")).toBeInTheDocument();
-    expect(screen.getByText("Chulalongkorn University")).toBeInTheDocument();
-    expect(screen.getByText("Thammasat University")).toBeInTheDocument();
-
-    // Check link to full profile
-    const profileLink = screen.getByRole("link", { name: /view full profile/i });
-    expect(profileLink).toHaveAttribute("href", "/marketers/201");
-
-    // Click to collapse
-    fireEvent.click(screen.getByRole("button", { name: /hide marketer details/i }));
-    expect(screen.queryByTestId("expanded-details-101")).not.toBeInTheDocument();
+    expect(within(dialog).getByText("4.8 / 5")).toBeInTheDocument();
+    expect(within(dialog).getByText("15")).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close details" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 });

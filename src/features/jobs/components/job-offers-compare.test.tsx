@@ -170,6 +170,7 @@ describe("JobOffersCompare", () => {
     // Reset filter
     fireEvent.click(screen.getByRole("button", { name: "Reset filter" }));
     expect(screen.getByText("Showing 3 offers")).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "All (3)" })).toHaveFocus();
   });
 
   it("sorts offers by highest rating first and by highest price first", () => {

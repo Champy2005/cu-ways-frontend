@@ -60,7 +60,8 @@ There is no public marketer-by-ID service catalog endpoint in the current backen
 `/marketers/[id]/services` page shows an explicit unavailable state and does not approximate the owner
 catalog from search results. Creator-facing discovery and detail pages use `GET /api/v1/marketers`;
 the temporary detail lookup searches the first 100 marketers until a direct endpoint exists. Recent
-job history, individual reviews, messaging, and hiring actions remain unavailable.
+job history, individual reviews, and messaging remain unavailable. Creator hiring is available
+from `/creator/jobs/[id]/offers` through the backend offer-acceptance endpoint (US23).
 
 ## Device-specific navigation
 

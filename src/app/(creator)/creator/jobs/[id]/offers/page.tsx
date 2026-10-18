@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, UserPlus } from "lucide-react";
 
 import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { loadJobOffersInitialData } from "@/features/jobs/api";
-import { JobOffersCompare } from "@/features/jobs/components/job-offers-compare";
-import type { JobOfferComparison } from "@/features/jobs/types";
+import { JobOffersWorkspace } from "@/features/jobs/components/job-offers-workspace";
 
 export const metadata = { title: "Compare Offers | CU Ways" };
 
@@ -50,50 +48,5 @@ export default async function CompareOffersPage({ params }: { params: Promise<{ 
     return <JobUnavailable message={jobAccessMessage(error)} />;
   }
 
-  const offers: JobOfferComparison[] = data.offers.status === "success" ? data.offers.items : [];
-  const surveyTitles = data.job.surveys.map((survey) => survey.title);
-
-  return (
-    <div className="mx-auto w-full max-w-5xl space-y-6 text-[var(--mk-text)]">
-      {/* Header */}
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--mk-border)] pb-5">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/creator/dashboard"
-            aria-label="Back to dashboard"
-            className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--mk-border)] bg-[var(--mk-surface)] text-[var(--mk-text)] shadow-[var(--mk-shadow)] outline-none hover:border-[var(--mk-accent)] focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            <ArrowLeft aria-hidden="true" className="size-5" />
-          </Link>
-          <div className="min-w-0">
-            <h1 className="text-xl font-semibold tracking-tight">Compare Job Offers</h1>
-            <p className="mt-0.5 text-sm text-[var(--mk-muted)]">
-              Job #{data.job.job_id}
-              {surveyTitles.length > 0 ? ` · ${surveyTitles.join(", ")}` : " · No linked surveys"}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/creator/jobs/${jobId}/invite`}
-            className="mk-secondary-button inline-flex min-h-9 items-center justify-center gap-1.5 px-3 text-xs font-semibold"
-          >
-            <UserPlus aria-hidden="true" className="size-3.5" />
-            Invite marketers
-          </Link>
-          <span className="shrink-0 rounded-full border border-[var(--mk-border)] bg-[var(--mk-field)] px-2.5 py-1 text-xs font-medium text-[var(--mk-text)]">
-            {data.job.job_status}
-          </span>
-        </div>
-      </header>
-
-      {/* Main Offers Comparison View */}
-      <JobOffersCompare
-        jobId={jobId}
-        offers={offers}
-        error={data.offers.status === "error" ? data.offers.message : undefined}
-      />
-    </div>
-  );
+  return <JobOffersWorkspace key={jobId} initialData={data} />;
 }

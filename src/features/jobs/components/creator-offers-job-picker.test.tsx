@@ -23,7 +23,7 @@ describe("CreatorOffersJobPicker", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Your active jobs" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Your jobs" })).toBeInTheDocument();
     expect(screen.getByText("Job #17")).toBeInTheDocument();
     expect(screen.getByText("Campus mobility")).toBeInTheDocument();
     expect(screen.getByText("Pending")).toBeInTheDocument();
