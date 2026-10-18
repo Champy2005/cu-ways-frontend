@@ -136,7 +136,7 @@ export function JobOfferCard({ comparison }: JobOfferCardProps) {
               <MessageSquare aria-hidden="true" className="size-3.5" />
               <span>Message from marketer</span>
             </div>
-            <p className="text-sm italic text-[var(--mk-text)]">"{message}"</p>
+            <p className="text-sm italic text-[var(--mk-text)]">&quot;{message}&quot;</p>
           </div>
         )}
 

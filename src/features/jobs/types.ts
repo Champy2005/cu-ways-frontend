@@ -69,37 +69,73 @@ export function validateSentJobInvitations(
   return value as SentJobInvitation[];
 }
 
+const VALID_OFFER_STATUSES = new Set<OfferStatus>([
+  "Pending",
+  "Accepted",
+  "Rejected",
+  "Withdrawn",
+]);
+
+function isPositiveInt32(value: unknown): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isSafeInteger(value) &&
+    value > 0 &&
+    value <= 2_147_483_647
+  );
+}
+
+function isValidOfferStatus(value: unknown): value is OfferStatus {
+  return typeof value === "string" && VALID_OFFER_STATUSES.has(value as OfferStatus);
+}
+
+function isOptionalString(value: unknown): boolean {
+  return value === null || value === undefined || typeof value === "string";
+}
+
+function isValidRatingRecord(value: unknown): value is MarketerRating {
+  if (typeof value !== "object" || value === null) return false;
+  const rating = value as Partial<MarketerRating>;
+  const validAvg = rating.average_rating === null || typeof rating.average_rating === "number";
+  return (
+    typeof rating.is_rated === "boolean" &&
+    validAvg &&
+    typeof rating.review_count === "number" &&
+    typeof rating.completed_jobs === "number"
+  );
+}
+
+function isValidMarketerRecord(value: unknown): value is MarketerProfile {
+  if (typeof value !== "object" || value === null) return false;
+  const marketer = value as Partial<MarketerProfile>;
+  return typeof marketer.name === "string";
+}
+
 function isJobOfferRecord(value: unknown, expectedJobId: number): value is JobOfferComparison {
   if (typeof value !== "object" || value === null) return false;
   const item = value as Partial<JobOfferComparison>;
-  return (
-    Number.isSafeInteger(item.offer_id) &&
-    item.offer_id! > 0 &&
-    item.offer_id! <= 2_147_483_647 &&
-    item.job_id === expectedJobId &&
-    Number.isSafeInteger(item.marketer_id) &&
-    item.marketer_id! > 0 &&
-    item.marketer_id! <= 2_147_483_647 &&
-    typeof item.offered_price === "string" &&
-    (item.offer_status === "Pending" ||
-      item.offer_status === "Accepted" ||
-      item.offer_status === "Rejected" ||
-      item.offer_status === "Withdrawn") &&
-    typeof item.created_at === "string" &&
-    (item.delivery_date === null ||
-      item.delivery_date === undefined ||
-      typeof item.delivery_date === "string") &&
-    (item.message === null || item.message === undefined || typeof item.message === "string") &&
-    typeof item.marketer === "object" &&
-    item.marketer !== null &&
-    typeof item.marketer.name === "string" &&
-    typeof item.rating === "object" &&
-    item.rating !== null &&
-    typeof item.rating.is_rated === "boolean" &&
-    (item.rating.average_rating === null || typeof item.rating.average_rating === "number") &&
-    typeof item.rating.review_count === "number" &&
-    typeof item.rating.completed_jobs === "number"
-  );
+
+  if (
+    !isPositiveInt32(item.offer_id) ||
+    item.job_id !== expectedJobId ||
+    !isPositiveInt32(item.marketer_id)
+  ) {
+    return false;
+  }
+
+  if (typeof item.offered_price !== "string" || !isValidOfferStatus(item.offer_status)) {
+    return false;
+  }
+
+  if (
+    typeof item.created_at !== "string" ||
+    !isOptionalString(item.delivery_date) ||
+    !isOptionalString(item.message)
+  ) {
+    return false;
+  }
+
+  return isValidMarketerRecord(item.marketer) && isValidRatingRecord(item.rating);
 }
 
 export function validateJobOffers(value: unknown, expectedJobId: number): JobOfferComparison[] {
