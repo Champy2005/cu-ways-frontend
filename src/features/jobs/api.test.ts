@@ -182,7 +182,7 @@ describe("Creator job invitation data", () => {
         email: "mali@example.com",
         bio: "Bio",
         experience_years: 2,
-        availability_status: "Available" as const,
+        availability_status: "available" as const,
         availability_text: "Available",
         expertise: [],
         campuses: [],

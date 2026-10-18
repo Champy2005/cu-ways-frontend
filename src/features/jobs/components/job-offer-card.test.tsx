@@ -24,15 +24,15 @@ const baseComparison: JobOfferComparison = {
     line_id: "somchai_mkt",
     bio: "Experienced field researcher and marketer specializing in university demographics.",
     experience_years: 3,
-    availability_status: "Available",
+    availability_status: "available",
     availability_text: "Available for full-time survey distribution",
     expertise: [
-      { id: 1, name: "Data Collection" },
-      { id: 2, name: "Field Marketing" },
+      { slug: "data-collection", name: "Data Collection" },
+      { slug: "field-marketing", name: "Field Marketing" },
     ],
     campuses: [
-      { id: 10, name: "Chulalongkorn University" },
-      { id: 11, name: "Thammasat University" },
+      { slug: "chulalongkorn-university", name: "Chulalongkorn University" },
+      { slug: "thammasat-university", name: "Thammasat University" },
     ],
     created_at: "2026-01-15T00:00:00Z",
   },
@@ -106,7 +106,7 @@ describe("JobOfferCard", () => {
       ),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Available · Available for full-time survey distribution"),
+      screen.getByText("available · Available for full-time survey distribution"),
     ).toBeInTheDocument();
     expect(screen.getByText("Data Collection")).toBeInTheDocument();
     expect(screen.getByText("Field Marketing")).toBeInTheDocument();

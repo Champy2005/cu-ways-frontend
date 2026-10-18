@@ -77,10 +77,10 @@ describe("CompareOffersPage", () => {
               line_id: "ploy_mkt",
               bio: "Researcher bio",
               experience_years: 4,
-              availability_status: "Available",
+              availability_status: "available",
               availability_text: "Full-time",
-              expertise: [{ id: 1, name: "Consumer Research" }],
-              campuses: [{ id: 2, name: "CU Main" }],
+              expertise: [{ slug: "consumer-research", name: "Consumer Research" }],
+              campuses: [{ slug: "cu-main", name: "CU Main" }],
               created_at: "2026-01-01T00:00:00Z",
             },
             rating: {

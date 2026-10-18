@@ -163,7 +163,7 @@ export function JobOfferCard({ comparison }: JobOfferCardProps) {
             {/* Availability */}
             <div>
               <p className="text-xs font-medium text-[var(--mk-muted)]">Availability</p>
-              <p className="mt-1 text-sm font-medium text-[var(--mk-text)]">
+              <p className="mt-1 text-sm font-medium capitalize text-[var(--mk-text)]">
                 {marketer.availability_status}
                 {marketer.availability_text ? ` · ${marketer.availability_text}` : ""}
               </p>
@@ -176,7 +176,7 @@ export function JobOfferCard({ comparison }: JobOfferCardProps) {
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {marketer.expertise.map((exp) => (
                     <span
-                      key={exp.id}
+                      key={exp.slug}
                       className="inline-flex items-center gap-1 rounded-md border border-[var(--mk-border)] bg-[var(--mk-surface)] px-2 py-0.5 text-xs text-[var(--mk-text)]"
                     >
                       <Sparkles aria-hidden="true" className="size-3 text-[var(--mk-accent)]" />
@@ -194,7 +194,7 @@ export function JobOfferCard({ comparison }: JobOfferCardProps) {
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {marketer.campuses.map((campus) => (
                     <span
-                      key={campus.id}
+                      key={campus.slug}
                       className="inline-flex items-center gap-1 rounded-md border border-[var(--mk-border)] bg-[var(--mk-surface)] px-2 py-0.5 text-xs text-[var(--mk-text)]"
                     >
                       <MapPin aria-hidden="true" className="size-3 text-[var(--mk-accent)]" />
