@@ -154,6 +154,24 @@ compile and runtime errors still appear normally.
 The connected backend contracts, required fields, device selection, and remaining
 full-stack checks are in [docs/marketer-api-handoff.md](docs/marketer-api-handoff.md).
 
+## Creator offer comparison and hiring (US22 / US23)
+
+Open `/creator/jobs/offers` to choose an owned job. The comparison view uses compact cards,
+status tabs, and price/rating/delivery sorting. Marketer details and complete messages open in
+an accessible dialog without expanding the grid. Prices preserve satang, delivery dates preserve
+their calendar day, and submission dates use Bangkok time.
+
+On a Pending job, each Pending offer has **Accept offer**. Confirmation shows the marketer,
+price, delivery date, and consequences before hiring. The existing backend acceptance transaction
+marks the job and chosen offer Accepted, rejects competing Pending offers, and closes other
+active invitations. Work starts separately. No individual offer-rejection action is introduced.
+
+The frontend reads the authoritative job and offers after acceptance. Stale decisions refresh
+the comparison instead of reporting success. An uncertain result disables further acceptance
+until **Refresh offers** succeeds; the client never automatically retries a hiring request.
+The selected marketer remains visible after a reload. Dark/light themes, keyboard navigation,
+dialog focus restoration, and narrow layouts share the workspace's existing UI primitives.
+
 ## Direct invitations and custom offers (US20 / US21)
 
 The authenticated `/marketer/invitations` and `/marketer/offer/create?requestId=<id>` routes use

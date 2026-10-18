@@ -6,6 +6,11 @@ import CompareOffersPage from "@/app/(creator)/creator/jobs/[id]/offers/page";
 import { loadJobOffersInitialData } from "@/features/jobs/api";
 import { ApiError } from "@/lib/api/errors";
 
+vi.mock("@/features/jobs/offer-actions", () => ({
+  acceptJobOffer: vi.fn(),
+  refreshJobOffers: vi.fn(),
+}));
+
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(() => {
     throw new Error("NEXT_NOT_FOUND");
@@ -99,12 +104,12 @@ describe("CompareOffersPage", () => {
     });
     render(page);
 
-    expect(screen.getByRole("heading", { name: "Compare Job Offers" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Job offers" })).toBeInTheDocument();
     expect(screen.getByText("Job #15 · Consumer Habits Survey")).toBeInTheDocument();
     expect(screen.getAllByText("Pending").length).toBeGreaterThanOrEqual(2);
-    expect(screen.getByRole("link", { name: "Back to dashboard" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Back to your jobs" })).toHaveAttribute(
       "href",
-      "/creator/dashboard",
+      "/creator/jobs/offers",
     );
     expect(screen.getByRole("link", { name: "Invite marketers" })).toHaveAttribute(
       "href",
