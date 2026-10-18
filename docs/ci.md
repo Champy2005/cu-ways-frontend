@@ -25,11 +25,6 @@ The `Frontend CI` workflow runs these jobs in parallel where possible:
 The last job is named **Frontend quality gate**. It succeeds only when every job in the table
 succeeds.
 
-New runs for the same PR or branch cancel older runs. Coverage and browser evidence uploads run
-after failures, but skip cancelled runs so cancellation does not produce misleading missing-artifact
-errors. The final quality gate still runs and fails when required jobs were cancelled; the latest
-run must complete successfully to satisfy the required check.
-
 The `pnpm audit` portion of the dependency gate always runs and remains blocking. GitHub's separate
 Dependency Review action requires the repository Dependency Graph, so it runs only when the
 repository Actions variable `DEPENDENCY_REVIEW_ENABLED` is exactly `true`. This prevents a missing
