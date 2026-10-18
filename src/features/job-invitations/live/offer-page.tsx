@@ -17,14 +17,19 @@ import { LiveOfferFields } from "./offer-fields";
 import { StatusFeedback } from "./status-feedback";
 import { offerErrors } from "./validation";
 import { useInvitations } from "./use-invitations";
-import type { InvitationEntry } from "./types";
+import type { InvitationEntry, SavedOffer } from "./types";
 import "../invitations.css";
 import "./presentation.css";
 
 export function submissionUnavailable(entry: InvitationEntry, today: string): string | null {
   if (entry.offersUnavailable)
     return "Offers could not be loaded. Refresh before submitting an offer.";
-  if (entry.offer) return "An offer has already been submitted for this invitation.";
+  const canResubmit =
+    entry.offer?.offer_status === "Withdrawn" &&
+    entry.request.request_status === "Accepted" &&
+    entry.request.job.job_status === "Pending";
+  if (entry.offer && !canResubmit)
+    return "An offer has already been submitted for this invitation.";
   if (entry.request.request_status !== "Accepted")
     return "Accept this invitation before submitting an offer. Declined or closed invitations cannot receive offers.";
   if (entry.request.job.job_status !== "Pending") return "This job is no longer accepting offers.";
@@ -42,6 +47,24 @@ function OfferSummary({
   unavailable: string | null;
 }) {
   const offer = entry.offer;
+  const canResubmit =
+    offer?.offer_status === "Withdrawn" &&
+    entry.request.request_status === "Accepted" &&
+    entry.request.job.job_status === "Pending";
+  if (canResubmit) {
+    return (
+      <div
+        data-testid="offer-withdrawn-banner"
+        className="rounded-xl border border-rose-500/30 bg-[#241a1a] p-4 text-sm text-[var(--mk-text)] shadow-sm"
+      >
+        <p className="font-semibold text-white">Offer withdrawn</p>
+        <p className="mt-1 text-zinc-300">
+          You withdrew your offer of {formatPrice(offer.offered_price)} on{" "}
+          {formatDate(offer.created_at)}. You can submit a new one below.
+        </p>
+      </div>
+    );
+  }
   if (offer)
     return (
       <div className="ji-existing" role="status" data-offer-status={offer.offer_status}>
@@ -61,13 +84,81 @@ function OfferSummary({
   return null;
 }
 
+function initialDraft(offer: SavedOffer | null, canResubmit: boolean): OfferInput {
+  if (canResubmit && offer) {
+    return {
+      price: offer.offered_price,
+      deliveryDate: offer.delivery_date ?? "",
+      message: offer.message ?? "",
+    };
+  }
+  return { price: "", deliveryDate: "", message: "" };
+}
+
+function resolveValues(
+  isReadOnly: boolean,
+  offer: SavedOffer | null,
+  draft: OfferInput,
+): OfferInput {
+  if (isReadOnly && offer) {
+    return {
+      price: offer.offered_price,
+      deliveryDate: offer.delivery_date ?? "",
+      message: offer.message ?? "",
+    };
+  }
+  return draft;
+}
+
+function OfferActionsRow({
+  isReadOnly,
+  pending,
+  submitDisabled,
+  onCancel,
+  backButtonRef,
+}: {
+  isReadOnly: boolean;
+  pending: boolean;
+  submitDisabled: boolean;
+  onCancel: () => void;
+  backButtonRef: React.RefObject<HTMLButtonElement | null>;
+}) {
+  const backAppearance = isReadOnly
+    ? ({ variant: "default", className: "ji-primary" } as const)
+    : ({ variant: "outline", className: "ji-secondary" } as const);
+
+  return (
+    <div className="ji-actions">
+      <Button
+        ref={backButtonRef}
+        type="button"
+        {...backAppearance}
+        onClick={onCancel}
+        disabled={pending}
+      >
+        {isReadOnly ? "Back to Invitations" : "Cancel"}
+      </Button>
+      {!isReadOnly && (
+        <Button type="submit" className="ji-primary" disabled={submitDisabled}>
+          {pending ? "Submitting…" : "Submit Offer"}
+        </Button>
+      )}
+    </div>
+  );
+}
+
 export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
   const router = useRouter();
   const requestId = String(initial[0].request.job_request_id);
   const state = useInvitations(initial, requestId);
   const entry = state.entries[0];
   const { request, offer } = entry;
-  const [draft, setDraft] = useState<OfferInput>({ price: "", deliveryDate: "", message: "" });
+  const canResubmit =
+    offer?.offer_status === "Withdrawn" &&
+    request.request_status === "Accepted" &&
+    request.job.job_status === "Pending";
+  const isReadOnly = Boolean(offer && !canResubmit);
+  const [draft, setDraft] = useState<OfferInput>(() => initialDraft(offer, canResubmit));
   const [touched, setTouched] = useState<Partial<Record<keyof OfferInput, boolean>>>({});
   const [discard, setDiscard] = useState(false);
   const action = useAction();
@@ -76,29 +167,23 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
   const today = bangkokDate();
   const deadline = request.job.deadline ? bangkokDate(request.job.deadline) : null;
   const unavailable = submissionUnavailable(entry, today);
-  const values = offer
-    ? {
-        price: offer.offered_price,
-        deliveryDate: offer.delivery_date ?? "",
-        message: offer.message ?? "",
-      }
-    : draft;
-  const backAppearance = offer
-    ? ({ variant: "default", className: "ji-primary" } as const)
-    : ({ variant: "outline", className: "ji-secondary" } as const);
-  const errors = offer ? {} : offerErrors(draft, today, deadline);
+  const values = resolveValues(isReadOnly, offer, draft);
+  const errors = isReadOnly ? {} : offerErrors(draft, today, deadline);
   const visibleErrors = Object.fromEntries(
     Object.entries(errors).filter(([key]) => touched[key as keyof OfferInput]),
   );
+
   function back() {
     router.push("/marketer/invitations?tab=responded");
     router.refresh();
   }
+
   function cancel() {
     if (action.isPending()) return;
-    if (!offer && Object.values(draft).some(Boolean)) setDiscard(true);
+    if (!isReadOnly && Object.values(draft).some(Boolean)) setDiscard(true);
     else back();
   }
+
   async function save() {
     try {
       const saved = await submitInvitationOffer(request.job_request_id, draft);
@@ -111,6 +196,7 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
     state.setNotice("Offer submitted successfully. Your proposed price has been sent for review.");
     await state.refresh(true);
   }
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (action.isPending() || state.blocked || unavailable) return;
@@ -123,9 +209,15 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
     }
     void action.run(save, () => setTouched({}));
   }
+
+  const fieldsetDisabled =
+    action.pending || (!isReadOnly && (state.blocked || Boolean(unavailable)));
+  const submitDisabled =
+    action.pending || state.blocked || Boolean(unavailable) || Object.keys(errors).length > 0;
+
   return (
     <section className="ji-page ji-offer-page ji-live">
-      <PageHeading title={offer ? "Your Offer" : "Submit Your Offer"} onBack={cancel} />
+      <PageHeading title={isReadOnly ? "Your Offer" : "Submit Your Offer"} onBack={cancel} />
       <StatusFeedback
         message={state.notice}
         status={state.authStatus}
@@ -143,12 +235,12 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
         </CardContent>
       </Card>
       <form ref={form} onSubmit={submit} noValidate>
-        <fieldset disabled={action.pending || (!offer && (state.blocked || Boolean(unavailable)))}>
+        <fieldset disabled={fieldsetDisabled}>
           <legend className="sr-only">Custom price offer</legend>
           <LiveOfferFields
             values={values}
             errors={visibleErrors}
-            readOnly={Boolean(offer)}
+            readOnly={isReadOnly}
             today={today}
             deadline={deadline}
             onChange={(key, value) => setDraft((current) => ({ ...current, [key]: value }))}
@@ -156,31 +248,13 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
           />
         </fieldset>
         <NotificationToast notification={action.error} onDismiss={action.dismissError} />
-        <div className="ji-actions">
-          <Button
-            ref={backButton}
-            type="button"
-            {...backAppearance}
-            onClick={cancel}
-            disabled={action.pending}
-          >
-            {offer ? "Back to Invitations" : "Cancel"}
-          </Button>
-          {!offer && (
-            <Button
-              type="submit"
-              className="ji-primary"
-              disabled={
-                action.pending ||
-                state.blocked ||
-                Boolean(unavailable) ||
-                Object.keys(errors).length > 0
-              }
-            >
-              {action.pending ? "Submitting…" : "Submit Offer"}
-            </Button>
-          )}
-        </div>
+        <OfferActionsRow
+          isReadOnly={isReadOnly}
+          pending={action.pending}
+          submitDisabled={submitDisabled}
+          onCancel={cancel}
+          backButtonRef={backButton}
+        />
       </form>
       {discard && (
         <Confirmation

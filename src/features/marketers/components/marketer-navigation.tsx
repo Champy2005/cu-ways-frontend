@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, Eye, Home, Mail, UserRound } from "lucide-react";
+import { Briefcase, Eye, Home, Mail, Receipt, UserRound } from "lucide-react";
 
 import { navigateDemo, useLocalQuery } from "../local-navigation";
 import { usePathname } from "next/navigation";
@@ -11,6 +11,7 @@ export const ownerViews = [
   { id: "dashboard", label: "Overview", icon: Home },
   { id: "services", label: "Services", icon: Briefcase },
   { id: "invitations", label: "Invitations", icon: Mail },
+  { id: "offers", label: "My Offers", icon: Receipt },
   { id: "profile", label: "Profile", icon: UserRound },
 ] as const;
 

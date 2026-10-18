@@ -8,3 +8,8 @@ export type InvitationEntry = {
   offer: SavedOffer | null;
   offersUnavailable: boolean;
 };
+
+export type MarketerOfferItem = {
+  offer: SavedOffer;
+  request: ReceivedRequest;
+};

@@ -79,3 +79,25 @@ export async function mutateInvitation(
     return invitationError(error);
   }
 }
+
+export async function withdrawOfferRoute(request: Request, id: string): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin")))
+    return errorResponse(403, "invalid_origin", "Request origin is not allowed.");
+  const session = await getSession();
+  if (!session) return errorResponse(401, "unauthorized", "Please sign in again.");
+  if (!isRequestId(id)) return errorResponse(422, "validation_error", "Choose a valid offer.");
+  try {
+    const upstream = await fetchBackend(`/api/v1/me/offers/${id}/withdraw`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session.token}` },
+    });
+    const payload = await readBackendPayload(upstream);
+    if (!upstream.ok) throw apiErrorFromResponse(upstream.status, payload);
+    const data = readOffer(extractData<unknown>(payload));
+    if (data.offer_id !== Number(id) || data.marketer_id !== session.userId)
+      return invalidResponse();
+    return Response.json({ status: "success", data }, { status: upstream.status });
+  } catch (error) {
+    return invitationError(error);
+  }
+}

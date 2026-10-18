@@ -29,3 +29,11 @@ export async function submitInvitationOffer(id: number, input: OfferInput) {
     }),
   );
 }
+
+export async function withdrawOffer(offerId: number) {
+  return readOffer(
+    await browserApiRequest<unknown>(`/api/offers/${offerId}/withdraw`, {
+      method: "POST",
+    }),
+  );
+}

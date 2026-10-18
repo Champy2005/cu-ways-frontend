@@ -27,3 +27,18 @@ export async function getInvitations(requestId?: string): Promise<InvitationEntr
     throw new ApiError(404, "job_request_not_found", "This invitation could not be found.");
   return Promise.all(selected.map(loadEntry));
 }
+
+export async function getMarketerOffers(): Promise<{
+  offers: Array<{ offer: InvitationEntry["offer"]; request: ReceivedRequest }>;
+  offersUnavailable: boolean;
+}> {
+  const entries = await getInvitations();
+  const hasUnavailable = entries.some((entry) => entry.offersUnavailable);
+  const items = entries
+    .filter((entry) => entry.offer !== null)
+    .map((entry) => ({
+      offer: entry.offer,
+      request: entry.request,
+    }));
+  return { offers: items, offersUnavailable: hasUnavailable };
+}
