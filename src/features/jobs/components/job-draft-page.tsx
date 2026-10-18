@@ -25,10 +25,12 @@ const serverSnapshot = () => null;
 
 export function JobDraftPage({
   jobId,
+  creatorName,
   edit = false,
   previewAccepted = false,
 }: {
   jobId: string;
+  creatorName?: string;
   edit?: boolean;
   previewAccepted?: boolean;
 }) {
@@ -36,6 +38,7 @@ export function JobDraftPage({
     <SavedJobPage
       key={`${jobId}-${edit}`}
       jobId={jobId}
+      creatorName={creatorName}
       edit={edit}
       previewAccepted={previewAccepted}
     />
@@ -44,10 +47,12 @@ export function JobDraftPage({
 
 function SavedJobPage({
   jobId,
+  creatorName,
   edit,
   previewAccepted,
 }: {
   jobId: string;
+  creatorName?: string;
   edit: boolean;
   previewAccepted: boolean;
 }) {
@@ -190,6 +195,7 @@ function SavedJobPage({
           key={`${jobId}-${previewAccepted}`}
           job={{
             id: job.job_id,
+            createdAt: job.created_at,
             title: cached?.values.title ?? `Job #${job.job_id}`,
             compensation: cached?.values.budget ?? "-",
             deadline: cached?.values.deadline ?? "",
@@ -212,7 +218,15 @@ function SavedJobPage({
           }}
           onRemove={(surveyId) => void changeSurveys(() => removeJobSurvey(jobId, surveyId))}
         />
-        <JobProjectBrief jobId={jobId} creatorId={state.creatorId} />
+        <JobProjectBrief
+          jobId={jobId}
+          creatorId={state.creatorId}
+          creatorName={creatorName}
+          onSaved={() => {
+            setNotification({ kind: "brief-updated" });
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
       </div>
       {selectingSurveys && (
         <JobSurveySelector

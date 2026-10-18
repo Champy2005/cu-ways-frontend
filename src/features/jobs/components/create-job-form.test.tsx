@@ -24,6 +24,10 @@ const mockSurveyOptions: JobSurveyOption[] = [
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
 vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
+vi.mock("@/features/jobs/brief-actions", () => ({
+  loadJobBriefs: vi.fn(async () => ({ status: "success", history: [], creatorId: 4 })),
+  saveJobBrief: vi.fn(),
+}));
 vi.mock("@/features/jobs/job-actions", () => ({
   createPendingJob: vi.fn(),
   loadSavedJob: vi.fn(),
@@ -286,7 +290,7 @@ describe("CreateJobForm validation", () => {
     expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue("");
     fireEvent.submit(screen.getByRole("form", { name: "Create Job" }));
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(await screen.findByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Job details" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
     expect(await screen.findByRole("textbox", { name: "Job title" })).toHaveValue(
       "Campus campaign",
@@ -339,7 +343,7 @@ describe("CreateJobForm confirmation", () => {
     expect(createPendingJob).toHaveBeenCalledTimes(1);
     expect(screen.getByRole("button", { name: "Saving…" })).toBeDisabled();
     await act(async () => resolve({ status: "success", jobId: 41, creatorId: 4 }));
-    await screen.findByRole("heading", { name: "Job created" });
+    await screen.findByRole("heading", { name: "Job details" });
   });
 
   it("preserves entered values and selections after a rejected creation", async () => {
@@ -365,7 +369,7 @@ describe("CreateJobForm confirmation", () => {
       throw new Error("Storage unavailable");
     });
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
-    await screen.findByRole("heading", { name: "Job created" });
+    await screen.findByRole("heading", { name: "Job details" });
     expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
     expect(screen.getByRole("heading", { name: "Job #41" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Your job has been created");
@@ -411,7 +415,7 @@ describe("CreateJobForm confirmation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Use 2 surveys" }));
     fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
 
-    expect(await screen.findByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Job details" })).toBeInTheDocument();
     expect(createPendingJob).toHaveBeenCalledExactlyOnceWith(["104", "118"]);
     expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
     const jobPath = router.push.mock.lastCall![0] as string;
@@ -494,7 +498,7 @@ describe("CreateJobForm confirmation", () => {
       "href",
       "/creator/jobs/create",
     );
-    expect(screen.queryByRole("heading", { name: "Job created" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Job details" })).not.toBeInTheDocument();
   });
 
   it("previews the accepted offer UI without changing the saved Pending job", async () => {
@@ -539,7 +543,7 @@ describe("CreateJobForm confirmation", () => {
     expect(sessionStorage.getItem(`cuways-job-form:4:${jobId}`)).toBe(savedDraft);
 
     rerender(<JobDraftPage jobId={String(jobId)} />);
-    expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Job details" })).toBeInTheDocument();
     expect(screen.getByText("Pending")).toBeInTheDocument();
     await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();

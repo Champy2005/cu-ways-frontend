@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 
 export type JobCreatedDetails = {
   id?: number;
+  createdAt: string;
   title: string;
   compensation: string;
   deadline: string;
@@ -141,6 +142,10 @@ export function JobCreatedView({
 }) {
   const offerAccepted = job.status === "Accepted";
   const showOfferTracking = ["Pending", "Accepted"].includes(job.status);
+  const creationYear = new Intl.DateTimeFormat("en-GB", {
+    year: "numeric",
+    timeZone: "Asia/Bangkok",
+  }).format(new Date(job.createdAt));
 
   return (
     <section aria-labelledby="job-created-heading" className="mx-auto w-full max-w-md">
@@ -157,11 +162,9 @@ export function JobCreatedView({
             id="job-created-heading"
             className="text-lg leading-6 font-bold text-[var(--mk-text)]"
           >
-            {job.status === "Pending" ? "Job created" : "Job details"}
+            Job details
           </h1>
-          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">
-            {offerAccepted ? "Offer accepted for this job" : "Saved to your jobs"}
-          </p>
+          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">Offer accepted for this job</p>
         </div>
       </header>
 
@@ -179,17 +182,16 @@ export function JobCreatedView({
           >
             Job overview
           </h2>
-          <div
-            className={cn(
-              "mt-3 flex",
-              offerAccepted ? "flex-col gap-1" : "items-end justify-between gap-3",
+          <h3 className="mt-3 min-w-0 text-lg leading-5 font-bold wrap-break-word">{job.title}</h3>
+          <div className="mt-1 flex items-center justify-between gap-3">
+            {job.id && (
+              <p className="text-[11px] text-[var(--mk-muted)]">
+                JOB-{creationYear}-{job.id}
+              </p>
             )}
-          >
-            <h3 className="min-w-0 text-lg leading-5 font-bold wrap-break-word">{job.title}</h3>
             <span
               className={cn(
-                "inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-xs leading-4 font-semibold",
-                offerAccepted && "self-end",
+                "ml-auto inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-xs leading-4 font-semibold",
                 offerAccepted
                   ? "border-[var(--mk-positive)] bg-[var(--mk-positive-soft)] text-[var(--mk-positive)]"
                   : [
@@ -207,7 +209,6 @@ export function JobCreatedView({
               {job.status}
             </span>
           </div>
-          {job.id && <p className="mt-1 text-[11px] text-[var(--mk-muted)]">Job #{job.id}</p>}
           <dl className="mt-3 space-y-2.5 border-t border-[var(--mk-border)] pt-3 text-xs">
             <div className="flex items-start justify-between gap-4">
               <dt className="shrink-0 text-[var(--mk-muted)]">Compensation</dt>

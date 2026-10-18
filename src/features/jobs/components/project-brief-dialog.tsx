@@ -21,11 +21,19 @@ export function ProjectBriefDialog({
   onSave,
   onClose,
   finalFocus,
+  pending = false,
+  error,
+  reconcile = false,
+  onReload,
 }: {
   initialValues?: ProjectBriefValues;
   onSave: (values: ProjectBriefValues) => void;
   onClose: () => void;
   finalFocus: () => HTMLElement | null;
+  pending?: boolean;
+  error?: string;
+  reconcile?: boolean;
+  onReload: () => void;
 }) {
   const id = useId();
   const container = useRef<HTMLDivElement>(null);
@@ -39,6 +47,7 @@ export function ProjectBriefDialog({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending || reconcile) return;
     if (!validUrl) {
       setUrlTouched(true);
       urlInput.current?.focus();
@@ -48,7 +57,7 @@ export function ProjectBriefDialog({
   }
 
   return (
-    <Dialog open onOpenChange={(open) => !open && onClose()}>
+    <Dialog open onOpenChange={(open) => !open && !pending && onClose()}>
       <div ref={container} />
       <DialogPortal container={container}>
         <DialogOverlay className="fixed inset-0 z-[60] bg-black/45" />
@@ -62,6 +71,7 @@ export function ProjectBriefDialog({
               Project Brief URL
             </DialogTitle>
             <DialogClose
+              disabled={pending}
               aria-label="Close project brief dialog"
               render={
                 <Button
@@ -75,7 +85,12 @@ export function ProjectBriefDialog({
               <X aria-hidden="true" className="size-3.5" />
             </DialogClose>
           </div>
-          <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
+          <form
+            onSubmit={submit}
+            noValidate
+            aria-busy={pending}
+            className="flex min-h-0 flex-1 flex-col"
+          >
             <div className="min-h-0 space-y-4 overflow-y-auto p-5">
               <DialogDescription className="text-[11px] leading-4 text-[var(--mk-muted)]">
                 Provide a viewable link to instructions, guidelines, or reference materials (e.g.
@@ -99,6 +114,7 @@ export function ProjectBriefDialog({
                     type="url"
                     name="brief-url"
                     required
+                    disabled={pending}
                     value={url}
                     onChange={(event) => setUrl(event.target.value)}
                     onBlur={() => setUrlTouched(true)}
@@ -124,15 +140,33 @@ export function ProjectBriefDialog({
                 <Input
                   id={`${id}-title`}
                   name="brief-title"
+                  disabled={pending}
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                   placeholder="e.g. Campaign Guidelines v2 (Optional)"
                   className="h-[42px] rounded-xl border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 text-sm text-[var(--mk-text)] placeholder:text-[var(--mk-muted)] focus-visible:border-[var(--mk-accent)] focus-visible:ring-2 focus-visible:ring-[var(--mk-accent-soft)] focus-visible:outline-none! md:text-sm"
                 />
+                <p className="text-[10px] leading-4 text-[var(--mk-muted)]">
+                  The title/note is saved in this browser tab.
+                </p>
               </div>
+              {error && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-xs text-destructive"
+                >
+                  <p>{error}</p>
+                  {reconcile && (
+                    <Button type="button" variant="outline" className="mt-2" onClick={onReload}>
+                      Reload brief history
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
             <div className="grid shrink-0 grid-cols-2 gap-2 border-t border-[var(--mk-border)] bg-[var(--mk-field)] p-3.5">
               <DialogClose
+                disabled={pending}
                 render={
                   <Button
                     type="button"
@@ -145,10 +179,10 @@ export function ProjectBriefDialog({
               </DialogClose>
               <Button
                 type="submit"
-                disabled={!validUrl || !changed}
+                disabled={!validUrl || !changed || pending || reconcile}
                 className="h-[42px] rounded-xl bg-[var(--mk-action)] text-sm font-bold text-white hover:bg-[var(--mk-action-hover)] disabled:bg-[var(--mk-border)] disabled:text-[var(--mk-muted)] disabled:opacity-60"
               >
-                Save Brief
+                {pending ? "Saving…" : "Save Brief"}
               </Button>
             </div>
           </form>

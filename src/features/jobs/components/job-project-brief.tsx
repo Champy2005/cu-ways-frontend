@@ -1,17 +1,34 @@
 "use client";
 
 import { ChevronRight, Link2, PencilLine, Plus } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 import { Button } from "@/components/ui/button";
+import { BriefAttachmentHistorySheet } from "@/features/jobs/components/brief-attachment-history-sheet";
 import { ProjectBriefDialog } from "@/features/jobs/components/project-brief-dialog";
+import { loadJobBriefs, saveJobBrief, type SaveJobBriefState } from "@/features/jobs/brief-actions";
 import {
   cacheProjectBriefHistory,
+  mergeProjectBriefMetadata,
   readProjectBriefHistory,
   type ProjectBriefAttachment,
   type ProjectBriefValues,
 } from "@/features/jobs/project-brief";
-import { cn } from "@/lib/utils";
+
+type JobProjectBriefProps = {
+  jobId: string;
+  creatorId: number;
+  creatorName?: string;
+  onSaved?: () => void;
+};
 
 function BriefDetails({ attachment }: { attachment: ProjectBriefAttachment }) {
   return (
@@ -42,32 +59,137 @@ function BriefDetails({ attachment }: { attachment: ProjectBriefAttachment }) {
   );
 }
 
-export function JobProjectBrief(props: { jobId: string; creatorId: number }) {
+export function JobProjectBrief(props: JobProjectBriefProps) {
   return <ProjectBriefSection key={`${props.creatorId}:${props.jobId}`} {...props} />;
 }
 
-function ProjectBriefSection({ jobId, creatorId }: { jobId: string; creatorId: number }) {
+function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProjectBriefProps) {
   const id = useId();
-  const [history, setHistory] = useState(() => readProjectBriefHistory(jobId, creatorId));
+  const [cachedMetadata] = useState(() => readProjectBriefHistory(jobId, creatorId));
+  const metadata = useRef(cachedMetadata);
+  const [state, setState] = useState<
+    | { status: "loading" }
+    | { status: "error"; message: string }
+    | { status: "success"; history: ProjectBriefAttachment[] }
+  >({ status: "loading" });
+  const [saving, startSaving] = useTransition();
+  const [saveFailure, setSaveFailure] = useState<Exclude<
+    SaveJobBriefState,
+    { status: "success" }
+  > | null>(null);
   const [editing, setEditing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const addButton = useRef<HTMLButtonElement>(null);
   const editButton = useRef<HTMLButtonElement>(null);
+  const historyButton = useRef<HTMLButtonElement>(null);
+  const mounted = useRef(true);
+  const request = useRef(0);
+  const busy = useRef(false);
+  const history = state.status === "success" ? state.history : [];
   const current = history[0];
 
+  const reload = useCallback(async () => {
+    const attempt = ++request.current;
+    setState({ status: "loading" });
+    try {
+      const result = await loadJobBriefs(jobId);
+      if (!mounted.current || attempt !== request.current) return false;
+      if (result.status === "error") {
+        setState(result);
+        return false;
+      }
+      if (result.creatorId !== creatorId) throw new Error("Session changed");
+      setState({
+        status: "success",
+        history: mergeProjectBriefMetadata(result.history, metadata.current),
+      });
+      return true;
+    } catch {
+      if (mounted.current && attempt === request.current) {
+        setState({
+          status: "error",
+          message: "Your project brief could not be loaded. Reload briefs to try again.",
+        });
+      }
+      return false;
+    }
+  }, [jobId, creatorId]);
+
+  useEffect(() => {
+    mounted.current = true;
+    startTransition(() => {
+      void reload();
+    });
+    return () => {
+      mounted.current = false;
+    };
+  }, [reload]);
+
   function saveBrief(values: ProjectBriefValues) {
-    const nextHistory = [
-      { ...values, id: crypto.randomUUID(), updatedAt: new Date().toISOString() },
-      ...history,
-    ];
-    setHistory(nextHistory);
-    cacheProjectBriefHistory(jobId, creatorId, nextHistory);
-    setEditing(false);
+    if (busy.current || saveFailure?.status === "reconcile") return;
+    busy.current = true;
+    setSaveFailure(null);
+    startSaving(async () => {
+      try {
+        const result = await saveJobBrief(jobId, values.url);
+        if (!mounted.current) return;
+        if (result.status !== "success") {
+          setSaveFailure(result);
+          if (result.status === "reconcile") setState({ status: "error", message: result.message });
+          return;
+        }
+        if (result.creatorId !== creatorId) throw new Error("Session changed");
+        const attachment: ProjectBriefAttachment = {
+          id: String(result.brief.attachment_id),
+          url: result.brief.url,
+          updatedAt: result.brief.upload_at,
+          title: values.title,
+          updatedBy: { creatorId, name: creatorName?.trim() || "Unknown user" },
+        };
+        metadata.current = [
+          attachment,
+          ...metadata.current.filter((entry) => entry.id !== attachment.id),
+        ];
+        cacheProjectBriefHistory(jobId, creatorId, metadata.current);
+        // The POST response is persisted already; update this view without refetching the page/history.
+        setState((previous) => ({
+          status: "success",
+          history: [
+            attachment,
+            ...(previous.status === "success" ? previous.history : []).filter(
+              (entry) => entry.id !== attachment.id,
+            ),
+          ],
+        }));
+        setEditing(false);
+        onSaved?.();
+      } catch {
+        if (mounted.current) {
+          setSaveFailure({
+            status: "reconcile",
+            message: "The save could not be confirmed. Reload brief history before saving again.",
+          });
+          setState({ status: "error", message: "Reload brief history before saving again." });
+        }
+      } finally {
+        busy.current = false;
+      }
+    });
+  }
+
+  function reloadHistory() {
+    startTransition(async () => {
+      if (await reload()) {
+        setEditing(false);
+        setSaveFailure(null);
+      }
+    });
   }
 
   return (
     <section
       aria-labelledby={`${id}-heading`}
+      aria-busy={state.status === "loading"}
       className="border-t border-[var(--mk-border)] pt-5 text-[var(--mk-text)]"
     >
       <h2 id={`${id}-heading`} className="text-base leading-5 font-bold">
@@ -77,7 +199,24 @@ function ProjectBriefSection({ jobId, creatorId }: { jobId: string; creatorId: n
         Attach a reference document for this job
       </p>
 
-      {current ? (
+      {state.status !== "success" ? (
+        <div className="mt-3 rounded-xl border border-[var(--mk-border)] bg-[var(--mk-field)] p-4">
+          {state.status === "loading" ? (
+            <p aria-live="polite" className="text-sm text-[var(--mk-muted)]">
+              Loading project brief…
+            </p>
+          ) : (
+            <>
+              <p role="alert" className="text-sm text-[var(--mk-muted)]">
+                {state.message}
+              </p>
+              <Button type="button" variant="outline" className="mt-3" onClick={reloadHistory}>
+                Reload briefs
+              </Button>
+            </>
+          )}
+        </div>
+      ) : current ? (
         <>
           <div className="mt-3 flex min-h-[78px] items-center gap-3 rounded-2xl border border-[var(--mk-text)] bg-[var(--mk-surface)] px-4 py-3 shadow-card">
             <Link2
@@ -91,41 +230,29 @@ function ProjectBriefSection({ jobId, creatorId }: { jobId: string; creatorId: n
               variant="ghost"
               size="icon-sm"
               aria-label="Edit project brief"
-              onClick={() => setEditing(true)}
+              disabled={saving}
+              onClick={() => {
+                setSaveFailure(null);
+                setEditing(true);
+              }}
               className="shrink-0 text-[var(--mk-text)]"
             >
               <PencilLine aria-hidden="true" className="size-4" />
             </Button>
           </div>
           <Button
+            ref={historyButton}
             type="button"
             variant="ghost"
+            aria-haspopup="dialog"
             aria-expanded={showHistory}
             aria-controls={`${id}-history`}
-            onClick={() => setShowHistory((shown) => !shown)}
+            onClick={() => setShowHistory(true)}
             className="mt-1.5 h-8 gap-0 px-1 text-xs font-medium text-[var(--mk-accent)] hover:text-[var(--mk-accent)]"
           >
             View attachment history ({history.length})
-            <ChevronRight
-              aria-hidden="true"
-              className={cn("size-3.5 transition-transform", showHistory && "rotate-90")}
-            />
+            <ChevronRight aria-hidden="true" className="size-3.5" />
           </Button>
-          {showHistory && (
-            <ol id={`${id}-history`} aria-label="Attachment history" className="mt-2 space-y-2">
-              {history.map((attachment, index) => (
-                <li
-                  key={attachment.id}
-                  className="rounded-xl border border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 py-2.5"
-                >
-                  <p className="mb-1 text-[10px] font-semibold text-[var(--mk-muted)]">
-                    {index === 0 ? "Current brief" : "Previous brief"}
-                  </p>
-                  <BriefDetails attachment={attachment} />
-                </li>
-              ))}
-            </ol>
-          )}
         </>
       ) : (
         <div className="mt-3 flex flex-col items-center rounded-xl border-2 border-dashed border-[var(--mk-border)] bg-[var(--mk-field)] px-4 py-4 text-center">
@@ -135,7 +262,11 @@ function ProjectBriefSection({ jobId, creatorId }: { jobId: string; creatorId: n
             ref={addButton}
             type="button"
             variant="outline"
-            onClick={() => setEditing(true)}
+            disabled={saving}
+            onClick={() => {
+              setSaveFailure(null);
+              setEditing(true);
+            }}
             className="mt-3 h-8 gap-0.5 rounded-xl border-[var(--mk-accent)] bg-[var(--mk-accent-soft)] px-3 text-xs font-semibold text-[var(--mk-accent)] hover:bg-[var(--mk-accent-soft)] hover:text-[var(--mk-accent)]"
           >
             <Plus aria-hidden="true" className="size-3" />
@@ -149,9 +280,23 @@ function ProjectBriefSection({ jobId, creatorId }: { jobId: string; creatorId: n
           initialValues={current}
           onSave={saveBrief}
           onClose={() => setEditing(false)}
+          pending={saving}
+          error={saveFailure?.message}
+          reconcile={saveFailure?.status === "reconcile"}
+          onReload={reloadHistory}
           finalFocus={() => editButton.current ?? addButton.current}
         />
       )}
+
+      <BriefAttachmentHistorySheet
+        open={showHistory && state.status === "success"}
+        id={`${id}-history`}
+        history={history}
+        creatorId={creatorId}
+        creatorName={creatorName}
+        onClose={() => setShowHistory(false)}
+        finalFocus={() => historyButton.current}
+      />
     </section>
   );
 }

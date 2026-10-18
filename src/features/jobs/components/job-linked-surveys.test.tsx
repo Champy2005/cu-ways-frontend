@@ -4,6 +4,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
 import { JobLinkedSurveys } from "@/features/jobs/components/job-linked-surveys";
 import { loadJobSurveys } from "@/features/jobs/actions";
+import { loadJobBriefs } from "@/features/jobs/brief-actions";
 import { addJobSurveys, loadSavedJob, removeJobSurvey } from "@/features/jobs/job-actions";
 import { saveJobDraft } from "@/features/jobs/job-draft";
 import type { JobSurveyOption } from "@/features/jobs/types";
@@ -31,6 +32,7 @@ const mockSavedState = () => ({
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("@/features/jobs/actions", () => ({ loadJobSurveys: vi.fn() }));
+vi.mock("@/features/jobs/brief-actions", () => ({ loadJobBriefs: vi.fn(), saveJobBrief: vi.fn() }));
 vi.mock("@/features/jobs/job-actions", () => ({
   loadSavedJob: vi.fn(),
   addJobSurveys: vi.fn(),
@@ -39,6 +41,7 @@ vi.mock("@/features/jobs/job-actions", () => ({
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.mocked(loadJobBriefs).mockResolvedValue({ status: "success", history: [], creatorId: 4 });
   vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   mockLinkedIds = ["104", "118"];
   vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
