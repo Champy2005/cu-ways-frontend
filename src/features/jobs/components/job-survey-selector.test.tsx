@@ -37,14 +37,22 @@ describe("Survey selector name search", () => {
 
     fireEvent.change(search, { target: { value: "no matching survey" } });
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("No surveys match your search");
+    expect(screen.getByRole("heading", { name: "No matching surveys" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "We couldn't find any surveys matching your search.",
+    );
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Try checking for typos or clear your search.",
+    );
     expect(screen.getByText("0 available")).toBeInTheDocument();
 
     for (const query of ["", "   "]) {
       fireEvent.change(search, { target: { value: query } });
       expect(screen.getAllByRole("checkbox")).toHaveLength(4);
       expect(screen.getByText("4 available")).toBeInTheDocument();
-      expect(screen.queryByText(/No surveys match your search/)).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", { name: "No matching surveys" }),
+      ).not.toBeInTheDocument();
     }
     expect(loadJobSurveys).toHaveBeenCalledOnce();
   });

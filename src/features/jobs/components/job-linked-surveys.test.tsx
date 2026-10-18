@@ -39,6 +39,7 @@ vi.mock("@/features/jobs/job-actions", () => ({
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   mockLinkedIds = ["104", "118"];
   vi.mocked(loadJobSurveys).mockResolvedValue({ status: "success", surveys: mockSurveyOptions });
   vi.mocked(loadSavedJob).mockImplementation(async () => mockSavedState());
@@ -73,6 +74,9 @@ describe("Persisted job survey links", () => {
       expect(region.getAllByRole("listitem")).toHaveLength(2);
       expect(region.getByText("Campus Mobility Study")).toBeInTheDocument();
       expect(region.getByText("Green Habits 2026")).toBeInTheDocument();
+      const overview = within(screen.getByRole("region", { name: "Job overview" }));
+      expect(overview.getAllByText("-", { exact: true })).toHaveLength(2);
+      expect(overview.queryByText(/not provided/i)).not.toBeInTheDocument();
       expect(loadSavedJob).toHaveBeenCalledExactlyOnceWith("41");
     },
   );
@@ -141,6 +145,9 @@ describe("Persisted job survey links", () => {
       fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
       await screen.findByRole("region", { name: "Manage Linked Surveys" });
       expect(addJobSurveys).toHaveBeenCalledExactlyOnceWith("41", ["118", "104"]);
+      expect(screen.getByRole("status")).toHaveTextContent(
+        "2 surveys are available to marketers in this job.",
+      );
       expect(removeJobSurvey).not.toHaveBeenCalled();
     },
   );
@@ -166,6 +173,55 @@ describe("Persisted job survey links", () => {
     fireEvent.click(screen.getByRole("button", { name: "Back to job details" }));
     expect(addJobSurveys).toHaveBeenCalledTimes(1);
   });
+
+  it("shows a dismissible notification after linking is confirmed without replaying it on later visits", async () => {
+    let resolve!: (value: Awaited<ReturnType<typeof addJobSurveys>>) => void;
+    vi.mocked(addJobSurveys).mockReturnValue(
+      new Promise((done) => {
+        resolve = done;
+      }),
+    );
+    const { unmount } = await openJob();
+    expect(screen.queryByText("Surveys linked")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Library Experience" }));
+    fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
+    expect(screen.queryByText("Surveys linked")).not.toBeInTheDocument();
+
+    mockLinkedIds.push("87");
+    await act(async () => resolve(mockSavedState()));
+    const notification = screen.getByRole("status");
+    expect(notification).toHaveTextContent("Surveys linked");
+    expect(notification).toHaveTextContent("3 surveys are available to marketers in this job.");
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss surveys linked notification" }));
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+
+    unmount();
+    await openJob();
+    expect(screen.queryByText("Surveys linked")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove Library Experience" })).toBeInTheDocument();
+  });
+
+  it.each(["error", "warning"])(
+    "does not show a success notification for a link result with an %s",
+    async (outcome) => {
+      const message = "Survey changes could not be confirmed.";
+      vi.mocked(addJobSurveys).mockResolvedValue(
+        outcome === "error"
+          ? { status: "error", message }
+          : { ...mockSavedState(), notice: message },
+      );
+      await openJob();
+      fireEvent.click(screen.getByRole("button", { name: "Add existing surveys" }));
+      fireEvent.click(await screen.findByRole("checkbox", { name: "Library Experience" }));
+      fireEvent.click(screen.getByRole("button", { name: "Use 1 survey" }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(message);
+      expect(screen.queryByText("Surveys linked")).not.toBeInTheDocument();
+      expect(window.scrollTo).not.toHaveBeenCalled();
+    },
+  );
 
   it("keeps links when cancelling or dismissing a confirmation with Escape", async () => {
     await openJob();

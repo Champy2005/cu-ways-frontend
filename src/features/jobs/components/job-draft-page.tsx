@@ -10,6 +10,7 @@ import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 import { JobCreatedView } from "@/features/jobs/components/job-created-view";
 import { JobLinkedSurveys } from "@/features/jobs/components/job-linked-surveys";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
+import type { JobSuccessNotice } from "@/features/jobs/components/job-success-notification";
 import {
   addJobSurveys,
   loadSavedJob,
@@ -17,6 +18,7 @@ import {
   type SavedJobState,
 } from "@/features/jobs/job-actions";
 import { parseJobDraft, readJobDraftSnapshot, subscribeJobDraft } from "@/features/jobs/job-draft";
+import { consumeJobCreatedNotice } from "@/features/jobs/job-creation-notice";
 
 const serverSnapshot = () => null;
 
@@ -53,6 +55,7 @@ function SavedJobPage({
   const [attempt, setAttempt] = useState(0);
   const [selectingSurveys, setSelectingSurveys] = useState(false);
   const [pending, setPending] = useState(false);
+  const [notification, setNotification] = useState<JobSuccessNotice | null>(null);
   const busy = useRef(false);
   const mounted = useRef(true);
   const creatorId = state.status === "success" ? state.creatorId : 0;
@@ -66,7 +69,16 @@ function SavedJobPage({
     mounted.current = true;
     loadSavedJob(jobId)
       .then((result) => {
-        if (active) setState(result);
+        if (!active) return;
+        if (result.status === "success") {
+          const created = consumeJobCreatedNotice(result.creatorId, result.job.job_id);
+          if (previewAccepted || result.job.job_status === "Accepted") {
+            setNotification({ kind: "offer-accepted" });
+          } else {
+            setNotification(created ? { kind: "created" } : null);
+          }
+        }
+        setState(result);
       })
       .catch(() => {
         if (active)
@@ -76,17 +88,22 @@ function SavedJobPage({
       active = false;
       mounted.current = false;
     };
-  }, [jobId, attempt]);
+  }, [jobId, attempt, previewAccepted]);
 
-  async function changeSurveys(operation: () => Promise<SavedJobState>) {
+  async function changeSurveys(operation: () => Promise<SavedJobState>, notifyLinked = false) {
     if (busy.current) return;
     busy.current = true;
     setPending(true);
+    setNotification(null);
     try {
       const result = await operation();
       if (mounted.current) {
         setState(result);
         setSelectingSurveys(false);
+        if (notifyLinked && result.status === "success" && !result.notice) {
+          setNotification({ kind: "surveys-linked", count: result.job.surveys.length });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     } catch {
       if (mounted.current)
@@ -133,6 +150,7 @@ function SavedJobPage({
     );
 
   const { job } = state;
+  const displayedStatus = previewAccepted ? "Accepted" : job.job_status;
   const cached = parseJobDraft(snapshot, jobId, state.creatorId);
   const selectedIds = job.surveys.map((survey) => String(survey.survey_id));
   const surveys = job.surveys.map((survey) => ({
@@ -172,12 +190,14 @@ function SavedJobPage({
           job={{
             id: job.job_id,
             title: cached?.values.title ?? `Job #${job.job_id}`,
-            compensation: cached?.values.budget ?? "Not provided",
+            compensation: cached?.values.budget ?? "-",
             deadline: cached?.values.deadline ?? "",
             surveyCount: job.surveys.length,
-            status: previewAccepted ? "Accepted" : job.job_status,
+            status: displayedStatus,
           }}
           canEdit={!pending && job.job_status === "Pending"}
+          notification={notification}
+          onDismissNotification={() => setNotification(null)}
           onEdit={() => router.push(`/creator/jobs/create?edit=${job.job_id}`)}
         />
         <JobLinkedSurveys
@@ -199,7 +219,7 @@ function SavedJobPage({
           pending={pending}
           backLabel="Back to job details"
           onBack={() => setSelectingSurveys(false)}
-          onSave={(surveyIds) => void changeSurveys(() => addJobSurveys(jobId, surveyIds))}
+          onSave={(surveyIds) => void changeSurveys(() => addJobSurveys(jobId, surveyIds), true)}
         />
       )}
     </div>

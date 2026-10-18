@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { useEffect, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
@@ -295,6 +295,35 @@ describe("CreateJobForm validation", () => {
 });
 
 describe("CreateJobForm confirmation", () => {
+  it("does not show a creation notification when opening an existing job", async () => {
+    render(<JobDraftPage jobId="41" />);
+
+    await screen.findByRole("region", { name: "Job overview" });
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Dismiss job created notification" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the creation notification only on the first details visit, including in Strict Mode", async () => {
+    const { unmount } = render(
+      <StrictMode>
+        <CreateJobFlow />
+      </StrictMode>,
+    );
+    await completeJobForm();
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+
+    await screen.findByRole("region", { name: "Job overview" });
+    expect(screen.getByRole("status")).toHaveTextContent("Your job has been created");
+
+    // Returning to the job must not replay the confirmation, even without dismissing it.
+    unmount();
+    render(<JobDraftPage jobId="41" />);
+    await screen.findByRole("region", { name: "Job overview" });
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
   it("blocks duplicate submissions while creation is pending", async () => {
     let resolve!: (value: Awaited<ReturnType<typeof createPendingJob>>) => void;
     vi.mocked(createPendingJob).mockReturnValue(
@@ -339,6 +368,7 @@ describe("CreateJobForm confirmation", () => {
     await screen.findByRole("heading", { name: "Job created" });
     expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
     expect(screen.getByRole("heading", { name: "Job #41" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Your job has been created");
     expect(createPendingJob).toHaveBeenCalledTimes(1);
   });
 
@@ -442,12 +472,14 @@ describe("CreateJobForm confirmation", () => {
     expect(router.push).toHaveBeenLastCalledWith(jobPath);
     expect(createPendingJob).toHaveBeenCalledTimes(1);
     expect(saveJobSurveySelection).toHaveBeenCalledExactlyOnceWith("41", ["118"]);
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
 
     // Reloading the destination reads the same tab-local draft, without the form mounted.
     unmount();
     render(<JobDraftPage jobId={jobPath.split("/").at(-1)!} />);
     expect(await screen.findByRole("heading", { name: "Updated campaign" })).toBeInTheDocument();
     expect(screen.getByText("฿12,000 fixed")).toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
   it("offers a return to the form for an unavailable or malformed draft", async () => {
@@ -509,7 +541,7 @@ describe("CreateJobForm confirmation", () => {
     rerender(<JobDraftPage jobId={String(jobId)} />);
     expect(screen.getByRole("heading", { name: "Job created" })).toBeInTheDocument();
     expect(screen.getByText("Pending")).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Your job has been created");
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Share" })).not.toBeInTheDocument();
   });

@@ -1,9 +1,10 @@
 "use client";
 
-import { Check, ChevronLeft, CircleHelp, Search } from "lucide-react";
+import { Check, ChevronLeft, CircleHelp, FileSearch, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { loadJobSurveys, type JobSurveysActionState } from "@/features/jobs/actions";
@@ -262,9 +263,20 @@ function SurveySelectorContent({
           })}
         </ul>
         {matchingSurveys.length === 0 && (
-          <p role="status" className="py-4 text-sm text-[var(--mk-muted)]">
-            No surveys match your search. Try another name.
-          </p>
+          <Card
+            role="status"
+            className="items-center gap-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] px-4 py-6 text-center text-[var(--mk-text)] shadow-card ring-0"
+          >
+            <div className="mb-2.5 flex size-12 items-center justify-center rounded-full border border-[var(--mk-border)] text-[var(--mk-muted)]">
+              <FileSearch aria-hidden="true" className="size-6" />
+            </div>
+            <h3 className="text-base leading-6 font-bold">No matching surveys</h3>
+            <p className="mt-2 text-xs leading-[18px] text-[var(--mk-muted)]">
+              We couldn&apos;t find any surveys matching your search.
+              <br />
+              Try checking for typos or clear your search.
+            </p>
+          </Card>
         )}
       </fieldset>
 

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
 import { createPendingJob, saveJobSurveySelection } from "@/features/jobs/job-actions";
+import { markJobCreated } from "@/features/jobs/job-creation-notice";
 import { saveJobDraft, type JobDraft } from "@/features/jobs/job-draft";
 import { surveyDisplayId } from "@/features/jobs/survey-options";
 import {
@@ -214,6 +215,7 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
         return;
       }
       const jobId = "jobId" in result ? result.jobId : result.job.job_id;
+      if (!initialDraft) markJobCreated(result.creatorId, jobId);
       try {
         saveJobDraft(values, selectedSurveyIds, jobId, surveyOptions, result.creatorId);
       } catch {
