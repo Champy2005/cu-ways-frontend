@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { CreateJobForm } from "@/features/jobs/components/create-job-form";
 import { JobCreatedView } from "@/features/jobs/components/job-created-view";
 import { JobLinkedSurveys } from "@/features/jobs/components/job-linked-surveys";
+import { JobProjectBrief } from "@/features/jobs/components/job-project-brief";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
 import type { JobSuccessNotice } from "@/features/jobs/components/job-success-notification";
 import {
@@ -211,6 +212,7 @@ function SavedJobPage({
           }}
           onRemove={(surveyId) => void changeSurveys(() => removeJobSurvey(jobId, surveyId))}
         />
+        <JobProjectBrief jobId={jobId} creatorId={state.creatorId} />
       </div>
       {selectingSurveys && (
         <JobSurveySelector

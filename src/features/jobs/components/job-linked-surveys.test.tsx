@@ -78,6 +78,7 @@ describe("Persisted job survey links", () => {
       expect(overview.getAllByText("-", { exact: true })).toHaveLength(2);
       expect(overview.queryByText(/not provided/i)).not.toBeInTheDocument();
       expect(loadSavedJob).toHaveBeenCalledExactlyOnceWith("41");
+      expect(screen.getByRole("region", { name: "Project Brief" })).toBeInTheDocument();
     },
   );
 
