@@ -24,7 +24,7 @@ export type JobOfferCardProps = {
   comparison: JobOfferComparison;
 };
 
-export function formatOfferDate(dateString: string | null | undefined): string {
+export function formatOfferDate(dateString: string | null | undefined, timeZone = "UTC"): string {
   if (!dateString) return "Not specified";
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return dateString;
@@ -32,6 +32,8 @@ export function formatOfferDate(dateString: string | null | undefined): string {
     month: "short",
     day: "numeric",
     year: "numeric",
+    // Delivery dates are calendar values; UTC preserves their day in every browser.
+    timeZone,
   });
 }
 
@@ -143,7 +145,7 @@ export function JobOfferCard({ comparison }: JobOfferCardProps) {
         {/* Submission Timestamp */}
         <div className="flex items-center gap-1.5 text-xs text-[var(--mk-muted)]">
           <Clock aria-hidden="true" className="size-3.5" />
-          <span>Submitted on {formatOfferDate(created_at)}</span>
+          <span>Submitted on {formatOfferDate(created_at, "Asia/Bangkok")}</span>
         </div>
 
         {/* Expandable Marketer Profile Details (Decision 4) */}
