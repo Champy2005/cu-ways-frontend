@@ -25,6 +25,21 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("UserProfileCard", () => {
+  it("requires a phone and preserves changes when a blank phone is submitted", () => {
+    render(<UserProfileCard user={mockUser} />);
+    const phone = screen.getByRole("textbox", { name: "Phone number" });
+    expect(phone).toBeRequired();
+    expect(screen.getByText("Phone number is required. LINE ID is optional.")).toBeInTheDocument();
+    fireEvent.change(phone, { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText("LINE ID"), { target: { value: "updated.line" } });
+    fireEvent.submit(
+      screen.getByRole("button", { name: "Save contact information" }).closest("form")!,
+    );
+    expect(updateCurrentUser).not.toHaveBeenCalled();
+    expect(phone).toHaveAccessibleDescription("Phone number is required.");
+    expect(screen.getByLabelText("LINE ID")).toHaveValue("updated.line");
+  });
+
   it("submits valid contact information and updates profile", async () => {
     vi.mocked(updateCurrentUser).mockResolvedValue({
       ...mockUser,
@@ -34,7 +49,7 @@ describe("UserProfileCard", () => {
 
     render(<UserProfileCard user={mockUser} />);
 
-    const phoneField = screen.getByLabelText("Phone number");
+    const phoneField = screen.getByRole("textbox", { name: "Phone number" });
 
     fireEvent.change(phoneField, { target: { value: "0898765432" } });
     fireEvent.change(screen.getByLabelText("LINE ID"), { target: { value: "" } });
@@ -58,7 +73,7 @@ describe("UserProfileCard", () => {
 
     render(<UserProfileCard user={mockUser} />);
 
-    const phoneField = screen.getByLabelText("Phone number");
+    const phoneField = screen.getByRole("textbox", { name: "Phone number" });
     fireEvent.change(phoneField, { target: { value: "0899999999" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));

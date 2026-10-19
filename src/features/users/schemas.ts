@@ -28,6 +28,7 @@ export function validateContactUpdate(value: unknown): value is UpdateUserReques
   const keys = Object.keys(input);
   return (
     keys.length === 2 &&
+    keys.every((key) => key === "phone" || key === "line_id") &&
     typeof input.phone === "string" &&
     PHONE_PATTERN.test(input.phone) &&
     isNullableString(input.line_id, 50)

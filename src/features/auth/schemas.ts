@@ -43,9 +43,7 @@ export function validateRegisterInput(value: unknown): value is RegisterRequest 
   if (!value || typeof value !== "object") return false;
   const input = value as Record<string, unknown>;
   const phoneValid =
-    input.phone === undefined ||
-    input.phone === null ||
-    (isString(input.phone) && input.phone.length <= 20);
+    isString(input.phone) && input.phone.trim().length > 0 && input.phone.length <= 20;
   const lineIDValid =
     input.line_id === undefined ||
     input.line_id === null ||
@@ -97,11 +95,7 @@ export function registerValidationMessage(input: RegisterRequest): string | null
   if (input.password.length < 8 || input.password.length > 128) {
     return "Password must be between 8 and 128 characters.";
   }
-  if (
-    input.phone !== undefined &&
-    input.phone !== null &&
-    (input.phone.trim().length === 0 || input.phone.length > 20)
-  ) {
+  if (!input.phone || input.phone.trim().length === 0 || input.phone.length > 20) {
     return "Phone must be between 1 and 20 characters.";
   }
   if (
