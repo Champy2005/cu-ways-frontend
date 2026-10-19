@@ -1,6 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogPopup,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import type { SavedOffer } from "./types";
 import { formatPrice } from "../format";
 
@@ -9,9 +18,11 @@ export type WithdrawOfferModalProps = {
   offer: SavedOffer;
   jobTitle: string;
   pending: boolean;
+  confirmDisabled?: boolean;
   error?: string | null;
   onClose: () => void;
   onConfirm: () => void;
+  finalFocus?: () => HTMLElement | null;
 };
 
 export function WithdrawOfferModal({
@@ -19,93 +30,74 @@ export function WithdrawOfferModal({
   offer,
   jobTitle,
   pending,
+  confirmDisabled = false,
   error,
   onClose,
   onConfirm,
+  finalFocus,
 }: WithdrawOfferModalProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const keepButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    keepButtonRef.current?.focus();
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && !pending) {
-        onClose();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, pending, onClose]);
-
+  const container = useRef<HTMLDivElement>(null);
+  const keepButton = useRef<HTMLButtonElement>(null);
   if (!isOpen) return null;
-
   return (
-    <div
-      role="presentation"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
-      onClick={(e) => {
-        if (e.target === e.currentTarget && !pending) {
-          onClose();
-        }
+    <AlertDialog
+      open
+      onOpenChange={(open) => {
+        if (!open && !pending) onClose();
       }}
     >
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="withdraw-offer-title"
-        className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#161b26] p-6 text-[var(--mk-text)] shadow-2xl animate-in fade-in zoom-in-95 duration-150"
-      >
-        <h2 id="withdraw-offer-title" className="text-center text-lg font-bold text-white">
-          Withdraw this offer?
-        </h2>
-
-        {/* Inner Card (Figma Image 2) */}
-        <div className="my-4 rounded-xl border border-white/5 bg-[#0f131d] p-3.5 space-y-2">
-          <p className="text-sm font-semibold text-white truncate">{jobTitle}</p>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-400">Offered price</span>
-            <span className="font-semibold text-white">{formatPrice(offer.offered_price)}</span>
+      <div ref={container} />
+      <AlertDialogPortal container={container}>
+        <AlertDialogOverlay className="mk-dialog-backdrop fixed inset-0 z-[60]" />
+        <AlertDialogPopup
+          initialFocus={keepButton}
+          finalFocus={finalFocus}
+          className="mk-dialog-surface fixed top-1/2 left-1/2 z-[61] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[var(--mk-border)] p-6 text-[var(--mk-text)] shadow-2xl outline-none"
+        >
+          <AlertDialogTitle className="text-center text-lg font-bold">
+            Withdraw this offer?
+          </AlertDialogTitle>
+          <div className="my-4 space-y-2 rounded-xl border border-[var(--mk-border)] bg-[var(--mk-field)] p-3.5">
+            <p className="text-sm font-semibold wrap-anywhere">{jobTitle}</p>
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-[var(--mk-muted)]">Offered price</span>
+              <span className="font-semibold">{formatPrice(offer.offered_price)}</span>
+            </div>
           </div>
-        </div>
-
-        <p className="text-center text-xs leading-relaxed text-zinc-400">
-          The creator will no longer be able to accept it. Your offer stays in your history, and you
-          can send a new one for this job.
-        </p>
-
-        {error && (
-          <div
-            role="alert"
-            className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/10 p-2.5 text-center text-xs text-rose-300"
-          >
-            {error}
+          <AlertDialogDescription className="text-center text-xs leading-relaxed text-[var(--mk-muted)]">
+            The creator will no longer be able to accept it. Your offer stays in your history, and
+            you can send a new one if this job is still open.
+          </AlertDialogDescription>
+          {error && (
+            <p
+              role="alert"
+              className="mt-3 rounded-lg border border-[var(--mk-error)] p-2.5 text-center text-xs text-[var(--mk-error)]"
+            >
+              {error}
+            </p>
+          )}
+          <div className="mt-6 flex items-center gap-3">
+            <Button
+              ref={keepButton}
+              type="button"
+              variant="outline"
+              disabled={pending}
+              onClick={onClose}
+              className="flex-1"
+            >
+              Keep offer
+            </Button>
+            <Button
+              type="button"
+              disabled={pending || confirmDisabled}
+              onClick={onConfirm}
+              className="flex-1 bg-[#b42318] text-white hover:bg-[#912018]"
+            >
+              {pending ? "Withdrawing…" : "Withdraw"}
+            </Button>
           </div>
-        )}
-
-        <div className="mt-6 flex items-center gap-3">
-          <button
-            ref={keepButtonRef}
-            type="button"
-            disabled={pending}
-            onClick={onClose}
-            className="flex-1 rounded-xl bg-[#4b5563] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#374151] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 disabled:opacity-50"
-          >
-            Keep offer
-          </button>
-          <button
-            type="button"
-            disabled={pending}
-            onClick={onConfirm}
-            className="flex-1 rounded-xl bg-[#d94f57] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#c93f3f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 disabled:opacity-50"
-          >
-            {pending ? "Withdrawing…" : "Withdraw"}
-          </button>
-        </div>
-      </div>
-    </div>
+        </AlertDialogPopup>
+      </AlertDialogPortal>
+    </AlertDialog>
   );
 }

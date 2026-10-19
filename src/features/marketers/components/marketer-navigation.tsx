@@ -16,7 +16,7 @@ export const ownerViews = [
 ] as const;
 
 export const demoViews = [
-  ...ownerViews,
+  ...ownerViews.filter((view) => view.id !== "offers"),
   { id: "viewer", label: "Creator view", icon: Eye },
 ] as const;
 

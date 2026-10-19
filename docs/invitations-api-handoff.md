@@ -1,4 +1,4 @@
-# Invitations and custom offers (US20 / US21)
+# Invitations and custom offers (US20 / US21 / US24)
 
 ## Live workflow
 
@@ -21,9 +21,14 @@ Delivery is required, using today's Bangkok calendar date and the earliest surve
 one exists. The optional message is limited to 300 Unicode code points after trimming, like the
 backend. An elapsed job deadline prevents new submission.
 
-All existing offers are read-only, including Accepted/Rejected/Withdrawn records and offers for
-Closed requests. US24 withdrawal and replacement submission are deliberately excluded. The backend
-already supports replacement eligibility, but this frontend release does not expose that action.
+`/marketer/offers` displays complete offer history, newest first, with All/Pending/Accepted/
+Withdrawn/Rejected tabs. Pending offers can be withdrawn through a confirmation with focus trapping
+and focus restoration. Accepted/Rejected offers and offers for Closed requests remain read-only.
+The latest Withdrawn offer can be resubmitted when its invitation is Accepted, the job is Pending,
+and the deadline has not passed. The form prefills price, delivery date and message, preserves edits
+across refreshes, and locks the replacement after it is saved. Older historical offers never offer
+another resubmission action while a newer proposal exists. Light/dark theme tokens cover the cards,
+banner and modal. The banner does not infer a withdrawal timestamp from the submission date.
 
 The live UI derives its heading from the linked survey title (first title plus a count for multiple
 surveys), with Job #ID underneath. Deadline and Target are the only two tags. Compact survey
@@ -52,6 +57,7 @@ ownership, state transitions and persistence.
 | POST /api/v1/me/job-requests/{id}/decline | POST /api/job-requests/{id}/decline         |
 | GET /api/v1/me/job-requests/{id}/offers   | Parallel reads for Accepted/Closed requests |
 | POST /api/v1/me/job-requests/{id}/offers  | POST /api/job-requests/{id}/offers          |
+| POST /api/v1/me/offers/{id}/withdraw      | POST /api/offers/{id}/withdraw              |
 
 GET `/api/job-requests`, optionally with `requestId`, supplies uncached refresh snapshots using the
 same server loader. Offer lookup failures are distinct from an empty list and prevent submission.
@@ -62,6 +68,13 @@ visible and read-only, and the saved warning remains through unsuccessful retrie
 invitation refreshes update relative invitation ages against the current time.
 Conflicts refresh status without claiming success; failed submissions preserve drafts.
 Duplicate clicks are blocked while requests are pending.
+
+GET `/api/offers` supplies an uncached, authenticated full-history snapshot for the dashboard.
+Withdrawal updates the confirmed offer locally. A conflict or uncertain response triggers a read
+of authoritative status without automatically retrying the mutation. A failed or partial refresh
+preserves known offers and blocks withdrawals/resubmission until a complete refresh succeeds.
+Expired-session and permission errors provide sign-in/profile recovery links. Server page failures
+also expose an actionable fallback instead of an unhandled page error.
 
 ## Existing fictional preview
 

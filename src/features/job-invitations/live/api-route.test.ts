@@ -1,9 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchBackend } from "@/lib/api/backend-client";
+import { ApiError } from "@/lib/api/errors";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import { listInvitations, mutateInvitation, withdrawOfferRoute } from "./api-route";
-import { getInvitations } from "./api";
+import {
+  listInvitations,
+  listMarketerOffers,
+  mutateInvitation,
+  withdrawOfferRoute,
+} from "./api-route";
+import { getInvitations, getMarketerOffers } from "./api";
 import { invitationEntry, receivedRequest, savedOffer } from "./test-fixtures";
 
 vi.mock("@/lib/api/backend-client", () => ({
@@ -12,7 +18,7 @@ vi.mock("@/lib/api/backend-client", () => ({
 }));
 vi.mock("@/lib/auth/origin", () => ({ isAllowedFrontendOrigin: vi.fn() }));
 vi.mock("@/lib/auth/session", () => ({ getSession: vi.fn() }));
-vi.mock("./api", () => ({ getInvitations: vi.fn() }));
+vi.mock("./api", () => ({ getInvitations: vi.fn(), getMarketerOffers: vi.fn() }));
 function request(body?: unknown) {
   return new Request("http://localhost:3000/api/job-requests/7/offers", {
     method: "POST",
@@ -32,6 +38,31 @@ beforeEach(() => {
 });
 
 describe("live invitation BFF", () => {
+  it("serves fresh authenticated offer history and preserves upstream failures", async () => {
+    const snapshot = {
+      offers: [{ request: receivedRequest(), offer: savedOffer() }],
+      offersUnavailable: false,
+    };
+    vi.mocked(getMarketerOffers).mockResolvedValue(snapshot);
+    const response = await listMarketerOffers();
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(await response.json()).toEqual({ status: "success", data: snapshot });
+    vi.mocked(getMarketerOffers).mockRejectedValue(new ApiError(403, "forbidden", "Forbidden"));
+    expect((await listMarketerOffers()).status).toBe(403);
+    vi.mocked(getSession).mockResolvedValue(null);
+    expect((await listMarketerOffers()).status).toBe(401);
+    expect(getMarketerOffers).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    { ...savedOffer("Withdrawn"), offer_id: 99 },
+    { ...savedOffer("Withdrawn"), marketer_id: 99 },
+    savedOffer("Pending"),
+  ])("rejects a withdrawal success with the wrong identity or status", async (offer) => {
+    vi.mocked(fetchBackend).mockResolvedValue(Response.json({ status: "success", data: offer }));
+    expect((await withdrawOfferRoute(request(), "5")).status).toBe(502);
+  });
+
   it("requires the frontend origin and session before forwarding mutations", async () => {
     vi.mocked(isAllowedFrontendOrigin).mockReturnValue(false);
     expect((await mutateInvitation(request(), "7", "accept")).status).toBe(403);

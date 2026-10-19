@@ -3,7 +3,7 @@ import { extractData } from "@/lib/api/envelope";
 import { ApiError, apiErrorFromResponse } from "@/lib/api/errors";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import { getInvitations } from "./api";
+import { getInvitations, getMarketerOffers } from "./api";
 import { invalidResponse, readOffer, readRequest } from "./contracts";
 import { isRequestId, validLiveDecline, validOfferBody } from "./validation";
 
@@ -94,9 +94,25 @@ export async function withdrawOfferRoute(request: Request, id: string): Promise<
     const payload = await readBackendPayload(upstream);
     if (!upstream.ok) throw apiErrorFromResponse(upstream.status, payload);
     const data = readOffer(extractData<unknown>(payload));
-    if (data.offer_id !== Number(id) || data.marketer_id !== session.userId)
+    if (
+      data.offer_id !== Number(id) ||
+      data.marketer_id !== session.userId ||
+      data.offer_status !== "Withdrawn"
+    )
       return invalidResponse();
     return Response.json({ status: "success", data }, { status: upstream.status });
+  } catch (error) {
+    return invitationError(error);
+  }
+}
+
+export async function listMarketerOffers(): Promise<Response> {
+  if (!(await getSession())) return errorResponse(401, "unauthorized", "Please sign in again.");
+  try {
+    return Response.json(
+      { status: "success", data: await getMarketerOffers() },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (error) {
     return invitationError(error);
   }

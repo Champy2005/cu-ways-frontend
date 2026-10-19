@@ -13,3 +13,8 @@ export type MarketerOfferItem = {
   offer: SavedOffer;
   request: ReceivedRequest;
 };
+
+export type MarketerOffersSnapshot = {
+  offers: MarketerOfferItem[];
+  offersUnavailable: boolean;
+};

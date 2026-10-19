@@ -17,6 +17,7 @@ import { LiveOfferFields } from "./offer-fields";
 import { StatusFeedback } from "./status-feedback";
 import { offerErrors } from "./validation";
 import { useInvitations } from "./use-invitations";
+import { canResubmitOffer } from "./offer-eligibility";
 import type { InvitationEntry, SavedOffer } from "./types";
 import "../invitations.css";
 import "./presentation.css";
@@ -24,18 +25,14 @@ import "./presentation.css";
 export function submissionUnavailable(entry: InvitationEntry, today: string): string | null {
   if (entry.offersUnavailable)
     return "Offers could not be loaded. Refresh before submitting an offer.";
-  const canResubmit =
-    entry.offer?.offer_status === "Withdrawn" &&
-    entry.request.request_status === "Accepted" &&
-    entry.request.job.job_status === "Pending";
-  if (entry.offer && !canResubmit)
-    return "An offer has already been submitted for this invitation.";
   if (entry.request.request_status !== "Accepted")
     return "Accept this invitation before submitting an offer. Declined or closed invitations cannot receive offers.";
   if (entry.request.job.job_status !== "Pending") return "This job is no longer accepting offers.";
   const deadline = entry.request.job.deadline;
   if (deadline && bangkokDate(deadline) < today)
     return "The job deadline has passed. There is no valid delivery date for a new offer.";
+  if (entry.offer && !canResubmitOffer(entry.offer, entry.request, today))
+    return "An offer has already been submitted for this invitation.";
   return null;
 }
 
@@ -47,20 +44,16 @@ function OfferSummary({
   unavailable: string | null;
 }) {
   const offer = entry.offer;
-  const canResubmit =
-    offer?.offer_status === "Withdrawn" &&
-    entry.request.request_status === "Accepted" &&
-    entry.request.job.job_status === "Pending";
-  if (canResubmit) {
+  if (offer && canResubmitOffer(offer, entry.request)) {
     return (
       <div
         data-testid="offer-withdrawn-banner"
-        className="rounded-xl border border-rose-500/30 bg-[#241a1a] p-4 text-sm text-[var(--mk-text)] shadow-sm"
+        className="rounded-xl border border-[var(--mk-border)] bg-[var(--mk-field)] p-4 text-sm text-[var(--mk-text)] shadow-sm"
       >
-        <p className="font-semibold text-white">Offer withdrawn</p>
-        <p className="mt-1 text-zinc-300">
-          You withdrew your offer of {formatPrice(offer.offered_price)} on{" "}
-          {formatDate(offer.created_at)}. You can submit a new one below.
+        <p className="font-semibold">Offer withdrawn</p>
+        <p className="mt-1 text-[var(--mk-muted)]">
+          Your previous offer of {formatPrice(offer.offered_price)} was withdrawn. You can submit a
+          new one below.
         </p>
       </div>
     );
@@ -73,6 +66,7 @@ function OfferSummary({
           You submitted {formatPrice(offer.offered_price)} on {formatDate(offer.created_at)}.
         </p>
         <p>This saved offer is read-only.</p>
+        {offer.offer_status === "Withdrawn" && unavailable && <p>{unavailable}</p>}
       </div>
     );
   if (unavailable && !entry.offersUnavailable)
@@ -153,12 +147,14 @@ export function LiveOfferPage({ initial }: { initial: InvitationEntry[] }) {
   const state = useInvitations(initial, requestId);
   const entry = state.entries[0];
   const { request, offer } = entry;
-  const canResubmit =
-    offer?.offer_status === "Withdrawn" &&
-    request.request_status === "Accepted" &&
-    request.job.job_status === "Pending";
+  const canResubmit = canResubmitOffer(offer, request);
   const isReadOnly = Boolean(offer && !canResubmit);
   const [draft, setDraft] = useState<OfferInput>(() => initialDraft(offer, canResubmit));
+  const [seededOffer, setSeededOffer] = useState(canResubmit ? offer?.offer_id : undefined);
+  if (canResubmit && offer && seededOffer !== offer.offer_id) {
+    setSeededOffer(offer.offer_id);
+    setDraft(initialDraft(offer, true));
+  }
   const [touched, setTouched] = useState<Partial<Record<keyof OfferInput, boolean>>>({});
   const [discard, setDiscard] = useState(false);
   const action = useAction();

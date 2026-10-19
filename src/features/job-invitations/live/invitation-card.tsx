@@ -13,6 +13,7 @@ import {
 } from "./presentation";
 import type { InvitationEntry, ReceivedRequest, SavedOffer } from "./types";
 import { JobDetails } from "./job-details";
+import { canResubmitOffer } from "./offer-eligibility";
 
 function DeclineMessage({ reason, note }: { reason?: string | null; note?: string | null }) {
   const text = [reason, note].filter(Boolean).join(". ");
@@ -66,23 +67,18 @@ function OfferActionLink({
 
   if (!offer && !canSubmit) return null;
 
-  const isPending = offer?.offer_status === "Pending";
-  const isWithdrawn = offer?.offer_status === "Withdrawn";
+  const canResubmit = !offersUnavailable && canResubmitOffer(offer, request);
 
   return (
     <Link
-      href={
-        isPending
-          ? "/marketer/offers"
-          : `/marketer/offer/create?requestId=${request.job_request_id}`
-      }
+      href={`/marketer/offer/create?requestId=${request.job_request_id}`}
       className={cn(
         buttonVariants({ variant: offer ? "outline" : "default" }),
         offer ? "ji-secondary" : "ji-primary",
         "w-full ji-live-offer-link",
       )}
     >
-      {offer ? (isWithdrawn ? "Resubmit Offer" : "View Offer") : "Submit Offer"}
+      {offer ? (canResubmit ? "Resubmit Offer" : "View Offer") : "Submit Offer"}
     </Link>
   );
 }

@@ -31,7 +31,7 @@ describe("WithdrawOfferModal", () => {
     expect(screen.getByText("฿1,200")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "The creator will no longer be able to accept it. Your offer stays in your history, and you can send a new one for this job.",
+        "The creator will no longer be able to accept it. Your offer stays in your history, and you can send a new one if this job is still open.",
       ),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Keep offer" })).toBeInTheDocument();

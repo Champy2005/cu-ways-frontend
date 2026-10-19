@@ -186,8 +186,12 @@ eligibility explanations. Offer views emphasize the offer status, with accepted 
 meaning the marketer has been hired. Survey metadata is available in expandable details, keeping
 the summary cards compact. Offer creation shows field errors on blur and preserves drafts.
 
-US24 is excluded: live screens have no withdrawal or replacement-offer actions. All existing
-offers, including historical rejected/withdrawn records, are read-only in this release.
+US24 adds `/marketer/offers`, with All/Pending/Accepted/Withdrawn/Rejected tabs and complete
+offer history. Marketers can withdraw Pending offers through a keyboard-accessible confirmation.
+Only the latest Withdrawn offer can be resubmitted, while its invitation is Accepted, the job is
+Pending, and the deadline has not passed. The replacement form prefills the previous proposal.
+Accepted and Rejected offers remain read-only. Conflicts refresh the current status; uncertain
+outcomes block further withdrawals until a complete refresh succeeds. Both themes are supported.
 
 The live empty state shares the demo's gray bird, sizing, spacing, and copy. On touch devices,
 pull down from the top of the invitation list and release to refresh. Ordinary scrolling and

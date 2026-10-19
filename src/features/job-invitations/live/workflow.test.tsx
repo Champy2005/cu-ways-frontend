@@ -232,6 +232,51 @@ describe("live US20 invitations", () => {
 });
 
 describe("live US21 offers", () => {
+  it("prefills withdrawn terms, preserves edits on refresh, and locks the replacement after submission", async () => {
+    const withdrawn = { ...invitationEntry(), offer: savedOffer("Withdrawn") };
+    const replacement = { ...savedOffer(), offer_id: 6, offered_price: "9500.00" };
+    vi.mocked(submitInvitationOffer).mockResolvedValue(replacement);
+    vi.mocked(reloadInvitations).mockResolvedValue([{ ...invitationEntry(), offer: replacement }]);
+    const view = render(<LiveOfferPage initial={[withdrawn]} />);
+    expect(screen.getByTestId("offer-withdrawn-banner")).toHaveTextContent("was withdrawn");
+    const price = screen.getByLabelText("Proposed Price (THB) *");
+    expect(price).toHaveValue("9000.00");
+    expect(screen.getByLabelText("Estimated Delivery *")).toHaveValue("2099-10-25");
+    expect(screen.getByLabelText("Message to Creator (Optional)")).toHaveValue("Faculty groups");
+    fireEvent.change(price, { target: { value: "9500" } });
+    view.rerender(<LiveOfferPage initial={[{ ...withdrawn }]} />);
+    expect(price).toHaveValue("9500");
+    fireEvent.click(screen.getByRole("button", { name: "Submit Offer" }));
+    await screen.findByRole("heading", { name: "Your Offer" });
+    expect(price).toHaveAttribute("readonly");
+    expect(price).toHaveValue("9500.00");
+    expect(submitInvitationOffer).toHaveBeenCalledWith(7, {
+      price: "9500",
+      deliveryDate: "2099-10-25",
+      message: "Faculty groups",
+    });
+  });
+
+  it("prefills terms when fresh server data changes the current offer to Withdrawn", () => {
+    const view = render(
+      <LiveOfferPage initial={[{ ...invitationEntry(), offer: savedOffer() }]} />,
+    );
+    view.rerender(
+      <LiveOfferPage initial={[{ ...invitationEntry(), offer: savedOffer("Withdrawn") }]} />,
+    );
+    expect(screen.getByLabelText("Proposed Price (THB) *")).toHaveValue("9000.00");
+    expect(screen.getByLabelText("Proposed Price (THB) *")).not.toHaveAttribute("readonly");
+  });
+
+  it("keeps a withdrawn offer read-only after the job deadline", () => {
+    const entry = { ...invitationEntry(), offer: savedOffer("Withdrawn") };
+    entry.request.job.deadline = "2000-01-01T00:00:00Z";
+    render(<LiveOfferPage initial={[entry]} />);
+    expect(screen.getByLabelText("Proposed Price (THB) *")).toHaveAttribute("readonly");
+    expect(screen.queryByRole("button", { name: "Submit Offer" })).not.toBeInTheDocument();
+    expect(screen.getByText(/The job deadline has passed/)).toBeInTheDocument();
+  });
+
   it("keeps a just-saved offer read-only when its refresh lookup fails, then recovers on retry", async () => {
     vi.mocked(submitInvitationOffer).mockResolvedValue(savedOffer());
     vi.mocked(reloadInvitations)

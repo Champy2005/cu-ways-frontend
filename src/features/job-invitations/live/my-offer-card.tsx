@@ -2,126 +2,108 @@
 
 import Link from "next/link";
 import { Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { ReceivedRequest, SavedOffer } from "./types";
-import { formatDate } from "../format";
+import { formatDate, formatPrice } from "../format";
+import { canResubmitOffer } from "./offer-eligibility";
 
 export type MyOfferCardProps = {
   offer: SavedOffer;
   request: ReceivedRequest;
-  onWithdrawClick: (offer: SavedOffer, title: string) => void;
+  disabled?: boolean;
+  isCurrent?: boolean;
+  onWithdrawClick: (offer: SavedOffer, title: string, trigger: HTMLElement) => void;
 };
 
-function formatDueLabel(offer: SavedOffer, request: ReceivedRequest): string {
-  const dateStr = offer.delivery_date ?? request.job.deadline;
-  if (!dateStr) return "Flexible delivery";
-  return `Due ${formatDate(dateStr)}`;
-}
+const badgeColors = {
+  Pending: "border-[var(--mk-caution)] text-[var(--mk-caution)]",
+  Accepted: "border-[var(--mk-positive)] text-[var(--mk-positive)]",
+  Withdrawn: "border-[var(--mk-border)] text-[var(--mk-muted)]",
+  Rejected: "border-[var(--mk-error)] text-[var(--mk-error)]",
+};
 
-function StatusBadge({ status }: { status: SavedOffer["offer_status"] }) {
-  if (status === "Pending") {
-    return (
-      <span className="rounded-full border border-[#f59e0b]/40 bg-[#3d3319] px-2.5 py-0.5 text-xs font-semibold text-[#fbbf24]">
-        Pending
-      </span>
-    );
-  }
-  if (status === "Accepted") {
-    return (
-      <span className="rounded-full border border-[#10b981]/40 bg-[#064e3b] px-2.5 py-0.5 text-xs font-semibold text-[#34d399]">
-        Accepted
-      </span>
-    );
-  }
-  if (status === "Withdrawn") {
-    return (
-      <span className="rounded-full border border-white/10 bg-[#27272a] px-2.5 py-0.5 text-xs font-semibold text-[#a1a1aa]">
-        Withdrawn
-      </span>
-    );
-  }
-  return (
-    <span className="rounded-full border border-rose-800/40 bg-rose-950/60 px-2.5 py-0.5 text-xs font-semibold text-rose-400">
-      Rejected
-    </span>
-  );
-}
-
-export function MyOfferCard({ offer, request, onWithdrawClick }: MyOfferCardProps) {
-  const jobTitle = request.job.surveys[0]?.title ?? `Job #${request.job_id}`;
-  const priceNumber = Number(offer.offered_price);
-  const formattedPrice = Number.isFinite(priceNumber)
-    ? priceNumber.toLocaleString("en-US", { maximumFractionDigits: 2 })
-    : offer.offered_price;
-
+export function MyOfferCard({
+  offer,
+  request,
+  onWithdrawClick,
+  disabled = false,
+  isCurrent = true,
+}: MyOfferCardProps) {
+  const jobTitle = request.job.surveys[0]?.title ?? "Job #" + request.job_id;
+  const date = offer.delivery_date ?? request.job.deadline;
+  const canResubmit = isCurrent && !disabled && canResubmitOffer(offer, request);
   return (
     <article
-      data-testid={`my-offer-card-${offer.offer_id}`}
-      className="rounded-2xl border border-[var(--mk-border,#262a36)] bg-[var(--mk-surface,#131722)] p-4 shadow-sm"
+      data-testid={"my-offer-card-" + offer.offer_id}
+      className="rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 text-[var(--mk-text)] shadow-sm"
     >
-      {/* Top Header: Title + Status Badge */}
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-base font-semibold text-white leading-snug line-clamp-2">{jobTitle}</h3>
-        <div className="shrink-0">
-          <StatusBadge status={offer.offer_status} />
-        </div>
+        <h2 className="text-base font-semibold leading-snug wrap-anywhere">{jobTitle}</h2>
+        <span
+          className={
+            "shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold " +
+            badgeColors[offer.offer_status]
+          }
+        >
+          {offer.offer_status}
+        </span>
       </div>
-
-      {/* Middle Row: Price on left, Due date on right */}
-      <div className="my-3 flex items-end justify-between">
+      <p className="mt-2 text-xs text-[var(--mk-muted)]">
+        {isCurrent ? "Submitted " : "Previous offer · Submitted "}
+        {formatDate(offer.created_at)}
+      </p>
+      <div className="my-3 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <span className="text-xs text-[var(--mk-muted,#8f96a3)] block mb-0.5">Offered price</span>
+          <span className="mb-0.5 block text-xs text-[var(--mk-muted)]">Offered price</span>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold tracking-tight text-white">{formattedPrice}</span>
-            <span className="text-xs font-medium text-[var(--mk-muted,#8f96a3)]">THB</span>
+            <span className="text-2xl font-bold tracking-tight">
+              {formatPrice(offer.offered_price).slice(1)}
+            </span>
+            <span className="text-xs font-medium text-[var(--mk-muted)]">THB</span>
           </div>
         </div>
-
-        <div className="flex items-center gap-1.5 text-xs text-[var(--mk-muted,#8f96a3)]">
+        <div className="flex items-center gap-1.5 text-xs text-[var(--mk-muted)]">
           <Calendar aria-hidden="true" className="size-3.5" />
-          <span>{formatDueLabel(offer, request)}</span>
+          <span>{date ? "Due " + formatDate(date) : "Flexible delivery"}</span>
         </div>
       </div>
-
-      {/* Action Button */}
+      {offer.message && (
+        <p className="mb-3 text-sm whitespace-pre-wrap wrap-anywhere">{offer.message}</p>
+      )}
       {offer.offer_status === "Pending" && (
-        <button
+        <Button
           type="button"
-          onClick={() => onWithdrawClick(offer, jobTitle)}
-          className="w-full rounded-xl bg-[#d94f57] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#c93f3f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+          disabled={disabled}
+          onClick={(event) => onWithdrawClick(offer, jobTitle, event.currentTarget)}
+          className="w-full bg-[#b42318] text-white hover:bg-[#912018]"
         >
           Withdraw offer
-        </button>
+        </Button>
       )}
-
       {offer.offer_status === "Accepted" && (
-        <button
-          type="button"
-          disabled
-          aria-disabled="true"
-          className="w-full rounded-xl bg-[#3b2328] px-4 py-2.5 text-sm font-semibold text-[#8e6871] opacity-60 cursor-not-allowed"
-        >
+        <Button type="button" disabled className="w-full">
           Withdraw offer
-        </button>
+        </Button>
       )}
-
-      {offer.offer_status === "Withdrawn" && (
+      {canResubmit && (
         <Link
-          href={`/marketer/offer/create?requestId=${request.job_request_id}`}
-          className="block w-full text-center rounded-xl bg-[#ec4899] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#db2777] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400"
+          href={"/marketer/offer/create?requestId=" + request.job_request_id}
+          className="mt-2 block w-full rounded-xl bg-[#c1225d] px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-[#a91b4f] focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           Resubmit offer
         </Link>
       )}
-
+      {offer.offer_status === "Withdrawn" && !canResubmit && (
+        <p className="text-xs text-[var(--mk-muted)]">
+          {isCurrent
+            ? "Resubmission is unavailable. The invitation and job must still be open."
+            : "A newer offer has been submitted for this invitation."}
+        </p>
+      )}
       {offer.offer_status === "Rejected" && (
-        <button
-          type="button"
-          disabled
-          aria-disabled="true"
-          className="w-full rounded-xl bg-zinc-800 px-4 py-2.5 text-sm font-semibold text-zinc-500 cursor-not-allowed opacity-60"
-        >
+        <Button type="button" disabled className="w-full">
           Offer rejected
-        </button>
+        </Button>
       )}
     </article>
   );

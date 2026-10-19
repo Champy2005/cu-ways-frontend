@@ -32,7 +32,7 @@ describe("MyOfferCard", () => {
     const withdrawBtn = screen.getByRole("button", { name: "Withdraw offer" });
     expect(withdrawBtn).toBeEnabled();
     fireEvent.click(withdrawBtn);
-    expect(handleWithdraw).toHaveBeenCalledWith(baseOffer, "Campus survey");
+    expect(handleWithdraw).toHaveBeenCalledWith(baseOffer, "Campus survey", withdrawBtn);
   });
 
   it("renders accepted offer with disabled Withdraw button", () => {
@@ -66,5 +66,39 @@ describe("MyOfferCard", () => {
       "href",
       `/marketer/offer/create?requestId=${baseRequest.job_request_id}`,
     );
+  });
+
+  it.each(["Accepted", "In Progress", "Completed", "Cancelled"] as const)(
+    "does not offer resubmission for a %s job",
+    (status) => {
+      render(
+        <MyOfferCard
+          offer={{ ...baseOffer, offer_status: "Withdrawn" }}
+          request={{ ...baseRequest, job: { ...baseRequest.job, job_status: status } }}
+          onWithdrawClick={vi.fn()}
+        />,
+      );
+      expect(screen.queryByRole("link", { name: "Resubmit offer" })).not.toBeInTheDocument();
+    },
+  );
+
+  it("does not resubmit historical offers or an offer with an expired deadline", () => {
+    const { rerender } = render(
+      <MyOfferCard
+        offer={{ ...baseOffer, offer_status: "Withdrawn" }}
+        request={baseRequest}
+        isCurrent={false}
+        onWithdrawClick={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("link", { name: "Resubmit offer" })).not.toBeInTheDocument();
+    rerender(
+      <MyOfferCard
+        offer={{ ...baseOffer, offer_status: "Withdrawn" }}
+        request={{ ...baseRequest, job: { ...baseRequest.job, deadline: "2000-01-01T00:00:00Z" } }}
+        onWithdrawClick={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("link", { name: "Resubmit offer" })).not.toBeInTheDocument();
   });
 });
