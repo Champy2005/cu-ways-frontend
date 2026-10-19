@@ -4,11 +4,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export function InvitationFailure({ message, status }: { message: string; status?: number }) {
+export function InvitationFailure({
+  message,
+  status,
+  title = "Invitations unavailable",
+}: {
+  message: string;
+  status?: number;
+  title?: string;
+}) {
   const router = useRouter();
   return (
     <section className="ji-page space-y-4">
-      <h1>Invitations unavailable</h1>
+      <h1>{title}</h1>
       <p role="alert">{message}</p>
       {status === 401 ? (
         <Link href="/login" className="ji-accent underline">

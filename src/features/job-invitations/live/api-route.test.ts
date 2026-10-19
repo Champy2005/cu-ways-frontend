@@ -1,9 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchBackend } from "@/lib/api/backend-client";
+import { ApiError } from "@/lib/api/errors";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import { listInvitations, mutateInvitation } from "./api-route";
-import { getInvitations } from "./api";
+import {
+  listInvitations,
+  listMarketerOffers,
+  mutateInvitation,
+  withdrawOfferRoute,
+} from "./api-route";
+import { getInvitations, getMarketerOffers } from "./api";
 import { invitationEntry, receivedRequest, savedOffer } from "./test-fixtures";
 
 vi.mock("@/lib/api/backend-client", () => ({
@@ -12,7 +18,7 @@ vi.mock("@/lib/api/backend-client", () => ({
 }));
 vi.mock("@/lib/auth/origin", () => ({ isAllowedFrontendOrigin: vi.fn() }));
 vi.mock("@/lib/auth/session", () => ({ getSession: vi.fn() }));
-vi.mock("./api", () => ({ getInvitations: vi.fn() }));
+vi.mock("./api", () => ({ getInvitations: vi.fn(), getMarketerOffers: vi.fn() }));
 function request(body?: unknown) {
   return new Request("http://localhost:3000/api/job-requests/7/offers", {
     method: "POST",
@@ -32,6 +38,31 @@ beforeEach(() => {
 });
 
 describe("live invitation BFF", () => {
+  it("serves fresh authenticated offer history and preserves upstream failures", async () => {
+    const snapshot = {
+      offers: [{ request: receivedRequest(), offer: savedOffer() }],
+      offersUnavailable: false,
+    };
+    vi.mocked(getMarketerOffers).mockResolvedValue(snapshot);
+    const response = await listMarketerOffers();
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(await response.json()).toEqual({ status: "success", data: snapshot });
+    vi.mocked(getMarketerOffers).mockRejectedValue(new ApiError(403, "forbidden", "Forbidden"));
+    expect((await listMarketerOffers()).status).toBe(403);
+    vi.mocked(getSession).mockResolvedValue(null);
+    expect((await listMarketerOffers()).status).toBe(401);
+    expect(getMarketerOffers).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    { ...savedOffer("Withdrawn"), offer_id: 99 },
+    { ...savedOffer("Withdrawn"), marketer_id: 99 },
+    savedOffer("Pending"),
+  ])("rejects a withdrawal success with the wrong identity or status", async (offer) => {
+    vi.mocked(fetchBackend).mockResolvedValue(Response.json({ status: "success", data: offer }));
+    expect((await withdrawOfferRoute(request(), "5")).status).toBe(502);
+  });
+
   it("requires the frontend origin and session before forwarding mutations", async () => {
     vi.mocked(isAllowedFrontendOrigin).mockReturnValue(false);
     expect((await mutateInvitation(request(), "7", "accept")).status).toBe(403);
@@ -115,5 +146,60 @@ describe("live invitation BFF", () => {
     expect(
       (await listInvitations(new Request("http://localhost:3000/api/job-requests"))).status,
     ).toBe(401);
+  });
+  it("handles withdrawOfferRoute origin, auth, validation, and forwarding", async () => {
+    function withdrawReq() {
+      return new Request("http://localhost:3000/api/offers/11/withdraw", {
+        method: "POST",
+        headers: { Origin: "http://localhost:3000" },
+      });
+    }
+
+    vi.mocked(isAllowedFrontendOrigin).mockReturnValue(false);
+    expect((await withdrawOfferRoute(withdrawReq(), "11")).status).toBe(403);
+
+    vi.mocked(isAllowedFrontendOrigin).mockReturnValue(true);
+    vi.mocked(getSession).mockResolvedValue(null);
+    expect((await withdrawOfferRoute(withdrawReq(), "11")).status).toBe(401);
+
+    vi.mocked(getSession).mockResolvedValue({
+      token: "test-session",
+      userId: 2,
+      role: "user",
+      expiresAt: 9999999999,
+    });
+    expect((await withdrawOfferRoute(withdrawReq(), "0")).status).toBe(422);
+
+    const withdrawnOfferData = {
+      ...savedOffer(),
+      offer_id: 11,
+      offer_status: "Withdrawn",
+    };
+    vi.mocked(fetchBackend).mockResolvedValueOnce(
+      Response.json({ status: "success", data: withdrawnOfferData }),
+    );
+    const response = await withdrawOfferRoute(withdrawReq(), "11");
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ status: "success", data: withdrawnOfferData });
+    expect(fetchBackend).toHaveBeenCalledWith(
+      "/api/v1/me/offers/11/withdraw",
+      expect.objectContaining({
+        method: "POST",
+        headers: { Authorization: "Bearer test-session" },
+      }),
+    );
+
+    // Conflict error propagation
+    vi.mocked(fetchBackend).mockResolvedValueOnce(
+      Response.json(
+        {
+          status: "error",
+          error: { code: "offer_not_pending", message: "only a pending offer can be withdrawn" },
+        },
+        { status: 409 },
+      ),
+    );
+    const conflictRes = await withdrawOfferRoute(withdrawReq(), "11");
+    expect(conflictRes.status).toBe(409);
   });
 });

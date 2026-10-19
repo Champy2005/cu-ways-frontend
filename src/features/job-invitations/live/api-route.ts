@@ -3,7 +3,7 @@ import { extractData } from "@/lib/api/envelope";
 import { ApiError, apiErrorFromResponse } from "@/lib/api/errors";
 import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import { getInvitations } from "./api";
+import { getInvitations, getMarketerOffers } from "./api";
 import { invalidResponse, readOffer, readRequest } from "./contracts";
 import { isRequestId, validLiveDecline, validOfferBody } from "./validation";
 
@@ -75,6 +75,44 @@ export async function mutateInvitation(
     if (data.job_request_id !== Number(id) || data.marketer_id !== session.userId)
       return invalidResponse();
     return Response.json({ status: "success", data }, { status: upstream.status });
+  } catch (error) {
+    return invitationError(error);
+  }
+}
+
+export async function withdrawOfferRoute(request: Request, id: string): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin")))
+    return errorResponse(403, "invalid_origin", "Request origin is not allowed.");
+  const session = await getSession();
+  if (!session) return errorResponse(401, "unauthorized", "Please sign in again.");
+  if (!isRequestId(id)) return errorResponse(422, "validation_error", "Choose a valid offer.");
+  try {
+    const upstream = await fetchBackend(`/api/v1/me/offers/${id}/withdraw`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session.token}` },
+    });
+    const payload = await readBackendPayload(upstream);
+    if (!upstream.ok) throw apiErrorFromResponse(upstream.status, payload);
+    const data = readOffer(extractData<unknown>(payload));
+    if (
+      data.offer_id !== Number(id) ||
+      data.marketer_id !== session.userId ||
+      data.offer_status !== "Withdrawn"
+    )
+      return invalidResponse();
+    return Response.json({ status: "success", data }, { status: upstream.status });
+  } catch (error) {
+    return invitationError(error);
+  }
+}
+
+export async function listMarketerOffers(): Promise<Response> {
+  if (!(await getSession())) return errorResponse(401, "unauthorized", "Please sign in again.");
+  try {
+    return Response.json(
+      { status: "success", data: await getMarketerOffers() },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (error) {
     return invitationError(error);
   }

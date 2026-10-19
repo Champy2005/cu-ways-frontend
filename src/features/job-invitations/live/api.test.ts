@@ -1,13 +1,33 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { serverApiGet } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
-import { getInvitations } from "./api";
+import { getInvitations, getMarketerOffers } from "./api";
 import { receivedRequest, savedOffer } from "./test-fixtures";
 
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
 beforeEach(() => vi.resetAllMocks());
 
 describe("live invitation server reads", () => {
+  it("keeps withdrawn history alongside replacement offers, newest first", async () => {
+    vi.mocked(serverApiGet)
+      .mockResolvedValueOnce([receivedRequest()])
+      .mockResolvedValueOnce([savedOffer(), { ...savedOffer("Withdrawn"), offer_id: 4 }]);
+    const snapshot = await getMarketerOffers();
+    expect(snapshot.offers.map((item) => item.offer.offer_id)).toEqual([5, 4]);
+    expect(snapshot.offersUnavailable).toBe(false);
+  });
+
+  it("reports partial history failures and propagates authorization errors", async () => {
+    vi.mocked(serverApiGet)
+      .mockResolvedValueOnce([receivedRequest()])
+      .mockRejectedValueOnce(new Error("offline"));
+    expect(await getMarketerOffers()).toEqual({ offers: [], offersUnavailable: true });
+    vi.mocked(serverApiGet)
+      .mockResolvedValueOnce([receivedRequest()])
+      .mockRejectedValueOnce(new ApiError(403, "forbidden", "Forbidden"));
+    await expect(getMarketerOffers()).rejects.toMatchObject({ status: 403 });
+  });
+
   it("loads only relevant offer lists and chooses the newest saved offer", async () => {
     vi.mocked(serverApiGet)
       .mockResolvedValueOnce([

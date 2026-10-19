@@ -1,7 +1,13 @@
 import { isRecord } from "@/lib/api/envelope";
 import { ApiError } from "@/lib/api/errors";
 import { isCalendarDate, isOfferPrice } from "../validation";
-import type { InvitationEntry, ReceivedRequest, SavedOffer, SavedRequest } from "./types";
+import type {
+  InvitationEntry,
+  MarketerOffersSnapshot,
+  ReceivedRequest,
+  SavedOffer,
+  SavedRequest,
+} from "./types";
 
 export function invalidResponse(): never {
   throw new ApiError(
@@ -165,4 +171,20 @@ export function readEntries(value: unknown): InvitationEntry[] {
     const offers = readOffers(item.offer === null ? [] : [item.offer], request);
     return { request, offer: offers[0] ?? null, offersUnavailable: item.offersUnavailable };
   });
+}
+
+export function readMarketerOffers(value: unknown): MarketerOffersSnapshot {
+  if (
+    !isRecord(value) ||
+    !Array.isArray(value.offers) ||
+    typeof value.offersUnavailable !== "boolean"
+  )
+    return invalidResponse();
+  const offers = value.offers.map((item) => {
+    if (!isRecord(item)) return invalidResponse();
+    const request = readReceivedRequest(item.request);
+    const [offer] = readOffers([item.offer], request);
+    return { request, offer };
+  });
+  return { offers, offersUnavailable: value.offersUnavailable };
 }

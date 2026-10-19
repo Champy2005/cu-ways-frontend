@@ -1,12 +1,45 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { browserApiRequest } from "@/lib/api/browser-client";
-import { reloadInvitations, respondToInvitation, submitInvitationOffer } from "./browser-api";
+import {
+  reloadInvitations,
+  reloadMarketerOffers,
+  respondToInvitation,
+  submitInvitationOffer,
+  withdrawOffer,
+} from "./browser-api";
 import { invitationEntry, receivedRequest, savedOffer } from "./test-fixtures";
 
 vi.mock("@/lib/api/browser-client", () => ({ browserApiRequest: vi.fn() }));
 beforeEach(() => vi.resetAllMocks());
 
 describe("live browser adapter", () => {
+  it("refreshes and validates the full offer history", async () => {
+    const snapshot = {
+      offers: [{ request: receivedRequest(), offer: savedOffer("Withdrawn") }],
+      offersUnavailable: false,
+    };
+    vi.mocked(browserApiRequest)
+      .mockResolvedValueOnce(snapshot)
+      .mockResolvedValueOnce({
+        ...snapshot,
+        offers: [{ request: receivedRequest(), offer: { ...savedOffer(), marketer_id: 99 } }],
+      });
+    expect(await reloadMarketerOffers()).toEqual(snapshot);
+    expect(browserApiRequest).toHaveBeenCalledWith("/api/offers");
+    await expect(reloadMarketerOffers()).rejects.toMatchObject({ status: 502 });
+  });
+
+  it("only confirms withdrawal for the requested offer in Withdrawn state", async () => {
+    vi.mocked(browserApiRequest)
+      .mockResolvedValueOnce(savedOffer("Withdrawn"))
+      .mockResolvedValueOnce(savedOffer())
+      .mockResolvedValueOnce({ ...savedOffer("Withdrawn"), offer_id: 99 });
+    expect(await withdrawOffer(5)).toEqual(savedOffer("Withdrawn"));
+    expect(browserApiRequest).toHaveBeenCalledWith("/api/offers/5/withdraw", { method: "POST" });
+    await expect(withdrawOffer(5)).rejects.toMatchObject({ status: 502 });
+    await expect(withdrawOffer(5)).rejects.toMatchObject({ status: 502 });
+  });
+
   it("normalizes price and optional message without numeric money conversion", async () => {
     vi.mocked(browserApiRequest).mockResolvedValue(savedOffer());
     await submitInvitationOffer(7, {

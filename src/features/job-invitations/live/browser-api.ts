@@ -1,7 +1,13 @@
 import { browserApiRequest } from "@/lib/api/browser-client";
 import type { DeclineInput, OfferInput } from "../types";
 import { normalizeOffer } from "../validation";
-import { readEntries, readOffer, readRequest } from "./contracts";
+import {
+  invalidResponse,
+  readEntries,
+  readMarketerOffers,
+  readOffer,
+  readRequest,
+} from "./contracts";
 
 export async function reloadInvitations(requestId?: string) {
   const query = requestId ? `?requestId=${encodeURIComponent(requestId)}` : "";
@@ -28,4 +34,18 @@ export async function submitInvitationOffer(id: number, input: OfferInput) {
       }),
     }),
   );
+}
+
+export async function withdrawOffer(offerId: number) {
+  const offer = readOffer(
+    await browserApiRequest<unknown>(`/api/offers/${offerId}/withdraw`, {
+      method: "POST",
+    }),
+  );
+  if (offer.offer_id !== offerId || offer.offer_status !== "Withdrawn") return invalidResponse();
+  return offer;
+}
+
+export async function reloadMarketerOffers() {
+  return readMarketerOffers(await browserApiRequest<unknown>("/api/offers"));
 }
