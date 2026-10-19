@@ -1,0 +1,10 @@
+CU Ways - Sprint 2 sample project brief, version 1
+
+Campaign: Campus dining survey
+Audience: Chulalongkorn University students
+Goal: Reach 50 potential respondents.
+Channels: Student communities and campus clubs.
+Instructions: Share the external survey link with the intended audience.
+
+This is synthetic demonstration content. CU Ways stores the survey metadata
+and external link, not survey questions or responses.

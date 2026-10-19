@@ -66,6 +66,12 @@ Try the flow:
 
 ## Development commands
 
+For Sprint 2 rehearsal, start the migrated local backend, run `pnpm setup:sprint2`,
+then follow [the software demo walkthrough](docs/sprint2-demo.md). Setup creates fresh
+synthetic accounts, survey prerequisites, and separate decline/backup hiring scenarios.
+Private logins and a run-specific practice card are saved under ignored `.artifacts/sprint2-demo/`.
+Each run preserves existing records and leaves the main job creation/hiring actions for the live UI.
+
 | Command                   | Purpose                                                               |
 | ------------------------- | --------------------------------------------------------------------- |
 | `pnpm dev`                | Start the development server                                          |
