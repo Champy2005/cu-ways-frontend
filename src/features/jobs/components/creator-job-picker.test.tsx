@@ -41,11 +41,18 @@ describe("CreatorJobPicker", () => {
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 
-  it("shows an honest empty state without job creation controls", () => {
+  it("offers job creation from the empty state", () => {
     render(<CreatorJobPicker state={{ status: "success", items: [] }} />);
 
     expect(screen.getByText("No jobs are available to invite")).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /create job/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create a job" })).toHaveAttribute(
+      "href",
+      "/creator/jobs/create",
+    );
+    expect(screen.getByRole("link", { name: "Return to Creator workspace" })).toHaveAttribute(
+      "href",
+      "/creator/dashboard",
+    );
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 

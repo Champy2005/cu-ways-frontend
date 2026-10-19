@@ -24,7 +24,7 @@ function notificationContent(notice: JobSuccessNotice) {
     case "offer-accepted":
       return {
         title: "Offer accepted",
-        message: "A marketer's offer has been accepted. The job is now in progress.",
+        message: "The offer was accepted. Work can start with this marketer.",
       };
     case "surveys-linked":
       return {

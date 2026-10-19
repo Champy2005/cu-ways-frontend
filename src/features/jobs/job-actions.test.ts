@@ -92,6 +92,30 @@ describe("Saved job API actions", () => {
     expect(serverApiRequest).toHaveBeenCalledTimes(1);
   });
 
+  it.each([401, 403, 404, 422])(
+    "returns a retryable creation error for documented HTTP %i failures",
+    async (status) => {
+      vi.mocked(serverApiRequest).mockRejectedValue(
+        new ApiError(status, "request_failed", "Failed"),
+      );
+
+      await expect(createPendingJob(["104"])).resolves.toMatchObject({ status: "error" });
+      expect(serverApiRequest).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it.each([400, 408, 409, 418, 429, 499, 500, 503])(
+    "requires reconciliation after undocumented HTTP %i creation failures",
+    async (status) => {
+      vi.mocked(serverApiRequest).mockRejectedValue(
+        new ApiError(status, "request_failed", "Failed"),
+      );
+
+      await expect(createPendingJob(["104"])).resolves.toMatchObject({ status: "reconcile" });
+      expect(serverApiRequest).toHaveBeenCalledTimes(1);
+    },
+  );
+
   it("requires authentication for reads, creation, additions, replacements, and removals", async () => {
     vi.mocked(getSession).mockResolvedValue(null);
     for (const operation of [
@@ -195,6 +219,58 @@ describe("Saved job API actions", () => {
       notice: expect.any(String),
     });
     expect(serverApiRequest).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([404, 422])(
+    "reloads saved links after the first addition succeeds and a later HTTP %i fails",
+    async (status) => {
+      mockLinkedIds = [104];
+      vi.mocked(serverApiRequest)
+        .mockImplementationOnce(async () => {
+          mockLinkedIds.push(118);
+          return {} as never;
+        })
+        .mockRejectedValueOnce(new ApiError(status, "request_failed", "Failed"));
+
+      await expect(addJobSurveys("41", ["118", "87"])).resolves.toMatchObject({
+        status: "success",
+        job: { surveys: mockSurveys.slice(0, 2) },
+        notice: expect.any(String),
+      });
+      expect(serverApiRequest).toHaveBeenCalledTimes(2);
+      expect(serverApiGet).toHaveBeenCalledTimes(2);
+    },
+  );
+
+  it("explains that saved links must be reloaded when partial-change readback fails", async () => {
+    mockLinkedIds = [104];
+    vi.mocked(serverApiGet)
+      .mockImplementationOnce(async () => mockJob() as never)
+      .mockRejectedValueOnce(new ApiError(503, "unavailable", "Unavailable"));
+    vi.mocked(serverApiRequest)
+      .mockImplementationOnce(async () => {
+        mockLinkedIds.push(118);
+        return {} as never;
+      })
+      .mockRejectedValueOnce(new ApiError(422, "invalid_request", "Invalid selection"));
+
+    await expect(addJobSurveys("41", ["118", "87"])).resolves.toMatchObject({
+      status: "error",
+      message: expect.stringContaining("Reload the job to check its saved surveys"),
+    });
+    expect(serverApiGet).toHaveBeenCalledTimes(2);
+  });
+
+  it("preserves definitive validation errors when no survey write has succeeded", async () => {
+    vi.mocked(serverApiRequest).mockRejectedValueOnce(
+      new ApiError(422, "invalid_request", "Invalid selection"),
+    );
+
+    await expect(addJobSurveys("41", ["87"])).resolves.toMatchObject({
+      status: "error",
+      message: expect.stringContaining("Select at least one valid survey"),
+    });
+    expect(serverApiGet).toHaveBeenCalledOnce();
   });
 
   it("handles inaccessible surveys without claiming a successful change", async () => {

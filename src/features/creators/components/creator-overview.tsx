@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, UserPlus } from "lucide-react";
+import { Briefcase, Plus, Search, UserPlus } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { MarketerIdentity } from "@/features/marketers/components/marketer-identity";
@@ -19,6 +19,23 @@ export function CreatorOverview({ name }: { name: string }) {
           mascotSrc="/marketer-assets/mascot-pink.svg"
           tone="pink"
         />
+        <section aria-labelledby="creator-create-job">
+          <h2 id="creator-create-job" className="mk-section-title">
+            Create a job
+          </h2>
+          <Card className="mk-card mk-card-padding gap-0">
+            <p className="text-sm text-[var(--mk-muted)]">
+              Link your surveys and share a new job with marketers.
+            </p>
+            <Link
+              href="/creator/jobs/create"
+              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
+            >
+              <Plus aria-hidden="true" className="size-4" />
+              Create a job
+            </Link>
+          </Card>
+        </section>
         <section aria-labelledby="creator-discovery">
           <h2 id="creator-discovery" className="mk-section-title">
             Marketer discovery
@@ -50,6 +67,23 @@ export function CreatorOverview({ name }: { name: string }) {
             >
               <UserPlus aria-hidden="true" className="size-4" />
               Invite marketers
+            </Link>
+          </Card>
+        </section>
+        <section aria-labelledby="creator-job-offers">
+          <h2 id="creator-job-offers" className="mk-section-title">
+            Job offers & bids
+          </h2>
+          <Card className="mk-card mk-card-padding gap-0">
+            <p className="text-sm text-[var(--mk-muted)]">
+              Compare marketer proposals, offered prices, and ratings to make hiring decisions.
+            </p>
+            <Link
+              href="/creator/jobs/offers"
+              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
+            >
+              <Briefcase aria-hidden="true" className="size-4" />
+              Compare job offers
             </Link>
           </Card>
         </section>

@@ -115,7 +115,7 @@ export async function createPendingJob(
       throw new Error("Job creation could not be confirmed.");
     return { status: "success", jobId: job.job_id, creatorId };
   } catch (error) {
-    if (error instanceof ApiError && error.status >= 400) {
+    if (error instanceof ApiError && [401, 403, 404, 422].includes(error.status)) {
       return {
         status: "error",
         message: failureMessage(
@@ -136,10 +136,15 @@ async function recoverSurveyChange(
   jobId: number,
   creatorId: number,
   message: string,
+  hasSuccessfulWrite = false,
 ): Promise<SavedJobState> {
   const notice = failureMessage(error, message);
   if (!jobId || !creatorId) return { status: "error", message: notice };
-  if (error instanceof ApiError && [401, 403, 404, 422].includes(error.status)) {
+  if (
+    !hasSuccessfulWrite &&
+    error instanceof ApiError &&
+    [401, 403, 404, 422].includes(error.status)
+  ) {
     return { status: "error", message: notice };
   }
   try {
@@ -156,6 +161,7 @@ async function changeSurveySelection(
 ): Promise<SavedJobState> {
   let jobId = 0;
   let creatorId = 0;
+  let hasSuccessfulWrite = false;
   try {
     creatorId = await authenticatedCreatorId();
     jobId = parseId(jobIdValue);
@@ -165,10 +171,12 @@ async function changeSurveySelection(
     // Add first so replacing a selection never temporarily removes its last survey.
     for (const id of selectedIds.filter((id) => !currentIds.includes(id))) {
       await serverApiRequest(`/api/v1/jobs/${jobId}/surveys/${id}`, { method: "POST" });
+      hasSuccessfulWrite = true;
     }
     if (replace) {
       for (const id of currentIds.filter((id) => !selectedIds.includes(id))) {
         await serverApiRequest(`/api/v1/jobs/${jobId}/surveys/${id}`, { method: "DELETE" });
+        hasSuccessfulWrite = true;
       }
     }
     return { status: "success", job: await readOwnedJob(jobId), creatorId };
@@ -178,6 +186,7 @@ async function changeSurveySelection(
       jobId,
       creatorId,
       "Some survey changes could not be saved. Review the saved links before trying again.",
+      hasSuccessfulWrite,
     );
   }
 }

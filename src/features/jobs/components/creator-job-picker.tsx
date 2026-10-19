@@ -93,11 +93,17 @@ export function CreatorJobPicker({ state }: { state: CreatorJobsPageState }) {
             </div>
             <h3 className="font-semibold">No jobs are available to invite</h3>
             <p className="text-sm leading-6 text-[var(--mk-muted)]">
-              There are no existing jobs available in this Creator account to invite marketers to.
+              Create a job with at least one survey before inviting marketers.
             </p>
             <Link
+              href="/creator/jobs/create"
+              className="mk-primary-button mt-2 inline-flex min-h-11 items-center justify-center self-start px-4 text-sm font-medium"
+            >
+              Create a job
+            </Link>
+            <Link
               href="/creator/dashboard"
-              className="mk-secondary-button mt-2 inline-flex min-h-11 items-center justify-center self-start px-4 text-sm font-medium"
+              className="mk-secondary-button inline-flex min-h-11 items-center justify-center self-start px-4 text-sm font-medium"
             >
               Return to Creator workspace
             </Link>

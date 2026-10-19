@@ -22,6 +22,14 @@ export type JobCreatedDetails = {
   status: CreatorJobSummary["job_status"];
 };
 
+const JOB_STATUS_SUBTITLES: Record<CreatorJobSummary["job_status"], string> = {
+  Pending: "Awaiting offers for this job",
+  Accepted: "Offer accepted for this job",
+  "In Progress": "Work is currently in progress",
+  Completed: "Job completed",
+  Cancelled: "Job cancelled",
+};
+
 function JobStatusTracking({
   surveyCount,
   offerAccepted,
@@ -32,8 +40,12 @@ function JobStatusTracking({
   const steps = offerAccepted
     ? [
         { title: "Job created", description: "All required details completed", state: "complete" },
-        { title: "Offer accepted", description: "A marketer has been selected", state: "complete" },
-        { title: "In Progress", description: "Work is currently underway", state: "current" },
+        {
+          title: "Offer accepted",
+          description: "A marketer has been selected. Work can start next.",
+          state: "current",
+        },
+        { title: "In Progress", description: "Work has not started yet", state: "upcoming" },
       ]
     : [
         {
@@ -164,7 +176,9 @@ export function JobCreatedView({
           >
             Job details
           </h1>
-          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">Offer accepted for this job</p>
+          <p className="mt-0.5 text-xs text-[var(--mk-muted)]">
+            {JOB_STATUS_SUBTITLES[job.status]}
+          </p>
         </div>
       </header>
 

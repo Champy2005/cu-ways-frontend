@@ -1,0 +1,12 @@
+.ji-pull-region {
+  overscroll-behavior-y: contain;
+}
+.ji-pull-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  color: var(--mk-muted);
+  font-size: 0.8rem;
+}

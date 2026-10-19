@@ -346,8 +346,8 @@ describe("CreateJobForm confirmation", () => {
     await screen.findByRole("heading", { name: "Job details" });
   });
 
-  it("preserves entered values and selections after a rejected creation", async () => {
-    vi.mocked(createPendingJob).mockResolvedValue({
+  it("preserves values after a definite creation failure and allows a manual retry", async () => {
+    vi.mocked(createPendingJob).mockResolvedValueOnce({
       status: "error",
       message: "You do not own a selected survey.",
     });
@@ -360,6 +360,14 @@ describe("CreateJobForm confirmation", () => {
     expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
     expect(router.push).not.toHaveBeenCalled();
     expect(sessionStorage.length).toBe(0);
+
+    fireEvent.click(screen.getByRole("button", { name: "Create Job" }));
+    expect(await screen.findByRole("heading", { name: "Job details" })).toBeInTheDocument();
+    expect(createPendingJob).toHaveBeenCalledTimes(2);
+    expect(router.push).toHaveBeenLastCalledWith("/creator/jobs/41");
+    const overview = within(screen.getByRole("region", { name: "Job overview" }));
+    expect(overview.getByText("Campus campaign")).toBeInTheDocument();
+    expect(createPendingJob).toHaveBeenNthCalledWith(2, ["104"]);
   });
 
   it("opens the persisted job even when optional form metadata cannot be cached", async () => {
@@ -520,7 +528,7 @@ describe("CreateJobForm confirmation", () => {
     expect(await screen.findByRole("heading", { name: "Job details" })).toBeInTheDocument();
     expect(screen.getByText("Offer accepted for this job")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
-      "A marketer's offer has been accepted. The job is now in progress.",
+      "The offer was accepted. Work can start with this marketer.",
     );
     const overview = within(screen.getByRole("region", { name: "Job overview" }));
     expect(overview.getByText("Campus Sustainability Campaign")).toBeInTheDocument();
@@ -531,9 +539,15 @@ describe("CreateJobForm confirmation", () => {
     const tracking = within(screen.getByRole("region", { name: "Status tracking" }));
     expect(tracking.getAllByRole("listitem")).toHaveLength(3);
     expect(tracking.getByText("All required details completed")).toBeInTheDocument();
-    expect(tracking.getByText("A marketer has been selected")).toBeInTheDocument();
-    expect(tracking.getByText("In Progress").closest("li")).toHaveAttribute("aria-current", "step");
-    expect(tracking.getByText("Work is currently underway")).toBeInTheDocument();
+    expect(
+      tracking.getByText("A marketer has been selected. Work can start next."),
+    ).toBeInTheDocument();
+    expect(tracking.getByText("Offer accepted").closest("li")).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+    expect(tracking.getByText("In Progress").closest("li")).not.toHaveAttribute("aria-current");
+    expect(tracking.getByText("Work has not started yet")).toBeInTheDocument();
     expect(tracking.queryByText("Awaiting offers")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Edit" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "View Job" })).toBeInTheDocument();
