@@ -1,0 +1,149 @@
+.ji-live .ji-live-details {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+}
+.ji-live-details summary {
+  color: var(--mk-accent);
+  cursor: pointer;
+  width: fit-content;
+  padding: 0.35rem 0;
+}
+.ji-live-details summary:focus-visible {
+  outline: 2px solid var(--mk-accent);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+.ji-live-survey-overview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.ji-live-survey-list {
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  border: 1px solid var(--mk-border);
+  border-radius: 0.65rem;
+  background: var(--mk-field);
+  line-height: 1.65;
+}
+.ji-live-survey-list li + li {
+  border-top: 1px solid var(--mk-border);
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+}
+.ji-live-survey-list h3,
+.ji-live-survey-list p {
+  margin-bottom: 0.5rem;
+}
+.ji-live-survey-meta {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.ji-live-survey-meta > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.ji-live-survey-meta dt {
+  color: var(--mk-muted);
+}
+.ji-live-survey-meta dd {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.ji-live-no-brief {
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+}
+.ji-live .ji-brief {
+  width: fit-content;
+}
+.ji-live .ji-request .ji-card-top {
+  margin-bottom: 0.6rem;
+}
+.ji-live .ji-request .ji-tags {
+  margin: 0.75rem 0 0.5rem;
+}
+.ji-live .ji-request .ji-live-survey-overview {
+  margin-top: 0;
+}
+.ji-live-detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.5rem;
+}
+.ji-live .ji-live-detail-links > .ji-live-details {
+  flex: 1 1 8.5rem;
+  min-width: 0;
+  margin: 0;
+}
+.ji-live-detail-links > .ji-live-details[open] {
+  flex-basis: 100%;
+}
+.ji-live-detail-links summary {
+  min-height: 2rem;
+}
+.ji-live .ji-live-detail-links > .ji-brief {
+  flex: 0 0 auto;
+  min-height: 2rem;
+  margin: 0 0 0 auto;
+  padding: 0.35rem 0.25rem;
+}
+.ji-live-detail-links > .ji-live-no-brief {
+  margin: 0 0 0 auto;
+  line-height: 2rem;
+}
+.ji-live .ji-live-response {
+  margin: 1rem 0 0.75rem;
+}
+.ji-live .ji-request .ji-live-response {
+  margin: 0.5rem 0 0;
+}
+.ji-live .ji-request .ji-actions,
+.ji-live .ji-request .ji-live-offer-link {
+  margin-top: 0.5rem;
+}
+.ji-live .ji-status-text[data-status="Declined"] {
+  color: var(--mk-error);
+}
+.ji-live .ji-live-offer-link {
+  margin-top: 0.75rem;
+}
+.ji-live .ji-live-summary .ji-creator {
+  color: var(--mk-muted);
+  font-size: 0.75rem;
+  margin-top: 0.35rem;
+}
+.ji-live-summary .ji-tags {
+  padding-top: 1rem;
+  border-top: 1px solid var(--mk-border);
+}
+.ji-live .ji-existing {
+  display: block;
+}
+.ji-live .ji-existing p {
+  margin-top: 0.35rem;
+}
+.ji-live .ji-existing[data-offer-status="Accepted"] {
+  border-color: var(--mk-positive);
+  background: var(--mk-positive-soft);
+}
+.ji-live .ji-existing[data-offer-status="Rejected"] {
+  border-color: var(--mk-error);
+  background: var(--mk-coral-soft);
+}
+.ji-live .ji-existing[data-offer-status="Withdrawn"] {
+  border-color: var(--mk-border);
+  background: var(--mk-field);
+}
+.ji-live-job-unavailable {
+  color: var(--mk-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin: 0.75rem 0;
+}

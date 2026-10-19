@@ -10,6 +10,10 @@
 
 ## Verification
 
+- Verdict for the requested scope: VERIFIED / NOT VERIFIED / INCONCLUSIVE
+- Evidence summary / run directory:
+- Required behavior not proven:
+
 - [ ] I ran `pnpm check`, or listed the checks I could not run below.
 - [ ] I added or updated tests for behavior implemented in this pull request.
 - [ ] I did not add secrets, credentials, or real user data.

@@ -13,7 +13,7 @@ export function proxy(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin") && session.role !== "admin") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/creator/dashboard", request.url));
   }
 
   return NextResponse.next();
@@ -26,5 +26,8 @@ export const config = {
     "/surveys/:path*",
     "/jobs/:path*",
     "/admin/:path*",
+    "/marketer/:path*",
+    "/marketers/:path*",
+    "/creator/:path*",
   ],
 };

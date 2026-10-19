@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
+import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
 import { validateContactUpdate } from "@/features/users/schemas";
 
@@ -10,6 +11,15 @@ const INVALID_REQUEST = {
 } as const;
 
 export async function PUT(request: Request): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin"))) {
+    return NextResponse.json(
+      {
+        status: "error",
+        error: { code: "invalid_origin", message: "Request origin is not allowed." },
+      },
+      { status: 403 },
+    );
+  }
   const session = await getSession();
   if (!session) {
     return NextResponse.json(

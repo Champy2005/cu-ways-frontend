@@ -1,0 +1,183 @@
+"use client";
+
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogPopup,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Box, X } from "lucide-react";
+import { useId, useRef, useState, type FormEvent } from "react";
+
+import { Button } from "@/components/ui/button";
+import { parseServiceForm, SERVICE_TYPES } from "@/features/marketers/schemas";
+import type { Service, ServiceInput } from "@/features/marketers/types";
+import { getDisplayError } from "@/lib/api/errors";
+
+import { DiscardServiceDialog } from "./discard-service-dialog";
+import { serviceFieldErrors } from "./service-errors";
+import { ServiceFields, type ServiceFieldErrors, type ServiceFormValues } from "./service-fields";
+
+type ServiceDialogProps = {
+  service?: Service;
+  onSave: (input: ServiceInput) => Promise<Service>;
+  onSaved: (service: Service) => void;
+  onClose: () => void;
+  finalFocus?: () => HTMLElement | null;
+};
+
+function initialValues(service?: Service): ServiceFormValues {
+  const knownType = SERVICE_TYPES.some((type) => type === service?.service_type);
+  return {
+    selection: service ? (knownType ? service.service_type : "custom") : "",
+    customName: service && !knownType ? service.service_type : "",
+    scope_text: service?.scope_text ?? "",
+    price: service?.price ?? "",
+  };
+}
+
+export function ServiceDialog({
+  service,
+  onSave,
+  onSaved,
+  onClose,
+  finalFocus,
+}: ServiceDialogProps) {
+  const id = useId();
+  const [initial] = useState(() => initialValues(service));
+  const [values, setValues] = useState(initial);
+  const [errors, setErrors] = useState<ServiceFieldErrors>({});
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const inFlight = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const portalContainer = useRef<HTMLDivElement>(null);
+  const dirty = JSON.stringify(initial) !== JSON.stringify(values);
+
+  function update(field: keyof ServiceFormValues, value: string) {
+    setValues((current) => ({ ...current, [field]: value }));
+    const errorField = field === "selection" || field === "customName" ? "service_type" : field;
+    setErrors((current) => ({ ...current, [errorField]: undefined }));
+  }
+
+  function requestClose() {
+    if (inFlight.current) return;
+    if (dirty) setDiscardOpen(true);
+    else onClose();
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (inFlight.current) return;
+    const parsed = parseServiceForm({
+      service_type: values.selection === "custom" ? values.customName : values.selection,
+      scope_text: values.scope_text,
+      price: values.price,
+    });
+    if (!parsed.success) {
+      setErrors(parsed.errors);
+      setError("Check the highlighted fields before continuing.");
+      requestAnimationFrame(() =>
+        formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(),
+      );
+      return;
+    }
+    inFlight.current = true;
+    setPending(true);
+    setError(null);
+    setErrors({});
+    try {
+      const saved = await onSave(parsed.data);
+      onSaved(saved);
+    } catch (caught) {
+      setError(getDisplayError(caught));
+      setErrors(serviceFieldErrors(caught));
+    } finally {
+      inFlight.current = false;
+      setPending(false);
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={(open) => !open && requestClose()}>
+      <div ref={portalContainer} />
+      <DialogPortal container={portalContainer}>
+        <DialogOverlay className="mk-dialog-backdrop fixed inset-0 z-[60]" />
+        <DialogPopup
+          finalFocus={finalFocus}
+          className="mk-dialog-surface mk-service-popup fixed inset-x-0 bottom-0 z-[70] flex max-h-[92dvh] flex-col overflow-hidden rounded-t-[28px] outline-none sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:w-[600px] sm:max-w-[calc(100%-3rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[28px]"
+        >
+          <div
+            aria-hidden="true"
+            className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-[var(--mk-border)] sm:hidden"
+          />
+          <div className="flex shrink-0 items-start justify-between gap-2 px-6 pt-6 pb-5 sm:px-8">
+            <div className="min-w-0">
+              <DialogTitle className="text-xl leading-7 font-medium">
+                {service ? "Edit Service Package" : "Publish Service Package"}
+              </DialogTitle>
+              <DialogDescription className="mt-1.5 text-xs leading-5 text-[var(--mk-muted)]">
+                {service
+                  ? "Keep your rates and scope up to date."
+                  : "Show your survey package to creators."}
+              </DialogDescription>
+            </div>
+            <DialogClose
+              disabled={pending}
+              aria-label="Close service dialog"
+              render={<Button variant="ghost" className="mk-icon-button" />}
+            >
+              <X className="size-5" aria-hidden="true" />
+            </DialogClose>
+          </div>
+          <form ref={formRef} onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
+            <div className="min-h-0 overflow-y-auto px-6 sm:px-8">
+              <fieldset disabled={pending} className="min-w-0">
+                <ServiceFields
+                  values={values}
+                  update={update}
+                  errors={errors}
+                  id={id}
+                  portalContainer={portalContainer}
+                />
+              </fieldset>
+              {error && (
+                <p role="alert" className="mk-error-notice mt-4 rounded-xl p-3 text-sm leading-5">
+                  {error}
+                </p>
+              )}
+              <div
+                className="pointer-events-none relative h-12 overflow-hidden sm:h-16"
+                aria-hidden="true"
+              >
+                <Box
+                  className="absolute -top-10 -right-5 size-48 text-[var(--mk-text)] opacity-[0.04]"
+                  strokeWidth={1}
+                />
+              </div>
+            </div>
+            <div className="shrink-0 border-t border-[var(--mk-border)] bg-[var(--mk-surface)] px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-8">
+              <Button
+                type="submit"
+                disabled={pending}
+                className="mk-publish-button w-full text-[15px] font-semibold"
+              >
+                {pending ? "Saving…" : service ? "Save changes" : "Publish"}
+              </Button>
+            </div>
+          </form>
+          <DiscardServiceDialog
+            portalContainer={portalContainer}
+            open={discardOpen}
+            onKeepEditing={() => setDiscardOpen(false)}
+            onDiscard={onClose}
+          />
+        </DialogPopup>
+      </DialogPortal>
+    </Dialog>
+  );
+}
