@@ -38,7 +38,8 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
             placeholder="Not specified"
             value={form.phone}
             onChange={(e) => form.setPhone(e.target.value)}
-            aria-describedby={`${id}-help ${form.error ? `${id}-error` : ""}`}
+            aria-describedby={`${id}-help ${form.phoneError || form.error ? `${id}-error` : ""}`}
+            aria-invalid={Boolean(form.phoneError)}
           />
         </Field>
         <Field>
@@ -67,9 +68,9 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
         })}
       </p>
       <div aria-live="polite" className="mt-5 min-h-6">
-        {form.error && (
+        {(form.phoneError || form.error) && (
           <FieldError id={`${id}-error`}>
-            {form.error} Your changes are still here. Please try saving again.
+            {form.phoneError || form.error} Your changes are still here. Please try saving again.
           </FieldError>
         )}
         {form.success && (

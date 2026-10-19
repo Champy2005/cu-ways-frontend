@@ -54,6 +54,21 @@ describe("authentication input validation", () => {
     expect(validateRegisterInput(normalized)).toBe(false);
     expect(registerValidationMessage(normalized)).toContain("Phone");
   });
+
+  it.each([undefined, null, "", "   "])("rejects a missing or empty phone (%s)", (phone) => {
+    const input = { ...validRegistration, phone };
+    expect(validateRegisterInput(input)).toBe(false);
+  });
+
+  it("rejects a phone that is too long", () => {
+    const tooLong = {
+      ...validRegistration,
+      phone: "1".repeat(21),
+    };
+
+    expect(validateRegisterInput(tooLong)).toBe(false);
+    expect(registerValidationMessage(tooLong)).toContain("Phone");
+  });
 });
 
 describe("sign-up wizard steps", () => {

@@ -129,7 +129,6 @@ export type RegistrationFields = {
   experience_years: string;
   availability_text: string;
 };
-
 export type RegistrationErrors = Partial<Record<keyof RegistrationFields, string>>;
 
 export const EMPTY_REGISTRATION: RegistrationFields = {

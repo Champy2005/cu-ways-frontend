@@ -12,8 +12,18 @@ type UserProfileCardProps = {
 };
 
 export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
-  const { user, phone, lineID, error, success, isPending, setPhone, setLineID, handleSubmit } =
-    useContactForm(initialUser, updateCurrentUser);
+  const {
+    user,
+    phone,
+    lineID,
+    error,
+    phoneError,
+    success,
+    isPending,
+    setPhone,
+    setLineID,
+    handleSubmit,
+  } = useContactForm(initialUser, updateCurrentUser);
 
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
@@ -47,7 +57,14 @@ export function UserProfileCard({ user: initialUser }: UserProfileCardProps) {
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               disabled={isPending}
+              aria-invalid={Boolean(phoneError)}
+              aria-describedby={phoneError ? "profile-phone-error" : undefined}
             />
+            {phoneError ? (
+              <p id="profile-phone-error" className="mt-1 text-sm text-red-700" role="alert">
+                {phoneError}
+              </p>
+            ) : null}
           </div>
           <div>
             <label
