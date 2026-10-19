@@ -1,6 +1,9 @@
 node_modules/
 .next/
 coverage/
+.artifacts/
+playwright-report/
+test-results/
 out/
 build/
 pnpm-lock.yaml

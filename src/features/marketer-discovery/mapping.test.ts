@@ -54,6 +54,12 @@ describe("backend search params", () => {
     expect(toBackendSearchParams(EMPTY_MARKETER_QUERY).toString()).toBe("page_size=100");
   });
 
+  it("adds a page number when requesting a later result page", () => {
+    expect(toBackendSearchParams(EMPTY_MARKETER_QUERY, undefined, 3).toString()).toBe(
+      "page=3&page_size=100",
+    );
+  });
+
   it("repeats multi-value keys instead of comma-joining them", () => {
     const params = toBackendSearchParams({
       ...EMPTY_MARKETER_QUERY,
@@ -80,8 +86,10 @@ describe("backend search params", () => {
     expect(params.get("sort")).toBe("rating_asc");
   });
 
-  it("never sends the keyword, which the backend does not support", () => {
-    expect(toBackendSearchParams({ ...EMPTY_MARKETER_QUERY, q: "food" }).has("q")).toBe(false);
+  it("sends free-text search using the backend keyword parameter", () => {
+    expect(toBackendSearchParams({ ...EMPTY_MARKETER_QUERY, q: "  food  " }).get("keyword")).toBe(
+      "food",
+    );
   });
 });
 

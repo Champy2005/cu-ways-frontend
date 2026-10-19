@@ -27,6 +27,11 @@ describe("MarketerSearchPanel", () => {
     expect(push).toHaveBeenCalledWith("/creator/discovery?q=food", { scroll: false });
   });
 
+  it("caps the keyword at the backend's 100-character limit", () => {
+    render(<MarketerSearchPanel query={EMPTY_MARKETER_QUERY} />);
+    expect(screen.getByLabelText("Search marketers")).toHaveAttribute("maxLength", "100");
+  });
+
   it("seeds the input from the query already in the URL", () => {
     render(<MarketerSearchPanel query={{ ...EMPTY_MARKETER_QUERY, q: "food" }} />);
     expect(screen.getByLabelText("Search marketers")).toHaveValue("food");

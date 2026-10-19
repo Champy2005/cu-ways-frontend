@@ -4,6 +4,7 @@ import { ProfileWorkspace } from "./profile-workspace";
 import { initialDemoState } from "../demo/store";
 import type { ProfileInput } from "../types";
 import type { UpdateUserRequest } from "@/features/users/types";
+import { ApiError } from "@/lib/api/errors";
 
 const push = vi.hoisted(() => vi.fn());
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push, refresh: vi.fn() }) }));
@@ -40,6 +41,29 @@ function select(name: string) {
 }
 
 describe("Unified profile", () => {
+  it("requires a phone and shows duplicate-phone feedback without losing the draft", async () => {
+    const saveContact = vi
+      .fn()
+      .mockRejectedValue(new ApiError(409, "phone_already_exists", "phone already exists"));
+    setup({ saveContact });
+    select("Basic information");
+    const phone = screen.getByLabelText(/^Phone number/);
+    expect(phone).toBeRequired();
+    expect(screen.getByText("Phone number is required. LINE ID is optional.")).toBeVisible();
+    fireEvent.change(phone, { target: { value: "" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));
+    expect(saveContact).not.toHaveBeenCalled();
+    expect(phone).toHaveAttribute("aria-invalid", "true");
+    fireEvent.change(phone, { target: { value: "0898765432" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));
+    await screen.findByText(/Phone number is already registered/);
+    expect(phone).toHaveValue("0898765432");
+    expect(phone).toHaveAttribute("aria-invalid", "true");
+    fireEvent.change(phone, { target: { value: "0812345678" } });
+    expect(phone).not.toHaveAttribute("aria-invalid", "true");
+    expect(screen.queryByText(/Phone number is already registered/)).not.toBeInTheDocument();
+  });
+
   it("retains both drafts and saves each independently, including optional clearing", async () => {
     const { saveProfile, saveContact } = setup();
     fireEvent.change(screen.getByLabelText(/^Bio/), {
@@ -70,13 +94,13 @@ describe("Unified profile", () => {
       "aria-selected",
       "true",
     );
-    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "0898765432" } });
     select("In-depth information");
     act(() => {
       window.history.replaceState(null, "", "/marketer/profile?tab=basic");
       window.dispatchEvent(new PopStateEvent("popstate"));
     });
-    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("0898765432");
     expect(screen.getByRole("tab", { name: "Basic information" })).toHaveAttribute(
       "aria-selected",
       "true",
@@ -102,7 +126,7 @@ describe("Unified profile", () => {
     );
     setup({ saveContact });
     select("Basic information");
-    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Phone number/), { target: { value: "0898765432" } });
     const button = screen.getByRole("button", { name: "Save contact information" });
     fireEvent.submit(button.closest("form")!);
     fireEvent.submit(button.closest("form")!);
@@ -110,7 +134,7 @@ describe("Unified profile", () => {
     expect(button).toBeDisabled();
     await act(async () => reject(new Error("Network unavailable")));
     await waitFor(() => expect(button).not.toBeDisabled());
-    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("123");
+    expect(screen.getByLabelText(/^Phone number/)).toHaveValue("0898765432");
     expect(screen.getByRole("alert")).toHaveTextContent("Your changes are still here");
   });
 
