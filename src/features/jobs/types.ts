@@ -9,6 +9,12 @@ export type MarketerProfile = components["schemas"]["MarketerProfile"];
 export type Offer = components["schemas"]["Offer"];
 export type OfferStatus = components["schemas"]["Offer"]["offer_status"];
 
+export type JobSurveyOption = {
+  id: string;
+  title: string;
+  targetResponses: number | null;
+};
+
 export type JobInviteMarketer = {
   marketer_id: number;
   display_name: string;

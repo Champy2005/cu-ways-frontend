@@ -198,8 +198,9 @@ pull down from the top of the invitation list and release to refresh. Ordinary s
 desktop browser refresh remain available. Healthy screens have no permanent refresh panel;
 failed requests offer a small contextual retry action. Success notices use the demo's toast.
 
-Creator survey/job creation screens are not implemented yet. To test this workflow manually,
-start the existing local backend with its migrations applied, then run from this repository:
+Creator job creation is available at `/creator/jobs/create` and uses existing owned surveys.
+To test this workflow manually, start the existing local backend with its migrations applied,
+then run from this repository:
 
 ```powershell
 pnpm setup:us2021
@@ -228,6 +229,24 @@ compatibility and do not define the live workflow.
 
 See [the integration handoff](docs/invitations-api-handoff.md) for live behavior and verification,
 including the separate authenticated desktop/mobile browser suite.
+
+## Creator jobs and linked surveys
+
+The survey selector loads the signed-in Creator's surveys from `GET /api/v1/me/surveys`
+and searches their names locally. Creating a job posts the selected numeric survey IDs
+to `POST /api/v1/jobs` and opens the returned backend job ID. Details and linked surveys
+are loaded from `GET /api/v1/jobs/{id}` on every visit.
+
+Adding and removing links use `POST` and `DELETE /api/v1/jobs/{id}/surveys/{surveyId}`.
+The UI blocks removing the final survey and selecting already-linked surveys; the backend
+enforces ownership, the minimum link count, and uniqueness. Each mutation reloads saved
+links, including after conflicts or partial failures. Replacing a selection adds links
+before removing old ones. Multiple link requests are not a single atomic batch.
+
+The current job API does not accept title, description, compensation, or deadline.
+These form details are cached in this browser tab, scoped to the signed-in Creator and
+backend job ID. Losing that optional cache does not remove the job or its survey links.
+Job creation and survey changes never use locally generated preview IDs.
 
 ## Backend setup
 

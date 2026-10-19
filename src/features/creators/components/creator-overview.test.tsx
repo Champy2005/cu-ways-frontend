@@ -24,6 +24,10 @@ describe("CreatorOverview", () => {
       "href",
       "/creator/jobs/offers",
     );
+    expect(screen.getByRole("link", { name: "Create a job" })).toHaveAttribute(
+      "href",
+      "/creator/jobs/create",
+    );
   });
 
   it("leaves out the marketer-only quickview and recent jobs", () => {

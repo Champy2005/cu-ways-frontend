@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import type { CreatorJobSummary } from "@/features/jobs/types";
+import { ReloadJobsButton } from "@/features/jobs/components/reload-jobs-button";
 import "../offers.css";
 
 export type CreatorOffersJobPickerProps = {
@@ -24,9 +25,7 @@ export function CreatorOffersJobPicker({ state }: CreatorOffersJobPickerProps) {
         <div className="jo-empty" role="alert">
           <h3>Your jobs could not be loaded</h3>
           <p>{state.message}</p>
-          <a href="/creator/jobs/offers" className="jo-invite">
-            Reload your jobs
-          </a>
+          <ReloadJobsButton />
           <Link href="/creator/dashboard" className="jo-invite">
             Return to Creator workspace
           </Link>
@@ -34,7 +33,10 @@ export function CreatorOffersJobPicker({ state }: CreatorOffersJobPickerProps) {
       ) : state.items.length === 0 ? (
         <div className="jo-empty">
           <h3>No jobs available</h3>
-          <p>There are no existing jobs available in your Creator account.</p>
+          <p>Create a job with at least one survey before comparing offers.</p>
+          <Link href="/creator/jobs/create" className="jo-invite">
+            Create a job
+          </Link>
           <Link href="/creator/dashboard" className="jo-invite">
             Return to Creator workspace
           </Link>

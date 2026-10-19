@@ -4,13 +4,19 @@ import { listMarketers } from "@/features/marketer-discovery/api";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
 import { validateJobOffers, validateSentJobInvitations } from "@/features/jobs/types";
+import { toJobSurveyOptions } from "@/features/jobs/survey-options";
 import type {
   CreatorJobSummary,
+  JobSurveyOption,
   JobInviteMarketer,
   JobOfferComparison,
   OfferStatus,
   SentJobInvitation,
 } from "@/features/jobs/types";
+
+export async function getCreatorSurveys(): Promise<JobSurveyOption[]> {
+  return toJobSurveyOptions(await serverApiGet<unknown>("/api/v1/me/surveys"));
+}
 
 export type JobOffersInitialData = {
   job: CreatorJobSummary;
