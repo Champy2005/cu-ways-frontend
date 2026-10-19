@@ -582,6 +582,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/offers/{id}/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Withdraw the marketer's pending offer
+         * @description Changes only the authenticated marketer's Pending offer to Withdrawn and returns the updated offer. No request body is required. The offer remains in history with its original price, delivery date, message, and creation time. The job and invitation are unchanged. A new offer can be submitted through POST /api/v1/me/job-requests/{id}/offers while that invitation is Accepted, the job is Pending, and no Pending or Accepted offer exists. Withdrawal and acceptance serialize on the offer row; whichever obtains that lock first wins, and the other action returns offer_not_pending.
+         */
+        post: operations["withdrawMyOffer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3216,6 +3236,74 @@ export interface operations {
                 };
             };
             /** @description Malformed body (code validation_error) or an invalid price, delivery date, or message (code invalid_offer; the message names the problem). */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    withdrawMyOffer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The offer ID, not the job request ID. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Offer withdrawn; offer_status is Withdrawn. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OfferResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Marketer membership (code marketer_profile_required). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The offer does not exist or belongs to another marketer (code offer_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The offer is Accepted, Rejected, or already Withdrawn (code offer_not_pending). No state is changed. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The offer ID is not a positive int32 (code validation_error). */
             422: {
                 headers: {
                     [name: string]: unknown;

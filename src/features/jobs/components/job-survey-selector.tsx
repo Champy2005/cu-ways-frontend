@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ChevronLeft, CircleHelp, FileSearch, Search } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -112,6 +113,14 @@ export function JobSurveySelector(props: JobSurveySelectorProps) {
               <p className="mt-2 text-sm text-[var(--mk-muted)]">
                 Create a survey first, then return here to select it.
               </p>
+              <Link
+                href="/surveys/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-sm underline"
+              >
+                Create a survey (opens in a new tab)
+              </Link>
             </div>
           )}
           <Button

@@ -1,75 +1,53 @@
-import { NextResponse } from "next/server";
-
 import { fetchBackend, readBackendPayload } from "@/lib/api/backend-client";
+import { extractData } from "@/lib/api/envelope";
+import { ApiError, apiErrorFromResponse } from "@/lib/api/errors";
+import { isAllowedFrontendOrigin } from "@/lib/auth/origin";
 import { getSession } from "@/lib/auth/session";
-import {
-  normalizeCreateSurveyInput,
-  validateCreateSurveyInput,
-} from "@/features/surveys/schemas";
-import type { CreateSurveyRequest } from "@/features/surveys/types";
+import { readSurvey } from "@/features/surveys/contracts";
+import { normalizeCreateSurveyInput, validateCreateSurveyInput } from "@/features/surveys/schemas";
 
-const INVALID_REQUEST = {
-  status: "error",
-  error: { code: "validation_error", message: "request validation failed" },
-} as const;
+function errorResponse(status: number, code: string, message: string): Response {
+  return Response.json({ status: "error", error: { code, message } }, { status });
+}
 
 export async function POST(request: Request): Promise<Response> {
+  if (!isAllowedFrontendOrigin(request.headers.get("origin")))
+    return errorResponse(403, "invalid_origin", "Request origin is not allowed.");
   const session = await getSession();
-  if (!session) {
-    return NextResponse.json(
-      { status: "error", error: { code: "unauthorized", message: "authentication is required" } },
-      { status: 401 },
-    );
-  }
-
+  if (!session) return errorResponse(401, "unauthorized", "Please sign in again.");
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(INVALID_REQUEST, { status: 422 });
+    return errorResponse(422, "validation_error", "Check the submitted fields and try again.");
   }
-
-  if (!validateCreateSurveyInput(body)) {
-    return NextResponse.json(INVALID_REQUEST, { status: 422 });
-  }
-
-  const normalizedPayload = normalizeCreateSurveyInput(body as CreateSurveyRequest);
-
+  if (!validateCreateSurveyInput(body))
+    return errorResponse(422, "validation_error", "Check the submitted fields and try again.");
   try {
     const upstream = await fetchBackend("/api/v1/surveys", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${session.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(normalizedPayload),
+      headers: { Authorization: `Bearer ${session.token}` },
+      body: JSON.stringify(normalizeCreateSurveyInput(body)),
     });
-
-    // If backend endpoint is not yet registered (returns 404), fallback to mock success for frontend testing
-    if (upstream.status === 404) {
-      return NextResponse.json(
-        {
-          status: "success",
-          data: {
-            survey_id: Math.floor(Math.random() * 1000) + 1,
-            user_id: session.userId,
-            ...normalizedPayload,
-            created_at: new Date().toISOString(),
-          },
-        },
-        { status: 201 },
-      );
-    }
-
     const payload = await readBackendPayload(upstream);
-    return NextResponse.json(payload, { status: upstream.status });
-  } catch {
-    return NextResponse.json(
-      {
-        status: "error",
-        error: { code: "backend_unavailable", message: "backend service is unavailable" },
-      },
-      { status: 503 },
+    if (!upstream.ok) throw apiErrorFromResponse(upstream.status, payload);
+    const survey = readSurvey(extractData<unknown>(payload));
+    if (upstream.status !== 201 || survey.user_id !== session.userId)
+      return errorResponse(
+        502,
+        "invalid_backend_response",
+        "The saved survey could not be confirmed. Check your surveys before trying again.",
+      );
+    return Response.json(
+      { status: "success", data: survey },
+      { status: 201, headers: { "Cache-Control": "no-store" } },
+    );
+  } catch (error) {
+    if (error instanceof ApiError) return errorResponse(error.status, error.code, error.message);
+    return errorResponse(
+      503,
+      "backend_unavailable",
+      "Survey creation could not be confirmed. Check your surveys before trying again.",
     );
   }
 }

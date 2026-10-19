@@ -1,72 +1,92 @@
-import type { CreateSurveyRequest } from "@/features/surveys/types";
+import { isRecord } from "@/lib/api/envelope";
+import type { CreateSurveyRequest } from "./types";
 
-function isString(value: unknown): value is string {
-  return typeof value === "string";
+const fields = [
+  "title",
+  "survey_link",
+  "description",
+  "target_group",
+  "desired_responses",
+  "deadline",
+];
+
+export function isSurveyId(value: unknown): value is number {
+  return (
+    typeof value === "number" && Number.isInteger(value) && value > 0 && value <= 2_147_483_647
+  );
 }
 
-function normalizeOptionalString(value: unknown): string | null {
-  if (!isString(value)) return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
+export function safeSurveyUrl(value: string): string | null {
+  try {
+    const url = new URL(value.trim());
+    return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
 }
 
-function normalizeOptionalNumber(value: unknown): number | null {
-  if (typeof value === "number" && !isNaN(value) && value >= 0) {
-    return value;
-  }
-  if (isString(value) && value.trim().length > 0) {
-    const parsed = Number(value);
-    if (!isNaN(parsed) && parsed >= 0) {
-      return parsed;
-    }
-  }
+function optionalText(value: unknown, max: number): boolean {
+  return value == null || (typeof value === "string" && [...value.trim()].length <= max);
+}
+
+export function validSurveyDeadline(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  // Reject rolled-over dates rather than silently changing the user's deadline.
+  const datePart = value.slice(0, 10);
+  const calendarDate = new Date(`${datePart}T00:00:00.000Z`);
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(datePart) ||
+    !Number.isFinite(calendarDate.getTime()) ||
+    calendarDate.toISOString().slice(0, 10) !== datePart
+  )
+    return false;
+  return (
+    value === datePart ||
+    (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/.test(value) &&
+      Number.isFinite(Date.parse(value)))
+  );
+}
+
+export function createSurveyValidationMessage(input: object): string | null {
+  const fields = input as Record<string, unknown>;
+  if (typeof fields.title !== "string" || !fields.title.trim()) return "Title is required.";
+  if ([...fields.title.trim()].length > 200) return "Title must not exceed 200 characters.";
+  if (typeof fields.survey_link !== "string" || !fields.survey_link.trim())
+    return "Survey link is required.";
+  if (!safeSurveyUrl(fields.survey_link))
+    return "Enter a full HTTP or HTTPS survey link without credentials.";
+  if (!optionalText(fields.description, 5000))
+    return "Description must not exceed 5000 characters.";
+  if (!optionalText(fields.target_group, 200))
+    return "Target demographic must not exceed 200 characters.";
+  if (fields.desired_responses != null && !isSurveyId(fields.desired_responses))
+    return "Desired responses must be a whole number from 1 to 2147483647.";
+  if (fields.deadline != null && fields.deadline !== "" && !validSurveyDeadline(fields.deadline))
+    return "Enter a valid deadline.";
   return null;
-}
-
-function normalizeOptionalDeadline(value: unknown): string | null {
-  if (!isString(value) || value.trim().length === 0) return null;
-  const date = new Date(value);
-  return isNaN(date.getTime()) ? null : date.toISOString();
-}
-
-export function normalizeCreateSurveyInput(input: CreateSurveyRequest): CreateSurveyRequest {
-  return {
-    title: input.title ? input.title.trim() : "",
-    survey_link: input.survey_link ? input.survey_link.trim() : "",
-    description: normalizeOptionalString(input.description),
-    target_group: normalizeOptionalString(input.target_group),
-    desired_responses: normalizeOptionalNumber(input.desired_responses),
-    deadline: normalizeOptionalDeadline(input.deadline),
-  };
 }
 
 export function validateCreateSurveyInput(value: unknown): value is CreateSurveyRequest {
-  if (!value || typeof value !== "object") return false;
-  const input = value as Record<string, unknown>;
-
-  if (!isString(input.title) || input.title.trim().length === 0 || input.title.length > 200) {
-    return false;
-  }
-
-  if (!isString(input.survey_link) || input.survey_link.trim().length === 0) {
-    return false;
-  }
-
-  return true;
+  return (
+    isRecord(value) &&
+    Object.keys(value).every((key) => fields.includes(key)) &&
+    createSurveyValidationMessage(value) === null
+  );
 }
 
-export function createSurveyValidationMessage(input: Partial<CreateSurveyRequest>): string | null {
-  if (!input.title || !isString(input.title) || input.title.trim().length === 0) {
-    return "Title is required.";
-  }
-  if (input.title.length > 200) {
-    return "Title must not exceed 200 characters.";
-  }
-  if (!input.survey_link || !isString(input.survey_link) || input.survey_link.trim().length === 0) {
-    return "Survey link (e.g. Google Form link) is required.";
-  }
-  if (input.target_group && isString(input.target_group) && input.target_group.length > 200) {
-    return "Target demographic must not exceed 200 characters.";
-  }
-  return null;
+export function normalizeCreateSurveyInput(input: CreateSurveyRequest): CreateSurveyRequest {
+  const deadline = input.deadline?.trim() || null;
+  return {
+    title: input.title.trim(),
+    survey_link: input.survey_link.trim(),
+    description: input.description?.trim() || null,
+    target_group: input.target_group?.trim() || null,
+    desired_responses: input.desired_responses ?? null,
+    // Date-only input uses midnight UTC consistently across browsers and time zones.
+    deadline: deadline
+      ? new Date(deadline.length === 10 ? `${deadline}T00:00:00.000Z` : deadline).toISOString()
+      : null,
+  };
 }

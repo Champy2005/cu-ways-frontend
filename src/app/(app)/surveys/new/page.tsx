@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { CreateSurveyForm } from "@/features/surveys/components/create-survey-form";
 
+export const metadata = { title: "Create survey | CU Ways" };
+
 export default function CreateSurveyPage() {
   return (
     <div className="mx-auto max-w-2xl">
@@ -14,7 +16,8 @@ export default function CreateSurveyPage() {
           </nav>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Create Survey</h1>
           <p className="mt-1 text-sm text-zinc-600">
-            Provide details and Google Form link to allow marketers to understand your survey parameters.
+            Save your survey details and external form link. Questions and responses stay with your
+            survey provider.
           </p>
         </div>
       </div>

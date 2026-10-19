@@ -1,9 +1,12 @@
 import { browserApiRequest } from "@/lib/api/browser-client";
-import type { CreateSurveyRequest, Survey } from "@/features/surveys/types";
+import { readSurvey } from "./contracts";
+import type { CreateSurveyRequest, Survey } from "./types";
 
-export function createSurvey(input: CreateSurveyRequest): Promise<Survey> {
-  return browserApiRequest<Survey>("/api/surveys", {
-    method: "POST",
-    body: JSON.stringify(input),
-  });
+export async function createSurvey(input: CreateSurveyRequest): Promise<Survey> {
+  return readSurvey(
+    await browserApiRequest<unknown>("/api/surveys", {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
+  );
 }
