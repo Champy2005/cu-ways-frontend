@@ -19,6 +19,22 @@ export function CreatorOverview({ name }: { name: string }) {
           mascotSrc="/marketer-assets/mascot-pink.svg"
           tone="pink"
         />
+        <section aria-labelledby="creator-surveys">
+          <h2 id="creator-surveys" className="mk-section-title">
+            My surveys
+          </h2>
+          <Card className="mk-card mk-card-padding gap-0">
+            <p className="text-sm text-[var(--mk-muted)]">
+              Create survey records with external links before linking them to jobs.
+            </p>
+            <Link
+              href="/surveys"
+              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
+            >
+              Manage surveys
+            </Link>
+          </Card>
+        </section>
         <section aria-labelledby="creator-create-job">
           <h2 id="creator-create-job" className="mk-section-title">
             Create a job

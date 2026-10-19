@@ -232,6 +232,25 @@ including the separate authenticated desktop/mobile browser suite.
 
 ## Creator jobs and linked surveys
 
+Survey creation is available at `/surveys/new`, linked from **Manage surveys** in the Creator
+workspace. `/surveys` lists only the signed-in Creator's saved surveys; `/surveys/[id]` reads
+the saved record from the backend, including after a reload. The empty job survey selector
+opens creation in a new tab so the job draft stays open; return and use **Refresh surveys**.
+
+Creation requires a title and an HTTP(S) survey URL without embedded credentials. Description
+(up to 5000 characters), target demographic (up to 200), positive whole-number desired responses,
+and deadline are optional. Date-only deadlines use midnight UTC, explicitly labeled in the form
+and details; no future-date restriction is added. Questions and responses stay with the external
+provider. The origin-checked `/api/surveys` BFF forwards the server session to the existing
+`POST /api/v1/surveys` endpoint. Errors never produce a synthetic saved record. Unconfirmed
+submissions block another attempt until the user checks their saved surveys.
+
+The survey browser suite requires the migrated local backend. After `pnpm build`, run
+`pnpm exec playwright test --config playwright.surveys.config.ts`. It creates isolated synthetic
+accounts and survey records in the local development database; it does not reset existing data.
+Desktop and mobile checks cover creation, reload, list, job selection, ownership, and signed-out
+redirects. Authenticated traces are disabled; screenshots stay in ignored `.artifacts/`.
+
 The survey selector loads the signed-in Creator's surveys from `GET /api/v1/me/surveys`
 and searches their names locally. Creating a job posts the selected numeric survey IDs
 to `POST /api/v1/jobs` and opens the returned backend job ID. Details and linked surveys
