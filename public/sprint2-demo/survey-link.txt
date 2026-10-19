@@ -1,0 +1,5 @@
+CU Ways - sample external survey destination
+
+This is a placeholder link for practicing survey metadata and job workflows.
+It is not a working questionnaire and does not collect responses.
+Use your own external survey URL when demonstrating an actual questionnaire.

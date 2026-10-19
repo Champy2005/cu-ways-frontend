@@ -24,7 +24,8 @@
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:tooling && pnpm test:coverage && pnpm security:audit && pnpm build",
     "generate:api": "node scripts/generate-api.mjs",
     "generate:api:check": "node scripts/generate-api.mjs --check",
-    "setup:us2021": "node scripts/setup-us2021.mjs"
+    "setup:us2021": "node scripts/setup-us2021.mjs",
+    "setup:sprint2": "node scripts/setup-sprint2.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
