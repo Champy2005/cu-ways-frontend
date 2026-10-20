@@ -14,7 +14,7 @@ const sizeClasses = {
 
 /**
  * Initials-only avatar. Marketer photos would come from the backend, which has
- * no marketer contract yet, so there is nothing to load — and a single initial
+ * no marketer contract yet, so there is nothing to load - and a single initial
  * is what the Figma Avatar component documents anyway.
  */
 export function MarketerAvatar({ name, size = "md", className }: MarketerAvatarProps) {

@@ -10,7 +10,7 @@ type StepProps = {
 /** Step 2 (500:1861 marketer, 500:2041 creator). */
 export function ContactStep({ values, errors, onChange }: StepProps) {
   return (
-    <div className="flex flex-col gap-[23px] pr-[11px]">
+    <div className="flex flex-col gap-[23px]">
       <RegisterField
         id="register-phone"
         label="Phone Number"
@@ -30,7 +30,7 @@ export function ContactStep({ values, errors, onChange }: StepProps) {
           onChange={(event) => onChange("phone", event.target.value)}
           aria-invalid={Boolean(errors.phone)}
           aria-describedby={errors.phone ? "register-phone-error" : undefined}
-          className="register-input register-input--regular ml-[1px]"
+          className="register-input register-input--regular"
         />
       </RegisterField>
       <RegisterField
@@ -49,7 +49,7 @@ export function ContactStep({ values, errors, onChange }: StepProps) {
           onChange={(event) => onChange("line_id", event.target.value)}
           aria-invalid={Boolean(errors.line_id)}
           aria-describedby={errors.line_id ? "register-line_id-error" : undefined}
-          className="register-input register-input--regular ml-[1px]"
+          className="register-input register-input--regular"
         />
       </RegisterField>
     </div>
@@ -82,7 +82,7 @@ export function ExperienceStep({ values, errors, onChange }: StepProps) {
     },
   ] as const;
   return (
-    <div className="flex flex-col gap-[21px] pr-[11px]">
+    <div className="flex flex-col gap-[21px]">
       {fields.map(({ key, label, ...attributes }) => (
         <RegisterField
           key={key}
@@ -101,7 +101,7 @@ export function ExperienceStep({ values, errors, onChange }: StepProps) {
             onChange={(event) => onChange(key, event.target.value)}
             aria-invalid={Boolean(errors[key])}
             aria-describedby={errors[key] ? `register-${key}-error` : undefined}
-            className="register-input register-input--regular ml-[3px]"
+            className="register-input register-input--regular"
           />
         </RegisterField>
       ))}

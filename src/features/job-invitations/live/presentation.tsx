@@ -1,4 +1,4 @@
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 import { formatDate, formatSentDate } from "../format";
 import type { ReceivedRequest, SavedOffer } from "./types";
 
@@ -32,9 +32,9 @@ export function invitationStatusLabel(status: ReceivedRequest["request_status"])
 export function InvitationResponse({ request }: { request: ReceivedRequest }) {
   return (
     <p className="ji-response-time ji-live-response">
-      <StatusPill status={request.request_status}>
+      <StatusText status={request.request_status}>
         {invitationStatusLabel(request.request_status)}
-      </StatusPill>
+      </StatusText>
       {request.responded_at && (
         <>
           {" · "}
@@ -54,9 +54,9 @@ export function InvitationResponse({ request }: { request: ReceivedRequest }) {
 export function LiveOfferStatus({ status }: { status: SavedOffer["offer_status"] }) {
   const label = {
     Pending: "Offer pending review",
-    Accepted: "Offer accepted — you’ve been hired",
+    Accepted: "Offer accepted. You’ve been hired",
     Rejected: "Offer rejected",
     Withdrawn: "Offer withdrawn",
   }[status];
-  return <StatusPill status={status}>{label}</StatusPill>;
+  return <StatusText status={status}>{label}</StatusText>;
 }

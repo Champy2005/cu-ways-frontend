@@ -22,8 +22,8 @@ type MarketerSearchPanelProps = {
 };
 
 /**
- * The only stateful piece of discovery. Filter state lives in the URL — the page
- * parses it on the server and passes it in — so this component only ever writes.
+ * The only stateful piece of discovery. Filter state lives in the URL - the page
+ * parses it on the server and passes it in - so this component only ever writes.
  * That keeps the discovery page a Server Component and avoids useSearchParams
  * (and the Suspense boundary it would require) entirely.
  */

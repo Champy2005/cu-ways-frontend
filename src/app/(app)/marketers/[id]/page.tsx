@@ -85,9 +85,9 @@ export default async function MarketerProfilePage({
       <MarketerSection title="Basic Information">
         <MarketerInfoList
           rows={[
-            { label: "Phone number", value: marketer.phone ?? "—" },
+            { label: "Phone number", value: marketer.phone ?? "Not specified" },
             { label: "Email", value: marketer.email },
-            { label: "Line ID", value: marketer.line_id ?? "—" },
+            { label: "Line ID", value: marketer.line_id ?? "Not specified" },
           ]}
         />
       </MarketerSection>
@@ -101,8 +101,8 @@ export default async function MarketerProfilePage({
               label: "Availability",
               value: formatAvailability(marketer.availability_status, marketer.availability_text),
             },
-            { label: "Expertise", value: marketer.expertise.join(", ") || "—" },
-            { label: "Campus coverage", value: marketer.campuses.join(", ") || "—" },
+            { label: "Expertise", value: marketer.expertise.join(", ") || "Not specified" },
+            { label: "Campus coverage", value: marketer.campuses.join(", ") || "Not specified" },
           ]}
         />
       </MarketerSection>

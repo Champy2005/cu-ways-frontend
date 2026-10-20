@@ -14,7 +14,7 @@ const NO_RATINGS_LABEL = "No ratings yet";
 
 /**
  * Owns the US-015 "No ratings yet" state. A marketer with no qualifying reviews
- * renders the label rather than a zero — zero filled stars reads as a 0/5 score.
+ * renders the label rather than a zero - zero filled stars reads as a 0/5 score.
  * The value itself is always supplied by the backend; nothing is computed here.
  */
 export function MarketerRating({ value, variant = "compact", className }: MarketerRatingProps) {

@@ -113,7 +113,7 @@
   width: 71px;
   border-radius: 14px;
   background: var(--rg-card);
-  color: var(--rg-outline);
+  color: var(--rg-ink);
 }
 .register-back[data-outlined="true"] {
   border: 1px solid var(--rg-outline);

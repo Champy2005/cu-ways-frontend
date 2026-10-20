@@ -267,7 +267,14 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
     page.getByRole("searchbox", { name: "Search offers by job or creator" }),
   ).toBeVisible();
   const offerCard = page.locator("article:visible").filter({ hasText: `Job #${first.jobId}` });
-  await expect(offerCard.locator('.workspace-status[data-status="Pending"]')).toBeVisible();
+  const pendingStatus = offerCard.locator('.workspace-status[data-status="Pending"]');
+  await expect(pendingStatus).toBeVisible();
+  for (const toggle of ["Switch to dark theme", "Switch to light theme"]) {
+    await expect(pendingStatus).toHaveCSS("border-top-width", "0px");
+    await expect(pendingStatus).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await expect(pendingStatus).toHaveCSS("padding-left", "0px");
+    await page.getByRole("button", { name: toggle, exact: true }).click();
+  }
   await page.screenshot({ path: testInfo.outputPath("my-offers-standard.png"), fullPage: true });
   await page.getByRole("button", { name: "Open navigation menu" }).click();
   await page.getByRole("menuitem", { name: "Sign out" }).click();

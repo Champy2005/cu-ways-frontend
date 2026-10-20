@@ -1,6 +1,6 @@
 "use client";
 
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 
 import { useRef, useState } from "react";
 import { Star } from "lucide-react";
@@ -69,7 +69,7 @@ export function JobOfferCard({
             </div>
           </div>
         </div>
-        <StatusPill status={offer_status} />
+        <StatusText status={offer_status} />
       </div>
       <dl className="jo-terms">
         <div>

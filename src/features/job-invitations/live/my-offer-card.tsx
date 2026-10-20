@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ReceivedRequest, SavedOffer } from "./types";
@@ -30,7 +30,7 @@ export function MyOfferCard({
     <article data-testid={"my-offer-card-" + offer.offer_id} className="ji-card ji-request min-w-0">
       <div className="ji-card-top">
         <p className="ji-creator min-w-0 break-words">{request.job.creator.name}</p>
-        <StatusPill status={offer.offer_status} />
+        <StatusText status={offer.offer_status} />
       </div>
       <h2 className="wrap-anywhere">{jobTitle}</h2>
       <p className="ji-muted ji-job-id">Job #{request.job_id}</p>

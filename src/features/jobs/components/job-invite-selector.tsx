@@ -1,6 +1,6 @@
 "use client";
 
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 
 import { SuccessToast } from "@/components/feedback/success-toast";
 import { Check, Star } from "lucide-react";
@@ -108,9 +108,9 @@ function MarketerOption({
             {marketer.display_name}
           </span>
           {invitationStatus ? (
-            <StatusPill status={invitationStatus} className="mt-1">
+            <StatusText status={invitationStatus} className="mt-1">
               {invitationStatus} invitation
-            </StatusPill>
+            </StatusText>
           ) : null}
           <span className="mt-1.5 flex items-center gap-1 text-xs text-[var(--mk-caution)]">
             <Star aria-hidden="true" className="size-3.5 fill-current" />
@@ -407,7 +407,7 @@ function SentInvitationCard({ invitation }: { invitation: SentJobInvitation }) {
           Sent {invitation.created_at.slice(0, 10)}
         </p>
       </div>
-      <StatusPill status={invitation.request_status} />
+      <StatusText status={invitation.request_status} />
     </li>
   );
 }

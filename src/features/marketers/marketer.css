@@ -1211,40 +1211,28 @@ body:has(.marketer-theme) {
 
 /* Shared mobile-first workspace controls. */
 .workspace-status {
-  display: inline-flex;
-  align-items: center;
+  display: inline;
   flex-shrink: 0;
-  border: 1px solid var(--mk-border);
-  border-radius: 999px;
-  padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
   color: var(--mk-muted);
-  background: var(--mk-field);
 }
 .workspace-status[data-status="Pending"] {
   color: var(--mk-caution);
-  background: var(--mk-caution-soft);
-  border-color: color-mix(in srgb, var(--mk-caution) 35%, var(--mk-border));
 }
 .workspace-status[data-status="Accepted"],
-.workspace-status[data-status="Completed"] {
+.workspace-status[data-status="Completed"],
+.workspace-status[data-status="Published"] {
   color: var(--mk-positive);
-  background: var(--mk-positive-soft);
-  border-color: color-mix(in srgb, var(--mk-positive) 35%, var(--mk-border));
 }
 .workspace-status[data-status="Rejected"],
 .workspace-status[data-status="Declined"],
 .workspace-status[data-status="Cancelled"] {
   color: var(--mk-error);
-  background: color-mix(in srgb, var(--mk-error) 10%, var(--mk-surface));
-  border-color: color-mix(in srgb, var(--mk-error) 35%, var(--mk-border));
 }
 .workspace-status[data-status="In Progress"] {
   color: var(--mk-secondary);
-  background: var(--mk-secondary-soft);
-  border-color: var(--mk-secondary-border);
 }
 .workspace-search {
   position: relative;

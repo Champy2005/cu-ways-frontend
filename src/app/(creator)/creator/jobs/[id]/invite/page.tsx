@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BackLink } from "@/components/ui/back-link";
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 
 import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
@@ -67,7 +67,7 @@ export default async function InviteMarketersPage({ params }: { params: Promise<
             {surveyTitles.length > 0 ? ` · ${surveyTitles.join(", ")}` : " · No linked surveys"}
           </p>
         </div>
-        <StatusPill status={data.job.job_status} />
+        <StatusText status={data.job.job_status} />
       </header>
 
       <JobInviteSelector

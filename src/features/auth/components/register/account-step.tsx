@@ -57,7 +57,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
     <div className="grid gap-x-16 lg:grid-cols-2">
       <div>
         <h2 className="text-[15px] leading-[18px] font-medium">Personal information</h2>
-        <div className="mt-[3px] flex flex-col gap-3 pr-[12px] pl-[10px]">
+        <div className="mt-[3px] flex flex-col gap-3">
           {TEXT_FIELDS.map(({ key, label, ...attributes }) => (
             <RegisterField
               key={key}
@@ -82,7 +82,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
         </div>
 
         <h2 className="mt-[6px] text-[15px] leading-[18px] font-medium">Password</h2>
-        <div className="mt-[4px] flex flex-col gap-3 pr-[12px] pl-[10px]">
+        <div className="mt-[4px] flex flex-col gap-3">
           {PASSWORD_FIELDS.map(({ key, label, placeholder }) => (
             <RegisterField
               key={key}
@@ -120,7 +120,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
           role="radiogroup"
           aria-labelledby="register-role-label"
           aria-describedby={errors.role ? "register-role-error" : undefined}
-          className="mt-[5px] pr-[10px]"
+          className="mt-[5px]"
         >
           <div className="grid grid-cols-2 gap-[9px]">
             <button
@@ -167,7 +167,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
           )}
         </div>
 
-        <div className="mt-[14px] flex flex-col gap-[8px] pl-[7px]">
+        <div className="mt-[14px] flex flex-col gap-[8px]">
           {(
             [
               { key: "accept_terms", label: "Accept Terms of Service" },

@@ -40,8 +40,8 @@ export function UserTable({ data }: UserTableProps) {
                   </Link>
                   <p className="mt-1 text-xs text-zinc-500">{user.email}</p>
                 </td>
-                <td className="px-6 py-4 text-zinc-600">{user.phone || "—"}</td>
-                <td className="px-6 py-4 text-zinc-600">{user.line_id || "—"}</td>
+                <td className="px-6 py-4 text-zinc-600">{user.phone || "Not specified"}</td>
+                <td className="px-6 py-4 text-zinc-600">{user.line_id || "Not specified"}</td>
                 <td className="px-6 py-4 text-zinc-600">
                   {new Date(user.created_at).toLocaleDateString()}
                 </td>

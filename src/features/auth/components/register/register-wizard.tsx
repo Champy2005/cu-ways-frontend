@@ -36,22 +36,22 @@ const STEP_LAYOUT: Record<
     slot: 1,
     page: "pt-[33px]",
     stepper: "mt-[25px]",
-    card: "mt-[20px] px-[20px] pt-[23px] pb-[27px] lg:w-full lg:px-[64px]",
-    actions: "mt-[17px] pl-[2px] lg:justify-end",
+    card: "mt-[20px] px-4 pt-[23px] pb-6 lg:max-w-none lg:px-8",
+    actions: "mt-[17px] lg:justify-end",
   },
   contact: {
     slot: 2,
     page: "pt-[33px]",
     stepper: "mt-[25px]",
-    card: "mt-[40px] px-[26px] pt-[22px] pb-[7px]",
-    actions: "mt-[18px] ml-[-3px]",
+    card: "mt-[40px] px-4 pt-[22px] pb-6",
+    actions: "mt-[18px]",
   },
   experience: {
     slot: 3,
     page: "pt-[37px]",
     stepper: "mt-[29px]",
-    card: "mt-[29px] px-[25px] pt-[19px] pb-[17px]",
-    actions: "mt-[29px] ml-[-2px]",
+    card: "mt-[29px] px-4 pt-[19px] pb-6",
+    actions: "mt-[29px]",
   },
 };
 
@@ -142,7 +142,7 @@ export function RegisterWizard() {
   return (
     <div
       className={cn(
-        "mx-auto flex w-full max-w-[375px] flex-col items-center pb-10 lg:max-w-[1164px]",
+        "mx-auto flex w-full max-w-lg flex-col items-center pb-10 lg:max-w-[1164px]",
         layout.page,
       )}
     >
@@ -155,7 +155,7 @@ export function RegisterWizard() {
         noValidate
         onSubmit={wizard.handleSubmit}
         aria-label="Create your account"
-        className={cn("register-card relative w-[305px]", layout.card)}
+        className={cn("register-card relative w-full max-w-lg", layout.card)}
       >
         {wizard.banner && <FailureBanner banner={wizard.banner} />}
         <fieldset disabled={wizard.submitting} className="contents">

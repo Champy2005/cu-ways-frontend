@@ -368,7 +368,7 @@ describe("live US21 offers", () => {
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
       if (status === "Accepted")
-        expect(screen.getByText("Offer accepted — you’ve been hired")).toBeInTheDocument();
+        expect(screen.getByText("Offer accepted. You’ve been hired")).toBeInTheDocument();
       expect(
         screen.queryByRole("button", { name: /submit|withdraw|resubmit/i }),
       ).not.toBeInTheDocument();

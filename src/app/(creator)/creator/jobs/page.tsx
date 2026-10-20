@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 import { loadCreatorJobs } from "@/features/jobs/api";
 import { ReloadJobsButton } from "@/features/jobs/components/reload-jobs-button";
 
@@ -47,7 +47,7 @@ export default async function MyJobsPage() {
                   <h2 className="min-w-0 font-bold break-words">
                     {job.title || `Job #${job.job_id}`}
                   </h2>
-                  <StatusPill status={job.job_status} />
+                  <StatusText status={job.job_status} />
                 </div>
                 <p className="mt-2 text-xs text-[var(--mk-muted)]">
                   Job #{job.job_id} · {job.surveys.map((survey) => survey.title).join(", ")}

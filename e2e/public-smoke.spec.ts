@@ -64,3 +64,49 @@ test("session-guard: signed-out protected navigation returns to login", async ({
     await expect(page.getByRole("heading", { name: "Welcome back" })).toBeVisible();
   }
 });
+
+test("registration uses consistent mobile gutters through the marketer steps", async ({
+  page,
+}, testInfo) => {
+  for (const width of [320, 375, 430]) {
+    await page.setViewportSize({ width, height: 812 });
+    await page.goto("/register");
+    const form = await page.getByRole("form", { name: "Create your account" }).boundingBox();
+    const field = await page.getByLabel("First name *", { exact: true }).boundingBox();
+    expect(
+      form && Math.abs(form.x - 16) < 1 && Math.abs(form.width - (width - 32)) < 1,
+    ).toBeTruthy();
+    expect(
+      field &&
+        form &&
+        Math.abs(field.x - form.x - 16) < 1 &&
+        Math.abs(field.width - (form.width - 32)) < 1,
+    ).toBeTruthy();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+  }
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.reload();
+  await page.screenshot({ path: testInfo.outputPath("registration-account.png"), fullPage: true });
+  await page.getByLabel("First name *", { exact: true }).fill("Mobile");
+  await page.getByLabel("Last name *", { exact: true }).fill("Preview");
+  await page.getByLabel("Email *", { exact: true }).fill("preview@example.invalid");
+  await page.getByLabel("Password *", { exact: true }).fill("preview-password");
+  await page.getByLabel("Password confirmation *", { exact: true }).fill("preview-password");
+  await page.getByRole("radio", { name: "Marketer", exact: true }).click();
+  await page.getByRole("checkbox", { name: "Accept Terms of Service" }).check();
+  await page.getByRole("checkbox", { name: "Accept Privacy Policy" }).check();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByLabel("Phone Number", { exact: true })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("registration-contact.png"), fullPage: true });
+  await page.getByLabel("Phone Number", { exact: true }).fill("0812345678");
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByLabel("Bio", { exact: true })).toBeVisible();
+  const field = await page.getByLabel("Bio", { exact: true }).boundingBox();
+  expect(field && Math.abs(field.width - 311) < 1).toBeTruthy();
+  await page.screenshot({
+    path: testInfo.outputPath("registration-experience.png"),
+    fullPage: true,
+  });
+});

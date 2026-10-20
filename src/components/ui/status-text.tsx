@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /** One status palette for jobs, invitations, and offers in both themes. */
-export function StatusPill({
+export function StatusText({
   status,
   children,
   className,

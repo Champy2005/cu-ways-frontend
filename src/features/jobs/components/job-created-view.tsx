@@ -1,6 +1,6 @@
 "use client";
 
-import { StatusPill } from "@/components/ui/status-pill";
+import { StatusText } from "@/components/ui/status-text";
 
 import Link from "next/link";
 import { Check, Circle } from "lucide-react";
@@ -200,7 +200,7 @@ export function JobCreatedView({
                 JOB-{creationYear}-{job.id}
               </p>
             )}
-            <StatusPill status={job.status} className="ml-auto" />
+            <StatusText status={job.status} className="ml-auto" />
           </div>
           <dl className="mt-3 space-y-2.5 border-t border-[var(--mk-border)] pt-3 text-xs">
             <div className="flex items-start justify-between gap-4">

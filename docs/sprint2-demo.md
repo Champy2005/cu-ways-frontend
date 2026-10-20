@@ -53,7 +53,7 @@ Every setup run uses new accounts, future deadlines, and new records. Existing d
 preserved. There is no database reset. After a failed setup, its credential file records
 any accounts created so far; fix the backend issue and run again for a new rehearsal.
 
-## Part 1 — Account (about 3 minutes)
+## Part 1 - Account (about 3 minutes)
 
 Use the Creator browser. The JSON's `registration` account has NOT been created.
 
@@ -77,7 +77,7 @@ Do not claim that criterion is complete. To demonstrate Marketer registration as
 use another unused email and phone, select Marketer, and complete the extra profile step;
 this is optional additional time rather than a requirement for this walkthrough.
 
-## Part 2 — Job setup (about 4 minutes)
+## Part 2 - Job setup (about 4 minutes)
 
 Stay signed in as the seeded Creator.
 
@@ -97,7 +97,7 @@ Bookmark this live job and `/creator/jobs/LIVE_JOB_ID/offers` now. Do not confus
 the prepared backup job. Title, compensation, description and job-form deadline are saved in the backend alongside the job/status and survey links. Compensation accepts a numeric THB amount. Delivery uses the earlier of the job deadline and linked survey deadlines. Brief URLs/history persist;
 optional brief titles/notes use browser-tab storage. Use the persisted fields as your evidence.
 
-## Part 3 — Offers and hiring (about 5–7 minutes)
+## Part 3 - Offers and hiring (about 5–7 minutes)
 
 Use the **live Job ID** from Part 2 to select invitations in both Marketer windows.
 
