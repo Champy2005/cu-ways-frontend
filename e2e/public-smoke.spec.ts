@@ -62,7 +62,7 @@ test("public-auth: registration exposes field errors without creating an account
 test("session-guard: signed-out protected navigation returns to login", async ({ page }) => {
   for (const route of ["/dashboard", "/profile", "/marketer/services", "/admin/users"]) {
     await page.goto(route);
-    await expect(page).toHaveURL(/\/login$/);
+    await expect(page).toHaveURL(`/login?next=${encodeURIComponent(route)}`);
     await expect(page.getByRole("heading", { name: "Welcome back" })).toBeVisible();
   }
 });

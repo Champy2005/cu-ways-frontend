@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ChevronLeft, Circle, Clock3, Share2, Smile } from "lucide-react";
+import { Check, ChevronLeft, Circle, Clock3, Smile } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,7 @@ export type JobCreatedDetails = {
   id?: number;
   createdAt: string;
   title: string;
+  description?: string;
   compensation: string;
   deadline: string;
   surveyCount: number;
@@ -55,7 +56,7 @@ function JobStatusTracking({
         },
         {
           title: "Awaiting offers",
-          description: "Visible to marketers to submit offers",
+          description: "Invite marketers to submit offers",
           state: "current",
         },
         {
@@ -74,9 +75,7 @@ function JobStatusTracking({
       <h2 id="job-status-heading" className="text-base leading-5 font-bold">
         Status tracking
       </h2>
-      <p className="mt-0.5 text-[11px] text-[var(--mk-muted)]">
-        {offerAccepted ? "Updated just now" : "Last updated just now"}
-      </p>
+      <p className="mt-0.5 text-[11px] text-[var(--mk-muted)]">Current job progress</p>
 
       <ol className="mt-2.5">
         {steps.map((step, index) => (
@@ -163,8 +162,8 @@ export function JobCreatedView({
     <section aria-labelledby="job-created-heading" className="mx-auto w-full max-w-md">
       <header className="mb-7 flex items-center gap-1">
         <Link
-          href="/creator/dashboard"
-          aria-label="Back to creator page"
+          href="/creator/jobs"
+          aria-label="Back to my jobs"
           className="-ml-2 inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-[var(--mk-text)] outline-none hover:bg-[var(--mk-hover)] focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <ChevronLeft aria-hidden="true" className="size-5" />
@@ -251,23 +250,41 @@ export function JobCreatedView({
           <p className="text-sm text-[var(--mk-muted)]">Current status: {job.status}</p>
         )}
 
+        {job.description && (
+          <Card className="mk-card p-4">
+            <h2 className="text-sm font-bold">Description</h2>
+            <p className="text-sm whitespace-pre-wrap break-words text-[var(--mk-muted)]">
+              {job.description}
+            </p>
+          </Card>
+        )}
         <div className="grid grid-cols-2 gap-3">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={offerAccepted ? undefined : onEdit}
-            disabled={!offerAccepted && !canEdit}
-            className="h-11 rounded-[14px] border border-[var(--mk-border)] bg-[var(--mk-surface)] text-sm font-bold text-[var(--mk-text)] shadow-card hover:bg-[var(--mk-hover)]"
-          >
-            {offerAccepted ? "View Job" : "Edit"}
-          </Button>
-          <Button
-            type="button"
-            className="h-11 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white shadow-card hover:bg-[var(--mk-action-hover)]"
-          >
-            {offerAccepted && <Share2 aria-hidden="true" className="size-4" />}
-            {offerAccepted ? "Share" : "View Job"}
-          </Button>
+          {canEdit && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onEdit}
+              className="mk-secondary-button h-11"
+            >
+              Edit
+            </Button>
+          )}
+          {job.id && (
+            <Link
+              href={`/creator/jobs/${job.id}/offers`}
+              className="mk-primary-button inline-flex h-11 items-center justify-center text-sm font-bold"
+            >
+              View offers
+            </Link>
+          )}
+          {job.id && job.status === "Pending" && (
+            <Link
+              href={`/creator/jobs/${job.id}/invite`}
+              className="mk-secondary-button col-span-2 inline-flex h-11 items-center justify-center text-sm font-bold"
+            >
+              Invite marketers
+            </Link>
+          )}
         </div>
       </div>
     </section>

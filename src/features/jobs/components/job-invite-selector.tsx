@@ -1,5 +1,6 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
 import { Check, Search, Star } from "lucide-react";
 import {
   useCallback,
@@ -394,14 +395,13 @@ function JobRequestFeedback({
       );
     case "success":
       return (
-        <p
-          className="rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_28%,var(--mk-border))] bg-[var(--mk-positive-soft)] p-4 text-sm text-[var(--mk-success)]"
-          role="status"
-        >
-          {state.requests.length === 1
-            ? "Request sent to 1 marketer."
-            : `Requests sent to ${state.requests.length} marketers.`}
-        </p>
+        <SuccessToast
+          message={
+            state.requests.length === 1
+              ? "Request sent to 1 marketer."
+              : `Requests sent to ${state.requests.length} marketers.`
+          }
+        />
       );
     default:
       return null;

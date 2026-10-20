@@ -57,7 +57,7 @@ describe("submission toast", () => {
       />,
     );
     fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
-    expect(screen.getByText("Saved").parentElement).toHaveAttribute("data-closing", "true");
+    expect(screen.getByRole("status")).toHaveAttribute("data-closing", "true");
     act(() => vi.advanceTimersByTime(179));
     expect(dismiss).not.toHaveBeenCalled();
     act(() => vi.advanceTimersByTime(1));
@@ -135,7 +135,7 @@ describe("submission toast", () => {
         onDismiss={dismiss}
       />,
     );
-    const toast = screen.getByText("Submitted").parentElement!;
+    const toast = screen.getByRole("status");
     const close = screen.getByRole("button", { name: "Dismiss notification" });
     act(() => vi.advanceTimersByTime(2000));
     fireEvent.mouseEnter(toast);
@@ -160,7 +160,7 @@ describe("submission toast", () => {
         onDismiss={dismiss}
       />,
     );
-    fireEvent.mouseEnter(screen.getByText("Submitted").parentElement!);
+    fireEvent.mouseEnter(screen.getByRole("status"));
     fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
     act(() => vi.advanceTimersByTime(180));
     expect(dismiss).toHaveBeenCalledOnce();

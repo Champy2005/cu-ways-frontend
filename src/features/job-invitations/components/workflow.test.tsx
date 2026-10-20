@@ -52,7 +52,7 @@ describe("invitation and offer preview", () => {
     expect(
       screen
         .getByText("Invitation accepted. You can now submit your custom offer.")
-        .closest(".ji-toast"),
+        .closest(".workspace-toast"),
     ).not.toBeNull();
     expect(screen.getByRole("tab", { name: "Pending (1)" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Responded (5)" })).toHaveAttribute(
@@ -174,7 +174,9 @@ describe("invitation and offer preview", () => {
     fireEvent.click(dialog.getByRole("button", { name: "Decline Request" }));
     await screen.findByText("Invitation declined. Your response has been saved.");
     expect(
-      screen.getByText("Invitation declined. Your response has been saved.").closest(".ji-toast"),
+      screen
+        .getByText("Invitation declined. Your response has been saved.")
+        .closest(".workspace-toast"),
     ).not.toBeNull();
     expect(getSnapshot().invitations[0]).toMatchObject({
       declineReason: "Schedule conflict",
@@ -357,7 +359,7 @@ describe("edge states and failures", () => {
       const error = await screen.findByRole("alert");
       expect(error).toHaveTextContent("no longer pending");
       expect(screen.getByRole("alertdialog")).toContainElement(error);
-      expect(error.querySelector(".ji-toast")).not.toBeNull();
+      expect(error).toHaveClass("workspace-toast");
       fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
       expect(screen.getByRole("alertdialog")).toBeInTheDocument();
       if (mode === "decline")

@@ -90,6 +90,11 @@ describe("live US20 invitations", () => {
       expect(filterLiveInvitations(entries, "pending", term)).toHaveLength(1);
     expect(filterLiveInvitations(entries, "responded", "not found")).toHaveLength(0);
   });
+  it("finds an invitation by its saved job title", () => {
+    const entry = invitationEntry("Pending");
+    entry.request.job.title = "Campus outreach campaign";
+    expect(filterLiveInvitations([entry], "pending", "outreach")).toEqual([entry]);
+  });
   it("accepts with confirmation and reloads the saved response", async () => {
     vi.mocked(respondToInvitation).mockResolvedValue(invitationEntry().request);
     vi.mocked(reloadInvitations).mockResolvedValue([invitationEntry()]);

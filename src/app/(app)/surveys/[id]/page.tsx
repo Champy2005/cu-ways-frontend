@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SurveyCreatedNotice } from "@/features/surveys/components/survey-created-notice";
 import { notFound } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { getSurvey } from "@/features/surveys/api";
@@ -26,19 +27,15 @@ export default async function SurveyDetailsPage({
   const url = safeSurveyUrl(survey.survey_link);
   const { created } = await searchParams;
   return (
-    <div className="mx-auto max-w-2xl space-y-6 text-zinc-950">
+    <div className="mx-auto w-full max-w-md space-y-6 text-[var(--mk-text)]">
       <Link href="/surveys" className="text-sm underline">
         Back to My surveys
       </Link>
-      {created === "1" ? (
-        <p role="status" className="rounded-lg bg-emerald-50 p-4 text-emerald-900">
-          Survey created successfully.
-        </p>
-      ) : null}
-      <section className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-        <p className="text-sm text-zinc-500">Survey #{survey.survey_id}</p>
-        <h1 className="text-3xl font-semibold break-words">{survey.title}</h1>
-        <p className="whitespace-pre-wrap break-words text-zinc-600">
+      {created === "1" && <SurveyCreatedNotice />}
+      <section className="space-y-5 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-6 shadow-sm">
+        <p className="text-sm text-[var(--mk-muted)]">Survey #{survey.survey_id}</p>
+        <h1 className="text-lg font-semibold break-words">{survey.title}</h1>
+        <p className="whitespace-pre-wrap break-words text-[var(--mk-muted)]">
           {survey.description || "No description provided."}
         </p>
         <dl className="space-y-4 text-sm">

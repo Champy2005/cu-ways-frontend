@@ -2,6 +2,7 @@ import { formatDate, formatSentDate } from "../format";
 import type { ReceivedRequest, SavedOffer } from "./types";
 
 export function jobDisplayTitle(request: ReceivedRequest): string {
+  if (request.job.title?.trim()) return request.job.title;
   const surveys = request.job.surveys;
   if (!surveys.length) return `Job #${request.job_id}`;
   if (surveys.length === 1) return surveys[0].title;

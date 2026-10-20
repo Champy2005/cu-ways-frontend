@@ -59,8 +59,8 @@ export default async function InviteMarketersPage({ params }: { params: Promise<
     <div className="mx-auto w-full max-w-5xl space-y-5 text-[var(--mk-text)]">
       <header className="mb-5 flex items-center gap-3 border-b border-[var(--mk-border)] pb-4">
         <Link
-          href="/creator/jobs/invite"
-          aria-label="Back to job selection"
+          href={`/creator/jobs/${jobId}`}
+          aria-label="Back to job details"
           className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--mk-border)] bg-[var(--mk-surface)] text-[var(--mk-text)] shadow-[var(--mk-shadow)] outline-none hover:border-[var(--mk-accent)] focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <ArrowLeft aria-hidden="true" className="size-5" />
@@ -68,7 +68,7 @@ export default async function InviteMarketersPage({ params }: { params: Promise<
         <div className="min-w-0 flex-1">
           <h1 className="text-xl font-semibold tracking-tight">Invite Marketers</h1>
           <p className="mt-0.5 text-sm text-[var(--mk-muted)]">
-            Job #{data.job.job_id}
+            {data.job.title || `Job #${data.job.job_id}`}
             {surveyTitles.length > 0 ? ` · ${surveyTitles.join(", ")}` : " · No linked surveys"}
           </p>
         </div>

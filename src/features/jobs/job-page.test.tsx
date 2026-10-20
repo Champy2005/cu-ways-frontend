@@ -106,10 +106,10 @@ describe("Job details editor identity", () => {
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Dismiss project brief updated successfully notification",
+        name: "Dismiss notification",
       }),
     );
-    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: "View attachment history (2)" }));
     const history = within(await screen.findByRole("dialog", { name: "Brief Attachment History" }));
     expect(history.getByText(/Updated by thunn/)).toBeInTheDocument();
@@ -119,7 +119,7 @@ describe("Job details editor identity", () => {
     unmount();
     render(await CreatorJobPage(pageProps()));
     await screen.findByRole("region", { name: "Project Brief" });
-    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
     expect(fetch).not.toHaveBeenCalled();
   });
 

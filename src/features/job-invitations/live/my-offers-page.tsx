@@ -1,5 +1,6 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -95,21 +96,7 @@ export function MyOffersPage({ initialOffers, offersUnavailable = false }: MyOff
       <p className="mt-3 text-xs text-[var(--mk-muted)]">
         You have {state.offers.length} offer{state.offers.length === 1 ? "" : "s"} on survey jobs
       </p>
-      {state.notice && (
-        <div
-          role="status"
-          className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-[var(--mk-positive)] p-3 text-sm text-[var(--mk-positive)]"
-        >
-          <span>{state.notice}</span>
-          <button
-            type="button"
-            aria-label="Dismiss notification"
-            onClick={() => state.setNotice(null)}
-          >
-            ×
-          </button>
-        </div>
-      )}
+      <SuccessToast message={state.notice} onDismiss={() => state.setNotice(null)} />
       {!selectedOffer && <OffersFeedback state={state} />}
       <Tabs
         value={tab}
@@ -118,7 +105,7 @@ export function MyOffersPage({ initialOffers, offersUnavailable = false }: MyOff
       >
         <TabsList
           variant="line"
-          className="max-w-full justify-start overflow-x-auto"
+          className="max-w-full justify-start overflow-x-auto overflow-y-hidden"
           aria-label="Offer status"
         >
           {statuses.map((status) => (

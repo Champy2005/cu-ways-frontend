@@ -29,7 +29,7 @@ export function MyOfferCard({
   disabled = false,
   isCurrent = true,
 }: MyOfferCardProps) {
-  const jobTitle = request.job.surveys[0]?.title ?? "Job #" + request.job_id;
+  const jobTitle = request.job.title || request.job.surveys[0]?.title || "Job #" + request.job_id;
   const date = offer.delivery_date ?? request.job.deadline;
   const canResubmit = isCurrent && !disabled && canResubmitOffer(offer, request);
   return (
@@ -69,6 +69,14 @@ export function MyOfferCard({
       </div>
       {offer.message && (
         <p className="mb-3 text-sm whitespace-pre-wrap wrap-anywhere">{offer.message}</p>
+      )}
+      {isCurrent && (
+        <Link
+          href={`/marketer/offer/create?requestId=${request.job_request_id}`}
+          className="mb-3 inline-block text-sm font-semibold text-[var(--mk-accent)] underline"
+        >
+          View offer
+        </Link>
       )}
       {offer.offer_status === "Pending" && (
         <Button

@@ -9,7 +9,9 @@ export function proxy(request: NextRequest) {
   const session = token ? getSessionClaims(token) : null;
 
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const login = new URL("/login", request.url);
+    login.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
+    return NextResponse.redirect(login);
   }
 
   if (pathname.startsWith("/admin") && session.role !== "admin") {

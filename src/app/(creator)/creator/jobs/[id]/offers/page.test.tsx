@@ -107,9 +107,9 @@ describe("CompareOffersPage", () => {
     expect(screen.getByRole("heading", { name: "Job offers" })).toBeInTheDocument();
     expect(screen.getByText("Job #15 · Consumer Habits Survey")).toBeInTheDocument();
     expect(screen.getAllByText("Pending").length).toBeGreaterThanOrEqual(2);
-    expect(screen.getByRole("link", { name: "Back to your jobs" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Back to job details" })).toHaveAttribute(
       "href",
-      "/creator/jobs/offers",
+      "/creator/jobs/15",
     );
     expect(screen.getByRole("link", { name: "Invite marketers" })).toHaveAttribute(
       "href",

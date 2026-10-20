@@ -123,9 +123,7 @@ The frontend includes professional profile editing at `/marketer/profile`, servi
 viewing at `/marketers/[id]/services`. Open **Marketer workspace** from the existing dashboard.
 Profile management, service management, and private performance statistics use the published backend
 endpoints. Creator-facing discovery at `/creator/discovery` uses the backend marketer-search contract, including
-price, expertise, campus, experience, availability, rating-sort, and pagination parameters. The legacy
-`/marketers/[id]/services` viewer remains explicitly unavailable until a public marketer-by-ID catalog
-endpoint exists; live pages never substitute sample data.
+price, expertise, campus, experience, availability, rating-sort, and pagination parameters. The `/marketers/[id]/services` viewer uses the authenticated public marketer detail endpoint; live pages never substitute sample data.
 
 To review all frontend interactions with fictional data, enable the local demo:
 
@@ -281,3 +279,9 @@ admin seeding, and health checks.
 For the full frontend structure and dependency rules, see [docs/architecture.md](docs/architecture.md).
 
 Marketer UI refinements, unified profile tabs, lazy-loading boundaries, and measured bundle changes are documented in [docs/marketer-ui-refinement.md](docs/marketer-ui-refinement.md).
+
+## Sprint 2 consistency updates
+
+See [the workspace UI standard](docs/ui-standard.md). Job details now persist through the backend; migration 000010 is required. Pending-job edits atomically save metadata and survey selection. Compensation is a numeric THB amount with up to two decimal places. Both parties use the earlier of the job deadline and linked survey deadlines.
+
+Use My jobs at `/creator/jobs` to reopen a saved job, invite marketers, or compare offers. Legacy `/jobs` links redirect there. Surveys and public marketer profiles share the Creator workspace chrome. Success messages use the shared top-of-screen toast and do not replay merely because a saved job was reopened.

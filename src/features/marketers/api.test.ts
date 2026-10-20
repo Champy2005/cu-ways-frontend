@@ -32,9 +32,16 @@ describe("marketer server queries", () => {
     });
     expect(serverApiGet).toHaveBeenLastCalledWith("/api/v1/me/statistics");
   });
-  it("does not request a public catalog endpoint that does not exist", async () => {
-    await expect(getPublicCatalog(2)).rejects.toMatchObject({ code: "feature_unavailable" });
+  it("loads public catalogs through the marketer detail endpoint", async () => {
+    vi.mocked(serverApiGet).mockResolvedValueOnce({
+      profile: { user_id: 2, name: "A marketer" },
+      services: [],
+    });
+    await expect(getPublicCatalog(2)).resolves.toEqual({
+      marketer: { user_id: 2, name: "A marketer" },
+      services: [],
+    });
+    expect(serverApiGet).toHaveBeenCalledExactlyOnceWith("/api/v1/marketers/2");
     await expect(getPublicCatalog(-1)).rejects.toMatchObject({ status: 404 });
-    expect(serverApiGet).not.toHaveBeenCalled();
   });
 });

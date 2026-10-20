@@ -39,7 +39,7 @@ describe("CreatorShell", () => {
       "href",
       "/creator/dashboard",
     );
-    expect(menu.getByRole("menuitem", { name: "Marketer discovery" })).toHaveAttribute(
+    expect(menu.getByRole("menuitem", { name: "Discover" })).toHaveAttribute(
       "aria-current",
       "page",
     );
@@ -47,7 +47,11 @@ describe("CreatorShell", () => {
       "href",
       "/creator/settings",
     );
-    expect(menu.getByRole("menuitem", { name: "Workspace" })).toHaveAttribute("href", "/dashboard");
+    expect(menu.getByRole("menuitem", { name: "My jobs" })).toHaveAttribute(
+      "href",
+      "/creator/jobs",
+    );
+    expect(menu.getByRole("menuitem", { name: "Surveys" })).toHaveAttribute("href", "/surveys");
     expect(menu.getByRole("menuitem", { name: "Sign out" })).toBeInTheDocument();
   });
 });

@@ -1,8 +1,10 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
+
 import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
-import { Check, Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 
 import { MarketerPageHeader } from "@/features/marketer-discovery/components/marketer-page-header";
 
@@ -18,17 +20,7 @@ type IconProps = { className?: string; strokeWidth?: number; "aria-hidden"?: boo
 /** Banner over the top edge of the card (save changed 508:3513, phone num taken 511:3957). */
 function Banner({ banner }: { banner: ContactBanner }) {
   if (banner.kind === "saved") {
-    return (
-      <p
-        role="status"
-        className="absolute top-0 left-[8px] flex h-[32px] w-[290px] items-center gap-[9px] rounded-[10px] border border-[var(--cs-success-border)] bg-[var(--cs-success-fill)] pl-[20px] text-[13px] leading-[1.35] text-[var(--cs-success-text)]"
-      >
-        <span className="grid size-[20px] place-items-center rounded-full bg-[var(--cs-success-icon)]">
-          <Check className="size-[12px] text-white" strokeWidth={3} aria-hidden="true" />
-        </span>
-        Your contact info has been updated
-      </p>
-    );
+    return <SuccessToast message="Your contact info has been updated" />;
   }
   return (
     <div
@@ -62,7 +54,7 @@ type FieldProps = {
 /** Label (Inter Semi Bold 12) over a 250px input with a left icon; error right-aligned below. */
 function Field({ id, label, hint, error, icon: Icon, className, children }: FieldProps) {
   return (
-    <div className={cn("relative w-[250px]", className)}>
+    <div className={cn("relative w-full", className)}>
       <div className="mb-px flex items-baseline justify-between">
         <label htmlFor={id} className="text-[12px] leading-[15px] font-semibold">
           {label}
@@ -103,7 +95,7 @@ export function ContactSettings({ user: initialUser }: { user: ContactProfile })
   const form = useContactSettings(initialUser, updateCurrentUser);
 
   return (
-    <section className="contact-settings relative pb-10">
+    <section className="contact-settings relative mx-auto w-full max-w-md pb-10">
       <MarketerPageHeader
         title="Settings"
         subtitle="Contact Information"
@@ -115,7 +107,7 @@ export function ContactSettings({ user: initialUser }: { user: ContactProfile })
         noValidate
         onSubmit={form.handleSubmit}
         aria-labelledby="contact-settings-title"
-        className="contact-settings-card relative z-10 mx-auto mt-[43px] w-[305px] pt-[19px] pb-[13px] pl-[22px]"
+        className="contact-settings-card relative z-10 mx-auto mt-[43px] w-full max-w-md p-5"
       >
         {form.banner && <Banner banner={form.banner} />}
         <h2

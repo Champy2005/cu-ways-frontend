@@ -24,8 +24,8 @@ export function MarketerPageHeader({
         <ChevronLeft className="size-5" aria-hidden="true" />
       </Link>
       <div className="min-w-0">
-        <h1 className="truncate text-sm font-medium text-foreground">{title}</h1>
-        <p className="truncate text-[11px] text-foreground/45">{subtitle}</p>
+        <h1 className="text-lg leading-6 font-bold text-foreground">{title}</h1>
+        <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
       </div>
     </div>
   );

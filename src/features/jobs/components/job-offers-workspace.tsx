@@ -1,5 +1,6 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
 import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, RefreshCw, UserPlus } from "lucide-react";
@@ -10,6 +11,10 @@ import { useJobOffers } from "../use-job-offers";
 import { AcceptOfferDialog } from "./accept-offer-dialog";
 import { JobOffersCompare } from "./job-offers-compare";
 import "../offers.css";
+
+function jobName(job: JobOffersInitialData["job"]) {
+  return job.title || `Job #${job.job_id}`;
+}
 
 export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInitialData }) {
   const state = useJobOffers(initialData);
@@ -36,7 +41,11 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
   return (
     <section className="jo-page">
       <header className="jo-heading">
-        <Link href="/creator/jobs/offers" className="jo-back" aria-label="Back to your jobs">
+        <Link
+          href={`/creator/jobs/${job.job_id}`}
+          className="jo-back"
+          aria-label="Back to job details"
+        >
           <ArrowLeft aria-hidden="true" />
         </Link>
         <div className="min-w-0 flex-1">
@@ -44,7 +53,7 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
             Job offers
           </h1>
           <p className="jo-muted">
-            Job #{job.job_id} ·{" "}
+            {jobName(job)} ·{" "}
             {job.surveys.map((survey) => survey.title).join(", ") || "No linked surveys"}
           </p>
         </div>
@@ -76,7 +85,7 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
           )}
         </div>
       </div>
-      {state.notice && !(state.notice.kind === "success" && hired) && (
+      {state.notice?.kind === "error" && (
         <div
           className="jo-notice"
           data-error={state.notice.kind === "error"}
@@ -88,8 +97,9 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
           )}
         </div>
       )}
+      <SuccessToast message={state.notice?.kind === "success" ? state.notice.message : null} />
       {hired && (
-        <div className="jo-hired" role="status">
+        <div className="jo-hired">
           <CheckCircle2 aria-hidden="true" />
           <div>
             <strong>{hired.marketer.name} is your selected marketer</strong>

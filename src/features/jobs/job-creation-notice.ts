@@ -8,3 +8,11 @@ export function markJobCreated(creatorId: number, jobId: number): void {
 export function consumeJobCreatedNotice(creatorId: number, jobId: number): boolean {
   return newlyCreatedJobs.delete(`${creatorId}:${jobId}`);
 }
+
+const updatedJobs = new Set<string>();
+export function markJobUpdated(creatorId: number, jobId: number): void {
+  updatedJobs.add(`${creatorId}:${jobId}`);
+}
+export function consumeJobUpdatedNotice(creatorId: number, jobId: number): boolean {
+  return updatedJobs.delete(`${creatorId}:${jobId}`);
+}

@@ -2,7 +2,7 @@ import { randomInt, randomUUID } from "node:crypto";
 import { test, expect, type Page } from "@playwright/test";
 
 const backendURL = process.env.LIVE_BACKEND_API_URL || "http://127.0.0.1:8081";
-type Account = { email: string; password: string; token: string; id: number };
+type Account = { email: string; password: string; token: string; id: number; marketer: boolean };
 
 // Use native fetch so authentication payloads never enter Playwright API diagnostics.
 async function api<T>(path: string, token?: string, body?: unknown): Promise<T> {
@@ -40,14 +40,14 @@ async function account(marketer: boolean): Promise<Account> {
         : {}),
     },
   );
-  return { email, password, token: auth.access_token, id: auth.user.user_id };
+  return { email, password, token: auth.access_token, id: auth.user.user_id, marketer };
 }
 async function signIn(page: Page, user: Account) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill(user.email);
   await page.getByLabel("Password", { exact: true }).fill(user.password);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  await expect(page).toHaveURL(/\/creator\/dashboard$/);
+  await expect(page).toHaveURL(user.marketer ? /\/marketer\/dashboard$/ : /\/creator\/dashboard$/);
 }
 async function invite(creator: Account, marketer: Account, surveyId: number) {
   const job = await api<{ job_id: number }>("/api/v1/jobs", creator.token, {
@@ -96,7 +96,7 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
   await signIn(page, marketer);
   await page.goto("/marketer/invitations");
   const card = page
-    .locator('[data-slot="card"]')
+    .locator('[data-slot="card"]:visible')
     .filter({ has: page.getByText(`Job #${first.jobId}`, { exact: true }) });
   await expect(
     card.getByRole("heading", {
@@ -179,7 +179,9 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
   await expect(page.getByRole("button", { name: /withdraw|resubmit|submit offer/i })).toHaveCount(
     0,
   );
-  const projectDetails = page.getByText("View project details", { exact: true });
+  const projectDetails = page
+    .getByText("View project details", { exact: true })
+    .filter({ visible: true });
   await projectDetails.press("Enter");
   await expect(page.getByRole("heading", { name: "Green Habits 2026", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open survey", exact: true })).toHaveCount(2);
@@ -209,7 +211,7 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
   await page.getByRole("button", { name: "Back to Invitations", exact: true }).click();
   await page.getByRole("tab", { name: /Pending/ }).click();
   const declineCard = page
-    .locator('[data-slot="card"]')
+    .locator('[data-slot="card"]:visible')
     .filter({ has: page.getByText(`Job #${second.jobId}`, { exact: true }) });
   await declineCard.getByRole("button", { name: "Decline", exact: true }).click();
   await page.getByRole("button", { name: "Schedule conflict" }).click();

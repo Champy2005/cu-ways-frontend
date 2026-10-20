@@ -39,8 +39,7 @@ Your only narration needs to be “I do this” followed by pointing to the resu
    Different browsers also work. Ordinary tabs share the session cookie; multiple private
    windows in the same browser may share it too. Sign in A and B ahead of time and bookmark
    `/marketer/invitations` and `/marketer/offers`. Sign in shortly before presenting because
-   sessions last one hour. Login may land on the Creator dashboard; open the bookmarked
-   Marketer URL after signing in.
+   sessions last one hour. Login selects the available Marketer workspace or restores your last workspace choice. Bookmarks also return to their intended page after sign-in.
 
 5. Confirm the two brief URLs on the practice card open and show different text. The sample
    survey URL is explicitly a placeholder; no questionnaire or response collection is demonstrated.
@@ -95,8 +94,7 @@ Stay signed in as the seeded Creator.
 Say only: “The job is saved with its survey and brief. I’ll invite these two marketers.”
 
 Bookmark this live job and `/creator/jobs/LIVE_JOB_ID/offers` now. Do not confuse it with
-the prepared backup job. Title, compensation, description and job-form deadline use browser-tab
-storage; the backend persists the job/status and survey links. Brief URLs/history persist;
+the prepared backup job. Title, compensation, description and job-form deadline are saved in the backend alongside the job/status and survey links. Compensation accepts a numeric THB amount. Delivery uses the earlier of the job deadline and linked survey deadlines. Brief URLs/history persist;
 optional brief titles/notes use browser-tab storage. Use the persisted fields as your evidence.
 
 ## Part 3 — Offers and hiring (about 5–7 minutes)

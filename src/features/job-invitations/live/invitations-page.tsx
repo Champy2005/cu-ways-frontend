@@ -24,7 +24,7 @@ export function filterLiveInvitations(entries: InvitationEntry[], tab: string, s
       (tab === "pending"
         ? request.request_status === "Pending"
         : request.request_status !== "Pending") &&
-      `Job #${request.job_id} ${request.job.creator.name} ${request.job.surveys.map((survey) => survey.title).join(" ")}`
+      `Job #${request.job_id} ${request.job.title ?? ""} ${request.job.creator.name} ${request.job.surveys.map((survey) => survey.title).join(" ")}`
         .toLocaleLowerCase()
         .includes(query),
   );

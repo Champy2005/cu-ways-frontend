@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type { NavigationDevice } from "@/components/layout/navigation-device";
+import { CreatorNavigation } from "./creator-navigation";
 import { CreatorMenu } from "@/features/creators/components/creator-menu";
 import { MarketerRolePicker } from "@/features/marketers/components/marketer-role-picker";
 import {
@@ -15,9 +16,11 @@ import "@/features/marketers/marketer.css";
 export function CreatorShell({
   children,
   device = "desktop",
+  userId,
 }: {
   children: ReactNode;
   device?: NavigationDevice;
+  userId?: number;
 }) {
   return (
     <MarketerTheme device={device}>
@@ -33,9 +36,10 @@ export function CreatorShell({
           >
             <MarketerLogo />
           </Link>
+          {device === "desktop" && <CreatorNavigation />}
           <div className="mk-header-actions flex items-center gap-1.5 md:gap-4">
             <MarketerThemeToggle />
-            <MarketerRolePicker initialRole="Creator" />
+            <MarketerRolePicker initialRole="Creator" userId={userId} />
             <CreatorMenu />
           </div>
         </div>
@@ -43,6 +47,7 @@ export function CreatorShell({
       <main id="creator-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}
       </main>
+      {device === "mobile" && <CreatorNavigation mobile />}
     </MarketerTheme>
   );
 }

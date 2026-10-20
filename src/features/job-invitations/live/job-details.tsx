@@ -63,6 +63,10 @@ export function JobDetails({
           {job.target_responses === null ? "Not specified" : `${job.target_responses} responses`}
         </span>
       </div>
+      {job.description && (
+        <p className="mt-3 text-sm whitespace-pre-wrap break-words">{job.description}</p>
+      )}
+      {job.budget && <p className="mt-2 text-sm ji-muted">Compensation: ฿{job.budget}</p>}
       {!compact && (
         <p className="ji-surveys ji-live-survey-overview">
           {job.surveys.length} {job.surveys.length === 1 ? "survey" : "surveys"} attached

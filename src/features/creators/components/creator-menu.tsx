@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, Home, LogOut, Menu, Search, Settings } from "lucide-react";
+import { Briefcase, ClipboardList, Home, LogOut, Menu, Search, Settings } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,9 @@ import { useLogout } from "@/components/layout/use-logout";
 
 export const creatorViews = [
   { href: "/creator/dashboard", label: "Overview", icon: Home },
-  { href: "/creator/discovery", label: "Marketer discovery", icon: Search },
+  { href: "/creator/jobs", label: "My jobs", icon: Briefcase },
+  { href: "/surveys", label: "Surveys", icon: ClipboardList },
+  { href: "/creator/discovery", label: "Discover", icon: Search },
   { href: "/creator/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -51,16 +53,18 @@ export function CreatorMenu() {
           {creatorViews.map(({ href, label, icon: Icon }) => (
             <DropdownMenuItem
               key={href}
-              aria-current={pathname === href ? "page" : undefined}
+              aria-current={
+                pathname === href ||
+                (href !== "/creator/dashboard" && pathname.startsWith(`${href}/`))
+                  ? "page"
+                  : undefined
+              }
               render={<Link href={href} onClick={() => setOpen(false)} />}
             >
               <Icon aria-hidden="true" />
               {label}
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem render={<Link href="/dashboard" onClick={() => setOpen(false)} />}>
-            <ArrowLeft aria-hidden="true" /> Workspace
-          </DropdownMenuItem>
           <DropdownMenuItem disabled={isPending} onClick={logout}>
             <LogOut aria-hidden="true" />
             {isPending ? "Signing out…" : "Sign out"}

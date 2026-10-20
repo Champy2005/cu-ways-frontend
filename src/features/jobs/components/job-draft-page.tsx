@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,30 +18,24 @@ import {
   removeJobSurvey,
   type SavedJobState,
 } from "@/features/jobs/job-actions";
-import { parseJobDraft, readJobDraftSnapshot, subscribeJobDraft } from "@/features/jobs/job-draft";
-import { consumeJobCreatedNotice } from "@/features/jobs/job-creation-notice";
-
-const serverSnapshot = () => null;
+import { bangkokDate } from "@/features/job-invitations/format";
+import { formatOfferPrice } from "@/features/jobs/format";
+import {
+  consumeJobCreatedNotice,
+  consumeJobUpdatedNotice,
+} from "@/features/jobs/job-creation-notice";
 
 export function JobDraftPage({
   jobId,
   creatorName,
   edit = false,
-  previewAccepted = false,
 }: {
   jobId: string;
   creatorName?: string;
   edit?: boolean;
-  previewAccepted?: boolean;
 }) {
   return (
-    <SavedJobPage
-      key={`${jobId}-${edit}`}
-      jobId={jobId}
-      creatorName={creatorName}
-      edit={edit}
-      previewAccepted={previewAccepted}
-    />
+    <SavedJobPage key={`${jobId}-${edit}`} jobId={jobId} creatorName={creatorName} edit={edit} />
   );
 }
 
@@ -49,12 +43,10 @@ function SavedJobPage({
   jobId,
   creatorName,
   edit,
-  previewAccepted,
 }: {
   jobId: string;
   creatorName?: string;
   edit: boolean;
-  previewAccepted: boolean;
 }) {
   const router = useRouter();
   const [state, setState] = useState<SavedJobState | { status: "loading" }>({ status: "loading" });
@@ -64,12 +56,6 @@ function SavedJobPage({
   const [notification, setNotification] = useState<JobSuccessNotice | null>(null);
   const busy = useRef(false);
   const mounted = useRef(true);
-  const creatorId = state.status === "success" ? state.creatorId : 0;
-  const snapshot = useSyncExternalStore(
-    subscribeJobDraft,
-    () => readJobDraftSnapshot(jobId, creatorId),
-    serverSnapshot,
-  );
   useEffect(() => {
     let active = true;
     mounted.current = true;
@@ -78,11 +64,8 @@ function SavedJobPage({
         if (!active) return;
         if (result.status === "success") {
           const created = consumeJobCreatedNotice(result.creatorId, result.job.job_id);
-          if (previewAccepted || result.job.job_status === "Accepted") {
-            setNotification({ kind: "offer-accepted" });
-          } else {
-            setNotification(created ? { kind: "created" } : null);
-          }
+          const updated = consumeJobUpdatedNotice(result.creatorId, result.job.job_id);
+          setNotification(created ? { kind: "created" } : updated ? { kind: "updated" } : null);
         }
         setState(result);
       })
@@ -94,7 +77,7 @@ function SavedJobPage({
       active = false;
       mounted.current = false;
     };
-  }, [jobId, attempt, previewAccepted]);
+  }, [jobId, attempt]);
 
   async function changeSurveys(operation: () => Promise<SavedJobState>, notifyLinked = false) {
     if (busy.current) return;
@@ -156,8 +139,7 @@ function SavedJobPage({
     );
 
   const { job } = state;
-  const displayedStatus = previewAccepted ? "Accepted" : job.job_status;
-  const cached = parseJobDraft(snapshot, jobId, state.creatorId);
+
   const selectedIds = job.surveys.map((survey) => String(survey.survey_id));
   const surveys = job.surveys.map((survey) => ({
     id: String(survey.survey_id),
@@ -172,7 +154,12 @@ function SavedJobPage({
           creatorId: state.creatorId,
           status: "Pending",
           surveys,
-          values: cached?.values ?? { title: "", description: "", budget: "", deadline: "" },
+          values: {
+            title: job.title ?? "",
+            description: job.description ?? "",
+            budget: job.budget ?? "",
+            deadline: job.deadline?.slice(0, 10) ?? "",
+          },
           selectedSurveyIds: selectedIds,
         }}
       />
@@ -192,15 +179,19 @@ function SavedJobPage({
       )}
       <div hidden={selectingSurveys} className="space-y-6">
         <JobCreatedView
-          key={`${jobId}-${previewAccepted}`}
+          key={jobId}
           job={{
             id: job.job_id,
             createdAt: job.created_at,
-            title: cached?.values.title ?? `Job #${job.job_id}`,
-            compensation: cached?.values.budget ?? "-",
-            deadline: cached?.values.deadline ?? "",
+            title: job.title || `Job #${job.job_id}`,
+            compensation: job.budget ? formatOfferPrice(job.budget) : "Not specified",
+            deadline:
+              job.effective_deadline || job.deadline
+                ? bangkokDate((job.effective_deadline ?? job.deadline)!)
+                : "",
+            description: job.description,
             surveyCount: job.surveys.length,
-            status: displayedStatus,
+            status: job.job_status,
           }}
           canEdit={!pending && job.job_status === "Pending"}
           notification={notification}

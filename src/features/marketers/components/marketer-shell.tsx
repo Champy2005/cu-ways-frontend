@@ -1,6 +1,5 @@
 import type { NavigationDevice } from "@/components/layout/navigation-device";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 import { MarketerTheme, MarketerLogo, MarketerThemeToggle } from "./marketer-theme";
 import { MarketerNavigation } from "./marketer-navigation";
@@ -10,11 +9,13 @@ import "../marketer.css";
 export function MarketerShell({
   children,
   device = "desktop",
+  userId,
   demo = false,
   demoView,
 }: {
   children: ReactNode;
   device?: NavigationDevice;
+  userId?: number;
   demo?: boolean;
   demoView?: string;
 }) {
@@ -34,16 +35,8 @@ export function MarketerShell({
           </Link>
           {device === "desktop" && <MarketerNavigation demo={demo} selected={demoView} />}
           <div className="mk-header-actions flex items-center gap-1.5 md:gap-4">
-            {device === "desktop" && (
-              <Link
-                href="/dashboard"
-                className="mk-workspace-link inline-flex items-center gap-2 text-sm"
-              >
-                <ArrowLeft size={14} /> Workspace
-              </Link>
-            )}
             <MarketerThemeToggle />
-            <MarketerRolePicker preview={demo} />
+            <MarketerRolePicker preview={demo} userId={userId} />
             <MarketerMobileMenu demo={demo} initialView={demoView} device={device} />
           </div>
         </div>

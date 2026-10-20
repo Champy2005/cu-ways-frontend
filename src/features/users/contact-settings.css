@@ -4,6 +4,7 @@
  * invalid phone num, phone num taken).
  */
 .contact-settings {
+  --cs-card: var(--mk-surface);
   --cs-page: #f9f9f9;
   --cs-card: #ffffff;
   --cs-ink: #0d111a;
@@ -30,6 +31,34 @@
 
   /* The page background comes from the creator theme; the card stays white in
      both themes, as in the D - frames. */
+}
+
+/* Use the workspace palette and field sizing in both themes. */
+.marketer-theme .contact-settings {
+  --cs-card: var(--mk-surface);
+  --cs-ink: var(--mk-text);
+  --cs-ink-60: var(--mk-muted);
+  --cs-ink-55: var(--mk-muted);
+  --cs-muted: var(--mk-muted);
+  --cs-placeholder: var(--mk-muted);
+  --cs-border: var(--mk-border);
+  --cs-readonly-fill: var(--mk-field);
+  --cs-readonly-border: var(--mk-border);
+  --cs-accent: var(--mk-action);
+}
+.marketer-theme .contact-settings-input {
+  width: 100%;
+  height: 42px;
+  background: var(--mk-field);
+}
+.marketer-theme .contact-settings-save {
+  width: 100%;
+  height: 44px;
+  border-radius: 14px;
+}
+.marketer-theme .contact-settings-card {
+  border: 1px solid var(--mk-border);
+  box-shadow: var(--mk-shadow);
 }
 
 .contact-settings-card {

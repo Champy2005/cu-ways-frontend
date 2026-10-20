@@ -7,11 +7,13 @@ import { MarketerShell } from "@/features/marketers/components/marketer-shell";
 const inter = Inter({ variable: "--font-marketer", subsets: ["latin"] });
 
 export default async function MarketerLayout({ children }: { children: React.ReactNode }) {
-  await requireSession();
+  const session = await requireSession();
   const device = navigationDevice((await headers()).get("user-agent"));
   return (
     <div className={inter.variable}>
-      <MarketerShell device={device}>{children}</MarketerShell>
+      <MarketerShell device={device} userId={session.userId}>
+        {children}
+      </MarketerShell>
     </div>
   );
 }

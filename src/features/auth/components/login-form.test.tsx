@@ -18,7 +18,7 @@ describe("login redirect", () => {
     render(<LoginForm />);
     fillForm();
     fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
-    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/creator/dashboard"));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/dashboard"));
   });
   it("redirects an admin to the admin area", async () => {
     vi.mocked(login).mockResolvedValue({ role: "admin" } as Awaited<ReturnType<typeof login>>);

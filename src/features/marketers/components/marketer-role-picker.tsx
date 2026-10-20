@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { WORKSPACE_COOKIE } from "@/lib/auth/workspace";
 import { MarketerRoleBirds } from "./marketer-role-birds";
 
 type Role = "Marketer" | "Creator";
@@ -20,9 +21,11 @@ const workspaceHref: Record<Role, string> = {
 export function MarketerRolePicker({
   initialRole = "Marketer",
   preview = false,
+  userId,
 }: {
   initialRole?: Role;
   preview?: boolean;
+  userId?: number;
 }) {
   const router = useRouter();
   const [role, setRole] = useState<Role>(initialRole);
@@ -36,7 +39,11 @@ export function MarketerRolePicker({
         onClick={() => {
           // Moving the birds first lets the switch animate while the next workspace loads.
           setRole(next);
-          if (!preview) router.push(workspaceHref[next]);
+          if (!preview) {
+            if (userId)
+              document.cookie = `${WORKSPACE_COOKIE}=${userId}:${next}; Path=/; SameSite=Lax; Max-Age=31536000`;
+            router.push(workspaceHref[next]);
+          }
         }}
       >
         <MarketerRoleBirds role={role} />

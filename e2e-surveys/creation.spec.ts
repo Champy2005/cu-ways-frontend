@@ -40,13 +40,20 @@ test("create, reload, list and select a persisted survey; isolate ownership", as
   await page.getByLabel(/Desired Responses/).fill("100");
   await page.getByLabel(/Deadline/).fill("2026-12-31");
   await page.getByRole("button", { name: "Create Survey", exact: true }).click();
-  await expect(page).toHaveURL(/\/surveys\/\d+\?created=1$/);
+  await expect(page).toHaveURL(/\/surveys\/\d+$/);
   const id = Number(new URL(page.url()).pathname.split("/").at(-1));
   expect(Number.isInteger(id) && id > 0).toBe(true);
-  await expect(page.getByRole("status")).toHaveText("Survey created successfully.");
+  await expect(
+    page.getByRole("status").filter({ hasText: "Survey created successfully." }),
+  ).toBeVisible();
   await page.reload();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Survey created successfully." }),
+  ).toHaveCount(0);
   await expect(page.getByRole("heading", { name: title })).toBeVisible();
-  await expect(page.getByText("2026-12-31", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("2026-12-31", { exact: true }).filter({ visible: true }),
+  ).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
