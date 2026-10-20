@@ -44,9 +44,6 @@ export function MarketerShell({
       <main id="marketer-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}
       </main>
-      {device === "mobile" && (
-        <MarketerNavigation demo={demo} selected={demoView} variant="mobile" />
-      )}
     </MarketerTheme>
   );
 }

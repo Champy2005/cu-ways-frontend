@@ -1,8 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { Check, ChevronLeft, Circle, Clock3, Smile } from "lucide-react";
+import { StatusPill } from "@/components/ui/status-pill";
 
+import Link from "next/link";
+import { Check, Circle } from "lucide-react";
+
+import { BackLink } from "@/components/ui/back-link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -20,6 +23,7 @@ export type JobCreatedDetails = {
   compensation: string;
   deadline: string;
   surveyCount: number;
+  pendingOfferCount?: number;
   status: CreatorJobSummary["job_status"];
 };
 
@@ -70,7 +74,7 @@ function JobStatusTracking({
     <Card
       role="region"
       aria-labelledby="job-status-heading"
-      className="gap-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-field)] p-4 text-[var(--mk-text)] shadow-card ring-0"
+      className="gap-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-field)] p-4 text-[var(--mk-text)] shadow-[var(--mk-shadow)] ring-0"
     >
       <h2 id="job-status-heading" className="text-base leading-5 font-bold">
         Status tracking
@@ -161,13 +165,7 @@ export function JobCreatedView({
   return (
     <section aria-labelledby="job-created-heading" className="mx-auto w-full max-w-md">
       <header className="mb-7 flex items-center gap-1">
-        <Link
-          href="/creator/jobs"
-          aria-label="Back to my jobs"
-          className="-ml-2 inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-[var(--mk-text)] outline-none hover:bg-[var(--mk-hover)] focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          <ChevronLeft aria-hidden="true" className="size-5" />
-        </Link>
+        <BackLink href="/creator/jobs" label="Back to my jobs" />
         <div>
           <h1
             id="job-created-heading"
@@ -187,7 +185,7 @@ export function JobCreatedView({
         <Card
           role="region"
           aria-labelledby="job-overview-heading"
-          className="gap-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 text-[var(--mk-text)] shadow-card ring-0"
+          className="gap-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 text-[var(--mk-text)] shadow-[var(--mk-shadow)] ring-0"
         >
           <h2
             id="job-overview-heading"
@@ -202,25 +200,7 @@ export function JobCreatedView({
                 JOB-{creationYear}-{job.id}
               </p>
             )}
-            <span
-              className={cn(
-                "ml-auto inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-xs leading-4 font-semibold",
-                offerAccepted
-                  ? "border-[var(--mk-positive)] bg-[var(--mk-positive-soft)] text-[var(--mk-positive)]"
-                  : [
-                      "border-[#d99015] bg-[#fff6d2] text-[#d99015]",
-                      "[[data-theme=dark]_&]:border-[#f9c46a] [[data-theme=dark]_&]:bg-[#363636] [[data-theme=dark]_&]:text-[#f9c46a]",
-                      "[@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:border-[#f9c46a] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:bg-[#363636] [@media(prefers-color-scheme:dark)]:[[data-theme=system]_&]:text-[#f9c46a]",
-                    ],
-              )}
-            >
-              {offerAccepted ? (
-                <Smile aria-hidden="true" className="size-3" />
-              ) : (
-                <Clock3 aria-hidden="true" className="size-3" />
-              )}
-              {job.status}
-            </span>
+            <StatusPill status={job.status} className="ml-auto" />
           </div>
           <dl className="mt-3 space-y-2.5 border-t border-[var(--mk-border)] pt-3 text-xs">
             <div className="flex items-start justify-between gap-4">
@@ -264,7 +244,7 @@ export function JobCreatedView({
               type="button"
               variant="outline"
               onClick={onEdit}
-              className="mk-secondary-button h-11"
+              className="h-12 border-[var(--mk-border)] bg-transparent text-[var(--mk-muted)] hover:bg-[var(--mk-hover)]"
             >
               Edit
             </Button>
@@ -272,7 +252,12 @@ export function JobCreatedView({
           {job.id && (
             <Link
               href={`/creator/jobs/${job.id}/offers`}
-              className="mk-primary-button inline-flex h-11 items-center justify-center text-sm font-bold"
+              className={cn(
+                (job.pendingOfferCount ?? 0) > 0 || job.status !== "Pending"
+                  ? "mk-primary-button"
+                  : "mk-secondary-button",
+                "inline-flex min-h-12 items-center justify-center px-4 text-sm font-bold",
+              )}
             >
               View offers
             </Link>
@@ -280,7 +265,10 @@ export function JobCreatedView({
           {job.id && job.status === "Pending" && (
             <Link
               href={`/creator/jobs/${job.id}/invite`}
-              className="mk-secondary-button col-span-2 inline-flex h-11 items-center justify-center text-sm font-bold"
+              className={cn(
+                (job.pendingOfferCount ?? 0) > 0 ? "mk-secondary-button" : "mk-primary-button",
+                "col-span-2 inline-flex min-h-12 items-center justify-center px-4 text-sm font-bold",
+              )}
             >
               Invite marketers
             </Link>

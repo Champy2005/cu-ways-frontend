@@ -23,7 +23,7 @@ export function RegisterSuccess({
       <button
         type="button"
         onClick={onStart}
-        className="mt-[17px] h-[85.5px] w-[277.5px] rounded-[21px] text-[36px] font-semibold text-white"
+        className="mt-[17px] h-12 w-full rounded-xl text-base font-semibold text-white"
         style={{ background: role === "marketer" ? "var(--rg-marketer)" : "var(--rg-creator)" }}
         autoFocus
       >

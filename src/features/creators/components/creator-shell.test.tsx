@@ -22,7 +22,7 @@ afterEach(() => {
 
 describe("CreatorShell", () => {
   it("switches to the marketer workspace in one click, without a header workspace link", () => {
-    render(<CreatorShell>Creator workspace</CreatorShell>);
+    render(<CreatorShell device="mobile">Creator workspace</CreatorShell>);
 
     expect(screen.queryByRole("link", { name: "Workspace" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Switch to Marketer, current: Creator" }));
@@ -31,10 +31,11 @@ describe("CreatorShell", () => {
   });
 
   it("opens the creator menu with the current page marked", async () => {
-    render(<CreatorShell>Creator workspace</CreatorShell>);
+    render(<CreatorShell device="mobile">Creator workspace</CreatorShell>);
 
     fireEvent.click(screen.getByRole("button", { name: "Open navigation menu" }));
     const menu = within(await screen.findByRole("menu"));
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
     expect(menu.getByRole("menuitem", { name: "Overview" })).toHaveAttribute(
       "href",
       "/creator/dashboard",

@@ -1,5 +1,7 @@
 "use client";
 
+import { StatusPill } from "@/components/ui/status-pill";
+
 import { SuccessToast } from "@/components/feedback/success-toast";
 import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
@@ -57,9 +59,7 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
             {job.surveys.map((survey) => survey.title).join(", ") || "No linked surveys"}
           </p>
         </div>
-        <span className="jo-status" data-status={job.job_status}>
-          {job.job_status}
-        </span>
+        <StatusPill status={job.job_status} />
       </header>
       <div className="jo-page-actions">
         <p className="jo-muted">

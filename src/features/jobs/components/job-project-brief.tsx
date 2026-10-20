@@ -218,7 +218,7 @@ function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProj
         </div>
       ) : current ? (
         <>
-          <div className="mt-3 flex min-h-[78px] items-center gap-3 rounded-2xl border border-[var(--mk-text)] bg-[var(--mk-surface)] px-4 py-3 shadow-card">
+          <div className="mt-3 flex min-h-[78px] items-center gap-3 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] px-4 py-3 shadow-[var(--mk-shadow)]">
             <Link2
               aria-hidden="true"
               className="size-6 shrink-0 -rotate-45 text-[var(--mk-accent)]"

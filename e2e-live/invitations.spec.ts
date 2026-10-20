@@ -259,5 +259,67 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
   } finally {
     await otherContext.close();
   }
+
+  await page.goto("/marketer/offers");
+  await expect(page.getByRole("heading", { name: "My offers", exact: true })).toBeVisible();
+  await expect(page.locator(".mk-navigation-mobile")).toHaveCount(0);
+  await expect(
+    page.getByRole("searchbox", { name: "Search offers by job or creator" }),
+  ).toBeVisible();
+  const offerCard = page.locator("article:visible").filter({ hasText: `Job #${first.jobId}` });
+  await expect(offerCard.locator('.workspace-status[data-status="Pending"]')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("my-offers-standard.png"), fullPage: true });
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  await signIn(page, creator);
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/creator\/dashboard$/);
+  await page.goto("/creator/jobs");
+  const jobLink = page.locator(`a[href="/creator/jobs/${first.jobId}"]`);
+  await expect(jobLink).toHaveCount(1);
+  await expect(jobLink).toContainText("1 pending offer");
+  await expect(page.getByRole("link", { name: "Job details", exact: true })).toHaveCount(0);
+  await expect(page.locator(".mk-navigation-mobile")).toHaveCount(0);
+  if (testInfo.project.name === "mobile") {
+    const button = await page
+      .getByRole("link", { name: "Create a job", exact: true })
+      .boundingBox();
+    const header = await page.locator("main section > header").boundingBox();
+    expect(button && header && Math.abs(button.width - header.width) < 2).toBeTruthy();
+  }
+  await page.screenshot({ path: testInfo.outputPath("creator-jobs-standard.png"), fullPage: true });
+  await jobLink.click();
+  await expect(page.getByRole("heading", { name: "Job details", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View offers", exact: true })).toHaveClass(
+    /mk-primary-button/,
+  );
+  await page.getByRole("link", { name: "Invite marketers", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Invite Marketers", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Invite Marketers", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Back to job details" })).toHaveCSS(
+    "border-top-width",
+    "0px",
+  );
+  if (testInfo.project.name === "mobile") {
+    const field = await page
+      .getByRole("searchbox", { name: "Search marketers by name, bio, or service" })
+      .boundingBox();
+    const option = await page
+      .locator('input[name="marketer_ids"]')
+      .first()
+      .locator("..")
+      .boundingBox();
+    expect(
+      field &&
+        option &&
+        Math.abs(field.x - option.x) < 2 &&
+        Math.abs(field.width - option.width) < 2,
+    ).toBeTruthy();
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.screenshot({ path: testInfo.outputPath("invite-standard.png"), fullPage: false });
   expect(pageErrors, "Live workflow must not produce uncaught browser errors").toEqual([]);
 });

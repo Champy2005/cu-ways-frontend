@@ -1,3 +1,4 @@
+import { StatusPill } from "@/components/ui/status-pill";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import type { CreatorJobSummary } from "@/features/jobs/types";
@@ -58,9 +59,7 @@ export function CreatorOffersJobPicker({ state }: CreatorOffersJobPickerProps) {
                   </h3>
                   <p className="jo-muted">Job #{job.job_id}</p>
                 </div>
-                <span className="jo-status" data-status={job.job_status}>
-                  {job.job_status}
-                </span>
+                <StatusPill status={job.job_status} />
                 <ChevronRight aria-hidden="true" />
               </Link>
             </li>

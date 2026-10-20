@@ -9,7 +9,6 @@ import { MarketerPageHeader } from "@/features/marketer-discovery/components/mar
 import { MarketerRating } from "@/features/marketer-discovery/components/marketer-rating";
 import { MarketerSection } from "@/features/marketer-discovery/components/marketer-section";
 import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
-import { SendCustomJobButton } from "@/features/marketer-discovery/components/send-custom-job-button";
 import { ServicePackageRow } from "@/features/marketer-discovery/components/service-package-row";
 import { formatAvailability, formatCount, formatYears } from "@/features/marketer-discovery/format";
 import {
@@ -107,10 +106,6 @@ export default async function MarketerProfilePage({
           ]}
         />
       </MarketerSection>
-
-      <div className="sticky bottom-0 z-10 mt-8 bg-surface py-4">
-        <SendCustomJobButton />
-      </div>
     </div>
   );
 }

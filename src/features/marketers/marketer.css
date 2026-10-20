@@ -15,8 +15,8 @@
   --mk-secondary-border: color-mix(in srgb, var(--mk-secondary) 30%, var(--mk-border));
   --mk-positive: #26844c;
   --mk-positive-soft: color-mix(in srgb, var(--mk-positive) 15%, transparent);
-  --mk-caution: #af6705;
-  --mk-caution-soft: color-mix(in srgb, var(--mk-caution) 16%, transparent);
+  --mk-caution: #806000;
+  --mk-caution-soft: #fff6d2;
   --mk-plum: #75509a;
   --mk-plum-soft: color-mix(in srgb, var(--mk-plum) 15%, transparent);
   --mk-coral: #d44940;
@@ -119,8 +119,8 @@ body:has(.marketer-theme) {
   --mk-secondary-border: color-mix(in srgb, var(--mk-secondary) 34%, var(--mk-border));
   --mk-positive: #62cd83;
   --mk-positive-soft: color-mix(in srgb, var(--mk-positive) 18%, transparent);
-  --mk-caution: #f2aa3d;
-  --mk-caution-soft: color-mix(in srgb, var(--mk-caution) 19%, transparent);
+  --mk-caution: #f5d45c;
+  --mk-caution-soft: #3d3519;
   --mk-plum: #bd8ce5;
   --mk-plum-soft: color-mix(in srgb, var(--mk-plum) 19%, transparent);
   --mk-coral: #fb776c;
@@ -163,8 +163,8 @@ body:has(.marketer-theme) {
     --mk-secondary-border: color-mix(in srgb, var(--mk-secondary) 34%, var(--mk-border));
     --mk-positive: #62cd83;
     --mk-positive-soft: color-mix(in srgb, var(--mk-positive) 18%, transparent);
-    --mk-caution: #f2aa3d;
-    --mk-caution-soft: color-mix(in srgb, var(--mk-caution) 19%, transparent);
+    --mk-caution: #f5d45c;
+    --mk-caution-soft: #3d3519;
     --mk-plum: #bd8ce5;
     --mk-plum-soft: color-mix(in srgb, var(--mk-plum) 19%, transparent);
     --mk-coral: #fb776c;
@@ -1207,4 +1207,92 @@ body:has(.marketer-theme) {
 .mk-select-content [data-slot="select-item"][aria-selected="true"] {
   background: color-mix(in srgb, var(--mk-accent) 12%, var(--mk-surface));
   color: var(--mk-text);
+}
+
+/* Shared mobile-first workspace controls. */
+.workspace-status {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--mk-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--mk-muted);
+  background: var(--mk-field);
+}
+.workspace-status[data-status="Pending"] {
+  color: var(--mk-caution);
+  background: var(--mk-caution-soft);
+  border-color: color-mix(in srgb, var(--mk-caution) 35%, var(--mk-border));
+}
+.workspace-status[data-status="Accepted"],
+.workspace-status[data-status="Completed"] {
+  color: var(--mk-positive);
+  background: var(--mk-positive-soft);
+  border-color: color-mix(in srgb, var(--mk-positive) 35%, var(--mk-border));
+}
+.workspace-status[data-status="Rejected"],
+.workspace-status[data-status="Declined"],
+.workspace-status[data-status="Cancelled"] {
+  color: var(--mk-error);
+  background: color-mix(in srgb, var(--mk-error) 10%, var(--mk-surface));
+  border-color: color-mix(in srgb, var(--mk-error) 35%, var(--mk-border));
+}
+.workspace-status[data-status="In Progress"] {
+  color: var(--mk-secondary);
+  background: var(--mk-secondary-soft);
+  border-color: var(--mk-secondary-border);
+}
+.workspace-search {
+  position: relative;
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+.workspace-search .workspace-search-input {
+  height: 3rem;
+  width: 100%;
+  border: 1px solid var(--mk-border);
+  border-radius: 0.85rem;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  padding: 0.5rem 3rem 0.5rem 0.875rem;
+  font-size: 1rem;
+}
+.workspace-search svg {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mk-muted);
+  pointer-events: none;
+}
+.workspace-back {
+  display: inline-flex;
+  min-height: 44px;
+  min-width: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--mk-text);
+}
+.workspace-back:hover {
+  background: var(--mk-hover);
+}
+.workspace-back:focus-visible {
+  outline: 2px solid var(--mk-accent);
+  outline-offset: 3px;
+}
+.marketer-theme [data-slot="input"] {
+  background-color: var(--mk-surface);
+  color: var(--mk-text);
+  border-color: var(--mk-border);
+}
+[data-navigation="mobile"] .mk-main {
+  padding-bottom: 3rem;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { StatusPill } from "@/components/ui/status-pill";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ReceivedRequest, SavedOffer } from "./types";
@@ -15,13 +16,6 @@ export type MyOfferCardProps = {
   onWithdrawClick: (offer: SavedOffer, title: string, trigger: HTMLElement) => void;
 };
 
-const badgeColors = {
-  Pending: "border-[var(--mk-caution)] text-[var(--mk-caution)]",
-  Accepted: "border-[var(--mk-positive)] text-[var(--mk-positive)]",
-  Withdrawn: "border-[var(--mk-border)] text-[var(--mk-muted)]",
-  Rejected: "border-[var(--mk-error)] text-[var(--mk-error)]",
-};
-
 export function MyOfferCard({
   offer,
   request,
@@ -33,21 +27,13 @@ export function MyOfferCard({
   const date = offer.delivery_date ?? request.job.deadline;
   const canResubmit = isCurrent && !disabled && canResubmitOffer(offer, request);
   return (
-    <article
-      data-testid={"my-offer-card-" + offer.offer_id}
-      className="rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 text-[var(--mk-text)] shadow-sm"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <h2 className="text-base font-semibold leading-snug wrap-anywhere">{jobTitle}</h2>
-        <span
-          className={
-            "shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold " +
-            badgeColors[offer.offer_status]
-          }
-        >
-          {offer.offer_status}
-        </span>
+    <article data-testid={"my-offer-card-" + offer.offer_id} className="ji-card ji-request min-w-0">
+      <div className="ji-card-top">
+        <p className="ji-creator min-w-0 break-words">{request.job.creator.name}</p>
+        <StatusPill status={offer.offer_status} />
       </div>
+      <h2 className="wrap-anywhere">{jobTitle}</h2>
+      <p className="ji-muted ji-job-id">Job #{request.job_id}</p>
       <p className="mt-2 text-xs text-[var(--mk-muted)]">
         {isCurrent ? "Submitted " : "Previous offer · Submitted "}
         {formatDate(offer.created_at)}
@@ -73,7 +59,7 @@ export function MyOfferCard({
       {isCurrent && (
         <Link
           href={`/marketer/offer/create?requestId=${request.job_request_id}`}
-          className="mb-3 inline-block text-sm font-semibold text-[var(--mk-accent)] underline"
+          className="ji-secondary mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl border px-4 text-sm font-semibold"
         >
           View offer
         </Link>
@@ -83,7 +69,8 @@ export function MyOfferCard({
           type="button"
           disabled={disabled}
           onClick={(event) => onWithdrawClick(offer, jobTitle, event.currentTarget)}
-          className="w-full bg-[#b42318] text-white hover:bg-[#912018]"
+          variant="outline"
+          className="mt-3 w-full border-[var(--mk-border)] bg-transparent text-[var(--mk-error)] hover:bg-[var(--mk-coral-soft)]"
         >
           Withdraw offer
         </Button>
@@ -96,7 +83,7 @@ export function MyOfferCard({
       {canResubmit && (
         <Link
           href={"/marketer/offer/create?requestId=" + request.job_request_id}
-          className="mt-2 block w-full rounded-xl bg-[#c1225d] px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-[#a91b4f] focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="mk-primary-button mt-3 inline-flex min-h-12 w-full items-center justify-center px-4 text-sm font-semibold"
         >
           Resubmit offer
         </Link>

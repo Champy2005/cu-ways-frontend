@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { StatusPill } from "@/components/ui/status-pill";
 import { loadCreatorJobs } from "@/features/jobs/api";
 import { ReloadJobsButton } from "@/features/jobs/components/reload-jobs-button";
 
@@ -17,7 +18,7 @@ export default async function MyJobsPage() {
         </div>
         <Link
           href="/creator/jobs/create"
-          className="mk-primary-button inline-flex min-h-11 items-center px-4 text-sm font-semibold"
+          className="mk-primary-button inline-flex min-h-12 w-full items-center justify-center px-4 text-sm font-semibold sm:w-auto"
         >
           Create a job
         </Link>
@@ -37,30 +38,25 @@ export default async function MyJobsPage() {
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2">
           {state.items.map((job) => (
-            <li key={job.job_id} className="mk-card p-5">
-              <div className="flex items-start justify-between gap-3">
-                <h2 className="min-w-0 font-bold break-words">
-                  <Link
-                    href={`/creator/jobs/${job.job_id}`}
-                    className="underline-offset-4 hover:underline"
-                  >
+            <li key={job.job_id} className="min-w-0">
+              <Link
+                href={`/creator/jobs/${job.job_id}`}
+                className="mk-card block h-full p-5 outline-offset-4 hover:border-[var(--mk-accent)]"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="min-w-0 font-bold break-words">
                     {job.title || `Job #${job.job_id}`}
-                  </Link>
-                </h2>
-                <span className="rounded-lg border border-[var(--mk-border)] px-2 py-1 text-xs">
-                  {job.job_status}
-                </span>
-              </div>
-              <p className="mt-2 text-xs text-[var(--mk-muted)]">
-                Job #{job.job_id} · {job.surveys.map((survey) => survey.title).join(", ")}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold text-[var(--mk-accent)]">
-                <Link href={`/creator/jobs/${job.job_id}`}>Job details</Link>
-                <Link href={`/creator/jobs/${job.job_id}/offers`}>View offers</Link>
-                {job.job_status === "Pending" && (
-                  <Link href={`/creator/jobs/${job.job_id}/invite`}>Invite marketers</Link>
-                )}
-              </div>
+                  </h2>
+                  <StatusPill status={job.job_status} />
+                </div>
+                <p className="mt-2 text-xs text-[var(--mk-muted)]">
+                  Job #{job.job_id} · {job.surveys.map((survey) => survey.title).join(", ")}
+                </p>
+                <p className="mt-4 text-sm font-semibold text-[var(--mk-accent)]">
+                  {job.pending_offer_count ?? 0} pending{" "}
+                  {(job.pending_offer_count ?? 0) === 1 ? "offer" : "offers"}
+                </p>
+              </Link>
             </li>
           ))}
         </ul>

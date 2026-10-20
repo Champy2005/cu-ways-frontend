@@ -1,13 +1,13 @@
 "use client";
 
-import { Check, ChevronLeft, CircleHelp, FileSearch, Search } from "lucide-react";
+import { Check, ChevronLeft, CircleHelp, FileSearch } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { SearchField } from "@/components/ui/search-field";
 import { loadJobSurveys, type JobSurveysActionState } from "@/features/jobs/actions";
 import { surveyDisplayId } from "@/features/jobs/survey-options";
 import type { JobSurveyOption } from "@/features/jobs/types";
@@ -179,22 +179,15 @@ function SurveySelectorContent({
         >
           Search surveys
         </label>
-        <div className="relative">
-          <Input
-            id="job-survey-search"
-            name="survey-search"
-            type="search"
-            disabled={pending}
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search by survey name"
-            className="h-[42px] rounded-xl border-[var(--mk-border)] bg-[var(--mk-surface)] pr-11 pl-3 text-sm text-[var(--mk-text)] shadow-card placeholder:text-[var(--mk-muted)] md:text-sm"
-          />
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-3 size-[18px] -translate-y-1/2 text-[var(--mk-muted)]"
-          />
-        </div>
+        <SearchField
+          label="Search surveys"
+          id="job-survey-search"
+          name="survey-search"
+          disabled={pending}
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder="Search by survey name"
+        />
       </div>
 
       <fieldset>

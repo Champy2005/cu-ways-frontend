@@ -2,8 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { SearchField } from "@/components/ui/search-field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeading } from "../components/shared";
 import { EmptyInvitations } from "../components/empty-invitations";
@@ -113,16 +112,13 @@ export function LiveInvitationsPage({
             Responded ({state.entries.length - pendingCount})
           </TabsTrigger>
         </TabsList>
-        <label className="ji-search">
-          <span className="sr-only">Search invitations by job ID, survey title or creator</span>
-          <Input
-            className="ji-input"
-            placeholder="Search job ID, survey title or creator"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-          <Search size={19} aria-hidden="true" />
-        </label>
+        <SearchField
+          label="Search invitations by job ID, survey title or creator"
+          className="mb-5"
+          placeholder="Search job ID, survey title or creator"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
         <TabsContent value={tab}>
           <PullToRefresh
             onRefresh={state.refresh}

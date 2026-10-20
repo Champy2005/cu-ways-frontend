@@ -879,6 +879,8 @@ export interface components {
             title: string;
         };
         CreatorJobSummary: {
+            /** @description Number of offers awaiting the Creator decision, excluding withdrawn and rejected offers. */
+            pending_offer_count?: number;
             title?: string;
             description?: string;
             budget?: string | null;

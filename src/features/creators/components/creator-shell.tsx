@@ -47,7 +47,6 @@ export function CreatorShell({
       <main id="creator-content" className="mk-frame mk-main" tabIndex={-1}>
         {children}
       </main>
-      {device === "mobile" && <CreatorNavigation mobile />}
     </MarketerTheme>
   );
 }

@@ -30,7 +30,7 @@ export function RegisterField({
         htmlFor={id}
         className={cn(
           variant === "compact"
-            ? "mb-[2px] text-[10px] leading-[12px] font-semibold text-[var(--rg-label)]"
+            ? "mb-1 text-sm leading-5 font-semibold text-[var(--rg-label)]"
             : "mb-[7px] text-[15px] leading-[18px] text-[var(--rg-ink)]",
           variant === "regular-medium" && "font-medium",
           error && "text-[var(--rg-error)]",
@@ -43,7 +43,7 @@ export function RegisterField({
         <p
           id={`${id}-error`}
           role="alert"
-          className="absolute top-full right-0 text-right text-[8.5px] leading-[10px] text-[var(--rg-error)]"
+          className="mt-1 text-sm leading-5 text-[var(--rg-error)]"
         >
           {error}
         </p>

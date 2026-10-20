@@ -1,13 +1,11 @@
 import { test, expect } from "./fixtures";
 
-test("public-auth: landing navigation and invalid login remain usable", async ({ page }) => {
+test("public-auth: root redirect and invalid login remain usable", async ({ page }) => {
   const mutations: string[] = [];
   page.on("request", (request) => {
     if (request.method() !== "GET") mutations.push(request.method());
   });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Find your next way forward." })).toBeVisible();
-  await page.getByRole("link", { name: "Sign in", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
   await expect(page.getByRole("heading", { name: "Welcome back" })).toBeVisible();
   await page.getByLabel("Email", { exact: true }).fill("smoke@example.invalid");
@@ -32,7 +30,7 @@ test("public-auth: registration exposes field errors without creating an account
     if (request.method() !== "GET") mutations.push(request.method());
   });
   await page.goto("/");
-  await page.getByRole("link", { name: "Get started", exact: true }).click();
+  await page.getByRole("link", { name: "Create one", exact: true }).click();
   await expect(page).toHaveURL(/\/register$/);
   await expect(page.getByRole("heading", { name: "Tell us about yourself." })).toBeVisible();
   await page.getByRole("button", { name: "Next", exact: true }).click();

@@ -37,3 +37,27 @@ describe("JobCreatedView status subtitle", () => {
     }
   });
 });
+
+it.each([0, 2])("prioritizes the next action with %i pending offers", (count) => {
+  render(
+    <JobCreatedView
+      job={{
+        id: 41,
+        createdAt: "2026-10-01T10:00:00Z",
+        title: "Campaign",
+        compensation: "THB 100",
+        deadline: "2026-10-28",
+        surveyCount: 1,
+        status: "Pending",
+        pendingOfferCount: count,
+      }}
+      onEdit={() => undefined}
+    />,
+  );
+  expect(screen.getByRole("link", { name: "Invite marketers" })).toHaveClass(
+    count ? "mk-secondary-button" : "mk-primary-button",
+  );
+  expect(screen.getByRole("link", { name: "View offers" })).toHaveClass(
+    count ? "mk-primary-button" : "mk-secondary-button",
+  );
+});

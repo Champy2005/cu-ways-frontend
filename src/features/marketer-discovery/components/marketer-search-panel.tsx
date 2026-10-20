@@ -2,9 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { SearchField } from "@/components/ui/search-field";
 import { FilterChip } from "@/features/marketer-discovery/components/filter-chip";
 import { MarketerFilterSheet } from "@/features/marketer-discovery/components/marketer-filter-sheet";
 import {
@@ -58,25 +58,15 @@ export function MarketerSearchPanel({ query }: MarketerSearchPanelProps) {
   return (
     <div className="mb-6 flex flex-col gap-3">
       <form onSubmit={handleSubmit} role="search">
-        <label htmlFor="marketer-search" className="sr-only">
-          Search marketers
-        </label>
-        <div className="relative">
-          <Search
-            className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            id="marketer-search"
-            name="q"
-            type="search"
-            placeholder="Search by name, bio, or service"
-            maxLength={MAX_KEYWORD_LENGTH}
-            value={keyword}
-            onChange={(event) => setKeyword(event.target.value)}
-            className="h-10 rounded-full border-transparent bg-background pl-11 shadow-card"
-          />
-        </div>
+        <SearchField
+          label="Search marketers"
+          id="marketer-search"
+          name="q"
+          placeholder="Search by name, bio, or service"
+          maxLength={MAX_KEYWORD_LENGTH}
+          value={keyword}
+          onChange={(event) => setKeyword(event.target.value)}
+        />
       </form>
 
       <div className="flex flex-wrap items-center gap-2">

@@ -93,7 +93,7 @@
 }
 .login-input-wrap {
   display: flex;
-  height: 32px;
+  height: 48px;
   align-items: center;
   gap: 8px;
   border: 1px solid var(--login-field-border);
@@ -115,7 +115,7 @@
   min-width: 0;
   flex: 1;
   background: transparent;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 135%;
   outline: none;
 }
@@ -124,6 +124,10 @@
 }
 .login-eye {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   cursor: pointer;
 }
 /* Figma draws these at ~8px, too small to read in a browser, so 11px here. */
@@ -146,12 +150,12 @@
 .login-submit {
   display: block;
   margin: 26px 0 0 auto;
-  height: 57px;
-  width: 185px;
+  height: 48px;
+  width: 100%;
   max-width: 100%;
   border-radius: 12px;
   background: var(--login-brand);
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;

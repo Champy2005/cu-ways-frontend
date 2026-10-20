@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SurveyCreatedNotice } from "@/features/surveys/components/survey-created-notice";
 import { notFound } from "next/navigation";
-import { buttonVariants } from "@/components/ui/button";
+import { BackLink } from "@/components/ui/back-link";
 import { getSurvey } from "@/features/surveys/api";
 import { SurveyReadError } from "@/features/surveys/components/survey-read-error";
 import { isSurveyId, safeSurveyUrl } from "@/features/surveys/schemas";
@@ -28,9 +28,7 @@ export default async function SurveyDetailsPage({
   const { created } = await searchParams;
   return (
     <div className="mx-auto w-full max-w-md space-y-6 text-[var(--mk-text)]">
-      <Link href="/surveys" className="text-sm underline">
-        Back to My surveys
-      </Link>
+      <BackLink href="/surveys" label="Back to My surveys" showLabel />
       {created === "1" && <SurveyCreatedNotice />}
       <section className="space-y-5 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-6 shadow-sm">
         <p className="text-sm text-[var(--mk-muted)]">Survey #{survey.survey_id}</p>
@@ -69,7 +67,10 @@ export default async function SurveyDetailsPage({
           </div>
         </dl>
       </section>
-      <Link href="/creator/jobs/create" className={buttonVariants()}>
+      <Link
+        href="/creator/jobs/create"
+        className="mk-primary-button inline-flex min-h-12 w-full items-center justify-center px-4 text-sm font-semibold"
+      >
         Create a job
       </Link>
     </div>

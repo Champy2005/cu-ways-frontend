@@ -191,6 +191,7 @@ function SavedJobPage({
                 : "",
             description: job.description,
             surveyCount: job.surveys.length,
+            pendingOfferCount: job.pending_offer_count,
             status: job.job_status,
           }}
           canEdit={!pending && job.job_status === "Pending"}
