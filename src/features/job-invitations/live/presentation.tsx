@@ -1,7 +1,9 @@
+import { StatusText } from "@/components/ui/status-text";
 import { formatDate, formatSentDate } from "../format";
 import type { ReceivedRequest, SavedOffer } from "./types";
 
 export function jobDisplayTitle(request: ReceivedRequest): string {
+  if (request.job.title?.trim()) return request.job.title;
   const surveys = request.job.surveys;
   if (!surveys.length) return `Job #${request.job_id}`;
   if (surveys.length === 1) return surveys[0].title;
@@ -30,9 +32,9 @@ export function invitationStatusLabel(status: ReceivedRequest["request_status"])
 export function InvitationResponse({ request }: { request: ReceivedRequest }) {
   return (
     <p className="ji-response-time ji-live-response">
-      <span className="ji-status-text" data-status={request.request_status}>
+      <StatusText status={request.request_status}>
         {invitationStatusLabel(request.request_status)}
-      </span>
+      </StatusText>
       {request.responded_at && (
         <>
           {" · "}
@@ -52,13 +54,9 @@ export function InvitationResponse({ request }: { request: ReceivedRequest }) {
 export function LiveOfferStatus({ status }: { status: SavedOffer["offer_status"] }) {
   const label = {
     Pending: "Offer pending review",
-    Accepted: "Offer accepted — you’ve been hired",
+    Accepted: "Offer accepted. You’ve been hired",
     Rejected: "Offer rejected",
     Withdrawn: "Offer withdrawn",
   }[status];
-  return (
-    <span className="ji-status-text" data-status={status}>
-      {label}
-    </span>
-  );
+  return <StatusText status={status}>{label}</StatusText>;
 }

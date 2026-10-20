@@ -8,11 +8,13 @@ import { CreatorShell } from "@/features/creators/components/creator-shell";
 const inter = Inter({ variable: "--font-marketer", subsets: ["latin"] });
 
 export default async function CreatorLayout({ children }: { children: React.ReactNode }) {
-  await requireSession();
+  const session = await requireSession();
   const device = navigationDevice((await headers()).get("user-agent"));
   return (
     <div className={inter.variable}>
-      <CreatorShell device={device}>{children}</CreatorShell>
+      <CreatorShell device={device} userId={session.userId}>
+        {children}
+      </CreatorShell>
     </div>
   );
 }

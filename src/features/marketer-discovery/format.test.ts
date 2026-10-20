@@ -23,10 +23,10 @@ describe("marketer formatting", () => {
 
   it("falls back to an em dash for absent counts and years", () => {
     expect(formatCount(24)).toBe("24");
-    expect(formatCount(null)).toBe("—");
+    expect(formatCount(null)).toBe("Not specified");
     expect(formatYears(1)).toBe("1 year");
     expect(formatYears(2)).toBe("2 years");
-    expect(formatYears(null)).toBe("—");
+    expect(formatYears(null)).toBe("Not specified");
   });
 
   it("formats short dates and returns unparseable input unchanged", () => {

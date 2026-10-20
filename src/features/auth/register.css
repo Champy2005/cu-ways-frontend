@@ -37,7 +37,7 @@
   box-shadow: var(--rg-card-shadow);
 }
 
-/* Inputs: step 1 is 25px / 11px, steps 2-3 are 30px / 12px. */
+/* Shared mobile field sizing across every registration step. */
 .register-input {
   width: 100%;
   border: 1px solid var(--rg-input-border);
@@ -59,25 +59,26 @@
   border-color: var(--rg-error);
 }
 .register-input--compact {
-  height: 25px;
-  font-size: 11px;
+  height: 48px;
+  font-size: 16px;
 }
 .register-input--regular {
-  height: 30px;
-  font-size: 12px;
+  height: 48px;
+  font-size: 16px;
 }
 
-/* Primary action: 185x57, radius 14, Inter SemiBold 24 white. */
+/* Match the sign-in action proportions. */
 .register-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 57px;
-  width: 185px;
+  height: 48px;
+  width: 100%;
+  min-width: 0;
   border-radius: 14px;
   color: #ffffff;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 600;
   background: var(--rg-ink);
   transition: opacity 120ms ease;
@@ -112,7 +113,7 @@
   width: 71px;
   border-radius: 14px;
   background: var(--rg-card);
-  color: var(--rg-outline);
+  color: var(--rg-ink);
 }
 .register-back[data-outlined="true"] {
   border: 1px solid var(--rg-outline);

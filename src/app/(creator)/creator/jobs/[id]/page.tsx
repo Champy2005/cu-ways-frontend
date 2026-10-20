@@ -6,13 +6,7 @@ import { requireSession } from "@/lib/auth/guards";
 
 export const metadata = { title: "Job details | CU Ways" };
 
-export default async function CreatorJobPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ preview?: string | string[] }>;
-}) {
+export default async function CreatorJobPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await requireSession();
   let creatorName: string;
   try {
@@ -20,9 +14,6 @@ export default async function CreatorJobPage({
   } catch (error) {
     return <InlineError message={getDisplayError(error)} />;
   }
-  const [{ id }, { preview }] = await Promise.all([params, searchParams]);
-  // UI-only preview until the saved offer status is connected.
-  return (
-    <JobDraftPage jobId={id} creatorName={creatorName} previewAccepted={preview === "accepted"} />
-  );
+  const { id } = await params;
+  return <JobDraftPage jobId={id} creatorName={creatorName} />;
 }

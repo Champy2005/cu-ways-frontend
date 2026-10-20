@@ -1,6 +1,9 @@
 "use client";
 
-import { Check, Search, Star } from "lucide-react";
+import { StatusText } from "@/components/ui/status-text";
+
+import { SuccessToast } from "@/components/feedback/success-toast";
+import { Check, Star } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -26,7 +29,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { SearchField } from "@/components/ui/search-field";
 import {
   loadJobInviteMarketersPage,
   loadJobSentInvitations,
@@ -88,8 +91,8 @@ function MarketerOption({
   const tags = marketer.headline.split(" · ").filter(Boolean);
 
   return (
-    <li>
-      <label className="flex h-full cursor-pointer items-center gap-3 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 shadow-[var(--mk-shadow)] transition-colors hover:border-[var(--mk-accent)] has-[:checked]:border-[var(--mk-accent)] has-[:checked]:bg-[var(--mk-accent-soft)]">
+    <li className="min-w-0">
+      <label className="flex h-full min-w-0 w-full cursor-pointer items-center gap-3 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-4 shadow-[var(--mk-shadow)] transition-colors hover:border-[var(--mk-accent)] has-[:checked]:border-[var(--mk-accent)] has-[:checked]:bg-[var(--mk-accent-soft)]">
         <input
           type="checkbox"
           name="marketer_ids"
@@ -105,9 +108,9 @@ function MarketerOption({
             {marketer.display_name}
           </span>
           {invitationStatus ? (
-            <span className="mt-1 inline-flex rounded-full border border-[var(--mk-border)] bg-[var(--mk-field)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--mk-muted)]">
+            <StatusText status={invitationStatus} className="mt-1">
               {invitationStatus} invitation
-            </span>
+            </StatusText>
           ) : null}
           <span className="mt-1.5 flex items-center gap-1 text-xs text-[var(--mk-caution)]">
             <Star aria-hidden="true" className="size-3.5 fill-current" />
@@ -195,7 +198,7 @@ function MarketerOptions({
   }
 
   return (
-    <ul className="grid gap-3 md:grid-cols-2">
+    <ul className="grid min-w-0 grid-cols-1 gap-3 md:grid-cols-2">
       {marketers.map((marketer) => (
         <MarketerOption
           key={marketer.marketer_id}
@@ -238,26 +241,14 @@ function MarketerSearchToolbar({
           Clear selection
         </Button>
       ) : null}
-      <div className="w-full sm:max-w-xs">
-        <div className="relative">
-          <label htmlFor="job-marketer-filter" className="sr-only">
-            Search marketers by name, bio, or service
-          </label>
-          <Input
-            id="job-marketer-filter"
-            type="search"
-            value={search}
-            maxLength={100}
-            onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search by name, bio, or service"
-            className="h-12 rounded-xl pr-11 text-base"
-          />
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-[var(--mk-muted)]"
-          />
-        </div>
-      </div>
+      <SearchField
+        label="Search marketers by name, bio, or service"
+        id="job-marketer-filter"
+        value={search}
+        maxLength={100}
+        onChange={(event) => onSearchChange(event.target.value)}
+        placeholder="Search by name, bio, or service"
+      />
     </div>
   );
 }
@@ -394,30 +385,16 @@ function JobRequestFeedback({
       );
     case "success":
       return (
-        <p
-          className="rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_28%,var(--mk-border))] bg-[var(--mk-positive-soft)] p-4 text-sm text-[var(--mk-success)]"
-          role="status"
-        >
-          {state.requests.length === 1
-            ? "Request sent to 1 marketer."
-            : `Requests sent to ${state.requests.length} marketers.`}
-        </p>
+        <SuccessToast
+          message={
+            state.requests.length === 1
+              ? "Request sent to 1 marketer."
+              : `Requests sent to ${state.requests.length} marketers.`
+          }
+        />
       );
     default:
       return null;
-  }
-}
-
-function invitationStatusClass(status: SentJobInvitation["request_status"]): string {
-  switch (status) {
-    case "Pending":
-      return "border-[color-mix(in_srgb,var(--mk-caution)_30%,var(--mk-border))] bg-[var(--mk-caution-soft)] text-[var(--mk-caution)]";
-    case "Accepted":
-      return "border-[color-mix(in_srgb,var(--mk-success)_30%,var(--mk-border))] bg-[var(--mk-positive-soft)] text-[var(--mk-success)]";
-    case "Declined":
-      return "border-[color-mix(in_srgb,var(--mk-error)_28%,var(--mk-border))] bg-[color-mix(in_srgb,var(--mk-error)_10%,var(--mk-surface))] text-[var(--mk-error)]";
-    case "Closed":
-      return "border-[var(--mk-border)] bg-[var(--mk-field)] text-[var(--mk-muted)]";
   }
 }
 
@@ -430,11 +407,7 @@ function SentInvitationCard({ invitation }: { invitation: SentJobInvitation }) {
           Sent {invitation.created_at.slice(0, 10)}
         </p>
       </div>
-      <span
-        className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${invitationStatusClass(invitation.request_status)}`}
-      >
-        {invitation.request_status}
-      </span>
+      <StatusText status={invitation.request_status} />
     </li>
   );
 }
@@ -468,14 +441,6 @@ function DirectInvitationsSection({
             Review invitations already sent for this job.
           </p>
         </div>
-        {canInvite ? (
-          <a
-            href="#choose-marketers-heading"
-            className="mk-primary-button inline-flex min-h-11 items-center justify-center px-4 text-sm font-semibold"
-          >
-            Invite Marketers
-          </a>
-        ) : null}
       </div>
 
       {!isFresh ? (

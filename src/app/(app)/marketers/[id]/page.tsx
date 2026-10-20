@@ -9,7 +9,6 @@ import { MarketerPageHeader } from "@/features/marketer-discovery/components/mar
 import { MarketerRating } from "@/features/marketer-discovery/components/marketer-rating";
 import { MarketerSection } from "@/features/marketer-discovery/components/marketer-section";
 import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
-import { SendCustomJobButton } from "@/features/marketer-discovery/components/send-custom-job-button";
 import { ServicePackageRow } from "@/features/marketer-discovery/components/service-package-row";
 import { formatAvailability, formatCount, formatYears } from "@/features/marketer-discovery/format";
 import {
@@ -86,9 +85,9 @@ export default async function MarketerProfilePage({
       <MarketerSection title="Basic Information">
         <MarketerInfoList
           rows={[
-            { label: "Phone number", value: marketer.phone ?? "—" },
+            { label: "Phone number", value: marketer.phone ?? "Not specified" },
             { label: "Email", value: marketer.email },
-            { label: "Line ID", value: marketer.line_id ?? "—" },
+            { label: "Line ID", value: marketer.line_id ?? "Not specified" },
           ]}
         />
       </MarketerSection>
@@ -102,15 +101,11 @@ export default async function MarketerProfilePage({
               label: "Availability",
               value: formatAvailability(marketer.availability_status, marketer.availability_text),
             },
-            { label: "Expertise", value: marketer.expertise.join(", ") || "—" },
-            { label: "Campus coverage", value: marketer.campuses.join(", ") || "—" },
+            { label: "Expertise", value: marketer.expertise.join(", ") || "Not specified" },
+            { label: "Campus coverage", value: marketer.campuses.join(", ") || "Not specified" },
           ]}
         />
       </MarketerSection>
-
-      <div className="sticky bottom-0 z-10 mt-8 bg-surface py-4">
-        <SendCustomJobButton />
-      </div>
     </div>
   );
 }

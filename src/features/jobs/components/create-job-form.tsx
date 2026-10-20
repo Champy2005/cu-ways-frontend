@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { JobSurveySelector } from "@/features/jobs/components/job-survey-selector";
-import { createPendingJob, saveJobSurveySelection } from "@/features/jobs/job-actions";
-import { markJobCreated } from "@/features/jobs/job-creation-notice";
-import { saveJobDraft, type JobDraft } from "@/features/jobs/job-draft";
+import { createPendingJob, saveJobDetails } from "@/features/jobs/job-actions";
+import { markJobCreated, markJobUpdated } from "@/features/jobs/job-creation-notice";
+import { type JobDraft } from "@/features/jobs/job-draft";
 import { surveyDisplayId } from "@/features/jobs/survey-options";
 import {
   createJobFieldErrors,
@@ -143,8 +143,15 @@ function JobSurveySummary({
   );
 }
 
+function jobFormBack(jobId?: number) {
+  return jobId
+    ? { href: `/creator/jobs/${jobId}`, label: "Back to job details" }
+    : { href: "/creator/jobs", label: "Back to my jobs" };
+}
+
 export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
   const router = useRouter();
+  const back = jobFormBack(initialDraft?.id);
   const startingDraft = initialDraft ?? {
     values: { title: "", description: "", budget: "", deadline: "" },
     selectedSurveyIds: [],
@@ -203,8 +210,8 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
     let saved = false;
     try {
       const result = initialDraft
-        ? await saveJobSurveySelection(String(initialDraft.id), selectedSurveyIds)
-        : await createPendingJob(selectedSurveyIds);
+        ? await saveJobDetails(String(initialDraft.id), selectedSurveyIds, values)
+        : await createPendingJob(selectedSurveyIds, values);
       if (result.status !== "success") {
         setNavigationError(result.message);
         setReconcile(result.status === "reconcile");
@@ -216,11 +223,7 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
       }
       const jobId = "jobId" in result ? result.jobId : result.job.job_id;
       if (!initialDraft) markJobCreated(result.creatorId, jobId);
-      try {
-        saveJobDraft(values, selectedSurveyIds, jobId, surveyOptions, result.creatorId);
-      } catch {
-        // A cache failure must not turn a persisted job into a failed creation/retry.
-      }
+      else markJobUpdated(result.creatorId, jobId);
       saved = true;
       router.push(`/creator/jobs/${encodeURIComponent(jobId)}`);
     } catch {
@@ -243,8 +246,8 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
       >
         <header className="mb-7 flex items-center gap-1">
           <Link
-            href="/creator/dashboard"
-            aria-label="Back to creator page"
+            href={back.href}
+            aria-label={back.label}
             className="-ml-2 inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-[var(--mk-text)] outline-none hover:bg-[var(--mk-hover)] focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             <ChevronLeft aria-hidden="true" className="size-5" />
@@ -254,7 +257,7 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
               id="create-job-heading"
               className="text-lg leading-6 font-bold text-[var(--mk-text)]"
             >
-              Create Job
+              {initialDraft ? "Edit job" : "Create job"}
             </h1>
             <p className="mt-0.5 text-xs text-[var(--mk-muted)]">
               {hasErrors ? "Complete the required fields" : "Tell marketers what you need"}
@@ -282,14 +285,16 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
                 {...requiredInputProps("title")}
                 id="job-title"
                 placeholder="Enter a clear job title"
+                maxLength={200}
                 className={fieldClassName}
               />
             </JobFormField>
 
-            <JobFormField id="job-description" label="Description">
+            <JobFormField id="job-description" label="Description" error={errors.description}>
               <Textarea
                 id="job-description"
                 name="description"
+                maxLength={5000}
                 value={values.description}
                 onChange={(event) => {
                   setValues((current) => ({ ...current, description: event.target.value }));
@@ -309,7 +314,8 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
               <Input
                 {...requiredInputProps("budget")}
                 id="job-budget"
-                placeholder="e.g. ฿5,000 fixed"
+                placeholder="e.g. 5000.00"
+                inputMode="decimal"
                 className={fieldClassName}
               />
             </JobFormField>
@@ -346,19 +352,24 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
 
             {!hasErrors && (
               <p className="text-xs leading-[1.25] text-[var(--mk-text)]">
-                Your job will be active with Pending status and open for marketer offers upon
-                creation.
+                Your job will be saved as Pending. Invite marketers next to receive offers.
               </p>
             )}
             <p className="text-xs text-[var(--mk-muted)]">
-              Survey links are saved to your account. Other form details are saved in this browser
-              tab.
+              All job details and survey links are saved to your account. Delivery must be on or
+              before the job deadline and every linked survey deadline.
             </p>
 
             <div className="grid grid-cols-2 gap-3">
               <Button
                 type="button"
                 variant="ghost"
+                onClick={() => {
+                  if (window.confirm("Discard your unsaved job changes?"))
+                    router.push(
+                      initialDraft ? `/creator/jobs/${initialDraft.id}` : "/creator/jobs",
+                    );
+                }}
                 className="h-11 rounded-[14px] bg-[var(--mk-hover)] text-sm font-bold text-[var(--mk-text)] hover:bg-[var(--mk-border)]"
               >
                 Cancel
@@ -368,12 +379,12 @@ export function CreateJobForm({ initialDraft }: { initialDraft?: JobDraft }) {
                 disabled={hasErrors || submitting || reconcile}
                 className="h-11 rounded-[14px] bg-[var(--mk-action)] text-sm font-bold text-white hover:bg-[var(--mk-action-hover)] disabled:bg-[var(--mk-border)] disabled:text-[var(--mk-muted)] disabled:opacity-100"
               >
-                {submitting ? "Saving…" : initialDraft ? "Save changes" : "Create Job"}
+                {submitting ? "Saving…" : initialDraft ? "Save changes" : "Create job"}
               </Button>
             </div>
           </fieldset>
           {reconcile && (
-            <Link href="/creator/jobs/invite" className="text-sm text-[var(--mk-accent)] underline">
+            <Link href="/creator/jobs" className="text-sm text-[var(--mk-accent)] underline">
               Check your jobs
             </Link>
           )}

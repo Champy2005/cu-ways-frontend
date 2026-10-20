@@ -5,7 +5,7 @@ import { parseJobDraft, readJobDraftSnapshot, saveJobDraft } from "@/features/jo
 const mockValues = {
   title: "Campus campaign",
   description: "",
-  budget: "8,500 fixed",
+  budget: "8500",
   deadline: "2026-10-28",
 };
 const mockSurveys = [

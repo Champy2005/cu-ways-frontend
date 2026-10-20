@@ -13,8 +13,13 @@ export async function getMyStats(): Promise<MarketerStats> {
   return readMarketerStats(await serverApiGet<unknown>("/api/v1/me/statistics"));
 }
 
-// No public marketer-by-ID catalog contract exists yet. Never approximate it from search results.
 export async function getPublicCatalog(id: number): Promise<PublicCatalog> {
   if (!isPositiveId(id)) throw new ApiError(404, "marketer_not_found", "Marketer not found.");
-  throw new ApiError(503, "feature_unavailable", "Public service catalogs are not available yet.");
+  const detail = await serverApiGet<{
+    profile: { user_id: number; name: string };
+    services: unknown;
+  }>(`/api/v1/marketers/${id}`);
+  if (detail.profile.user_id !== id)
+    throw new ApiError(502, "invalid_response", "Marketer could not be loaded.");
+  return { marketer: detail.profile, services: readServices(detail.services) };
 }

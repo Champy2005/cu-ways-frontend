@@ -10,13 +10,13 @@ export function PasswordInput({ className, ...props }: Omit<ComponentProps<"inpu
   const [visible, setVisible] = useState(false);
   return (
     <div className="relative">
-      <input {...props} type={visible ? "text" : "password"} className={cn("pr-8", className)} />
+      <input {...props} type={visible ? "text" : "password"} className={cn("pr-12", className)} />
       <button
         type="button"
         onClick={() => setVisible((current) => !current)}
         aria-label={visible ? "Hide password" : "Show password"}
         aria-pressed={visible}
-        className="absolute inset-y-0 right-[10px] flex items-center"
+        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center"
       >
         <RegisterAsset name={visible ? "eye-open" : "eye-closed"} />
       </button>

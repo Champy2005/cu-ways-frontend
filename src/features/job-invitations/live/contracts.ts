@@ -90,6 +90,14 @@ function readBrief(value: unknown): ReceivedRequest["job"]["brief"] {
   };
 }
 
+function validJobMetadata(job: Record<string, unknown>): boolean {
+  return (
+    (job.title === undefined || typeof job.title === "string") &&
+    (job.description === undefined || typeof job.description === "string") &&
+    (job.budget === undefined || job.budget === null || isOfferPrice(job.budget))
+  );
+}
+
 export function readReceivedRequest(value: unknown): ReceivedRequest {
   const request = readRequest(value);
   if (!isRecord(value) || !isRecord(value.job)) return invalidResponse();
@@ -99,6 +107,7 @@ export function readReceivedRequest(value: unknown): ReceivedRequest {
     !isRecord(job.creator) ||
     !id(job.creator.user_id) ||
     typeof job.creator.name !== "string" ||
+    !validJobMetadata(job) ||
     !optionalTime(job.deadline) ||
     !count(job.target_responses) ||
     typeof job.job_status !== "string" ||
@@ -109,6 +118,9 @@ export function readReceivedRequest(value: unknown): ReceivedRequest {
   return {
     ...request,
     job: {
+      ...(typeof job.title === "string" ? { title: job.title } : {}),
+      ...(typeof job.description === "string" ? { description: job.description } : {}),
+      ...(job.budget === null || typeof job.budget === "string" ? { budget: job.budget } : {}),
       job_id: request.job_id,
       job_status: job.job_status as ReceivedRequest["job"]["job_status"],
       creator: { user_id: job.creator.user_id as number, name: job.creator.name },

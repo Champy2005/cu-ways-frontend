@@ -4,7 +4,8 @@ import {
   toMarketer,
   toMarketerSummary,
 } from "@/features/marketer-discovery/mapping";
-import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
+import { ApiError } from "@/lib/api/errors";
+import type { components } from "@/lib/api/generated/backend";
 import type {
   Marketer,
   MarketerQuery,
@@ -28,15 +29,22 @@ export async function listMarketers(
   return { items: page.items.map(toMarketerSummary), total: page.total };
 }
 
-/**
- * The backend has no GET /api/v1/marketers/{id} yet, so this searches with no
- * filters at the maximum page size and picks the id. Correct while there are
- * at most 100 marketers; switch to the direct endpoint once it exists.
- */
 export async function getMarketer(marketerID: number): Promise<Marketer | null> {
-  const page = await serverApiGet<MarketerSearchPage>(
-    `${SEARCH_PATH}?${toBackendSearchParams(EMPTY_MARKETER_QUERY).toString()}`,
-  );
-  const item = page.items.find((candidate) => candidate.profile.user_id === marketerID);
-  return item ? toMarketer(item) : null;
+  try {
+    const detail = await serverApiGet<components["schemas"]["MarketerDetailResponse"]["data"]>(
+      `${SEARCH_PATH}/${marketerID}`,
+    );
+    const marketer = toMarketer({
+      ...detail,
+      lowest_matching_service_price: null,
+      review_count: detail.review_count,
+    });
+    return {
+      ...marketer,
+      performance: { ...marketer.performance, completed_jobs: detail.total_completed_jobs },
+    };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 }

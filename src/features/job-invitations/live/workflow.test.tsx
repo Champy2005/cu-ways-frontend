@@ -90,6 +90,11 @@ describe("live US20 invitations", () => {
       expect(filterLiveInvitations(entries, "pending", term)).toHaveLength(1);
     expect(filterLiveInvitations(entries, "responded", "not found")).toHaveLength(0);
   });
+  it("finds an invitation by its saved job title", () => {
+    const entry = invitationEntry("Pending");
+    entry.request.job.title = "Campus outreach campaign";
+    expect(filterLiveInvitations([entry], "pending", "outreach")).toEqual([entry]);
+  });
   it("accepts with confirmation and reloads the saved response", async () => {
     vi.mocked(respondToInvitation).mockResolvedValue(invitationEntry().request);
     vi.mocked(reloadInvitations).mockResolvedValue([invitationEntry()]);
@@ -363,7 +368,7 @@ describe("live US21 offers", () => {
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
       if (status === "Accepted")
-        expect(screen.getByText("Offer accepted — you’ve been hired")).toBeInTheDocument();
+        expect(screen.getByText("Offer accepted. You’ve been hired")).toBeInTheDocument();
       expect(
         screen.queryByRole("button", { name: /submit|withdraw|resubmit/i }),
       ).not.toBeInTheDocument();

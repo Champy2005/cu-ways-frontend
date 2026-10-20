@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { BackLink } from "@/components/ui/back-link";
+import { StatusText } from "@/components/ui/status-text";
 
 import { ApiError, getDisplayError } from "@/lib/api/errors";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
@@ -56,25 +57,17 @@ export default async function InviteMarketersPage({ params }: { params: Promise<
   const surveyTitles = data.job.surveys.map((survey) => survey.title);
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-5 text-[var(--mk-text)]">
+    <div className="mx-auto w-full max-w-5xl space-y-5 pb-24 text-[var(--mk-text)]">
       <header className="mb-5 flex items-center gap-3 border-b border-[var(--mk-border)] pb-4">
-        <Link
-          href="/creator/jobs/invite"
-          aria-label="Back to job selection"
-          className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--mk-border)] bg-[var(--mk-surface)] text-[var(--mk-text)] shadow-[var(--mk-shadow)] outline-none hover:border-[var(--mk-accent)] focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          <ArrowLeft aria-hidden="true" className="size-5" />
-        </Link>
+        <BackLink href={`/creator/jobs/${jobId}`} label="Back to job details" />
         <div className="min-w-0 flex-1">
           <h1 className="text-xl font-semibold tracking-tight">Invite Marketers</h1>
           <p className="mt-0.5 text-sm text-[var(--mk-muted)]">
-            Job #{data.job.job_id}
+            {data.job.title || `Job #${data.job.job_id}`}
             {surveyTitles.length > 0 ? ` · ${surveyTitles.join(", ")}` : " · No linked surveys"}
           </p>
         </div>
-        <span className="shrink-0 rounded-full border border-[var(--mk-border)] bg-[var(--mk-field)] px-2.5 py-1 text-xs font-medium text-[var(--mk-text)]">
-          {data.job.job_status}
-        </span>
+        <StatusText status={data.job.job_status} />
       </header>
 
       <JobInviteSelector

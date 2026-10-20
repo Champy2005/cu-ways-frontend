@@ -209,3 +209,16 @@ describe("MyOffersPage", () => {
     expect(screen.getByRole("link", { name: "View invitations" })).toBeInTheDocument();
   });
 });
+
+it("searches offers using the saved job title and creator", () => {
+  render(
+    <MyOffersPage
+      initialOffers={[{ offer: savedOffer(), request: receivedRequest("Accepted") }]}
+    />,
+  );
+  fireEvent.change(screen.getByRole("searchbox", { name: "Search offers by job or creator" }), {
+    target: { value: "no such campaign" },
+  });
+  expect(screen.getByText("No offers match your search.")).toBeInTheDocument();
+  expect(screen.queryByTestId("my-offer-card-201")).not.toBeInTheDocument();
+});

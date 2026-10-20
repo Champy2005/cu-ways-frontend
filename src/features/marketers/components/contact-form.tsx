@@ -1,5 +1,7 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
+
 import { useId } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,11 +75,7 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
             {form.phoneError || form.error} Your changes are still here. Please try saving again.
           </FieldError>
         )}
-        {form.success && (
-          <p role="status" className="text-sm text-[var(--mk-success)]">
-            {form.success}
-          </p>
-        )}
+        {form.success && <SuccessToast message={form.success} />}
       </div>
       <Button
         type="submit"

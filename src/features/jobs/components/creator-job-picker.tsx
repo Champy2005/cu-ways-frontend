@@ -24,7 +24,9 @@ function JobCard({ job }: { job: CreatorJobSummary }) {
               <BriefcaseBusiness aria-hidden="true" className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="font-semibold text-[var(--mk-text)]">Job #{job.job_id}</p>
+              <p className="font-semibold text-[var(--mk-text)]">
+                {job.title || `Job #${job.job_id}`}
+              </p>
               <p className="mt-1 text-sm text-[var(--mk-muted)]">
                 {surveyNames.length > 0 ? surveyNames.join(", ") : "No linked surveys"}
               </p>

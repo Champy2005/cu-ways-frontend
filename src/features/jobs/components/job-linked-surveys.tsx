@@ -45,7 +45,7 @@ export function JobLinkedSurveys({
         {surveys.map((survey) => (
           <li
             key={survey.id}
-            className="flex min-h-[68px] items-center gap-3 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 py-2.5 shadow-card"
+            className="flex min-h-[68px] items-center gap-3 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] px-3 py-2.5 shadow-[var(--mk-shadow)]"
           >
             <ClipboardList aria-hidden="true" className="size-5 shrink-0 text-[var(--mk-accent)]" />
             <div className="min-w-0 flex-1">
@@ -92,7 +92,7 @@ export function JobLinkedSurveys({
         disabled={pending}
         variant="ghost"
         onClick={onAdd}
-        className="mt-5 h-12 w-full gap-2 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] text-base font-bold text-[var(--mk-accent)] shadow-card hover:bg-[var(--mk-hover)]"
+        className="mt-5 h-12 w-full gap-2 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] text-base font-bold text-[var(--mk-accent)] shadow-[var(--mk-shadow)] hover:bg-[var(--mk-hover)]"
       >
         <Plus aria-hidden="true" className="size-5" />
         Add existing surveys

@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusText } from "@/components/ui/status-text";
 import { Box, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,7 @@ export function ServiceCard({ service, onEdit, onDelete }: ServiceCardProps) {
         <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--mk-service-soft)] text-[var(--mk-service-color)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--mk-service-color)_22%,transparent)]">
           <Box className="size-5" aria-hidden="true" />
         </div>
-        <Badge className="rounded-full bg-[var(--mk-positive-soft)] px-2.5 py-1 text-xs font-medium text-[var(--mk-success)]">
-          Published
-        </Badge>
+        <StatusText status="Published" />
       </div>
       <h2 className="text-lg leading-snug font-semibold break-words text-[var(--mk-text)]">
         {service.service_type}

@@ -178,33 +178,6 @@
 .jo-rating strong {
   color: var(--mk-text);
 }
-.jo-status {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  background: var(--mk-field);
-  border: 1px solid var(--mk-border);
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--mk-muted);
-}
-.jo-status[data-status="Pending"] {
-  color: var(--mk-caution);
-  background: var(--mk-caution-soft);
-  border-color: transparent;
-}
-.jo-status[data-status="Accepted"] {
-  color: var(--mk-positive);
-  background: var(--mk-positive-soft);
-  border-color: transparent;
-}
-.jo-status[data-status="Rejected"] {
-  color: var(--mk-error);
-  background: var(--mk-coral-soft);
-  border-color: transparent;
-}
 .jo-terms {
   display: flex;
   align-items: baseline;

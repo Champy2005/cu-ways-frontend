@@ -114,17 +114,13 @@ describe("MarketerShell navigation and theme", () => {
     // CSS hides the compact trigger at wide desktop widths.
   });
 
-  it("keeps creator preview in bottom navigation and shows the reference menu", async () => {
+  it("uses only the hamburger for mobile demo navigation", async () => {
     render(
       <MarketerShell device="mobile" demo demoView="viewer">
         Demo workspace
       </MarketerShell>,
     );
-    const mobile = within(screen.getByRole("navigation", { name: "Mobile demo views" }));
-    expect(mobile.getByRole("link", { name: "Creator view" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
     fireEvent.click(await screen.findByRole("button", { name: "Open navigation menu" }));
     const dialog = await screen.findByRole("menu", { name: "Open navigation menu" });
     // Navigation is an anchored menu, with no dialog backdrop or scroll locking.
@@ -145,7 +141,7 @@ describe("MarketerShell navigation and theme", () => {
     await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
-  it("restores hamburger focus on Escape and keeps mobile navigation after resizing", async () => {
+  it("restores hamburger focus on Escape and keeps the menu after resizing", async () => {
     render(<MarketerShell device="mobile">Live workspace</MarketerShell>);
     const trigger = await screen.findByRole("button", { name: "Open navigation menu" });
     trigger.focus();
@@ -162,8 +158,8 @@ describe("MarketerShell navigation and theme", () => {
     });
     expect(screen.getByRole("menu")).toBeInTheDocument();
     expect(
-      screen.getByRole("navigation", { name: "Mobile marketer navigation" }),
-    ).toBeInTheDocument();
+      screen.queryByRole("navigation", { name: "Mobile marketer navigation" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("navigation", { name: "Marketer navigation" }),
     ).not.toBeInTheDocument();

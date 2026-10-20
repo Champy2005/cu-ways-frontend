@@ -371,7 +371,8 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Save the details of an owned Pending job */
+        patch: operations["updateJobDetails"];
         trace?: never;
     };
     "/api/v1/jobs/{id}/surveys/{surveyId}": {
@@ -834,9 +835,27 @@ export interface components {
             data: components["schemas"]["Survey"][];
         };
         CreateJobRequest: {
+            title?: string;
+            description?: string;
+            budget?: string | null;
+            /** Format: date */
+            deadline?: string | null;
             survey_ids: number[];
         };
+        UpdateJobDetailsRequest: {
+            survey_ids?: number[];
+            title: string;
+            description?: string;
+            budget?: string | null;
+            /** Format: date */
+            deadline?: string | null;
+        };
         Job: {
+            title?: string;
+            description?: string;
+            budget?: string | null;
+            /** Format: date-time */
+            deadline?: string | null;
             /** Format: int32 */
             job_id: number;
             /** Format: int32 */
@@ -860,6 +879,18 @@ export interface components {
             title: string;
         };
         CreatorJobSummary: {
+            /** @description Number of offers awaiting the Creator decision, excluding withdrawn and rejected offers. */
+            pending_offer_count?: number;
+            title?: string;
+            description?: string;
+            budget?: string | null;
+            /** Format: date-time */
+            deadline?: string | null;
+            /**
+             * Format: date-time
+             * @description Earlier of the saved job deadline and the earliest linked survey deadline.
+             */
+            effective_deadline?: string | null;
             /** Format: int32 */
             job_id: number;
             /** @enum {string} */
@@ -956,6 +987,9 @@ export interface components {
                 };
                 /** Format: date-time */
                 deadline: string | null;
+                title?: string;
+                description?: string;
+                budget?: string | null;
                 /** Format: int32 */
                 target_responses: number | null;
                 surveys: {
@@ -1111,6 +1145,8 @@ export interface components {
                 profile: components["schemas"]["MarketerProfile"];
                 /** @description Active service listings only. */
                 services: components["schemas"]["Service"][];
+                /** Format: int64 */
+                review_count: number;
                 /** Format: int64 */
                 total_completed_jobs: number;
                 /**
@@ -2459,6 +2495,67 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+        };
+    };
+    updateJobDetails: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateJobDetailsRequest"];
+            };
+        };
+        responses: {
+            /** @description Saved job details. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatorJobSummaryResponse"];
+                };
+            };
+            /** @description Authentication required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Creator membership or ownership required. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job is no longer Pending. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid job details. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

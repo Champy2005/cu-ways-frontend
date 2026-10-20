@@ -57,7 +57,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
     <div className="grid gap-x-16 lg:grid-cols-2">
       <div>
         <h2 className="text-[15px] leading-[18px] font-medium">Personal information</h2>
-        <div className="mt-[3px] flex flex-col gap-[6px] pr-[12px] pl-[10px]">
+        <div className="mt-[3px] flex flex-col gap-3">
           {TEXT_FIELDS.map(({ key, label, ...attributes }) => (
             <RegisterField
               key={key}
@@ -82,7 +82,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
         </div>
 
         <h2 className="mt-[6px] text-[15px] leading-[18px] font-medium">Password</h2>
-        <div className="mt-[4px] flex flex-col gap-[11px] pr-[12px] pl-[10px]">
+        <div className="mt-[4px] flex flex-col gap-3">
           {PASSWORD_FIELDS.map(({ key, label, placeholder }) => (
             <RegisterField
               key={key}
@@ -120,7 +120,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
           role="radiogroup"
           aria-labelledby="register-role-label"
           aria-describedby={errors.role ? "register-role-error" : undefined}
-          className="mt-[5px] pr-[10px]"
+          className="mt-[5px]"
         >
           <div className="grid grid-cols-2 gap-[9px]">
             <button
@@ -160,14 +160,14 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
             <p
               id="register-role-error"
               role="alert"
-              className="mt-1 text-right text-[8.5px] text-[var(--rg-error)]"
+              className="mt-1 text-right text-xs text-[var(--rg-error)]"
             >
               {errors.role}
             </p>
           )}
         </div>
 
-        <div className="mt-[14px] flex flex-col gap-[8px] pl-[7px]">
+        <div className="mt-[14px] flex flex-col gap-[8px]">
           {(
             [
               { key: "accept_terms", label: "Accept Terms of Service" },
@@ -175,13 +175,13 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
             ] as const
           ).map(({ key, label }) => (
             <div key={key}>
-              <label className="flex items-center gap-[6px] text-[10px] text-[var(--rg-sds-text)]">
+              <label className="flex items-center gap-3 min-h-11 text-sm text-[var(--rg-sds-text)]">
                 <Checkbox
                   checked={values[key]}
                   onCheckedChange={(checked) => onChange(key, checked === true)}
                   aria-invalid={Boolean(errors[key])}
                   aria-describedby={describedBy(errors, key)}
-                  className="register-checkbox size-[12px] rounded-[3px]"
+                  className="register-checkbox size-4 rounded-[3px]"
                 />
                 <span>
                   {label}
@@ -196,7 +196,7 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
                 <p
                   id={`register-${key}-error`}
                   role="alert"
-                  className="text-[8.5px] text-[var(--rg-error)]"
+                  className="text-xs text-[var(--rg-error)]"
                 >
                   {errors[key]}
                 </p>

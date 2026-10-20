@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, LogOut, Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { NavigationDevice } from "@/components/layout/navigation-device";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,12 @@ export default function MarketerMobileMenu({
       <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger
           aria-label="Open navigation menu"
-          render={<Button variant="ghost" className="mk-icon-button mk-mobile-menu-trigger" />}
+          render={
+            <Button
+              variant="ghost"
+              className="mk-icon-button mk-mobile-menu-trigger mk-menu-always"
+            />
+          }
         >
           <Menu aria-hidden="true" className="size-6" />
         </DropdownMenuTrigger>
@@ -79,9 +84,6 @@ export default function MarketerMobileMenu({
               {label}
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem render={<Link href="/dashboard" onClick={() => setOpen(false)} />}>
-            <ArrowLeft aria-hidden="true" /> Workspace
-          </DropdownMenuItem>
           <DropdownMenuItem disabled={demo || isPending} onClick={logout}>
             <LogOut aria-hidden="true" />
             {isPending ? "Signing out…" : "Sign out"}

@@ -1,5 +1,6 @@
 "use server";
 
+import { createJobFieldErrors, type CreateJobValues } from "@/features/jobs/schemas";
 import { getCreatorJob } from "@/features/jobs/api";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 import { ApiError } from "@/lib/api/errors";
@@ -92,11 +93,24 @@ export async function loadSavedJob(jobIdValue: string): Promise<SavedJobState> {
 
 export async function createPendingJob(
   selectedSurveyIds: string[],
+  values?: CreateJobValues,
 ): Promise<CreatePendingJobState> {
   try {
     const creatorId = await authenticatedCreatorId();
     const ids = parseSurveyIds(selectedSurveyIds);
-    const body: components["schemas"]["CreateJobRequest"] = { survey_ids: ids };
+    if (values && Object.keys(createJobFieldErrors(values, selectedSurveyIds)).length)
+      throw new ApiError(422, "invalid_details", "Review the job details.");
+    const body: components["schemas"]["CreateJobRequest"] = {
+      survey_ids: ids,
+      ...(values
+        ? {
+            title: values.title.trim(),
+            description: values.description.trim(),
+            budget: values.budget.trim(),
+            deadline: values.deadline,
+          }
+        : {}),
+    };
     const job = await serverApiRequest<components["schemas"]["Job"]>("/api/v1/jobs", {
       method: "POST",
       body: JSON.stringify(body),
@@ -233,5 +247,38 @@ export async function removeJobSurvey(
       creatorId,
       "This survey could not be removed. Keep at least one survey linked to the job.",
     );
+  }
+}
+
+export async function saveJobDetails(
+  jobIdValue: string,
+  selectedSurveyIds: string[],
+  values: CreateJobValues,
+): Promise<SavedJobState> {
+  try {
+    const creatorId = await authenticatedCreatorId();
+    const jobId = parseId(jobIdValue);
+    const surveyIds = parseSurveyIds(selectedSurveyIds);
+    if (Object.keys(createJobFieldErrors(values, selectedSurveyIds)).length)
+      throw new ApiError(422, "invalid_details", "Review the job details.");
+    await serverApiRequest(`/api/v1/jobs/${jobId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        title: values.title.trim(),
+        description: values.description.trim(),
+        budget: values.budget.trim(),
+        deadline: values.deadline,
+        survey_ids: surveyIds,
+      }),
+    });
+    return { status: "success", creatorId, job: await readOwnedJob(jobId) };
+  } catch (error) {
+    return {
+      status: "error",
+      message:
+        error instanceof ApiError && error.status === 409
+          ? "This job is no longer editable. Reload it to see its current status."
+          : "Saving could not be confirmed. Reload the job before trying again.",
+    };
   }
 }

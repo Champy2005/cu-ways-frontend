@@ -62,8 +62,13 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-async function openJob(previewAccepted = false) {
-  const result = render(<JobDraftPage jobId="41" previewAccepted={previewAccepted} />);
+async function openJob(accepted = false) {
+  if (accepted)
+    vi.mocked(loadSavedJob).mockResolvedValueOnce({
+      ...mockSavedState(),
+      job: { ...mockSavedState().job, job_status: "Accepted" },
+    });
+  const result = render(<JobDraftPage jobId="41" />);
   await screen.findByRole("region", { name: "Manage Linked Surveys" });
   return result;
 }
@@ -78,7 +83,8 @@ describe("Persisted job survey links", () => {
       expect(region.getByText("Campus Mobility Study")).toBeInTheDocument();
       expect(region.getByText("Green Habits 2026")).toBeInTheDocument();
       const overview = within(screen.getByRole("region", { name: "Job overview" }));
-      expect(overview.getAllByText("-", { exact: true })).toHaveLength(2);
+      expect(overview.getByText("Not specified", { exact: true })).toBeInTheDocument();
+      expect(overview.getByText("-", { exact: true })).toBeInTheDocument();
       expect(overview.queryByText(/not provided/i)).not.toBeInTheDocument();
       expect(loadSavedJob).toHaveBeenCalledExactlyOnceWith("41");
       expect(screen.getByRole("region", { name: "Project Brief" })).toBeInTheDocument();
@@ -87,7 +93,7 @@ describe("Persisted job survey links", () => {
 
   it("uses saved links even if cached survey selections are stale", async () => {
     saveJobDraft(
-      { title: "Campus campaign", description: "", budget: "8,500 fixed", deadline: "2026-10-28" },
+      { title: "Campus campaign", description: "", budget: "8500", deadline: "2026-10-28" },
       ["87"],
       41,
       mockSurveyOptions,
@@ -198,8 +204,8 @@ describe("Persisted job survey links", () => {
     expect(notification).toHaveTextContent("Surveys linked");
     expect(notification).toHaveTextContent("3 surveys are available to marketers in this job.");
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss surveys linked notification" }));
-    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
 
     unmount();
     await openJob();

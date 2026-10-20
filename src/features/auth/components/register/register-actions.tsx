@@ -1,4 +1,4 @@
-import { CircleArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { RegisterAsset } from "@/features/auth/components/register/register-asset";
 
@@ -14,11 +14,7 @@ type RegisterActionsProps = {
   className?: string;
 };
 
-/**
- * Back (71x48) + primary (185x57). The design's back icon is the Simple Design
- * System "Arrow right-circle" via Code Connect; that library is not installed,
- * so lucide's CircleArrowLeft (the same Feather-derived glyph) stands in.
- */
+/** Touch-friendly actions with a plain back arrow and a balanced primary button. */
 export function RegisterActions({
   label,
   tone,
@@ -30,16 +26,18 @@ export function RegisterActions({
 }: RegisterActionsProps) {
   return (
     <div className={`flex items-center gap-[11px] ${className ?? ""}`}>
-      <button
-        type="button"
-        className="register-back"
-        data-outlined={backOutlined}
-        onClick={onBack}
-        disabled={!onBack || loading}
-        aria-label="Back"
-      >
-        <CircleArrowLeft className="size-[30px]" strokeWidth={1.6} aria-hidden="true" />
-      </button>
+      {onBack && (
+        <button
+          type="button"
+          className="register-back"
+          data-outlined={backOutlined}
+          onClick={onBack}
+          disabled={!onBack || loading}
+          aria-label="Back"
+        >
+          <ArrowLeft className="size-5" strokeWidth={1.6} aria-hidden="true" />
+        </button>
+      )}
       <button
         type="submit"
         className="register-primary"

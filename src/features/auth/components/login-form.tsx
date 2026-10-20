@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { CircleAlert, CircleUserRound, Eye, EyeOff, Lock } from "lucide-react";
 
 import { ApiError, getDisplayError } from "@/lib/api/errors";
+import { safeReturnPath } from "@/lib/auth/workspace";
 import { login } from "@/features/auth/api";
 import { loginFieldErrors } from "@/features/auth/schemas";
 import type { LoginRequest } from "@/features/auth/types";
@@ -52,7 +53,10 @@ export function LoginForm() {
     setError(null);
     try {
       const session = await login(values);
-      router.push(session.role === "admin" ? "/admin" : "/creator/dashboard");
+      router.push(
+        safeReturnPath(new URLSearchParams(window.location.search).get("next")) ??
+          (session.role === "admin" ? "/admin" : "/dashboard"),
+      );
       router.refresh();
     } catch (requestError) {
       setError(

@@ -13,7 +13,7 @@ export function SurveyReadError({ error }: { error: unknown }) {
   return (
     <section
       role="alert"
-      className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-6 text-zinc-950"
+      className="space-y-4 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-6 text-[var(--mk-text)]"
     >
       <h1 className="text-xl font-semibold">Surveys unavailable</h1>
       <p>{message}</p>

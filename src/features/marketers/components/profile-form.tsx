@@ -1,5 +1,7 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
+
 import { useId, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -148,9 +150,11 @@ export function ProfileForm(props: ProfileFormProps) {
           </p>
         ) : null}
         {form.success ? (
-          <p role="status" className="text-[var(--mk-success)]">
-            {form.createdAccount ? "Marketer account created." : "Professional information saved."}
-          </p>
+          <SuccessToast
+            message={
+              form.createdAccount ? "Marketer account created." : "Professional information saved."
+            }
+          />
         ) : null}
       </div>
       <Button type="submit" disabled={form.pending} className="mk-primary-button mk-profile-submit">

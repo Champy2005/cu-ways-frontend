@@ -1,5 +1,7 @@
 "use client";
 
+import { StatusText } from "@/components/ui/status-text";
+
 import { useRef, useState } from "react";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -67,9 +69,7 @@ export function JobOfferCard({
             </div>
           </div>
         </div>
-        <span className="jo-status" data-status={offer_status}>
-          {offer_status}
-        </span>
+        <StatusText status={offer_status} />
       </div>
       <dl className="jo-terms">
         <div>

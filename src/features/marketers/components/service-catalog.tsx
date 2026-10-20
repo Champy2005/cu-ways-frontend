@@ -1,5 +1,7 @@
 "use client";
 
+import { SuccessToast } from "@/components/feedback/success-toast";
+
 import { Box, Plus } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -110,14 +112,7 @@ export function ServiceCatalog({
           </Button>
         )}
       </div>
-      {notice && (
-        <p
-          role="status"
-          className="mb-5 rounded-xl border border-[color-mix(in_srgb,var(--mk-success)_22%,transparent)] bg-[var(--mk-positive-soft)] px-4 py-3 text-sm text-[var(--mk-success)]"
-        >
-          {notice}
-        </p>
-      )}
+      <SuccessToast message={notice} onDismiss={() => setNotice(null)} />
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-sm font-medium text-[var(--mk-text)]">Published packages</p>
         <span className="text-xs text-[var(--mk-muted)]">

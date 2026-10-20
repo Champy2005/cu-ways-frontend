@@ -76,10 +76,12 @@ export default async function VerifiedPerformancePage({
       {reviews.length === 0 ? (
         <EmptyState
           title={
-            performance.rating_count > 0 ? "Review comments aren't available yet" : "No ratings yet"
+            performance.average_rating !== null
+              ? "Review comments aren't available yet"
+              : "No ratings yet"
           }
           description={
-            performance.rating_count > 0
+            performance.average_rating !== null
               ? "The rating above comes from completed jobs, but the backend doesn't return individual reviews yet."
               : "This marketer has no reviews from completed jobs yet. Ratings appear here once a job is finished and reviewed."
           }

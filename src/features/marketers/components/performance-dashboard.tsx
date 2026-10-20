@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusText } from "@/components/ui/status-text";
 import { CheckSquare2, Eye, Star } from "lucide-react";
 
 import { MarketerIdentity } from "@/features/marketers/components/marketer-identity";
@@ -93,18 +93,7 @@ function RecentJobs({ jobs }: { jobs: RecentJob[] }) {
                 <p className="text-base font-medium wrap-anywhere">{job.title}</p>
                 <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                   <span className="text-[var(--mk-muted)]">{job.date}</span>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      "inline-flex items-center gap-1.5",
-                      job.status === "Completed"
-                        ? "border-[color-mix(in_srgb,var(--mk-success)_28%,var(--mk-border))] bg-[var(--mk-positive-soft)] text-[var(--mk-success)]"
-                        : "border-[color-mix(in_srgb,var(--mk-caution)_28%,var(--mk-border))] bg-[var(--mk-caution-soft)] text-[var(--mk-caution)]",
-                    )}
-                  >
-                    <span aria-hidden="true" className="size-2 rounded-full bg-current" />
-                    {job.status}
-                  </Badge>
+                  <StatusText status={job.status} />
                 </div>
               </div>
               <p className="mk-job-price max-w-[45%] text-right text-lg font-medium wrap-anywhere tabular-nums">

@@ -37,18 +37,18 @@ export function CreatorOverview({ name }: { name: string }) {
         </section>
         <section aria-labelledby="creator-create-job">
           <h2 id="creator-create-job" className="mk-section-title">
-            Create a job
+            My jobs
           </h2>
           <Card className="mk-card mk-card-padding gap-0">
             <p className="text-sm text-[var(--mk-muted)]">
-              Link your surveys and share a new job with marketers.
+              Open saved jobs or create a new job with your surveys.
             </p>
             <Link
-              href="/creator/jobs/create"
+              href="/creator/jobs"
               className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
             >
               <Plus aria-hidden="true" className="size-4" />
-              Create a job
+              My jobs
             </Link>
           </Card>
         </section>

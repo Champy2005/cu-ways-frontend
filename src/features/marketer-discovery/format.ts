@@ -10,7 +10,7 @@ export function formatRating(rating: number | null): string | null {
 }
 
 export function formatCount(count: number | null): string {
-  return count === null ? "—" : count.toLocaleString("en-US");
+  return count === null ? "Not specified" : count.toLocaleString("en-US");
 }
 
 /** "2025-10-12" -> "Oct 12". Returns the input unchanged when unparseable. */
@@ -29,6 +29,6 @@ export function formatAvailability(status: AvailabilityStatus, text: string): st
 }
 
 export function formatYears(years: number | null): string {
-  if (years === null) return "—";
+  if (years === null) return "Not specified";
   return years === 1 ? "1 year" : `${years} years`;
 }

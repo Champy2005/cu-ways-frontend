@@ -1,3 +1,4 @@
+import { StatusText } from "@/components/ui/status-text";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import type { CreatorJobSummary } from "@/features/jobs/types";
@@ -52,13 +53,13 @@ export function CreatorOffersJobPicker({ state }: CreatorOffersJobPickerProps) {
               >
                 <div className="min-w-0 flex-1">
                   <h3>
-                    {job.surveys.map((survey) => survey.title).join(", ") || "No linked surveys"}
+                    {job.title ||
+                      job.surveys.map((survey) => survey.title).join(", ") ||
+                      "No linked surveys"}
                   </h3>
                   <p className="jo-muted">Job #{job.job_id}</p>
                 </div>
-                <span className="jo-status" data-status={job.job_status}>
-                  {job.job_status}
-                </span>
+                <StatusText status={job.job_status} />
                 <ChevronRight aria-hidden="true" />
               </Link>
             </li>

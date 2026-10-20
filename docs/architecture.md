@@ -112,11 +112,11 @@ Each feature owns the UI and client-facing behavior for one business capability.
 
 A feature may contain:
 
-- `api.ts` — feature API functions.
-- `schemas.ts` — input validation and form rules.
-- `types.ts` — feature-specific types and contract aliases.
-- `components/` — feature-specific UI.
-- `hooks/` — feature-specific hooks, only when needed.
+- `api.ts` - feature API functions.
+- `schemas.ts` - input validation and form rules.
+- `types.ts` - feature-specific types and contract aliases.
+- `components/` - feature-specific UI.
+- `hooks/` - feature-specific hooks, only when needed.
 
 Feature modules should be cohesive and independently testable. A feature must not import another feature's private components directly. Move genuinely shared UI or behavior to `components` or `lib` after a real reuse case appears.
 

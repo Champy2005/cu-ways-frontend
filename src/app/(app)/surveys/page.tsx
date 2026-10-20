@@ -18,8 +18,8 @@ export default async function SurveysPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-950">My surveys</h1>
-          <p className="mt-2 text-sm text-zinc-600">
+          <h1 className="text-lg font-semibold tracking-tight text-[var(--mk-text)]">My surveys</h1>
+          <p className="mt-2 text-sm text-[var(--mk-muted)]">
             Manage your survey records and use them when creating a job.
           </p>
         </div>
@@ -30,9 +30,9 @@ export default async function SurveysPage() {
       {surveys === null ? (
         <SurveyReadError error={readError} />
       ) : surveys.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-200 bg-white p-8 text-center shadow-sm">
+        <div className="rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-8 text-center shadow-sm">
           <h2 className="text-lg font-medium text-zinc-900">No surveys yet</h2>
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-[var(--mk-muted)]">
             Create your first survey with a title and an external survey link.
           </p>
         </div>
@@ -41,10 +41,10 @@ export default async function SurveysPage() {
           {surveys.map((survey) => (
             <li
               key={survey.survey_id}
-              className="min-w-0 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+              className="min-w-0 rounded-2xl border border-[var(--mk-border)] bg-[var(--mk-surface)] p-6 shadow-sm"
             >
-              <p className="text-xs text-zinc-500">Survey #{survey.survey_id}</p>
-              <h2 className="mt-2 text-lg font-semibold break-words text-zinc-950">
+              <p className="text-xs text-[var(--mk-muted)]">Survey #{survey.survey_id}</p>
+              <h2 className="mt-2 text-lg font-semibold break-words text-[var(--mk-text)]">
                 <Link
                   href={`/surveys/${survey.survey_id}`}
                   className="underline-offset-4 hover:underline"
@@ -52,10 +52,10 @@ export default async function SurveysPage() {
                   {survey.title}
                 </Link>
               </h2>
-              <p className="mt-2 text-sm break-words text-zinc-600">
+              <p className="mt-2 text-sm break-words text-[var(--mk-muted)]">
                 {survey.target_group || "Target demographic unspecified"}
               </p>
-              <p className="mt-2 text-sm text-zinc-600">
+              <p className="mt-2 text-sm text-[var(--mk-muted)]">
                 Desired responses: {survey.desired_responses ?? "Unspecified"}
               </p>
             </li>
