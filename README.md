@@ -2,6 +2,10 @@
 
 Next.js App Router frontend for CU Ways. The project uses TypeScript, Tailwind CSS, shadcn/Base UI, and a feature-based architecture.
 
+For Sprint 3 screens and future UI work, follow [the design guide](design.md). It records the approved mobile layout, shared components, colors, navigation, status text, and feedback behavior.
+
+Tim's Sprint 3 HTML previews for payment recording, transaction history and reviews are in [design/](design/README.md), with a behavior and route guide for each screen.
+
 ## Quick start
 
 Requirements: Node.js 22.13.0 or newer (CI uses Node.js 24 LTS) and pnpm 11.25.0.

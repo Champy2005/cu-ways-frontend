@@ -1,5 +1,7 @@
 # Workspace UI standard
 
+For the complete design guidance and Sprint 3 review checklist, see [design.md](../design.md). Keep this quick reference aligned with that guide.
+
 Use `/marketer/invitations` as the main mobile visual reference. Saved job details and the Marketer offer form provide patterns for their specific flows.
 
 - Use the shared workspace logo, Inter font, role switch, theme toggle, and navigation. Creator destinations are Overview, My jobs, Surveys, Discover, and Settings. Marketer destinations are Overview, Services, Invitations, My offers, and Profile.
