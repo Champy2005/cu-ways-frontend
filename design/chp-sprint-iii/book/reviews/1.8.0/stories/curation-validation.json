@@ -1,0 +1,137 @@
+{
+  "completed": "2026-10-31",
+  "revision": "1.8.0",
+  "checks": {
+    "curatedCaptureIdsUnique": true,
+    "referencedFilesExist": true,
+    "currentSourcesMatchFinalRetakes": true,
+    "allCapturePhasesSourceStable": true,
+    "normalRows": 156,
+    "normalUniqueStates": 39,
+    "actualNormalStateMatches": true,
+    "inspectedRows": {
+      "curatedRows": 552,
+      "individual": 35,
+      "sheet": 517,
+      "reviewAssets": 85
+    },
+    "duplicates": [],
+    "missing": []
+  },
+  "sourceChecks": [
+    {
+      "file": "../theme/theme.json",
+      "expected": "66b5bcb18e01b7eafffefc40f4c2cf4350f25f84e75667ee834df04a18a4c274",
+      "actual": "66b5bcb18e01b7eafffefc40f4c2cf4350f25f84e75667ee834df04a18a4c274"
+    },
+    {
+      "file": "../theme/tokens.css",
+      "expected": "7182fc903adb1defec9935362a9692dcb0a0f310e9f016c4589366dd9a4d9480",
+      "actual": "7182fc903adb1defec9935362a9692dcb0a0f310e9f016c4589366dd9a4d9480"
+    },
+    {
+      "file": "../theme/components.mjs",
+      "expected": "c32c788bf0ef1e15997329151ba9f599b135acf595e7e10d69aa80bbc55cd6d8",
+      "actual": "c32c788bf0ef1e15997329151ba9f599b135acf595e7e10d69aa80bbc55cd6d8"
+    },
+    {
+      "file": "../theme/recipes.css",
+      "expected": "567ebaf3eb3782b4064b9a1e61ccba5517bf3956176b970f98443e627bddf7a2",
+      "actual": "567ebaf3eb3782b4064b9a1e61ccba5517bf3956176b970f98443e627bddf7a2"
+    },
+    {
+      "file": "../stories/runtime.mjs",
+      "expected": "bdce2e698ba11508eeeea44c44d4f4b8056893f626136581dcb29464f40ac5c7",
+      "actual": "bdce2e698ba11508eeeea44c44d4f4b8056893f626136581dcb29464f40ac5c7"
+    },
+    {
+      "file": "../stories/screen.css",
+      "expected": "472359f94f527bfd12e307409e4643f3ab44433d52935e1e03ec492604f665a1",
+      "actual": "472359f94f527bfd12e307409e4643f3ab44433d52935e1e03ec492604f665a1"
+    },
+    {
+      "file": "../US-027/demo/screen.mjs",
+      "expected": "09271c6f97cb1fab861a80ba2c0fff94e30b686354cedb58c42ecbaef9337f46",
+      "actual": "09271c6f97cb1fab861a80ba2c0fff94e30b686354cedb58c42ecbaef9337f46"
+    },
+    {
+      "file": "../US-028/demo/screen.mjs",
+      "expected": "d1cd4a92c92c55b274b5d2a701691b797e6251487fd6a3d0ae676a8c3001d2ef",
+      "actual": "d1cd4a92c92c55b274b5d2a701691b797e6251487fd6a3d0ae676a8c3001d2ef"
+    },
+    {
+      "file": "../US-034/demo/screen.mjs",
+      "expected": "ba93c0785678e6aed4df42e12b7d88c7965ba7a8d051f42c9d86a4012fd9f06f",
+      "actual": "ba93c0785678e6aed4df42e12b7d88c7965ba7a8d051f42c9d86a4012fd9f06f"
+    }
+  ],
+  "phases": [
+    {
+      "name": "capture",
+      "manifest": "capture-manifest.json",
+      "rows": 156,
+      "captures": 736,
+      "checks": 0,
+      "sourceStable": true,
+      "errors": []
+    },
+    {
+      "name": "extras",
+      "manifest": "extras-manifest.json",
+      "rows": 142,
+      "captures": 704,
+      "checks": 138,
+      "sourceStable": true,
+      "errors": [
+        "Error: light: full Unicode disclosure\n    at assert (C:\\Users\\thana\\Documents\\Year3\\Semester_i\\SE\\CUWAY\\.artifacts\\work\\iteration4-20261030\\reviewer\\extras.cjs:4:131)\n    at C:\\Users\\thana\\Documents\\Year3\\Semester_i\\SE\\CUWAY\\.artifacts\\work\\iteration4-20261030\\reviewer\\extras.cjs:18:382"
+      ]
+    },
+    {
+      "name": "extras-phase2",
+      "manifest": "extras-phase2-manifest.json",
+      "rows": 13,
+      "captures": 66,
+      "checks": 26,
+      "sourceStable": true,
+      "errors": []
+    },
+    {
+      "name": "retake",
+      "manifest": "retake-manifest.json",
+      "rows": 278,
+      "captures": 278,
+      "checks": 108,
+      "sourceStable": true,
+      "errors": []
+    },
+    {
+      "name": "header-retake",
+      "manifest": "header-retake-manifest.json",
+      "rows": 48,
+      "captures": 48,
+      "checks": 0,
+      "sourceStable": true,
+      "errors": []
+    },
+    {
+      "name": "final-retake",
+      "manifest": "final-retake-manifest.json",
+      "rows": 104,
+      "captures": 104,
+      "checks": 156,
+      "sourceStable": true,
+      "errors": []
+    },
+    {
+      "name": "clean",
+      "manifest": "clean-manifest.json",
+      "rows": 72,
+      "captures": 72,
+      "checks": 0,
+      "sourceStable": true,
+      "errors": []
+    }
+  ],
+  "explainedHarnessError": "extras phase stopped at a disclosure assertion comparing hidden innerText (empty) with expanded innerText. Phase2 compared textContent, confirmed all 918 Unicode characters and passed. This was a reviewer harness mistake, not a product finding.",
+  "visualLimit": "Integrity/geometry checks do not constitute visual judgment. See report.md, coverage.json and per-capture inspectionStatus/disposition."
+}

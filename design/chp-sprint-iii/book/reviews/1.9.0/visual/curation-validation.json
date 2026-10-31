@@ -1,0 +1,24 @@
+{
+  "missingFiles": [],
+  "duplicateIds": [],
+  "sheetCount": 94,
+  "nativeCount": 45,
+  "counts": {
+    "sheet-inspected": 554,
+    "captured-only": 1926,
+    "opened": 45
+  },
+  "sourceStableByPhase": {
+    "palette-final": true,
+    "palette-extra": true,
+    "palette-lab": null,
+    "palette-live": true,
+    "palette-utility": true,
+    "current-final": true,
+    "current-lab": null,
+    "author-current": true,
+    "clean-close": true
+  },
+  "pixelIdenticalComparisons": 181,
+  "pixelCompared": 184
+}

@@ -1,0 +1,1 @@
+{"name":"cuways-ui-source-tools","private":true,"version":"1.0.0","description":"Source graph builder dependency; queries and hash validation use Node only.","devDependencies":{"typescript":"5.9.3"}}

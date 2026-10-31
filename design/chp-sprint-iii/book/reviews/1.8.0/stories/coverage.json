@@ -1,0 +1,1912 @@
+{
+  "revision": "1.8.0",
+  "completed": "2026-10-31",
+  "reviewer": "independent child reviewer iteration4_review",
+  "normal": {
+    "states": {
+      "027": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "028": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05"
+      ],
+      "034": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "B01",
+        "B02",
+        "R01",
+        "R02",
+        "R03"
+      ]
+    },
+    "count": 39,
+    "combinations": 156,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 1440,
+        "height": 900
+      }
+    ],
+    "textScale": 100,
+    "method": "All 39 labelled comparison sheets actually opened; per sheet both theme mobile initial/end and desktop component/page composition. Superseded branches replaced with focused current-source retakes.",
+    "rows": [
+      {
+        "story": "027",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A06",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A06",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A06",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "A06",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "B04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "027",
+        "state": "R04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A06",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A06",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A06",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "A06",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A06",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "B04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R05",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R05",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R05",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "028",
+        "state": "R05",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A04",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A04",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A04",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A05",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "A05",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "A05",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "B02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "B02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R01",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R01",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R01",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R02",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R02",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R02",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R03",
+        "theme": "light",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      },
+      {
+        "story": "034",
+        "state": "R03",
+        "theme": "dark",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "actualState": "R03",
+        "review": "inspected via labelled normal-state comparison sheet"
+      }
+    ]
+  },
+  "narrow": {
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "textScale": 200,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "individuallyJudgedStateSheets": {
+      "027": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "028": [
+        "A01",
+        "A04",
+        "A05",
+        "A06",
+        "B04",
+        "R03"
+      ],
+      "034": [
+        "A01",
+        "A04",
+        "B02",
+        "R02"
+      ]
+    },
+    "otherStates": "Captured support only; not claimed independently visually inspected.",
+    "currentFocusedRetakes": [
+      "027 A02/A04/A05 dialogs",
+      "028 A04/A05 dialogs",
+      "027 A03 evidence link",
+      "034 R01 loading"
+    ]
+  },
+  "short": {
+    "viewport": {
+      "width": 390,
+      "height": 300
+    },
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "cases": [
+      "027 A02/A04/A05/R04",
+      "028 A04/A05/R05",
+      "034 R01"
+    ],
+    "review": "All six original short sheets plus current pending/focus and final short-loading sheets opened. Final real Tab/Enter exercised Stop waiting on all three loading families."
+  },
+  "large": {
+    "viewport": {
+      "width": 2560,
+      "height": 1347
+    },
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "cases": [
+      "027 A03 long",
+      "028 A01 long",
+      "034 A04 long"
+    ],
+    "review": "Large/sticky sheet opened for overall composition and chrome only; native detail judged at smaller sizes. Final034R01 includes current2560close crop individually opened."
+  },
+  "finalReviewLoading": {
+    "state": "034 R01",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewports": [
+      "390x844",
+      "1440x900",
+      "320x568 at200%",
+      "390x300",
+      "1024x844",
+      "2560x1347"
+    ],
+    "review": "All12 clean loading component crops individually opened; loading-to-loaded geometry and two destination sheets inspected. Explicit mobile order and desktop left context/right history reviewed."
+  },
+  "interactions": [
+    "027/028 confirmation dispatch; one pending X; Escape; reopen; result after dismissal; unknown result -> held check -> Stop waiting",
+    "Real Tab within current027/028 pending dialogs at390/1440/320200%/390x300 both themes; focus remains visible and Escape dismisses",
+    "034 long Unicode disclosure expands/collapses with complete content and appearance retention",
+    "034 filter empty/reset, first/last pagination edges, custom/native picker keyboard, pager hover/focus",
+    "Public Job reference is noninteractive, with no invented private job destination",
+    "Normal backdrop media forced no-preference: blur6px; reduced-transparency tested separately; attached navigation remains unblurred",
+    "Normal sticky header at scrolled desktop/large views; short/enlarged flow fallback and controls remain reachable"
+  ],
+  "sourceBinding": "Every row retains captured source hashes. Earlier candidate rows are not relabelled as current. Final focused retakes cover scoped focus/loading/evidence changes; no palette changes between phases.",
+  "latestSources": {
+    "../theme/theme.json": "66b5bcb18e01b7eafffefc40f4c2cf4350f25f84e75667ee834df04a18a4c274",
+    "../theme/tokens.css": "7182fc903adb1defec9935362a9692dcb0a0f310e9f016c4589366dd9a4d9480",
+    "../theme/components.mjs": "c32c788bf0ef1e15997329151ba9f599b135acf595e7e10d69aa80bbc55cd6d8",
+    "../theme/recipes.css": "567ebaf3eb3782b4064b9a1e61ccba5517bf3956176b970f98443e627bddf7a2",
+    "../stories/runtime.mjs": "bdce2e698ba11508eeeea44c44d4f4b8056893f626136581dcb29464f40ac5c7",
+    "../stories/screen.css": "472359f94f527bfd12e307409e4643f3ab44433d52935e1e03ec492604f665a1",
+    "../US-027/demo/screen.mjs": "09271c6f97cb1fab861a80ba2c0fff94e30b686354cedb58c42ecbaef9337f46",
+    "../US-028/demo/screen.mjs": "d1cd4a92c92c55b274b5d2a701691b797e6251487fd6a3d0ae676a8c3001d2ef",
+    "../US-034/demo/screen.mjs": "ba93c0785678e6aed4df42e12b7d88c7965ba7a8d051f42c9d86a4012fd9f06f"
+  },
+  "actualInspectedCaptures": "book-evidence.json rows contain individually opened versus contact-sheet status, exact original hashes and superseded/diagnostic disposition. Parent/page links without their own row are captured support.",
+  "unvisited": [
+    "US025 and US026 are assigned to the other independent reviewer; no acceptance here",
+    "Remaining parameter cross-products and all captured-only views",
+    "Non-Chromium rendering, physical devices, actual screen readers/assistive technology",
+    "Real application API permission execution, persistence, concurrency and backend integration"
+  ],
+  "humanColorAcceptance": "pending"
+}

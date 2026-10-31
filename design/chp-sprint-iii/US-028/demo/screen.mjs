@@ -1,0 +1,16 @@
+import model from './scenarios.mjs';import{seed,reduce,eligible}from'./state-machine.mjs';
+import{startStory,esc,control,card,jobSummary,facts,icon,dialog,feedback,unavailable}from'../../stories/runtime.mjs';
+function view(s){if(!s.access)return unavailable();let notice='';const uncertain=s.message?.startsWith('unknown');
+ if(s.pending==='read')return '';
+ else if(uncertain)notice=feedback(s.message==='unknown-read-failed'?'Status check failed':'Cancellation outcome unknown',s.message==='unknown-read-failed'?'The cancellation result is still unknown.':'Check the job before trying again.','warning',[{label:'Check job status',attrs:'data-action="check"',icon:'refresh'}]);
+ else if(s.message==='read-failed')notice=feedback('Job could not load','Try again to check the contract.','error',[{label:'Try again',attrs:'data-action="check"',icon:'refresh'}]);
+ else if(s.message==='failed')notice=feedback('Job was not cancelled','','error',[{label:'Refresh job',attrs:'data-action="check"',icon:'refresh'}]);
+ else if(s.message==='success')notice=feedback('Job cancelled','Requests closed; pending offers rejected.','success');
+ else if(s.message==='unchanged')notice=feedback('Job is unchanged','The read confirmed that cancellation did not occur. You can choose to cancel again.','info');
+ if(s.message==='read-failed')return notice;
+ const reason=s.status==='Completed'?'Completed jobs cannot be cancelled. Their payment and review history is preserved.':s.paid?'Payment is Paid. This job can no longer be cancelled.':s.status==='Cancelled'?'This job has already been cancelled.':s.status==='Unverified'?'The current job state could not be verified. Refresh before taking action.':null;
+ if(reason&&s.message!=='success')notice+=feedback('Cancellation unavailable',reason,'warning',s.status==='Unverified'?[{label:'Refresh job',attrs:'data-action="check"',icon:'refresh'}]:[]);
+ const task=reason?'':`<section class="card cancellation-card"><h2>Cancellation effects</h2><ul class="cancellation-effects"><li>Active requests will close.</li><li>Pending offers will be rejected.</li></ul><p class="retained-history">The accepted offer and history are retained.</p>${eligible(s)&&!uncertain&&s.message!=='read-failed'?`<div class="actions">${control('Cancel job','cancel-job',{emphasis:'primary',intent:'destructive',disabled:!!s.pending})}</div>`:''}</section>`;
+ let modal='';if(s.modal==='confirm')modal=dialog(s.pending?'Cancelling job':'Cancel job',`<p class="cu-dialog-reference">Job #41</p>${s.pending?`<div class="cu-dialog-progress" role="status">${icon('spinner')}<span>Submitting…</span></div>`:`<p>This cannot be undone.</p>${facts([['Current status',esc(s.status)],['Requests to close',String(s.requests)],['Offers to reject',String(s.offers)]])}`}`,s.pending?'':control('Keep job','dismiss',{variant:'outline'})+control('Confirm cancellation','confirm',{emphasis:'primary',intent:'destructive'}),{pending:!!s.pending});
+ return`${notice}${jobSummary(s)}<div class="story-grid story-grid--task cancellation-layout ${task?'':'story-grid--single'}">${task}<section class="card contract-summary"><h2>Contract summary</h2>${facts([['Payment',s.paid?'Paid':'Not paid'],['Active requests',String(s.requests)],['Pending offers',String(s.offers)]])}</section></div>${modal}`;}
+startStory({model,seed,reduce,view});

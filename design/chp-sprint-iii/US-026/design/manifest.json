@@ -1,0 +1,1270 @@
+{
+  "story": "US-026",
+  "themeVersion": "1.0.0",
+  "status": "LOCAL_DESIGN_COMPLETE_FIGMA_NOT_IMPORTED",
+  "provenance": {
+    "backlog": "C:/Users/thana/Downloads/Backlog (3).xlsx",
+    "acceptance": "Project Backlog row 27",
+    "tasks": "Sprint Backlog III rows 28–38"
+  },
+  "states": [
+    {
+      "id": "A01",
+      "title": "Start with no proof",
+      "kind": "empty",
+      "next": [
+        "A02",
+        "B01"
+      ],
+      "detail": "Entry from the US025 In Progress job. Proof list is loaded and genuinely empty."
+    },
+    {
+      "id": "A02",
+      "title": "Paste a delivery link",
+      "kind": "ready",
+      "next": [
+        "A03",
+        "B01"
+      ],
+      "detail": "Required HTTP(S) URL; attachment type is fixed to Proof. A local valid shape does not verify remote access."
+    },
+    {
+      "id": "A03",
+      "title": "Save once",
+      "kind": "saving",
+      "next": [
+        "A04",
+        "B02",
+        "B03",
+        "C02",
+        "C03"
+      ],
+      "detail": "One request in flight; announce Saving proof. Block repeated submits and navigation that would silently lose the draft."
+    },
+    {
+      "id": "A04",
+      "title": "Proof is saved",
+      "kind": "saved",
+      "next": [
+        "A05"
+      ],
+      "detail": "Show success only after server confirmation. Display saved URL and server upload_at in the viewer timezone."
+    },
+    {
+      "id": "A05",
+      "title": "Add another link",
+      "kind": "another",
+      "next": [
+        "A03",
+        "B01"
+      ],
+      "detail": "Existing evidence remains visible while a new independent URL is entered."
+    },
+    {
+      "id": "A06",
+      "title": "Review delivery evidence",
+      "kind": "two",
+      "next": [
+        "A05"
+      ],
+      "detail": "Newest-first list with full clickable URL and timestamp. Saving proof does not complete the job."
+    },
+    {
+      "id": "B01",
+      "title": "Correct the URL",
+      "kind": "urlerror",
+      "next": [
+        "A02"
+      ],
+      "detail": "Inline required or malformed-URL message; preserve the draft, focus the input, and prevent submission."
+    },
+    {
+      "id": "B02",
+      "title": "Attachment type rejected",
+      "kind": "typeerror",
+      "next": [
+        "A02"
+      ],
+      "detail": "Server rejected an invalid attachment_type. No saved row or success. Offer a fresh form with type fixed to Proof; keep the URL."
+    },
+    {
+      "id": "B03",
+      "title": "Connection lost during save",
+      "kind": "unknown",
+      "next": [
+        "B04",
+        "A04"
+      ],
+      "detail": "Outcome may be unknown. Refresh and reconcile the saved list before retrying. Never blindly replay the save."
+    },
+    {
+      "id": "B04",
+      "title": "Checked: link was not saved",
+      "kind": "notfound",
+      "next": [
+        "A03"
+      ],
+      "detail": "Authoritative refreshed list confirms no matching new evidence. Preserve URL and allow one explicit retry."
+    },
+    {
+      "id": "C01",
+      "title": "Saved proof cannot load",
+      "kind": "loaderror",
+      "next": [
+        "A01",
+        "A06"
+      ],
+      "detail": "Failed reads are not empty lists. Show one recovery action, without asserting that no proof exists."
+    },
+    {
+      "id": "C02",
+      "title": "Job status has changed",
+      "kind": "statuschanged",
+      "next": [
+        "A06"
+      ],
+      "detail": "A fresh server response says this job is no longer In Progress. Remove the submit action and refresh job context."
+    },
+    {
+      "id": "C03",
+      "title": "Access is no longer available",
+      "kind": "forbidden",
+      "next": [],
+      "detail": "Permission denied: remove private job details and proof URLs. Return to My Jobs; do not retain stale private data."
+    },
+    {
+      "id": "C04",
+      "title": "Loading saved proof",
+      "kind": "loading",
+      "next": [
+        "A01",
+        "A06",
+        "C01"
+      ],
+      "detail": "Initial loading is explicit. Do not display an empty-list conclusion or an enabled submit while context is unknown."
+    }
+  ],
+  "screenCount": 29,
+  "screens": [
+    {
+      "key": "A01-mobile-light",
+      "state": "A01",
+      "title": "Start with no proof",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1055,
+      "file": "screens/A01-mobile-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": true,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A02-mobile-light",
+      "state": "A02",
+      "title": "Paste a delivery link",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1055,
+      "file": "screens/A02-mobile-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A03-mobile-light",
+      "state": "A03",
+      "title": "Save once",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1055,
+      "file": "screens/A03-mobile-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Saving proof…",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": true,
+          "pending": true,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A04-mobile-light",
+      "state": "A04",
+      "title": "Proof is saved",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/A04-mobile-light.svg",
+      "textCount": 20,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 16,
+          "y": 687.9200000000001,
+          "width": 358,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A05-mobile-light",
+      "state": "A05",
+      "title": "Add another link",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1089,
+      "file": "screens/A05-mobile-light.svg",
+      "textCount": 25,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A06-mobile-light",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1051,
+      "file": "screens/A06-mobile-light.svg",
+      "textCount": 24,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 16,
+          "y": 837.1200000000001,
+          "width": 358,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B01-mobile-light",
+      "state": "B01",
+      "title": "Correct the URL",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1058,
+      "file": "screens/B01-mobile-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 602.72,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B02-mobile-light",
+      "state": "B02",
+      "title": "Attachment type rejected",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/B02-mobile-light.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Reopen proof form",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B03-mobile-light",
+      "state": "B03",
+      "title": "Connection lost during save",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/B03-mobile-light.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Check saved proof",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B04-mobile-light",
+      "state": "B04",
+      "title": "Checked: link was not saved",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1181,
+      "file": "screens/B04-mobile-light.svg",
+      "textCount": 24,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 725.92,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "C01-mobile-light",
+      "state": "C01",
+      "title": "Saved proof cannot load",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/C01-mobile-light.svg",
+      "textCount": 14,
+      "controls": [
+        {
+          "label": "Try again",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "C02-mobile-light",
+      "state": "C02",
+      "title": "Job status has changed",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/C02-mobile-light.svg",
+      "textCount": 20,
+      "controls": [
+        {
+          "label": "Refresh job",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "C03-mobile-light",
+      "state": "C03",
+      "title": "Access is no longer available",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/C03-mobile-light.svg",
+      "textCount": 9,
+      "controls": [
+        {
+          "label": "Go to My Jobs",
+          "x": 16,
+          "y": 396.24,
+          "width": 358,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "My Jobs"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "C04-mobile-light",
+      "state": "C04",
+      "title": "Loading saved proof",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/C04-mobile-light.svg",
+      "textCount": 13,
+      "controls": [],
+      "errors": []
+    },
+    {
+      "key": "A01-mobile-dark",
+      "state": "A01",
+      "title": "Start with no proof",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1055,
+      "file": "screens/A01-mobile-dark.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": true,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A02-mobile-dark",
+      "state": "A02",
+      "title": "Paste a delivery link",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1055,
+      "file": "screens/A02-mobile-dark.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 599.76,
+          "width": 318,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A04-mobile-dark",
+      "state": "A04",
+      "title": "Proof is saved",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/A04-mobile-dark.svg",
+      "textCount": 20,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 16,
+          "y": 687.9200000000001,
+          "width": 358,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A06-mobile-dark",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1051,
+      "file": "screens/A06-mobile-dark.svg",
+      "textCount": 24,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 16,
+          "y": 837.1200000000001,
+          "width": 358,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B02-mobile-dark",
+      "state": "B02",
+      "title": "Attachment type rejected",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/B02-mobile-dark.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Reopen proof form",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B03-mobile-dark",
+      "state": "B03",
+      "title": "Connection lost during save",
+      "device": "mobile",
+      "theme": "dark",
+      "tag": "",
+      "width": 390,
+      "height": 1000,
+      "file": "screens/B03-mobile-dark.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Check saved proof",
+          "x": 32,
+          "y": 408.32,
+          "width": 326,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A01-desktop-light",
+      "state": "A01",
+      "title": "Start with no proof",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/A01-desktop-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 84,
+          "y": 599.76,
+          "width": 520,
+          "height": 48,
+          "role": "primary",
+          "disabled": true,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A02-desktop-light",
+      "state": "A02",
+      "title": "Paste a delivery link",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/A02-desktop-light.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 84,
+          "y": 599.76,
+          "width": 520,
+          "height": 48,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A04-desktop-light",
+      "state": "A04",
+      "title": "Proof is saved",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/A04-desktop-light.svg",
+      "textCount": 24,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 64,
+          "y": 667.2,
+          "width": 560,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A06-desktop-light",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/A06-desktop-light.svg",
+      "textCount": 28,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 64,
+          "y": 816.4000000000001,
+          "width": 560,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B02-desktop-light",
+      "state": "B02",
+      "title": "Attachment type rejected",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/B02-desktop-light.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Reopen proof form",
+          "x": 80,
+          "y": 387.6,
+          "width": 1120,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "B03-desktop-light",
+      "state": "B03",
+      "title": "Connection lost during save",
+      "device": "desktop",
+      "theme": "light",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/B03-desktop-light.svg",
+      "textCount": 19,
+      "controls": [
+        {
+          "label": "Check saved proof",
+          "x": 80,
+          "y": 387.6,
+          "width": 1120,
+          "height": 48,
+          "role": "recovery",
+          "disabled": false,
+          "pending": false,
+          "target": "A02"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A06-desktop-dark",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "device": "desktop",
+      "theme": "dark",
+      "tag": "",
+      "width": 1280,
+      "height": 1000,
+      "file": "screens/A06-desktop-dark.svg",
+      "textCount": 28,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 64,
+          "y": 816.4000000000001,
+          "width": 560,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A06-mobile-light-narrow-long-url",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "narrow-long-url",
+      "width": 320,
+      "height": 1175,
+      "file": "screens/A06-mobile-light-narrow-long-url.svg",
+      "textCount": 24,
+      "controls": [
+        {
+          "label": "Add another proof",
+          "x": 16,
+          "y": 961.44,
+          "width": 288,
+          "height": 48,
+          "role": "entry",
+          "disabled": false,
+          "pending": false,
+          "target": "A05"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "key": "A02-mobile-light-text-200",
+      "state": "A02",
+      "title": "Paste a delivery link",
+      "device": "mobile",
+      "theme": "light",
+      "tag": "text-200",
+      "width": 390,
+      "height": 1823,
+      "file": "screens/A02-mobile-light-text-200.svg",
+      "textCount": 22,
+      "controls": [
+        {
+          "label": "Save proof",
+          "x": 36,
+          "y": 1105.36,
+          "width": 318,
+          "height": 68,
+          "role": "primary",
+          "disabled": false,
+          "pending": false,
+          "target": "A03"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "chapters": [
+    {
+      "key": "00-overview",
+      "title": "Start here",
+      "subtitle": "A three-step overview and a chapter map.",
+      "file": "boards/00-overview.svg",
+      "width": 3700,
+      "height": 1050,
+      "screens": [],
+      "positions": []
+    },
+    {
+      "key": "01-main-flow",
+      "title": "Add proof. Save. Keep the evidence.",
+      "subtitle": "READ LEFT → RIGHT  ·  Mobile / Light  ·  Six moments explain the everyday flow.",
+      "file": "boards/01-main-flow.svg",
+      "width": 3800,
+      "height": 1609,
+      "screens": [
+        "A01-mobile-light",
+        "A02-mobile-light",
+        "A03-mobile-light",
+        "A04-mobile-light",
+        "A05-mobile-light",
+        "A06-mobile-light"
+      ],
+      "positions": [
+        {
+          "screen": "A01-mobile-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "A02-mobile-light",
+          "x": 680,
+          "y": 300
+        },
+        {
+          "screen": "A03-mobile-light",
+          "x": 1280,
+          "y": 300
+        },
+        {
+          "screen": "A04-mobile-light",
+          "x": 1880,
+          "y": 300
+        },
+        {
+          "screen": "A05-mobile-light",
+          "x": 2480,
+          "y": 300
+        },
+        {
+          "screen": "A06-mobile-light",
+          "x": 3080,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "key": "02-validation",
+      "title": "A rejected save has a clear way back.",
+      "subtitle": "B01: URL field issue  ·  B02: attachment type issue  ·  Correct the form, then continue.",
+      "file": "boards/02-validation.svg",
+      "width": 1400,
+      "height": 2873,
+      "screens": [
+        "B01-mobile-light",
+        "A02-mobile-light",
+        "B02-mobile-light",
+        "A02-mobile-light"
+      ],
+      "positions": [
+        {
+          "screen": "B01-mobile-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "A02-mobile-light",
+          "x": 680,
+          "y": 300
+        },
+        {
+          "screen": "B02-mobile-light",
+          "x": 80,
+          "y": 1598
+        },
+        {
+          "screen": "A02-mobile-light",
+          "x": 680,
+          "y": 1598
+        }
+      ]
+    },
+    {
+      "key": "03-recovery",
+      "title": "Check before you try again.",
+      "subtitle": "Connection loss can hide a successful save. Refresh first; retry only after a confirmed miss.",
+      "file": "boards/03-recovery.svg",
+      "width": 1400,
+      "height": 2941,
+      "screens": [
+        "B03-mobile-light",
+        "B04-mobile-light",
+        "B03-mobile-light",
+        "A04-mobile-light"
+      ],
+      "positions": [
+        {
+          "screen": "B03-mobile-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "B04-mobile-light",
+          "x": 680,
+          "y": 300
+        },
+        {
+          "screen": "B03-mobile-light",
+          "x": 80,
+          "y": 1721
+        },
+        {
+          "screen": "A04-mobile-light",
+          "x": 680,
+          "y": 1721
+        }
+      ]
+    },
+    {
+      "key": "04-access",
+      "title": "Keep loading, failure and access distinct.",
+      "subtitle": "Independent entry and interruption states. Refresh returns to the latest permitted job view.",
+      "file": "boards/04-access.svg",
+      "width": 2600,
+      "height": 1520,
+      "screens": [
+        "C04-mobile-light",
+        "C01-mobile-light",
+        "C02-mobile-light",
+        "C03-mobile-light"
+      ],
+      "positions": [
+        {
+          "screen": "C04-mobile-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "C01-mobile-light",
+          "x": 680,
+          "y": 300
+        },
+        {
+          "screen": "C02-mobile-light",
+          "x": 1280,
+          "y": 300
+        },
+        {
+          "screen": "C03-mobile-light",
+          "x": 1880,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "key": "05-desktop",
+      "title": "The same task, with room for context.",
+      "subtitle": "Desktop / Light  ·  Form and evidence sit together  ·  Same labels, states and save behavior.",
+      "file": "boards/05-desktop.svg",
+      "width": 5400,
+      "height": 1520,
+      "screens": [
+        "A01-desktop-light",
+        "A02-desktop-light",
+        "A04-desktop-light",
+        "A06-desktop-light"
+      ],
+      "positions": [
+        {
+          "screen": "A01-desktop-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "A02-desktop-light",
+          "x": 1380,
+          "y": 300
+        },
+        {
+          "screen": "A04-desktop-light",
+          "x": 2680,
+          "y": 300
+        },
+        {
+          "screen": "A06-desktop-light",
+          "x": 3980,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "key": "06-dark",
+      "title": "A second theme, the same story.",
+      "subtitle": "Mobile / Dark  ·  Inherited Rose × Slate tokens  ·  Errors keep a distinct signal and explicit copy.",
+      "file": "boards/06-dark.svg",
+      "width": 3800,
+      "height": 1575,
+      "screens": [
+        "A01-mobile-dark",
+        "A02-mobile-dark",
+        "A04-mobile-dark",
+        "A06-mobile-dark",
+        "B02-mobile-dark",
+        "B03-mobile-dark"
+      ],
+      "positions": [
+        {
+          "screen": "A01-mobile-dark",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "A02-mobile-dark",
+          "x": 680,
+          "y": 300
+        },
+        {
+          "screen": "A04-mobile-dark",
+          "x": 1280,
+          "y": 300
+        },
+        {
+          "screen": "A06-mobile-dark",
+          "x": 1880,
+          "y": 300
+        },
+        {
+          "screen": "B02-mobile-dark",
+          "x": 2480,
+          "y": 300
+        },
+        {
+          "screen": "B03-mobile-dark",
+          "x": 3080,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "key": "07-desktop-recovery",
+      "title": "Recovery stays beside the evidence.",
+      "subtitle": "Desktop save rejection and interrupted-save references. A dark saved-list companion closes the theme reference.",
+      "file": "boards/07-desktop-recovery.svg",
+      "width": 4100,
+      "height": 1520,
+      "screens": [
+        "B02-desktop-light",
+        "B03-desktop-light",
+        "A06-desktop-dark"
+      ],
+      "positions": [
+        {
+          "screen": "B02-desktop-light",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "B03-desktop-light",
+          "x": 1380,
+          "y": 300
+        },
+        {
+          "screen": "A06-desktop-dark",
+          "x": 2680,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "key": "08-content-fit",
+      "title": "Long links and larger text get space.",
+      "subtitle": "320px / long URL  ·  200% text / full-content reference  ·  Controls and evidence stay reachable.",
+      "file": "boards/08-content-fit.svg",
+      "width": 1400,
+      "height": 2343,
+      "screens": [
+        "A06-mobile-light-narrow-long-url",
+        "A02-mobile-light-text-200"
+      ],
+      "positions": [
+        {
+          "screen": "A06-mobile-light-narrow-long-url",
+          "x": 80,
+          "y": 300
+        },
+        {
+          "screen": "A02-mobile-light-text-200",
+          "x": 680,
+          "y": 300
+        }
+      ]
+    }
+  ],
+  "layout": [
+    {
+      "chapter": "00-overview",
+      "x": 100,
+      "y": 80,
+      "width": 3700,
+      "height": 1050
+    },
+    {
+      "chapter": "01-main-flow",
+      "x": 100,
+      "y": 1310,
+      "width": 3800,
+      "height": 1609
+    },
+    {
+      "chapter": "02-validation",
+      "x": 100,
+      "y": 3099,
+      "width": 1400,
+      "height": 2873
+    },
+    {
+      "chapter": "03-recovery",
+      "x": 100,
+      "y": 6152,
+      "width": 1400,
+      "height": 2941
+    },
+    {
+      "chapter": "04-access",
+      "x": 100,
+      "y": 9273,
+      "width": 2600,
+      "height": 1520
+    },
+    {
+      "chapter": "05-desktop",
+      "x": 100,
+      "y": 10973,
+      "width": 5400,
+      "height": 1520
+    },
+    {
+      "chapter": "06-dark",
+      "x": 100,
+      "y": 12673,
+      "width": 3800,
+      "height": 1575
+    },
+    {
+      "chapter": "07-desktop-recovery",
+      "x": 100,
+      "y": 14428,
+      "width": 4100,
+      "height": 1520
+    },
+    {
+      "chapter": "08-content-fit",
+      "x": 100,
+      "y": 16128,
+      "width": 1400,
+      "height": 2343
+    }
+  ],
+  "limits": [
+    "No application behavior is implemented.",
+    "Figma import deferred by the user because the file has reached its three-page Starter limit.",
+    "SVG masters contain editable text and vectors; Figma-native Auto Layout, components and prototype reactions are not included.",
+    "URL field accepts web links; file upload, edit and delete are outside this story.",
+    "UI validation and recovery behavior are design proposals where the backlog does not specify them."
+  ]
+}

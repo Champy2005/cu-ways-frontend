@@ -1,0 +1,412 @@
+[
+  {
+    "recordId": "actions",
+    "title": "Actions and links",
+    "sources": [
+      "../theme/theme.json",
+      "../theme/recipes.css",
+      "../theme/components.mjs"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "back-navigation",
+    "title": "Back navigation",
+    "sources": [
+      "../theme/components.mjs",
+      "../theme/recipes.css"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "dialog",
+    "title": "Dialog frame and actions",
+    "sources": [
+      "../theme/components.mjs",
+      "../theme/recipes.css",
+      "../US-025/demo/screen.mjs",
+      "../US-025/demo/screen.css",
+      "../stories/runtime.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "US025 Start",
+      "US026 Add proof",
+      "US027 completion",
+      "US028 cancellation"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "dropdown",
+    "title": "Dropdown control and menu",
+    "sources": [
+      "../theme/components.mjs",
+      "../theme/recipes.css"
+    ],
+    "consumers": [
+      "Job status filter",
+      "Review rating filter",
+      "Author controls"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "empty-state",
+    "title": "Empty list and filtered-result composition",
+    "sources": [
+      "../US-025/demo/screen.mjs",
+      "../US-025/demo/screen.css",
+      "../US-034/demo/screen.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "us025-list",
+      "us034-reviews"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "evidence-link",
+    "title": "Delivery evidence link and type",
+    "sources": [
+      "../theme/components.mjs",
+      "../theme/recipes.css",
+      "../US-026/demo/screen.mjs",
+      "../US-027/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-026 saved proof",
+      "US-027 delivery evidence"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "feedback",
+    "title": "Feedback and recovery",
+    "sources": [
+      "../theme/theme.json",
+      "../theme/components.mjs",
+      "../theme/recipes.css"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "job-card",
+    "title": "Job list card",
+    "sources": [
+      "../US-025/demo/screen.mjs",
+      "../US-025/demo/screen.css"
+    ],
+    "consumers": [
+      "US-025 list and pending-return list"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "job-overview",
+    "title": "Job overview and status panel",
+    "sources": [
+      "../US-025/demo/screen.mjs",
+      "../US-025/demo/screen.css"
+    ],
+    "consumers": [
+      "US-025 accepted, active, terminal and recovery details"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "navigation",
+    "title": "Navigation hover and selection",
+    "sources": [
+      "../theme/components.mjs",
+      "../theme/recipes.css"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "pagination",
+    "title": "Review pagination",
+    "sources": [
+      "../US-034/demo/screen.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "US-034 review history"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "pending-operation",
+    "title": "Pending operation and background recovery",
+    "sources": [
+      "../US-025/demo/state-machine.mjs",
+      "../US-025/demo/screen.mjs",
+      "../US-026/demo/state-machine.mjs",
+      "../US-026/demo/screen.mjs",
+      "../stories/runtime.mjs",
+      "../US-027/demo/state-machine.mjs",
+      "../US-028/demo/state-machine.mjs",
+      "../theme/operations.mjs"
+    ],
+    "consumers": [
+      "Start",
+      "Proof save/read",
+      "Completion",
+      "Cancellation"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "proof-header",
+    "title": "Proof page heading",
+    "sources": [
+      "../US-026/demo/screen.mjs",
+      "../US-026/demo/screen.css"
+    ],
+    "consumers": [
+      "US-026 normal and recovery states"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "proof-workspace",
+    "title": "Proof workspace",
+    "sources": [
+      "../US-026/demo/screen.mjs",
+      "../US-026/demo/screen.css",
+      "../US-026/demo/state-machine.mjs"
+    ],
+    "consumers": [
+      "US-026 all proof states"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "rating-summary",
+    "title": "Rating summary and distribution",
+    "sources": [
+      "../US-034/demo/screen.mjs",
+      "../stories/screen.css",
+      "../theme/theme.json"
+    ],
+    "consumers": [
+      "us034-reviews"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "recovery-page",
+    "title": "Unavailable, loading and recovery page",
+    "sources": [
+      "../US-025/demo/screen.mjs",
+      "../US-026/demo/screen.mjs",
+      "../stories/runtime.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "responsive-scale",
+    "title": "Responsive size and type",
+    "sources": [
+      "../theme/theme.json",
+      "../theme/recipes.css"
+    ],
+    "consumers": [
+      "All five stories"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "review-comment",
+    "title": "Long review disclosure",
+    "sources": [
+      "../US-034/demo/screen.mjs",
+      "../US-034/demo/state-machine.mjs",
+      "../stories/runtime.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "review-list"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "review-list",
+    "title": "Verified review history and filters",
+    "sources": [
+      "../US-034/demo/screen.mjs",
+      "../stories/screen.css",
+      "../stories/runtime.mjs"
+    ],
+    "consumers": [
+      "us034-reviews"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "status-placement",
+    "title": "Entity status heading",
+    "sources": [
+      "../theme/recipes.css",
+      "../stories/runtime.mjs",
+      "../US-025/demo/screen.mjs",
+      "../US-026/demo/screen.mjs",
+      "../theme/components.mjs",
+      "../theme/theme.json"
+    ],
+    "consumers": [
+      "job-card",
+      "proof-header",
+      "us027-completion",
+      "us028-cancellation"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us025-list",
+    "title": "My Jobs list",
+    "sources": [
+      "../US-025/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-025"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us025-detail",
+    "title": "Job details and lifecycle",
+    "sources": [
+      "../US-025/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-025"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us025-dialog",
+    "title": "Start confirmation and pending operation",
+    "sources": [
+      "../US-025/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-025"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us026-proof",
+    "title": "Proof of delivery workspace",
+    "sources": [
+      "../US-026/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-026"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us027-completion",
+    "title": "Job completion and its dialogs",
+    "sources": [
+      "../US-027/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-027"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us028-cancellation",
+    "title": "Job cancellation",
+    "sources": [
+      "../US-028/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-028"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "us034-reviews",
+    "title": "Marketer profile and verified reviews",
+    "sources": [
+      "../US-034/demo/screen.mjs"
+    ],
+    "consumers": [
+      "US-034"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "completion-checklist",
+    "title": "Completion requirements and evidence",
+    "sources": [
+      "../US-027/demo/screen.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "US-027 completion states"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  },
+  {
+    "recordId": "cancellation-task",
+    "title": "Cancellation effects and contract summary",
+    "sources": [
+      "../US-028/demo/screen.mjs",
+      "../stories/screen.css"
+    ],
+    "consumers": [
+      "us028-cancellation"
+    ],
+    "reviewScope": "Shared requirements inspected in normal sheets and selected native/live captures; not blanket child-detail acceptance.",
+    "evidenceManifest": "book-evidence.json"
+  }
+]

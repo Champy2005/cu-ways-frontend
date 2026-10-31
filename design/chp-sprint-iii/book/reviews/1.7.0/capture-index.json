@@ -1,0 +1,3586 @@
+{
+  "revision": "1.7.0",
+  "reviewBoundary": "Capture-level inspection only; not all94 state visual approval. Each record links the owning component and its contexts.",
+  "captures": [
+    {
+      "id": "025-L02-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-page.png",
+      "subject": "job-card",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-component.png",
+      "subject": "job-card",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-parent.png",
+      "subject": "job-card",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-1440-page.png",
+      "subject": "job-card",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-1440-component.png",
+      "subject": "job-card",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-1440-parent.png",
+      "subject": "job-card",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-page.png",
+      "subject": "job-card",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-component.png",
+      "subject": "job-card",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-parent.png",
+      "subject": "job-card",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-1440-page.png",
+      "subject": "job-card",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-1440-component.png",
+      "subject": "job-card",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-1440-parent.png",
+      "subject": "job-card",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-390-component.png",
+      "subject": "empty-state",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-1440-component.png",
+      "subject": "empty-state",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-390-component.png",
+      "subject": "empty-state",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-1440-component.png",
+      "subject": "empty-state",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-light-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-light-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-light-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-light-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-dark-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-dark-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-dark-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L04-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L04-dark-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-light-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L05",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-light-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L05",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-light-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L05",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-light-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L05",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-dark-390-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L05",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-dark-390-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L05",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-dark-1440-page.png",
+      "subject": "empty-state",
+      "kind": "page",
+      "state": "L05",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L05-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L05-dark-1440-parent.png",
+      "subject": "empty-state",
+      "kind": "parent",
+      "state": "L05",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-390-page.png",
+      "subject": "proof-header",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-390-component.png",
+      "subject": "proof-header",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-390-parent.png",
+      "subject": "proof-header",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-1440-page.png",
+      "subject": "proof-header",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-1440-component.png",
+      "subject": "proof-header",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-1440-parent.png",
+      "subject": "proof-header",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-page.png",
+      "subject": "proof-header",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-component.png",
+      "subject": "proof-header",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-parent.png",
+      "subject": "proof-header",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-1440-page.png",
+      "subject": "proof-header",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-1440-component.png",
+      "subject": "proof-header",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-1440-parent.png",
+      "subject": "proof-header",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-390-page.png",
+      "subject": "jobs-entry",
+      "kind": "page",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-390-component.png",
+      "subject": "jobs-entry",
+      "kind": "component",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-390-parent.png",
+      "subject": "jobs-entry",
+      "kind": "parent",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-1440-page.png",
+      "subject": "jobs-entry",
+      "kind": "page",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-1440-component.png",
+      "subject": "jobs-entry",
+      "kind": "component",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-light-1440-parent.png",
+      "subject": "jobs-entry",
+      "kind": "parent",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-390-page.png",
+      "subject": "jobs-entry",
+      "kind": "page",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-390-component.png",
+      "subject": "jobs-entry",
+      "kind": "component",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-390-parent.png",
+      "subject": "jobs-entry",
+      "kind": "parent",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-1440-page.png",
+      "subject": "jobs-entry",
+      "kind": "page",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-1440-component.png",
+      "subject": "jobs-entry",
+      "kind": "component",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-entry-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-entry-dark-1440-parent.png",
+      "subject": "jobs-entry",
+      "kind": "parent",
+      "state": "A01 -> My Jobs",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-390-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-390-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-390-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-1440-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-1440-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-1440-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-390-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-390-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-390-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-1440-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-1440-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-1440-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-390-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-390-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-390-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-1440-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-1440-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-1440-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-390-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-390-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-390-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-1440-page.png",
+      "subject": "job-summary",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-1440-component.png",
+      "subject": "job-summary",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-1440-parent.png",
+      "subject": "job-summary",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-long-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-long-page.png",
+      "subject": "enlarged-long",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-long-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-long-component.png",
+      "subject": "enlarged-long",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-long-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-long-parent.png",
+      "subject": "enlarged-long",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-long-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-long-page.png",
+      "subject": "enlarged-long",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-long-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-long-component.png",
+      "subject": "enlarged-long",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-long-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-long-parent.png",
+      "subject": "enlarged-long",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-320-200-long-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-320-200-long-page.png",
+      "subject": "enlarged-long",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-320-200-long-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-320-200-long-parent.png",
+      "subject": "enlarged-long",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-320-200-long-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-320-200-long-page.png",
+      "subject": "enlarged-long",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-320-200-long-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-320-200-long-component.png",
+      "subject": "enlarged-long",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-320-200-long-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-320-200-long-parent.png",
+      "subject": "enlarged-long",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-320-200-long-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-320-200-long-page.png",
+      "subject": "enlarged-long",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-320-200-long-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-320-200-long-component.png",
+      "subject": "enlarged-long",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-320-200-long-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-320-200-long-parent.png",
+      "subject": "enlarged-long",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-300-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-300-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-300-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-300-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-390-300-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-390-300-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-2560-1347-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-2560-1347-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-2560-1347-component",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-2560-1347-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-light-2560-1347-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-light-2560-1347-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-3840-2160-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-3840-2160-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-3840-2160-component",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-3840-2160-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-dark-3840-2160-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-dark-3840-2160-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-2560-1347-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-2560-1347-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-2560-1347-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-2560-1347-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-2560-1347-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-2560-1347-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-3840-2160-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-3840-2160-page.png",
+      "subject": "responsive",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-3840-2160-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-3840-2160-component.png",
+      "subject": "responsive",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-light-3840-2160-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-light-3840-2160-parent.png",
+      "subject": "responsive",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-390-page.png",
+      "subject": "dropdown",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-390-component.png",
+      "subject": "dropdown",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-390-parent.png",
+      "subject": "dropdown",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-1440-page.png",
+      "subject": "dropdown",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-1440-component.png",
+      "subject": "dropdown",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-light-1440-parent.png",
+      "subject": "dropdown",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-390-page.png",
+      "subject": "dropdown",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-390-component.png",
+      "subject": "dropdown",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-390-parent.png",
+      "subject": "dropdown",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-1440-page.png",
+      "subject": "dropdown",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-1440-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-1440-component.png",
+      "subject": "dropdown",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-picker-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-picker-dark-1440-parent.png",
+      "subject": "dropdown",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-confirm-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-confirm-light-390-page.png",
+      "subject": "live-confirmation",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-confirm-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-confirm-light-390-component.png",
+      "subject": "live-confirmation",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-confirm-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-confirm-light-390-parent.png",
+      "subject": "live-confirmation",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-light-390-page.png",
+      "subject": "live-confirmation",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-light-390-component.png",
+      "subject": "live-confirmation",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-light-390-parent.png",
+      "subject": "live-confirmation",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-dark-390-page.png",
+      "subject": "live-confirmation",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-dark-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-dark-390-component.png",
+      "subject": "live-confirmation",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-live-pending-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-live-pending-dark-390-parent.png",
+      "subject": "live-confirmation",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-native-fallback-light-390-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-native-fallback-light-390-page.png",
+      "subject": "native-fallback",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-native-fallback-light-390-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-native-fallback-light-390-component.png",
+      "subject": "native-fallback",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-native-fallback-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-native-fallback-light-390-parent.png",
+      "subject": "native-fallback",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-320-200-parent-retake-page",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-320-200-parent-retake-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "027-A01-dark-320-200-parent-retake-parent",
+      "file": "evidence/1.7.0/reviewer-shell/027-A01-dark-320-200-parent-retake-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-320-200-parent-retake-page",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-320-200-parent-retake-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "028-A01-light-320-200-parent-retake-parent",
+      "file": "evidence/1.7.0/reviewer-shell/028-A01-light-320-200-parent-retake-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-200-empty-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-200-empty-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-200-empty-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-200-empty-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-320-200-empty-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-320-200-empty-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-dark-320-200-empty-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-dark-320-200-empty-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-scrolled-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-scrolled-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L03",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-scrolled-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-scrolled-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L03-light-320-300-scrolled-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L03-light-320-300-scrolled-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L03",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-320-200-title-stress-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-320-200-title-stress-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-320-200-title-stress-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-320-200-title-stress-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-A01-dark-320-200-title-stress-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-A01-dark-320-200-title-stress-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-320-200-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-320-200-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-390-200-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-200-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-390-200-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-200-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-light-390-200-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-light-390-200-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-320-200-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-200-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-200-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-200-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-200-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-L02-dark-390-200-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-L02-dark-390-200-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-390-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-390-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-390-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-390-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-390-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-390-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-1440-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-1440-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-1440-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-1440-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-light-1440-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-light-1440-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-dark-390-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-dark-390-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-dark-390-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-dark-390-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-dark-1440-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-dark-1440-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-dark-1440-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-dark-1440-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-D02-dark-1440-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-D02-dark-1440-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-confirm-dark-320-200-final-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-confirm-dark-320-200-final-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-confirm-dark-320-200-final-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-confirm-dark-320-200-final-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "D02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-confirm-dark-320-200-final-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-confirm-dark-320-200-final-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "D02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-light-320-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-light-320-200-page.png",
+      "subject": "View job keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-light-320-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-light-320-200-component.png",
+      "subject": "View job keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-light-320-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-light-320-200-parent.png",
+      "subject": "View job keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-light-320-200-manual-scroll-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-light-320-200-manual-scroll-page.png",
+      "subject": "View job keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-dark-390-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-dark-390-200-page.png",
+      "subject": "View job keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-dark-390-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-dark-390-200-component.png",
+      "subject": "View job keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-keyboard-dark-390-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-keyboard-dark-390-200-parent.png",
+      "subject": "View job keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-320-568-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-320-568-200-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-320-568-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-320-568-200-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-320-568-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-320-568-200-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-568-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-568-200-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-568-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-568-200-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-568-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-568-200-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-844-100-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-844-100-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-844-100-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-844-100-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-light-390-844-100-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-light-390-844-100-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-320-568-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-320-568-200-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-320-568-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-320-568-200-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-320-568-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-320-568-200-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-568-200-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-568-200-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-568-200-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-568-200-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-568-200-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-568-200-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-844-100-page",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-844-100-page.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "page",
+      "state": "L02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-844-100-component",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-844-100-component.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "component",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "025-focus-final-dark-390-844-100-parent",
+      "file": "evidence/1.7.0/reviewer-shell/025-focus-final-dark-390-844-100-parent.png",
+      "subject": "View job actual keyboard focus",
+      "kind": "parent",
+      "state": "L02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-light-390-844-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-light-390-844-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-light-390-844-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-light-390-844-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-light-390-844-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-light-390-844-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-dark-390-844-page",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-dark-390-844-page.png",
+      "subject": "followup rendered review",
+      "kind": "page",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-dark-390-844-component",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-dark-390-844-component.png",
+      "subject": "followup rendered review",
+      "kind": "component",
+      "state": "A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "026-focus-final-dark-390-844-parent",
+      "file": "evidence/1.7.0/reviewer-shell/026-focus-final-dark-390-844-parent.png",
+      "subject": "followup rendered review",
+      "kind": "parent",
+      "state": "A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-shell"
+    },
+    {
+      "id": "034-A01-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A01-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A01-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A01-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A01-light-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A01-light-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A01-light-1440x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A01-light-1440x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A01-light-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A01-light-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A04-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A04-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A04-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A04-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A04-light-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A04-light-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A04-light-1440x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A04-light-1440x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-A04-light-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-A04-light-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-B02-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/034-B02-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 B02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-B02-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/034-B02-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-B02-light-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-B02-light-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "034-B02-light-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/034-B02-light-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 R02",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "028-R02-light-390x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/028-R02-light-390x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-light-320x420-text200-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-light-320x420-text200-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-light-320x420-text200-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-light-320x420-text200-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-light-320x420-text200-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-light-320x420-text200-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-light-320x420-text200-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-light-320x420-text200-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-light-320x420-text200-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-light-320x420-text200-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-dark-320x420-text200-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-dark-320x420-text200-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-dark-320x420-text200-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-dark-320x420-text200-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-dark-320x420-text200-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-dark-320x420-text200-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-dark-320x420-text200-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-dark-320x420-text200-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "retake-034-A04-dark-320x420-text200-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/retake-034-A04-dark-320x420-text200-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "superseded",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A01",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-1440x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-1440x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-dark-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-dark-390x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 B02",
+      "inspectionStatus": "inspected via contact sheet",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-dark-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-dark-390x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-dark-390x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-dark-390x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-dark-390x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-dark-390x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A01",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-1440x900-text100-standard-base-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-1440x900-text100-standard-base-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-1440x900-text100-standard-base-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A01",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-390x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 R02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-light-390x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-light-390x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-light-1440x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-light-1440x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 A02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-390x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-390x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-A02-dark-1440x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-A02-dark-1440x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 A02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-page.png",
+      "subject": "US-028",
+      "kind": "page",
+      "state": "US-028 R02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-parent.png",
+      "subject": "US-028",
+      "kind": "parent",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-cancellation-task-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-cancellation-task-component.png",
+      "subject": "cancellation-task",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-cancellation-effects-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-cancellation-effects-component.png",
+      "subject": "cancellation-effects",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-contract-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-contract-summary-component.png",
+      "subject": "contract-summary",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-028-R02-dark-1440x900-text100-standard-base-status-placement-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-028-R02-dark-1440x900-text100-standard-base-status-placement-component.png",
+      "subject": "status-placement",
+      "kind": "component",
+      "state": "US-028 R02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-2327x1200-text100-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-2327x1200-text100-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-2327x1200-text100-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-2327x1200-text100-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-2327x1200-text100-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-2327x1200-text100-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-2327x1200-text100-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-2327x1200-text100-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-2327x1200-text100-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-2327x1200-text100-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-320x420-text200-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-320x420-text200-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-320x420-text200-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-320x420-text200-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-320x420-text200-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-320x420-text200-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-320x420-text200-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-320x420-text200-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-light-320x420-text200-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-light-320x420-text200-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-light-320x420-text200-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-light-320x420-text200-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-light-320x420-text200-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-light-320x420-text200-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-light-320x420-text200-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-light-320x420-text200-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-B02-light-320x420-text200-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-B02-light-320x420-text200-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 B02",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-2560x1347-text100-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-2560x1347-text100-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-2560x1347-text100-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-2560x1347-text100-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-2560x1347-text100-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-2560x1347-text100-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-2560x1347-text100-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-2560x1347-text100-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-2560x1347-text100-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-2560x1347-text100-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-320x420-text200-long-stress-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-page.png",
+      "subject": "US-034",
+      "kind": "page",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-320x420-text200-long-stress-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-parent.png",
+      "subject": "US-034",
+      "kind": "parent",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-320x420-text200-long-stress-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-320x420-text200-long-stress-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A04-dark-320x420-text200-long-stress-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-light-1440-expanded-page",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-light-1440-expanded-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-light-1440-expanded-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-light-1440-expanded-parent.png",
+      "subject": "review-comment",
+      "kind": "parent",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-light-1440-expanded-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-light-1440-expanded-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-light-1440-expanded-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-light-1440-expanded-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-light-1440-expanded-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-light-1440-expanded-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-dark-320-expanded-page",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-dark-320-expanded-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-dark-320-expanded-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-dark-320-expanded-parent.png",
+      "subject": "review-comment",
+      "kind": "parent",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-dark-320-expanded-review-comment-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-dark-320-expanded-review-comment-component.png",
+      "subject": "review-comment",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-dark-320-expanded-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-dark-320-expanded-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-A04-dark-320-expanded-rating-summary-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-A04-dark-320-expanded-rating-summary-component.png",
+      "subject": "rating-summary",
+      "kind": "component",
+      "state": "US-034 A04 expanded",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-light-390-filter-open-page",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-light-390-filter-open-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A05 rating picker open",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-light-390-filter-open-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-light-390-filter-open-parent.png",
+      "subject": "review-comment",
+      "kind": "parent",
+      "state": "US-034 A05 rating picker open",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-light-390-filter-open-review-list-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-light-390-filter-open-review-list-component.png",
+      "subject": "review-list",
+      "kind": "component",
+      "state": "US-034 A05 rating picker open",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-dark-1440-job-modal-page",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-dark-1440-job-modal-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A01 linked Job41 modal",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-dark-1440-job-modal-parent",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-dark-1440-job-modal-parent.png",
+      "subject": "review-comment",
+      "kind": "parent",
+      "state": "US-034 A01 linked Job41 modal",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "interaction-final-034-dark-1440-job-modal-job-modal-component",
+      "file": "evidence/1.7.0/reviewer-reviews/interaction-final-034-dark-1440-job-modal-job-modal-component.png",
+      "subject": "job-modal",
+      "kind": "component",
+      "state": "US-034 A01 linked Job41 modal",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "keyboard-final-028-A04-light-320x420-text200-actions-page",
+      "file": "evidence/1.7.0/reviewer-reviews/keyboard-final-028-A04-light-320x420-text200-actions-page.png",
+      "subject": "cancellation-task",
+      "kind": "page",
+      "state": "US-028 A04 enlarged keyboard actions",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "keyboard-final-028-A04-light-320x420-text200-actions-dialog",
+      "file": "evidence/1.7.0/reviewer-reviews/keyboard-final-028-A04-light-320x420-text200-actions-dialog-component.png",
+      "subject": "cancellation-dialog",
+      "kind": "component",
+      "state": "US-028 A04 enlarged keyboard actions",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "keyboard-final-028-A04-dark-320x420-text200-actions-page",
+      "file": "evidence/1.7.0/reviewer-reviews/keyboard-final-028-A04-dark-320x420-text200-actions-page.png",
+      "subject": "cancellation-task",
+      "kind": "page",
+      "state": "US-028 A04 enlarged keyboard actions",
+      "inspectionStatus": "captured only",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "keyboard-final-028-A04-dark-320x420-text200-actions-dialog",
+      "file": "evidence/1.7.0/reviewer-reviews/keyboard-final-028-A04-dark-320x420-text200-actions-dialog-component.png",
+      "subject": "cancellation-dialog",
+      "kind": "component",
+      "state": "US-028 A04 enlarged keyboard actions",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-scrollend-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-scrollend-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A01 first-page pagination at scroll end",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-light-390x900-scrollend-pager",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-light-390x900-scrollend-pager-component.png",
+      "subject": "review-list pagination",
+      "kind": "component",
+      "state": "US-034 A01 first-page pagination at scroll end",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-scrollend-page",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-scrollend-page.png",
+      "subject": "review-comment",
+      "kind": "page",
+      "state": "US-034 A01 first-page pagination at scroll end",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    },
+    {
+      "id": "final-034-A01-dark-390x900-scrollend-pager",
+      "file": "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-390x900-scrollend-pager-component.png",
+      "subject": "review-list pagination",
+      "kind": "component",
+      "state": "US-034 A01 first-page pagination at scroll end",
+      "inspectionStatus": "independently inspected",
+      "disposition": "current",
+      "reviewer": "reviewer-reviews"
+    }
+  ]
+}

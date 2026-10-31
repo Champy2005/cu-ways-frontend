@@ -1,0 +1,2468 @@
+{
+  "purpose": "Find the existing owner and affected scope before a global edit. Symbol calls come from the TypeScript compiler graph, not text matching. Record-owned intrinsic page scope remains explicit. Shared-style routes are conservative potential scope; runtime and visual acceptance remain separate.",
+  "graph": {
+    "file": "tools/ui/graph.json",
+    "sha256": "6ed41316b5f721b72ac2f103b1fb1f091d39284b57f7c354f20db06be535a388",
+    "parser": {
+      "name": "TypeScript compiler API",
+      "version": "5.9.3"
+    },
+    "unknowns": [
+      {
+        "file": "book/app.mjs",
+        "line": 3,
+        "kind": "runtime-data-fetch",
+        "expression": "fetch(e.file)"
+      },
+      {
+        "file": "stories/studio.mjs",
+        "line": 1,
+        "kind": "unresolved-local-fetch-data",
+        "expression": "../model/scenarios.json"
+      },
+      {
+        "file": "US-025/demo/screen.mjs",
+        "line": 323,
+        "kind": "runtime-component-attributes",
+        "expression": "`data-action=\"view-job\" data-job-id=\"${job.id}\"`"
+      },
+      {
+        "file": "US-025/demo/screen.mjs",
+        "line": 457,
+        "kind": "runtime-component-attributes",
+        "expression": "`data-action=\"${state.demoSignInComplete?'continue-after-signin':'sign-in'}\"`"
+      },
+      {
+        "file": "stories/runtime.mjs",
+        "line": 4,
+        "kind": "runtime-component-attributes",
+        "expression": "`data-action=\"${esc(id)}\"`"
+      }
+    ],
+    "limitations": [
+      "Static symbol calls and reverse file closure describe potential affected routes, not proof every conditional renders.",
+      "Computed fetch/configuration, selector matching/inheritance and browser behavior need runtime evidence.",
+      "CSS parsing inventories flat declaration blocks conservatively; it is not a full CSS cascade resolver."
+    ]
+  },
+  "sourceFiles": {
+    "US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+    "US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+    "US-025/demo/state-machine.mjs": "34204ca1587f9fef81988e76000960b121c314ab10d32188a9f1217a731608f2",
+    "US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026",
+    "US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+    "US-026/demo/state-machine.mjs": "ff298c5aa8517ebde4a6f51e09fc2307005b8834fc3940ddb5c8b5b6c0bed5c4",
+    "US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+    "US-027/demo/state-machine.mjs": "46c4f002f088a4328f062d8bc1b84342bb3287a531963c628828b4769537eba8",
+    "US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+    "US-028/demo/state-machine.mjs": "84236a904d1f98fff254a7bcf626c7aed8207f282b38a2db1ecf427748f6dc15",
+    "US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+    "US-034/demo/state-machine.mjs": "d75c35e109274e29e1ba99a35388fd664d92b6943887a42f5b6bc6f996823658",
+    "book/app.mjs": "3a7d3e93edd4a41e821008ef6635e4d34ec32a07edc36c5a4bec0c92ed401b6d",
+    "book/book.css": "cbdedb528b214df7a83c486405e954195d8c4b4fd6fd1224a83aeeacc91a8afe",
+    "book/build-index.mjs": "d83e24a99bfd85045e14d810d1c01cb11d3a63f52b4122c78dba6fca035750f7",
+    "book/catalog.json": "7451fabe8725dbf6574fdfe8f98377bd3fd6c5e3c9e5c84a38fd9366aefb38e4",
+    "book/validate.mjs": "95018bc34d4a5081a1dabcf38abd20c641c9827af13b079ff1b47286bdc8746e",
+    "stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+    "stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+    "theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+    "theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+    "theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+    "theme/operations.mjs": "5c9b48c62136bbc30e380154445f225190561402ba8d772331acfe0d52024bb9",
+    "theme/recipes.css": "c27d1dfc0397b77b0393e020ecbc349cf8ffab8e22f44c1a470b522e99fd9e4d",
+    "theme/theme.json": "4423d946ef691a33711b9c82cc907dc8f837055f64c8874b0dc9df8d51bc5dbc",
+    "tools/ui/contracts.json": "18e61f233f1707bcf447425a71f5c19f3986d6bd2d6d3a964b0868c98f65d5bf"
+  },
+  "entries": [
+    {
+      "id": "navigation",
+      "title": "Navigation hover and selection",
+      "aliases": [
+        "nav",
+        "header",
+        "desktop hover",
+        "rounded rectangle",
+        "moving tile",
+        "bottom bar"
+      ],
+      "selectors": ".cu-header, .cu-nav-item",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/components.mjs",
+        "theme/recipes.css"
+      ],
+      "record": "book/records/navigation.json",
+      "recordSha256": "0c7ea3d34be1574ddcff3bdb52b51de5e5badf6ec543c6917653dd4dca11a6dc",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "back-navigation",
+      "title": "Back navigation",
+      "aliases": [
+        "back",
+        "go back",
+        "return",
+        "Story library",
+        "top left",
+        "4k"
+      ],
+      "selectors": ".cu-back-link",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/components.mjs",
+        "theme/recipes.css"
+      ],
+      "record": "book/records/back-navigation.json",
+      "recordSha256": "dd758fe59b2b5f57bf68bda193f257476d9c7ec27d0a5433b60608df84394580",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "responsive-scale",
+      "title": "Responsive size and type",
+      "aliases": [
+        "4k",
+        "2560",
+        "scaling",
+        "font size",
+        "desktop",
+        "breakpoints"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/theme.json",
+        "theme/recipes.css"
+      ],
+      "record": "book/records/responsive-scale.json",
+      "recordSha256": "d5704af899343b861220825a01dfde4c1c1990ca789a4e8a72495e1111fdb7a0",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "dropdown",
+      "title": "Dropdown control and menu",
+      "aliases": [
+        "select",
+        "filter",
+        "status filter",
+        "arrow",
+        "rounded menu",
+        "options"
+      ],
+      "selectors": "select, ::picker(select)",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/components.mjs",
+        "theme/recipes.css"
+      ],
+      "record": "book/records/dropdown.json",
+      "recordSha256": "2d29543565e46ad58236113c5736af767e1534c456ed2cc67993c56e3dad1269",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "feedback",
+      "title": "Feedback and recovery",
+      "aliases": [
+        "banner",
+        "status",
+        "error",
+        "warning",
+        "info",
+        "success",
+        "rail",
+        "rim",
+        "recovery",
+        "color",
+        "offline"
+      ],
+      "selectors": ".cu-banner, .cu-feedback",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/theme.json",
+        "theme/components.mjs",
+        "theme/recipes.css"
+      ],
+      "record": "book/records/feedback.json",
+      "recordSha256": "718a29d4f9ac9dff6d099a988a92c235509b46b78412e11b670524c219b365ed",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "actions",
+      "title": "Actions and links",
+      "aliases": [
+        "button",
+        "tertiary",
+        "secondary",
+        "glow",
+        "shadow",
+        "contrast",
+        "Open brief",
+        "clickable",
+        "tonal",
+        "outline",
+        "Keep job",
+        "Got it",
+        "Stop waiting",
+        "More options"
+      ],
+      "selectors": ".cu-action, .cu-close",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/theme.json",
+        "theme/recipes.css",
+        "theme/components.mjs"
+      ],
+      "record": "book/records/actions.json",
+      "recordSha256": "ed6d5192952980e5918d44f67cd14a81e7a8181186d0fbee494a7b716472f6bb",
+      "reviewStatus": "1.9.1 focused compact pager review: both hosts/themes at390/1440/2560, Next/Previous, rest/hover/focus and selected parent/page/reduced-motion. Earlier1.9 scope remains linked; no new94-state image review claimed.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "job-card",
+      "title": "Job list card",
+      "aliases": [
+        "My Jobs",
+        "job card",
+        "View job",
+        "job title",
+        "badge position",
+        "Creator",
+        "Agreed price",
+        "Deadline"
+      ],
+      "selectors": ".job-card, .result-heading",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs",
+        "US-025/demo/screen.css"
+      ],
+      "record": "book/records/job-card.json",
+      "recordSha256": "7e96c56a2cb452a4d2a968ba3f41ba7ee7691346d39669bb04794a3157100d1a",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "job-overview",
+      "title": "Job overview and status panel",
+      "aliases": [
+        "survey",
+        "survey count",
+        "Job overview",
+        "Work has started",
+        "Ready to start",
+        "price",
+        "brief"
+      ],
+      "selectors": ".context-card, .action-panel, .job-summary",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs",
+        "US-025/demo/screen.css"
+      ],
+      "record": "book/records/job-overview.json",
+      "recordSha256": "26e303aeafe2356c4d87282c8b57fd0f49e9026d5f7dad9af7306bff54242f14",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "proof-workspace",
+      "title": "Proof workspace",
+      "aliases": [
+        "Add proof",
+        "proof form",
+        "Delivery URL",
+        "Saved proof",
+        "empty proof",
+        "add another",
+        "merged form",
+        "compact entry"
+      ],
+      "selectors": ".proof-workspace, .proof-dialog, #proof-form",
+      "consumers": [
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-026/demo/screen.mjs",
+        "US-026/demo/screen.css",
+        "US-026/demo/state-machine.mjs"
+      ],
+      "record": "book/records/proof-workspace.json",
+      "recordSha256": "1288d4c6520ec96458f6703e66d0b7d966df92fde319667a69edf90bc62b89e2",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "proof-header",
+      "title": "Proof page heading",
+      "aliases": [
+        "Campus Dining",
+        "job eyebrow",
+        "Proof of delivery",
+        "In Progress",
+        "Share evidence"
+      ],
+      "selectors": ".story-heading, .job-identity",
+      "consumers": [
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-026/demo/screen.mjs",
+        "US-026/demo/screen.css"
+      ],
+      "record": "book/records/proof-header.json",
+      "recordSha256": "ef5d2817dc8c8de0b192433c68d2495ead39ce9b263d629c4c073c549302379b",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "evidence-link",
+      "title": "Delivery evidence link and type",
+      "aliases": [
+        "URI",
+        "URL",
+        "external link",
+        "line break",
+        "Proof badge",
+        "distribution-report",
+        "attachment"
+      ],
+      "selectors": ".cu-attachment, .cu-evidence-link",
+      "consumers": [
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/components.mjs",
+        "theme/recipes.css",
+        "US-026/demo/screen.mjs",
+        "US-027/demo/screen.mjs"
+      ],
+      "record": "book/records/evidence-link.json",
+      "recordSha256": "d7c678dced77af6208053a02616d7150becb0a86aa70c499dba032e12d973e1a",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "jobs-entry",
+      "title": "Proof return-to-jobs entry",
+      "aliases": [
+        "jobs placeholder",
+        "Open delivery evidence",
+        "My Jobs entry",
+        "badge button gap"
+      ],
+      "selectors": ".jobs-placeholder",
+      "consumers": [
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-026/demo/screen.mjs",
+        "US-026/demo/screen.css"
+      ],
+      "record": "book/records/jobs-entry.json",
+      "recordSha256": "ff3e21258b03d98817765a55ea698df92730d27fbdc1ce61dd9d5bb88ea9d1d0",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "dialog",
+      "title": "Dialog frame and actions",
+      "aliases": [
+        "modal",
+        "popup",
+        "confirmation",
+        "question title",
+        "panel too large",
+        "close",
+        "Got it"
+      ],
+      "selectors": "dialog.cu-content-dialog, .cu-close",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/components.mjs",
+        "theme/recipes.css",
+        "US-025/demo/screen.mjs",
+        "US-025/demo/screen.css",
+        "stories/runtime.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/dialog.json",
+      "recordSha256": "26af9dff4f08c615cbd7395f2710e1553cb5eb9509f282561c93b1635c701d4a",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "pending-operation",
+      "title": "Pending operation and background recovery",
+      "aliases": [
+        "loading",
+        "stuck",
+        "background",
+        "timeout",
+        "cancel",
+        "rollback",
+        "pending",
+        "close confirmation",
+        "offline Start"
+      ],
+      "selectors": ".cu-operation, .cu-loading-layout",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/state-machine.mjs",
+        "US-025/demo/screen.mjs",
+        "US-026/demo/state-machine.mjs",
+        "US-026/demo/screen.mjs",
+        "stories/runtime.mjs",
+        "US-027/demo/state-machine.mjs",
+        "US-028/demo/state-machine.mjs",
+        "theme/operations.mjs"
+      ],
+      "record": "book/records/pending-operation.json",
+      "recordSha256": "2ef9320213c041b8f7037766c9d78d0248d098398707277053a05572a5bf88e7",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "recovery-page",
+      "title": "Unavailable, loading and recovery page",
+      "aliases": [
+        "not found",
+        "access removed",
+        "Session expired",
+        "Try again",
+        "plain",
+        "bottom nav shifted",
+        "error page"
+      ],
+      "selectors": ".unavailable-state, .notice",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs",
+        "US-026/demo/screen.mjs",
+        "stories/runtime.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/recovery-page.json",
+      "recordSha256": "2e5a0cf7bf1acdf0b8a67631c91d020f939084cb6fd373b34c695cfb15f27283",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "completion-checklist",
+      "title": "Completion requirements and evidence",
+      "aliases": [
+        "checkmark",
+        "green check",
+        "requirements",
+        "content heading",
+        "Delivery evidence",
+        "No proof added"
+      ],
+      "selectors": ".criteria",
+      "consumers": [
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-027/demo/screen.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/completion-checklist.json",
+      "recordSha256": "d2598ebe792a048526d8fbd6cca72cb33a5718465638f8da92499be524faef0e",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "pagination",
+      "title": "Review pagination",
+      "aliases": [
+        "previous",
+        "first page",
+        "page 1",
+        "next",
+        "rating filter"
+      ],
+      "selectors": ".list-pagination, .pagination",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-034/demo/screen.mjs",
+        "stories/screen.css",
+        "theme/recipes.css",
+        "theme/theme.json",
+        "stories/pagination-check.cjs"
+      ],
+      "record": "book/records/pagination.json",
+      "recordSha256": "15db6f1a7104b75ca0453fa83e36e72234d61a603f2ff6e0cb2054703e8dd761",
+      "reviewStatus": "1.9.1 focused compact pager review: both hosts/themes at390/1440/2560, Next/Previous, rest/hover/focus and selected parent/page/reduced-motion. Earlier1.9 scope remains linked; no new94-state image review claimed.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "minimal-copy",
+      "title": "Minimal copy and hierarchy",
+      "aliases": [
+        "description",
+        "verbose",
+        "paragraph",
+        "reminder",
+        "instruction",
+        "font",
+        "text wrap"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs",
+        "US-026/demo/screen.mjs",
+        "US-027/demo/screen.mjs",
+        "US-028/demo/screen.mjs",
+        "US-034/demo/screen.mjs"
+      ],
+      "record": "book/records/minimal-copy.json",
+      "recordSha256": "767cdfc3f511fa735f86316cc5e3110b46dd8bcca4bced6cd4b537b99eee17c5",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us025-list",
+      "title": "My Jobs list",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs"
+      ],
+      "record": "book/records/us025-list.json",
+      "recordSha256": "3d84ef1aca9a68e86a7a94435c441e92d7833adc87edfe5bdaa97e58391179d0",
+      "reviewStatus": "1.9.1 focused compact pager review: both hosts/themes at390/1440/2560, Next/Previous, rest/hover/focus and selected parent/page/reduced-motion. Earlier1.9 scope remains linked; no new94-state image review claimed.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us025-detail",
+      "title": "Job details and lifecycle",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs"
+      ],
+      "record": "book/records/us025-detail.json",
+      "recordSha256": "d6de6a9745dd97c4d6c94b943e241e1e4fb8ede79e6c1ce8360e4f9051c2530e",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us025-dialog",
+      "title": "Start confirmation and pending operation",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs"
+      ],
+      "record": "book/records/us025-dialog.json",
+      "recordSha256": "82c595cd6ff6733ee1ae8993b957ea6cab16bb885e72b0286233df4a74f81a30",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us026-proof",
+      "title": "Proof of delivery workspace",
+      "aliases": [
+        "US-026",
+        "US026",
+        "Proof of delivery"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-026/demo/screen.mjs"
+      ],
+      "record": "book/records/us026-proof.json",
+      "recordSha256": "cf108d34092cad0fc09f3067eb57f67ab8c0fd7c6628d516cc22a77062c7b593",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us027-completion",
+      "title": "Job completion and its dialogs",
+      "aliases": [
+        "US-027",
+        "US027",
+        "Job completion"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-027/demo/screen.mjs"
+      ],
+      "record": "book/records/us027-completion.json",
+      "recordSha256": "5a96311b9cdadeccc6c7906ce0b84bcdba75fcc53d87de9e626f984c3456d60a",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us028-cancellation",
+      "title": "Job cancellation",
+      "aliases": [
+        "US-028",
+        "US028",
+        "Cancel job"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-028/demo/screen.mjs"
+      ],
+      "record": "book/records/us028-cancellation.json",
+      "recordSha256": "360d230d0df1405b0d6e44d39eb4d67ae299622b5cc683755c9d50879f483443",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "us034-reviews",
+      "title": "Marketer profile and verified reviews",
+      "aliases": [
+        "US-034",
+        "US034",
+        "Marketer reviews"
+      ],
+      "selectors": "",
+      "consumers": [
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-034/demo/screen.mjs"
+      ],
+      "record": "book/records/us034-reviews.json",
+      "recordSha256": "f9dc84757e4e5df9f6b0dbde343b33b36a272d56ed12b462d9ec101940069871",
+      "reviewStatus": "1.9.1 focused compact pager review: both hosts/themes at390/1440/2560, Next/Previous, rest/hover/focus and selected parent/page/reduced-motion. Earlier1.9 scope remains linked; no new94-state image review claimed.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "design-book",
+      "title": "Design book and handoff entry",
+      "aliases": [
+        "book",
+        "search",
+        "component catalog",
+        "documentation",
+        "evidence gallery",
+        "source of truth",
+        "visited",
+        "unvisited",
+        "review history"
+      ],
+      "selectors": "",
+      "consumers": [],
+      "sources": [
+        "book/index.html",
+        "book/app.mjs",
+        "book/book.css",
+        "book/catalog.json",
+        "book/validate.mjs",
+        "index.html",
+        "book/build-index.mjs",
+        "stories/consistency-check.cjs",
+        "stories/iteration4-regressions.cjs",
+        "tools/ui/engine.cjs",
+        "tools/ui/cli.cjs",
+        "tools/ui/contracts.json",
+        "tools/ui/changes.cjs"
+      ],
+      "record": "book/records/design-book.json",
+      "recordSha256": "e78a66f084f5df027691b611814d9262c4db660fbe92df9ee78322fe24d184eb",
+      "reviewStatus": "Root handoff/author controls inspected and graph/index validated. Book viewer CSS unchanged; portable navigation/loading verified separately, no new blanket viewer visual approval.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "status-placement",
+      "title": "Entity status heading",
+      "aliases": [
+        "badge position",
+        "top right",
+        "Pending",
+        "In Progress",
+        "Accepted"
+      ],
+      "selectors": ".cu-status-heading",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "theme/recipes.css",
+        "stories/runtime.mjs",
+        "US-025/demo/screen.mjs",
+        "US-026/demo/screen.mjs",
+        "theme/components.mjs",
+        "theme/theme.json"
+      ],
+      "record": "book/records/status-placement.json",
+      "recordSha256": "34fa2f8a4fb189f4cd0a9f70f0923179d3e33b050be8f92b5f0166a9ab345591",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "empty-state",
+      "title": "Empty list and filtered-result composition",
+      "aliases": [
+        "No active jobs",
+        "board icon",
+        "empty reviews",
+        "no matches"
+      ],
+      "selectors": ".empty-state, .empty",
+      "consumers": [
+        {
+          "story": "US-025",
+          "source": "US-025/demo/screen.mjs",
+          "live": "US-025/demo/screen.html",
+          "states": "US-025/model/scenarios.json"
+        },
+        {
+          "story": "US-026",
+          "source": "US-026/demo/screen.mjs",
+          "live": "US-026/demo/screen.html",
+          "states": "US-026/model/scenarios.json"
+        },
+        {
+          "story": "US-027",
+          "source": "US-027/demo/screen.mjs",
+          "live": "US-027/demo/screen.html",
+          "states": "US-027/model/scenarios.json"
+        },
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        },
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-025/demo/screen.mjs",
+        "US-025/demo/screen.css",
+        "US-034/demo/screen.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/empty-state.json",
+      "recordSha256": "e854993a400106a17dccf8bc3897f9b4a1485fd9979e9bf55930d59bde0621fe",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "review-list",
+      "title": "Verified review history and filters",
+      "aliases": [
+        "Verified reviews",
+        "review card",
+        "Filter by rating",
+        "review spacing",
+        "review layout"
+      ],
+      "selectors": ".review-history-card, .review-history-heading",
+      "consumers": [
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-034/demo/screen.mjs",
+        "stories/screen.css",
+        "stories/runtime.mjs"
+      ],
+      "record": "book/records/review-list.json",
+      "recordSha256": "c37ebcbd1ec3780657aa4cbba4409f54034748c53bcb121213ca53071deeafea",
+      "reviewStatus": "1.9.1 focused compact pager review: both hosts/themes at390/1440/2560, Next/Previous, rest/hover/focus and selected parent/page/reduced-motion. Earlier1.9 scope remains linked; no new94-state image review claimed.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "review-comment",
+      "title": "Long review disclosure",
+      "aliases": [
+        "long comment",
+        "Read full review",
+        "Read more",
+        "Show less",
+        "Thai review",
+        "expand"
+      ],
+      "selectors": ".review-comment",
+      "consumers": [
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-034/demo/screen.mjs",
+        "US-034/demo/state-machine.mjs",
+        "stories/runtime.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/review-comment.json",
+      "recordSha256": "f4d0a9e4c2761085fbffdf67bad00823945f2147c5140973bdbfe98a5fc95d5e",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "rating-summary",
+      "title": "Rating summary and distribution",
+      "aliases": [
+        "ratings",
+        "stars",
+        "rating bars",
+        "5 star",
+        "histogram",
+        "distribution color"
+      ],
+      "selectors": ".rating-summary, .distribution",
+      "consumers": [
+        {
+          "story": "US-034",
+          "source": "US-034/demo/screen.mjs",
+          "live": "US-034/demo/screen.html",
+          "states": "US-034/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-034/demo/screen.mjs",
+        "stories/screen.css",
+        "theme/theme.json"
+      ],
+      "record": "book/records/rating-summary.json",
+      "recordSha256": "bf3b235ec59b61ee5d1f0fc5db4faef861a1682c3da480e5c8d3da8837d3dca8",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    },
+    {
+      "id": "cancellation-task",
+      "title": "Cancellation effects and contract summary",
+      "aliases": [
+        "Cancel job",
+        "Cancellation effects",
+        "Contract summary",
+        "effect list",
+        "contract spacing"
+      ],
+      "selectors": ".cancellation-layout, .contract-summary",
+      "consumers": [
+        {
+          "story": "US-028",
+          "source": "US-028/demo/screen.mjs",
+          "live": "US-028/demo/screen.html",
+          "states": "US-028/model/scenarios.json"
+        }
+      ],
+      "sources": [
+        "US-028/demo/screen.mjs",
+        "stories/screen.css"
+      ],
+      "record": "book/records/cancellation-task.json",
+      "recordSha256": "e5b6cfbf9dec7e52059702c2db10b185b17d53ac1cdbe7086ddac23b104c3062",
+      "reviewStatus": "Independent normal composition across all94 named states in both themes/mobile/desktop, plus selected native child/parent/page and stress/live scopes. Individual captured-only pixels remain unvisited; see1.9 coverage.",
+      "humanColor": "Purple rejected. Replacement slate-blue/blue-teal palette awaiting human judgment"
+    }
+  ],
+  "apiConsumers": {
+    "action": [
+      {
+        "source": "stories/library.mjs",
+        "line": 6,
+        "expression": "action"
+      },
+      {
+        "source": "stories/library.mjs",
+        "line": 6,
+        "expression": "action"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 4,
+        "expression": "action"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 10,
+        "expression": "action"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 10,
+        "expression": "action"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 10,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "action"
+      },
+      {
+        "source": "theme/static-components.mjs",
+        "line": 8,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 438,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 350,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 352,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 361,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 366,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 323,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 483,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 487,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 487,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 431,
+        "expression": "action"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 457,
+        "expression": "action"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 162,
+        "expression": "action"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 217,
+        "expression": "action"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 203,
+        "expression": "action"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 19,
+        "expression": "action"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 23,
+        "expression": "action"
+      }
+    ],
+    "attachmentTag": [
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "attachmentTag"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 158,
+        "expression": "attachmentTag"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 24,
+        "expression": "attachmentTag"
+      }
+    ],
+    "backLink": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "backLink"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "backLink"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "backLink"
+      },
+      {
+        "source": "theme/static-components.mjs",
+        "line": 8,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 474,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 380,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 292,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 293,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 218,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 204,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 211,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 208,
+        "expression": "backLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 214,
+        "expression": "backLink"
+      }
+    ],
+    "badge": [],
+    "banner": [
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "banner"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "banner"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 336,
+        "expression": "banner"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 169,
+        "expression": "banner"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 180,
+        "expression": "banner"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 183,
+        "expression": "banner"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 191,
+        "expression": "banner"
+      }
+    ],
+    "bottomBar": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 53,
+        "expression": "bottomBar"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "bottomBar"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 288,
+        "expression": "bottomBar"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 229,
+        "expression": "bottomBar"
+      }
+    ],
+    "brand": [
+      {
+        "source": "theme/lab.mjs",
+        "line": 75,
+        "expression": "brand"
+      },
+      {
+        "source": "US-026/demo/author.mjs",
+        "line": 56,
+        "expression": "brand"
+      }
+    ],
+    "closeControl": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 13,
+        "expression": "closeControl"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 483,
+        "expression": "closeControl"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 487,
+        "expression": "closeControl"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 162,
+        "expression": "closeControl"
+      }
+    ],
+    "esc": [
+      {
+        "source": "book/app.mjs",
+        "line": 38,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 20,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 12,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 16,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 18,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 6,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 47,
+        "expression": "esc"
+      },
+      {
+        "source": "book/app.mjs",
+        "line": 43,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/library.mjs",
+        "line": 6,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 5,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 4,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 13,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 6,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 11,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 12,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 8,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 10,
+        "expression": "esc"
+      },
+      {
+        "source": "stories/studio.mjs",
+        "line": 17,
+        "expression": "esc"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 58,
+        "expression": "esc"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 60,
+        "expression": "esc"
+      },
+      {
+        "source": "theme/static-components.mjs",
+        "line": 7,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 410,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 445,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 354,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 297,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 507,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 323,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 387,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 487,
+        "expression": "esc"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 402,
+        "expression": "esc"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 174,
+        "expression": "esc"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 162,
+        "expression": "esc"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 217,
+        "expression": "esc"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 158,
+        "expression": "esc"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 14,
+        "expression": "esc"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 19,
+        "expression": "esc"
+      },
+      {
+        "source": "US-028/demo/screen.mjs",
+        "line": 14,
+        "expression": "esc"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 10,
+        "expression": "esc"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 8,
+        "expression": "esc"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 13,
+        "expression": "esc"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 18,
+        "expression": "esc"
+      }
+    ],
+    "evidenceLink": [
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "evidenceLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 158,
+        "expression": "evidenceLink"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 166,
+        "expression": "evidenceLink"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 24,
+        "expression": "evidenceLink"
+      }
+    ],
+    "feedbackBlock": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 14,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 427,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 333,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 335,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 493,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 458,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 185,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 188,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 189,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 193,
+        "expression": "feedbackBlock"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 196,
+        "expression": "feedbackBlock"
+      }
+    ],
+    "fitCompactNavigation": [
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 941,
+        "expression": "fitCompactNavigation"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 942,
+        "expression": "fitCompactNavigation"
+      }
+    ],
+    "headerBar": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "headerBar"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "headerBar"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 280,
+        "expression": "headerBar"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 139,
+        "expression": "headerBar"
+      }
+    ],
+    "headerControl": [],
+    "icon": [
+      {
+        "source": "stories/library.mjs",
+        "line": 8,
+        "expression": "icon"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 74,
+        "expression": "icon"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 75,
+        "expression": "icon"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 78,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 463,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 354,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 337,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 327,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 487,
+        "expression": "icon"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 911,
+        "expression": "icon"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 162,
+        "expression": "icon"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 157,
+        "expression": "icon"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 214,
+        "expression": "icon"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 14,
+        "expression": "icon"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 21,
+        "expression": "icon"
+      },
+      {
+        "source": "US-027/demo/screen.mjs",
+        "line": 24,
+        "expression": "icon"
+      },
+      {
+        "source": "US-028/demo/screen.mjs",
+        "line": 14,
+        "expression": "icon"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 21,
+        "expression": "icon"
+      },
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 23,
+        "expression": "icon"
+      }
+    ],
+    "keepFocusVisible": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 18,
+        "expression": "keepFocusVisible"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 10,
+        "expression": "keepFocusVisible"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 23,
+        "expression": "keepFocusVisible"
+      }
+    ],
+    "lifecycleBadge": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 11,
+        "expression": "status"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 12,
+        "expression": "status"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/color-review.html",
+        "line": 5,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 14,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 445,
+        "expression": "statusBadge"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 323,
+        "expression": "statusBadge"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 174,
+        "expression": "lifecycleBadge"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 217,
+        "expression": "lifecycleBadge"
+      }
+    ],
+    "loadingScaffold": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "loadingScaffold"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 208,
+        "expression": "loadingScaffold"
+      }
+    ],
+    "menuItem": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "menuItem"
+      },
+      {
+        "source": "stories/runtime.mjs",
+        "line": 69,
+        "expression": "menuItem"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "menuItem"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 284,
+        "expression": "menuItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 138,
+        "expression": "menuItem"
+      }
+    ],
+    "navItem": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 53,
+        "expression": "navItem"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 17,
+        "expression": "navItem"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 21,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 271,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 128,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 129,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 130,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 131,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 132,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 223,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 224,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 225,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 226,
+        "expression": "navItem"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 227,
+        "expression": "navItem"
+      }
+    ],
+    "observeCompactNavigation": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 70,
+        "expression": "observeCompactNavigation"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 541,
+        "expression": "observeCompactNavigation"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 237,
+        "expression": "observeCompactNavigation"
+      }
+    ],
+    "observeNavigationTile": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 70,
+        "expression": "observeNavigationTile"
+      },
+      {
+        "source": "theme/lab.mjs",
+        "line": 23,
+        "expression": "observeNavigationTile"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 540,
+        "expression": "observeNavigationTile"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 239,
+        "expression": "observeNavigationTile"
+      }
+    ],
+    "operationNotice": [
+      {
+        "source": "stories/runtime.mjs",
+        "line": 68,
+        "expression": "operationNotice"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 492,
+        "expression": "operationNotice"
+      },
+      {
+        "source": "US-026/demo/screen.mjs",
+        "line": 170,
+        "expression": "operationNotice"
+      }
+    ],
+    "positionNavigationTile": [
+      {
+        "source": "theme/lab.mjs",
+        "line": 28,
+        "expression": "positionNavigationTile"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 941,
+        "expression": "positionNavigationTile"
+      },
+      {
+        "source": "US-025/demo/screen.mjs",
+        "line": 942,
+        "expression": "positionNavigationTile"
+      }
+    ],
+    "roleBirds": [
+      {
+        "source": "theme/lab.mjs",
+        "line": 75,
+        "expression": "roleBirds"
+      },
+      {
+        "source": "US-026/demo/author.mjs",
+        "line": 58,
+        "expression": "roleBirds"
+      }
+    ],
+    "verificationBadge": [
+      {
+        "source": "US-034/demo/screen.mjs",
+        "line": 13,
+        "expression": "verificationBadge"
+      }
+    ]
+  }
+}

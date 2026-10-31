@@ -1,0 +1,758 @@
+{
+  "objective": "All five responsible user stories, every named page/state and unique component statically and visually judged.",
+  "status": "complete; static and independent visual design review and portable audit passed in documented scope",
+  "rows": [
+    {
+      "record": "us025-list",
+      "state": "L01",
+      "title": "My Jobs loading",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L02",
+      "title": "My Jobs with hired jobs",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L03",
+      "title": "No active jobs",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L04",
+      "title": "No hired jobs",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L05",
+      "title": "No jobs for this status",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L06",
+      "title": "My Jobs load error",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L07",
+      "title": "Previously loaded jobs",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L08",
+      "title": "Changing list filter or page",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "L09",
+      "title": "My Jobs unavailable",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-list",
+      "state": "C06",
+      "title": "Safe return after navigation",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D01",
+      "title": "Job details loading",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D02",
+      "title": "Accepted job ready to start",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D03",
+      "title": "Job details load error",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D04",
+      "title": "Job in progress",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D05",
+      "title": "Completed or cancelled job",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D06",
+      "title": "Job unavailable",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D07",
+      "title": "Marketer access required",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D08",
+      "title": "Job details need refreshing",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D09",
+      "title": "Accepted job with optional context missing",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "D10",
+      "title": "Session expired",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "C07",
+      "title": "Job started",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "C08",
+      "title": "Start rejected; recheck required",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R01",
+      "title": "Checking job status",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R02",
+      "title": "Already in progress",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R03",
+      "title": "Accepted after outcome check",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R04",
+      "title": "Start status not confirmed",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R05",
+      "title": "Repeated start already in progress",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R06",
+      "title": "Job is terminal",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R07",
+      "title": "Start permission denied",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R08",
+      "title": "Access no longer available",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R09",
+      "title": "Session expired during start check",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R10",
+      "title": "Required start details invalid",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R11",
+      "title": "Offline before start",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R12",
+      "title": "Rejected start; latest status unavailable",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R13",
+      "title": "Rechecking after returning to the page",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-detail",
+      "state": "R14",
+      "title": "Latest details could not refresh after start",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-dialog",
+      "state": "C01",
+      "title": "Confirm start",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-dialog",
+      "state": "C02",
+      "title": "Confirmation dismissed",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-dialog",
+      "state": "C03",
+      "title": "Start request submitting",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-dialog",
+      "state": "C04",
+      "title": "Start request taking longer",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us025-dialog",
+      "state": "C05",
+      "title": "Pending confirmation dismissed",
+      "status": "Static and independent visual review passed in specified design scope; root accepted both repaired findings.",
+      "scope": "Light/Dark390×844 and1440×900 all41 named states; every mobile page end; relevant enlarged/short/large/keyboard/fallback component families. Pages via contact sheets; individually opened details separate.",
+      "evidence": "reviews/exhaustive/us025-coverage.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A01",
+      "title": "Start with no proof",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A02",
+      "title": "Paste a delivery link",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A03",
+      "title": "Save once",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A04",
+      "title": "Proof is saved",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A05",
+      "title": "Add another link",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "A06",
+      "title": "Review delivery evidence",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "B01",
+      "title": "Correct the URL",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "B02",
+      "title": "Attachment type rejected",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "B03",
+      "title": "Connection lost during save",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "B04",
+      "title": "Checked: link was not saved",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "C01",
+      "title": "Saved proof cannot load",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "C02",
+      "title": "Job status has changed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "C03",
+      "title": "Access is no longer available",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us026-proof",
+      "state": "C04",
+      "title": "Loading saved proof",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us026-coverage.json",
+      "components": "reviews/exhaustive/us026-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A01",
+      "title": "Missing proof",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A02",
+      "title": "Completion blocked warning",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A03",
+      "title": "All requirements met",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A04",
+      "title": "Confirm completion",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A05",
+      "title": "Completion pending",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "A06",
+      "title": "Completion confirmed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "B01",
+      "title": "Payment is not Paid",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "B02",
+      "title": "Accepted offer mismatch",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "B03",
+      "title": "Job has not started",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "B04",
+      "title": "Cancelled job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "R01",
+      "title": "Unknown completion outcome",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "R02",
+      "title": "Requirements unavailable",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "R03",
+      "title": "Access removed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us027-completion",
+      "state": "R04",
+      "title": "Requirements loading",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us027-independent-coverage.json",
+      "components": "reviews/exhaustive/us027-independent-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A01",
+      "title": "Pending job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A02",
+      "title": "Accepted job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A03",
+      "title": "In Progress job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A04",
+      "title": "Cancellation confirmation",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A05",
+      "title": "Cancellation pending",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "A06",
+      "title": "Cancellation confirmed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "B01",
+      "title": "Paid job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "B02",
+      "title": "Completed job",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "B03",
+      "title": "Already Cancelled",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "B04",
+      "title": "Unverified state",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "R01",
+      "title": "Unknown cancellation outcome",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "R02",
+      "title": "Cancellation rejected",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "R03",
+      "title": "Access removed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "R04",
+      "title": "Job read failed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us028-cancellation",
+      "state": "R05",
+      "title": "Job loading",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "A01",
+      "title": "Verified reviews",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "A02",
+      "title": "No reviews yet",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "A03",
+      "title": "Rating-only reviews",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "A04",
+      "title": "Long written review",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "A05",
+      "title": "Next review page",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "B01",
+      "title": "Nonqualifying records excluded",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "B02",
+      "title": "No matching rating",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "R01",
+      "title": "Reviews loading",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "R02",
+      "title": "Reviews read failed",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    },
+    {
+      "record": "us034-reviews",
+      "state": "R03",
+      "title": "Profile unavailable",
+      "status": "Static and independent visual judgment passed in documented scope; root accepts repaired findings.",
+      "evidence": "reviews/exhaustive/us028-us034-coverage.json",
+      "components": "reviews/exhaustive/us028-us034-components.json"
+    }
+  ]
+}

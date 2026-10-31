@@ -1,0 +1,162 @@
+[
+  {
+    "component": "shared navigation/chrome/back",
+    "sources": "UX UI/stories/runtime.mjs:53; UX UI/stories/runtime.mjs:54; UX UI/stories/screen.css",
+    "evidence": "All25state page comparisons; fixed normal/flow320200+390300; desktop2560",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Selected icon versus desktop tile, header seam/back spacing, flow/reading area and scroll end inspected. Short obstruction repaired and independently closed.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "shared action/feedback/operation primitives",
+    "sources": "UX UI/theme/components.mjs; UX UI/theme/recipes.css; UX UI/theme/operations.mjs; UX UI/stories/runtime.mjs:4",
+    "evidence": "028feedback/dialog/task variants;034fallback/filter/disclosure",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Action hierarchy, text/icon alignment, meaningful copy, focus/hover/fallback context read in close and page evidence.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 job summary/status/facts",
+    "sources": "UX UI/stories/runtime.mjs:12; UX UI/stories/screen.css",
+    "evidence": "028A01/A02/A03/A06/B01/B02/B03/B04/R01/R02",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Required identity/price remains distinct from cancellation effects; sibling contract composition reads consistently; stacked enlarged facts and long fixture inspected.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 cancellation task/effects",
+    "sources": "UX UI/US-028/demo/screen.mjs:13; UX UI/stories/screen.css",
+    "evidence": "028A01/A02/A03;R01unknown removes fresh mutation;R02allows fresh attempt",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Cause/effects before destructive action, retained history copy and compact desktop/button mobile judged.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 contract summary",
+    "sources": "UX UI/US-028/demo/screen.mjs:15",
+    "evidence": "Allaccessible028states;A060/0;B01Paid",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Payment/requests/offers hierarchy and zero values read in close sibling and page images.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 confirmation dialog",
+    "sources": "UX UI/US-028/demo/screen.mjs; UX UI/stories/runtime.mjs:13,74",
+    "evidence": "A04LightDark390/1440/320200/390300;TabTabinner scroll",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Keepjob initial safe focus; native dialog containment; explicit irreversible effects and counts; all controls reachable in enlarged/short context.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 pending dialog/background operation",
+    "sources": "UX UI/US-028/demo/screen.mjs; UX UI/stories/runtime.mjs:45",
+    "evidence": "A05; pending-dismiss/reopen;timeout",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Close/Escape/Continuebrowsing keep dispatched operation; reopen offers no second Confirm; timeout produces unknown recovery.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "028 outcome/guard/recovery surfaces",
+    "sources": "UX UI/US-028/demo/state-machine.mjs; UX UI/US-028/demo/screen.mjs:3",
+    "evidence": "A06/B01-B04/R01-R05; sixliveoutcomes;unknownreadfailed/reconciled",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Cancel restricted to ownedeligibleunpaidfixture; Paid/Completed/access guards terminal; readfailure preservesuncertainty; loading escapable. Actualapplicationauthority unproved.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 profile context",
+    "sources": "UX UI/US-034/demo/screen.mjs:15; UX UI/stories/screen.css",
+    "evidence": "A01-A05/B01/B02/R01/R02/R03",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Avatar/name/role/speciality/bio judged with ratings/history parent; unavailable state hides profile.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 rating aggregate/distribution",
+    "sources": "UX UI/US-034/demo/screen.mjs:21; UX UI/US-034/demo/state-machine.mjs",
+    "evidence": "A01summary4.43/7;B01qualifyingexclusion;A02noaverage;320200close",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Neutraldistributionbars remain separate from gold stars; count/average hierarchy coherent; no numeric0 pretendingunrated.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 review row/stars/verification/date/job link",
+    "sources": "UX UI/US-034/demo/screen.mjs:5,12,13",
+    "evidence": "A01/A03/A05/B01;page1/2/3",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Author/date and verification align as siblings; comment/star/job-record hierarchy clear; dates and jobIDs inspected; empty comment explicitlyNo writtenfeedback.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 long comment disclosure",
+    "sources": "UX UI/US-034/demo/screen.mjs:6,10; UX UI/US-034/demo/state-machine.mjs",
+    "evidence": "A04;Enteropen/Spaceclose;appearancechange;320200expanded",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Preview ends cleanly; native disclosure retains full Unicode text/expansion across appearance rerender; long end layout inspected.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 native rating filter/empty reset",
+    "sources": "UX UI/US-034/demo/screen.mjs:22,23; UX UI/stories/runtime.mjs",
+    "evidence": "A01nativeSpaceDownEnter5stars;B02Showallratings",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Immediatecommit one filter action, noApply; emptyresult retains aggregate with compact reset/no misleading pager.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 pagination",
+    "sources": "UX UI/US-034/demo/screen.mjs:23; UX UI/US-034/demo/state-machine.mjs",
+    "evidence": "A01page1,A05page2,livepage3;390/1440/320200ends",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "3/3/1visible rows; boundarycontrols omitted; pager stays within panel; page2livecapturefocusrace retained as support, canonicalA05actualbottomjudged.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 linked job dialog",
+    "sources": "UX UI/US-034/demo/screen.mjs:26,30; UX UI/stories/runtime.mjs:13,74",
+    "evidence": "liveJob47dialogLightDark/Escape",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Completedwork identity with privatecontractdetails hidden; separateclose control and Esc restoration.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  },
+  {
+    "component": "034 loading/error/unavailable",
+    "sources": "UX UI/US-034/demo/screen.mjs:15; UX UI/US-034/demo/state-machine.mjs",
+    "evidence": "R01/R02/R03;Stopwaiting390300Tab+Enter",
+    "staticInspected": true,
+    "visualInspected": true,
+    "judgment": "Profile-context plus error/retry; no fake numeric aggregate; loading stop produces retry state; focus/chrome remain usable.",
+    "humanColorStatus": "awaiting human judgment",
+    "sourceScope": "Originalclose/interaction evidence plus current all-state parent/page; only sharedchrome changed."
+  }
+]

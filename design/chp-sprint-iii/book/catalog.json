@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "title": "CU Ways design book",
+  "revision": "1.9.1",
+  "authority": "Current explicit human decisions; theme/theme.json remains the executable token source.",
+  "entries": [
+    {
+      "id": "navigation",
+      "kind": "component",
+      "title": "Navigation hover and selection",
+      "aliases": [
+        "nav",
+        "header",
+        "desktop hover",
+        "rounded rectangle",
+        "moving tile",
+        "bottom bar"
+      ],
+      "file": "records/navigation.json"
+    },
+    {
+      "id": "back-navigation",
+      "kind": "component",
+      "title": "Back navigation",
+      "aliases": [
+        "back",
+        "go back",
+        "return",
+        "Story library",
+        "top left",
+        "4k"
+      ],
+      "file": "records/back-navigation.json"
+    },
+    {
+      "id": "responsive-scale",
+      "kind": "component",
+      "title": "Responsive size and type",
+      "aliases": [
+        "4k",
+        "2560",
+        "scaling",
+        "font size",
+        "desktop",
+        "breakpoints"
+      ],
+      "file": "records/responsive-scale.json"
+    },
+    {
+      "id": "dropdown",
+      "kind": "component",
+      "title": "Dropdown control and menu",
+      "aliases": [
+        "select",
+        "filter",
+        "status filter",
+        "arrow",
+        "rounded menu",
+        "options"
+      ],
+      "file": "records/dropdown.json"
+    },
+    {
+      "id": "feedback",
+      "kind": "component",
+      "title": "Feedback and recovery",
+      "aliases": [
+        "banner",
+        "status",
+        "error",
+        "warning",
+        "info",
+        "success",
+        "rail",
+        "rim",
+        "recovery",
+        "color",
+        "offline"
+      ],
+      "file": "records/feedback.json"
+    },
+    {
+      "id": "actions",
+      "kind": "component",
+      "title": "Actions and links",
+      "aliases": [
+        "button",
+        "tertiary",
+        "secondary",
+        "glow",
+        "shadow",
+        "contrast",
+        "Open brief",
+        "clickable"
+      ],
+      "file": "records/actions.json"
+    },
+    {
+      "id": "job-card",
+      "kind": "component",
+      "title": "Job list card",
+      "aliases": [
+        "My Jobs",
+        "job card",
+        "View job",
+        "job title",
+        "badge position",
+        "Creator",
+        "Agreed price",
+        "Deadline"
+      ],
+      "file": "records/job-card.json"
+    },
+    {
+      "id": "job-overview",
+      "kind": "component",
+      "title": "Job overview and status panel",
+      "aliases": [
+        "survey",
+        "survey count",
+        "Job overview",
+        "Work has started",
+        "Ready to start",
+        "price",
+        "brief"
+      ],
+      "file": "records/job-overview.json"
+    },
+    {
+      "id": "proof-workspace",
+      "kind": "component",
+      "title": "Proof workspace",
+      "aliases": [
+        "Add proof",
+        "proof form",
+        "Delivery URL",
+        "Saved proof",
+        "empty proof",
+        "add another",
+        "merged form",
+        "compact entry"
+      ],
+      "file": "records/proof-workspace.json"
+    },
+    {
+      "id": "proof-header",
+      "kind": "component",
+      "title": "Proof page heading",
+      "aliases": [
+        "Campus Dining",
+        "job eyebrow",
+        "Proof of delivery",
+        "In Progress",
+        "Share evidence"
+      ],
+      "file": "records/proof-header.json"
+    },
+    {
+      "id": "evidence-link",
+      "kind": "component",
+      "title": "Delivery evidence link and type",
+      "aliases": [
+        "URI",
+        "URL",
+        "external link",
+        "line break",
+        "Proof badge",
+        "distribution-report",
+        "attachment"
+      ],
+      "file": "records/evidence-link.json"
+    },
+    {
+      "id": "jobs-entry",
+      "kind": "component",
+      "title": "Proof return-to-jobs entry",
+      "aliases": [
+        "jobs placeholder",
+        "Open delivery evidence",
+        "My Jobs entry",
+        "badge button gap"
+      ],
+      "file": "records/jobs-entry.json"
+    },
+    {
+      "id": "dialog",
+      "kind": "component",
+      "title": "Dialog frame and actions",
+      "aliases": [
+        "modal",
+        "popup",
+        "confirmation",
+        "question title",
+        "panel too large",
+        "close",
+        "Got it"
+      ],
+      "file": "records/dialog.json"
+    },
+    {
+      "id": "pending-operation",
+      "kind": "component",
+      "title": "Pending operation and background recovery",
+      "aliases": [
+        "loading",
+        "stuck",
+        "background",
+        "timeout",
+        "cancel",
+        "rollback",
+        "pending",
+        "close confirmation",
+        "offline Start"
+      ],
+      "file": "records/pending-operation.json"
+    },
+    {
+      "id": "recovery-page",
+      "kind": "component",
+      "title": "Unavailable, loading and recovery page",
+      "aliases": [
+        "not found",
+        "access removed",
+        "Session expired",
+        "Try again",
+        "plain",
+        "bottom nav shifted",
+        "error page"
+      ],
+      "file": "records/recovery-page.json"
+    },
+    {
+      "id": "completion-checklist",
+      "kind": "component",
+      "title": "Completion requirements and evidence",
+      "aliases": [
+        "checkmark",
+        "green check",
+        "requirements",
+        "content heading",
+        "Delivery evidence",
+        "No proof added"
+      ],
+      "file": "records/completion-checklist.json"
+    },
+    {
+      "id": "pagination",
+      "kind": "component",
+      "title": "Review pagination",
+      "aliases": [
+        "previous",
+        "first page",
+        "page 1",
+        "next",
+        "rating filter"
+      ],
+      "file": "records/pagination.json"
+    },
+    {
+      "id": "minimal-copy",
+      "kind": "component",
+      "title": "Minimal copy and hierarchy",
+      "aliases": [
+        "description",
+        "verbose",
+        "paragraph",
+        "reminder",
+        "instruction",
+        "font",
+        "text wrap"
+      ],
+      "file": "records/minimal-copy.json"
+    },
+    {
+      "id": "us025-list",
+      "kind": "page",
+      "title": "My Jobs list",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "file": "records/us025-list.json"
+    },
+    {
+      "id": "us025-detail",
+      "kind": "page",
+      "title": "Job details and lifecycle",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "file": "records/us025-detail.json"
+    },
+    {
+      "id": "us025-dialog",
+      "kind": "page",
+      "title": "Start confirmation and pending operation",
+      "aliases": [
+        "US-025",
+        "US025"
+      ],
+      "file": "records/us025-dialog.json"
+    },
+    {
+      "id": "us026-proof",
+      "kind": "page",
+      "title": "Proof of delivery workspace",
+      "aliases": [
+        "US-026",
+        "US026",
+        "Proof of delivery"
+      ],
+      "file": "records/us026-proof.json"
+    },
+    {
+      "id": "us027-completion",
+      "kind": "page",
+      "title": "Job completion and its dialogs",
+      "aliases": [
+        "US-027",
+        "US027",
+        "Job completion"
+      ],
+      "file": "records/us027-completion.json"
+    },
+    {
+      "id": "us028-cancellation",
+      "kind": "page",
+      "title": "Job cancellation",
+      "aliases": [
+        "US-028",
+        "US028",
+        "Cancel job"
+      ],
+      "file": "records/us028-cancellation.json"
+    },
+    {
+      "id": "us034-reviews",
+      "kind": "page",
+      "title": "Marketer profile and verified reviews",
+      "aliases": [
+        "US-034",
+        "US034",
+        "Marketer reviews"
+      ],
+      "file": "records/us034-reviews.json"
+    },
+    {
+      "id": "design-book",
+      "kind": "component",
+      "title": "Design book and handoff entry",
+      "aliases": [
+        "book",
+        "search",
+        "documentation",
+        "evidence gallery",
+        "source of truth"
+      ],
+      "file": "records/design-book.json"
+    },
+    {
+      "id": "status-placement",
+      "kind": "component",
+      "title": "Entity status heading",
+      "aliases": [
+        "badge position",
+        "top right",
+        "Pending",
+        "In Progress",
+        "Accepted"
+      ],
+      "file": "records/status-placement.json"
+    },
+    {
+      "id": "empty-state",
+      "kind": "component",
+      "title": "Empty list and filtered-result composition",
+      "aliases": [
+        "No active jobs",
+        "board icon",
+        "empty reviews",
+        "no matches"
+      ],
+      "file": "records/empty-state.json"
+    },
+    {
+      "id": "review-list",
+      "kind": "component",
+      "title": "Verified review history and filters",
+      "aliases": [
+        "Verified reviews",
+        "review card",
+        "Filter by rating",
+        "review spacing",
+        "review layout"
+      ],
+      "file": "records/review-list.json"
+    },
+    {
+      "id": "review-comment",
+      "kind": "component",
+      "title": "Long review disclosure",
+      "aliases": [
+        "long comment",
+        "Read full review",
+        "Read more",
+        "Show less",
+        "Thai review",
+        "expand"
+      ],
+      "file": "records/review-comment.json"
+    },
+    {
+      "id": "rating-summary",
+      "kind": "component",
+      "title": "Rating summary and distribution",
+      "aliases": [
+        "ratings",
+        "stars",
+        "rating bars",
+        "5 star",
+        "histogram",
+        "distribution color"
+      ],
+      "file": "records/rating-summary.json"
+    },
+    {
+      "id": "cancellation-task",
+      "kind": "component",
+      "title": "Cancellation effects and contract summary",
+      "aliases": [
+        "Cancel job",
+        "Cancellation effects",
+        "Contract summary",
+        "effect list",
+        "contract spacing"
+      ],
+      "file": "records/cancellation-task.json"
+    }
+  ]
+}

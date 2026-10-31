@@ -1,0 +1,29 @@
+{
+  "revision": "1.9.1",
+  "scope": "US025 L02 All jobs long fixture and US034 A01 standard reviews, pages1/2, Light/Dark, widths390/1440/2560 height900; real Next navigation; no all94-state claim.",
+  "rows": 24,
+  "captures": 122,
+  "inspectionCounts": {
+    "opened": 14,
+    "sheet-inspected": 82,
+    "captured-only": 26
+  },
+  "actualOpenedSheets": 4,
+  "actualOpenedNative": 14,
+  "checks": {
+    "controlCount": 30,
+    "geometryStable": true,
+    "quietRest": true,
+    "hoverChangesFill": true,
+    "allKeyboardFocusVisible": true,
+    "noHoverTransform": true,
+    "quietTextTransparent": true,
+    "reducedMotionHasHover": true,
+    "missingFiles": [],
+    "sourcesStable": true,
+    "errors": []
+  },
+  "findings": [],
+  "judgment": "No blocking visual issue found in the inspected compact-pagination change. Circular tonal hover is observable in both themes; quiet rest retained; keyboard focus clear; no source-added animation timing. Quiet text remains transparent with underline. Palette human acceptance not inferred.",
+  "limits": "Parent/page context inspected in 8 selected actual end viewports plus2 initial viewports; other page captures remain captured-only. First diagnostic had no pager under Active filter; second diagnostic used held page reads and an incorrect workbench capture selector; final regenerated capture set corrects both, has zero errors and stable source pins."
+}

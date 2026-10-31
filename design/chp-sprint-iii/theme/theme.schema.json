@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CU Ways canonical theme source",
+  "type": "object",
+  "required": [
+    "meta",
+    "shared",
+    "themes",
+    "preferences",
+    "guidance",
+    "openDecisions",
+    "specialization"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "status",
+        "source",
+        "sourceSha256"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "shared": {
+      "$ref": "#/$defs/tokenMap"
+    },
+    "themes": {
+      "type": "object",
+      "required": [
+        "light",
+        "dark"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "$ref": "#/$defs/tokenMap"
+        },
+        "dark": {
+          "$ref": "#/$defs/tokenMap"
+        }
+      }
+    },
+    "preferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "topic",
+          "rule",
+          "status"
+        ]
+      }
+    },
+    "guidance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "openDecisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "specialization": {
+      "type": "object",
+      "required": [
+        "order",
+        "allowed",
+        "restricted",
+        "record",
+        "promotion"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "tokenMap": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/token"
+      }
+    },
+    "token": {
+      "type": "object",
+      "required": [
+        "$type",
+        "$value",
+        "$status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "$type": {
+          "enum": [
+            "color",
+            "dimension",
+            "duration",
+            "number",
+            "string"
+          ]
+        },
+        "$status": {
+          "enum": [
+            "approved",
+            "guidance",
+            "provisional"
+          ]
+        },
+        "$description": {
+          "type": "string"
+        },
+        "$value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "required": [
+                "mix"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "mix": {
+                  "type": "object",
+                  "required": [
+                    "foreground",
+                    "background",
+                    "weight"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "foreground": {
+                      "type": "string"
+                    },
+                    "background": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

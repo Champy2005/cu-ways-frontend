@@ -1,0 +1,16 @@
+# Layout and review patterns · 30 October 2026
+
+This research informs revision1.7.0. Current human decisions override these references; this is not another theme authority. No screenshots or implementation from an external product are copied into the handoff.
+
+| Source | Observed guidance | Application and judgment |
+| --- | --- | --- |
+| [Carbon dropdown specification](https://www.carbondesignsystem.com/building-blocks/core/components/dropdown/specifications) | Menu options use a subtle border between rows, with distinct hover/selected states. | Add a faint1px option divider inside the existing rounded native supported picker. Preserve native keyboard semantics and platform fallback. |
+| [Material list guidance](https://m2.material.io/components/lists) | Repeated visual/text/action locations improve scanning; primary text and supporting metadata have distinct alignment. | Use a shared upper-right lifecycle/status slot, readable left identity and content-driven wrapping. The exact placement is the human's instruction, not a claimed universal Material rule. |
+| [Atlassian lozenge](https://atlassian.design/components/lozenge/code) | A compact label communicates an attribute that affects understanding or action. | Keep status short, textual and semantically distinct. Pending uses a clock rather than a cancellation cross. Do not reposition attachment types or checklist icons as lifecycle badges. |
+| [GOV.UK details](https://design-system.service.gov.uk/components/details/) | A disclosure can reduce scanning load for optional detail, with a clear label; essential information should remain visible. | Very long written reviews get a visible preview and native Read full review / Show less disclosure. Rating, author, date and verification stay visible. Cancellation consequences remain visible before confirmation. |
+| [Nielsen Norman Group progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/) | Secondary detail should be available through an obvious, descriptive control while common information remains easy to scan. | Apply this to the unusually long review body, not to permissions, payment guards or uncertain-operation recovery. |
+| [Carbon visualization palettes](https://www.carbondesignsystem.com/building-blocks/data-visualization/color-palettes) | Color should match the information's role, retain contrast across themes and avoid decorative gradient dependence. | A single neutral series identifies review counts. Keep stars separate and numeric counts explicit; remove amber warning-like bars. The exact neutral colors are a local proposal and still await human judgment. |
+
+The review-list composition will use one header/filter group, a consistent author/status/date hierarchy and bounded comment previews. Remove the requested verification explainer entirely. Empty filtered results should keep the active control and an obvious reset without a redundant Page1of1 footer.
+
+Review both themes at mobile/desktop and large screens, plus enlarged/short layouts, pointer/keyboard select states, native review disclosure, filter reset, navigation and loading/guarded states. Capture component, parent/siblings and page; record actual inspected scope separately from automated bounds.

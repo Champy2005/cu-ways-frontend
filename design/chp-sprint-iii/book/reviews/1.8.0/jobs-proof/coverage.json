@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "revision": "1.8.0",
+  "normalStates": {
+    "US-025": {
+      "states": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06",
+        "D07",
+        "D08",
+        "D09",
+        "D10",
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14"
+      ],
+      "normalOriginal": {
+        "themes": [
+          "light",
+          "dark"
+        ],
+        "viewports": [
+          [
+            390,
+            844
+          ],
+          [
+            1440,
+            900
+          ]
+        ],
+        "inspection": "all named states page composition inspected on original contact sheets; component family sheets additionally inspected"
+      },
+      "currentRetake": {
+        "states": [
+          "C01",
+          "C03",
+          "C04"
+        ],
+        "themes": [
+          "light",
+          "dark"
+        ],
+        "normalViewports": [],
+        "componentScope": "all US026 unique family crops at390; US025 three start dialogs at390; see individual/sheet rows for exact scope"
+      },
+      "unvisited": "Generated-only retake sheets/individual images not marked inspected remain unvisited. Native touch device/assistive technology and production API behavior not reviewed."
+    },
+    "US-026": {
+      "states": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "normalOriginal": {
+        "themes": [
+          "light",
+          "dark"
+        ],
+        "viewports": [
+          [
+            390,
+            844
+          ],
+          [
+            1440,
+            900
+          ]
+        ],
+        "inspection": "all named states page composition inspected on original contact sheets; component family sheets additionally inspected"
+      },
+      "currentRetake": {
+        "states": [
+          "A01",
+          "A02",
+          "A03",
+          "A04",
+          "A05",
+          "A06",
+          "B01",
+          "B02",
+          "B03",
+          "B04",
+          "C01",
+          "C02",
+          "C03",
+          "C04"
+        ],
+        "themes": [
+          "light",
+          "dark"
+        ],
+        "normalViewports": [
+          [
+            390,
+            844
+          ],
+          [
+            1440,
+            900
+          ]
+        ],
+        "componentScope": "all US026 unique family crops at390; US025 three start dialogs at390; see individual/sheet rows for exact scope"
+      },
+      "unvisited": "Generated-only retake sheets/individual images not marked inspected remain unvisited. Native touch device/assistive technology and production API behavior not reviewed."
+    }
+  },
+  "captureRuns": [
+    {
+      "sourceStable": true,
+      "errors": [],
+      "name": "original",
+      "caseCount": 322,
+      "captureCount": 1612,
+      "checkCount": 0
+    },
+    {
+      "sourceStable": true,
+      "errors": [],
+      "name": "retake1",
+      "caseCount": 136,
+      "captureCount": 662,
+      "checkCount": 0
+    },
+    {
+      "sourceStable": true,
+      "errors": [],
+      "name": "live",
+      "caseCount": 0,
+      "captureCount": 112,
+      "checkCount": 176
+    },
+    {
+      "sourceStable": true,
+      "errors": [],
+      "name": "boundaries",
+      "caseCount": 0,
+      "captureCount": 78,
+      "checkCount": 48
+    },
+    {
+      "name": "final-b04",
+      "sourceStable": true,
+      "errors": [],
+      "checkCount": 30,
+      "captureCount": 24
+    }
+  ],
+  "inspectedSheets": [
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-9.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-390-10.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-9.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-light-1440-10.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-light-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-viewport-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-viewport-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-viewport-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-end-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-end-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-light-end-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/short-025-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-9.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-390-10.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-9.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-025-dark-1440-10.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-4.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-5.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-6.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-7.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/components-025-dark-8.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-viewport-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-viewport-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-viewport-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-end-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-end-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-025-dark-end-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/short-025-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-light-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-viewport-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-viewport-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-viewport-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-end-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-end-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-light-end-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/short-026-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/normal-026-dark-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-viewport-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-viewport-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-viewport-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-end-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-end-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/narrow-026-dark-end-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/original/short-026-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-025-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-025-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-light-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/narrow-026-light-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/short-026-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-light-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-light-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-light-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-390-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-390-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-390-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-390-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-1440-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-1440-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-1440-2.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/normal-026-dark-1440-3.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/narrow-026-dark-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/short-026-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-dark-0.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-dark-1.png",
+    "evidence/1.8.0/reviewer-jobs-proof/inspection-sheets/retake1/components-026-dark-2.png"
+  ],
+  "inspectedImageCounts": {
+    "individual image": 34,
+    "contact sheet": 632,
+    "not opened": 505
+  },
+  "evidenceRows": 1171,
+  "currentSourceHashes": {
+    "theme/theme.json": "66b5bcb18e01b7eafffefc40f4c2cf4350f25f84e75667ee834df04a18a4c274",
+    "theme/components.mjs": "c32c788bf0ef1e15997329151ba9f599b135acf595e7e10d69aa80bbc55cd6d8",
+    "theme/recipes.css": "567ebaf3eb3782b4064b9a1e61ccba5517bf3956176b970f98443e627bddf7a2",
+    "theme/tokens.css": "7182fc903adb1defec9935362a9692dcb0a0f310e9f016c4589366dd9a4d9480",
+    "theme/operations.mjs": "5c9b48c62136bbc30e380154445f225190561402ba8d772331acfe0d52024bb9",
+    "US-025/demo/screen.mjs": "f3e711c9e00a69c61ed4385232b95173273b16bada797bccd3138795a61c0f88",
+    "US-025/demo/screen.css": "8016c303fb73f5716b5d8b20094bc4dba888d6d9ce8da9073d6bd2cb042b10dc",
+    "US-025/demo/state-machine.mjs": "34204ca1587f9fef81988e76000960b121c314ab10d32188a9f1217a731608f2",
+    "US-026/demo/screen.mjs": "7d333b8de0a487be581fafafd9187cdef40e58cf88993a90ddb63566cf6e8298",
+    "US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026",
+    "US-026/demo/state-machine.mjs": "ff298c5aa8517ebde4a6f51e09fc2307005b8834fc3940ddb5c8b5b6c0bed5c4"
+  },
+  "findings": [
+    {
+      "id": "proof-pending-title-focus",
+      "status": "fixed and retaken",
+      "original": "US026 A03 title had UA tight text outline; shared visible panel focus now replaces it; X keyboard outline preserved."
+    },
+    {
+      "id": "proof-checked-miss-hidden-focus",
+      "status": "fixed and retaken",
+      "original": "US026 B04 at320x568/200 focused retained input below visible dialog. Overflow now opens at visible title; native Tab scrolls input and Save fully into view."
+    },
+    {
+      "id": "long-proof-url-preview",
+      "status": "accepted improvement and retaken",
+      "original": "Shared evidence path bounded to2lines with full href/title/accessible destination retained."
+    }
+  ],
+  "unresolvedSupportedFindings": [],
+  "humanColorStatus": "awaiting human judgment",
+  "limitations": [
+    "Local Chromium fixtures only; no application API permission/concurrency/persistence proof.",
+    "Original broad matrix predates narrow focus/URI repairs; current retakes cover changed scopes without claiming every old image current.",
+    "Contact sheet scale can hide fine text detail; exact individual scope is recorded.",
+    "Some locator crops clip overflowing dialogs/context or omit focus ring outside crop; those crops are not used as complete-focus proof. Actual viewport plus geometry/Tab evidence covers focus.",
+    "No native device or screen reader audit.",
+    "Unopened generated captures remain captured only."
+  ],
+  "finalCopyScope": {
+    "states": [
+      "US026 B04 modal"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewports": [
+      [
+        320,
+        568,
+        200
+      ],
+      [
+        390,
+        844,
+        100
+      ],
+      [
+        1440,
+        900,
+        100
+      ]
+    ],
+    "inspection": "All6 visible-dialog component crops individually opened. Narrow focused-input pages both themes, light390parent,dark390page,light1440page individually opened. Other final captures remain support only."
+  }
+}

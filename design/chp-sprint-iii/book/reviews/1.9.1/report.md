@@ -1,0 +1,13 @@
+# Independent compact-pagination review, 1.9.1
+
+No blocking visual issue found in the inspected change. Next and Previous now have an observable tonal circular hover in Light and Dark while retaining quiet borderless rest. The hover is subordinate to functional action buttons. Keyboard focus remains clearly distinct. This does not grant human palette acceptance or verify frontend adoption.
+
+Actual rendered scope: US025 My Jobs All jobs, long fixture, pages1/2; US034 Reviews standard fixture, pages1/2. Both themes at390/1440/2560×900. Real Next navigation exercised the enabled Previous state. Final source-pinned capture run has24 rows,122 images, zero errors and identical before/after source hashes. Four close-inspection sheets were actually opened, showing all sizes, both directions and rest/hover/focus. Fourteen native images were additionally opened: eight parent/end viewports, two initial page views, two native hover crops, reduced-motion hover and quiet text hover. Other context images remain captured-only.
+
+All30 enabled controls had transparent rest, changed hover fill, unchanged bounding geometry, no hover transform and visible keyboard focus. The inset boundary clarifies the hover without adding an at-rest border. The reduced-motion dark mobile control retains hover and reports no transition. Shared quiet text Dismiss remains transparent with no shadow and uses a text underline; the new compact rule does not paint a full text-button container. The CSS change adds no animation duration or fade rule.
+
+Page/parent context showed the pagers positioned consistently below the final cards/reviews, with appropriate separation from fixed navigation. Circle hover remains local to the icon hit area and does not shift the page label or siblings. The very-wide desktop context remains aligned with content. No additional supported flaw was identified in this compact scope.
+
+`final-manifest.json` contains exact source hashes, URLs, observations and all raw capture entries. `inspection-ledger.json` distinguishes opened, sheet-inspected and captured-only images; `book-evidence.json` imports into the existing pagination/actions/page records. All portable images are under `book/evidence/1.9.1/reviewer/final/`.
+
+Diagnostic limits are preserved: the first attempt used Active jobs, which has no pager for this fixture. The next used held page reads (so Previous was disabled during read) and an incorrect workbench capture selector. The final run uses immediate fixture reads and the correct quiet-text selector; neither diagnostic error is asserted as a product defect. Earlier diagnostic artifacts are retained separately. This is not a new94-state review or application API/persistence proof.

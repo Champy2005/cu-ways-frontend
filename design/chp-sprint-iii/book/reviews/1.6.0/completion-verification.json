@@ -1,0 +1,101 @@
+{
+  "revision": "1.6.0",
+  "completedOn": "2026-10-30",
+  "scope": "Local HTML design handoff",
+  "focusedNodeTests": {
+    "passed": 68,
+    "failed": 0
+  },
+  "storyBrowserChecks": {
+    "passed": 204,
+    "failed": 0
+  },
+  "layoutMatrix": {
+    "cases": 564,
+    "errors": [],
+    "variants": [
+      "390×844 /100%",
+      "1440×1000 /100%",
+      "320×420 /200%"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ]
+  },
+  "navigationAndResultChecks": [
+    {
+      "label": "Start: dismissed write exposes progress",
+      "passed": true
+    },
+    {
+      "label": "Start: browser return retains unknown, no Start command",
+      "passed": true
+    },
+    {
+      "label": "Start: return explains uncertainty",
+      "passed": true
+    },
+    {
+      "label": "Start: reload preserves uncertain write",
+      "passed": true
+    },
+    {
+      "label": "Start: return/reload does not replay POST",
+      "passed": true
+    },
+    {
+      "label": "Proof: close keeps View progress",
+      "passed": true
+    },
+    {
+      "label": "Proof: return cannot resubmit ambiguous save",
+      "passed": true
+    },
+    {
+      "label": "Proof: return offers check with retained draft",
+      "passed": true
+    },
+    {
+      "label": "Proof: returning retains draft link",
+      "passed": true
+    },
+    {
+      "label": "Proof: reload preserves check-before-retry",
+      "passed": true
+    },
+    {
+      "label": "027: confirmed result survives reload",
+      "passed": true
+    },
+    {
+      "label": "027: reload does not restore mutation eligibility",
+      "passed": true
+    },
+    {
+      "label": "028: confirmed result survives reload",
+      "passed": true
+    },
+    {
+      "label": "028: reload does not restore mutation eligibility",
+      "passed": true
+    }
+  ],
+  "bookBrowserChecks": {
+    "passed": 112,
+    "errors": []
+  },
+  "portable": {
+    "passed": true,
+    "scopeAndHashesChecked": true,
+    "bookAndAllFiveScreensServed": true,
+    "errors": [],
+    "proof": "Extracted and served on an independent local port; no application APIs or databases."
+  },
+  "records": 26,
+  "imageReferences": 967,
+  "uniqueLinkedImages": 511,
+  "humanColorJudgment": "awaiting review",
+  "humanUnvisited": "Per-record coverage; US028/US034 whole-page human review remains unvisited",
+  "appAdoption": "separate; frontend/backend unchanged"
+}

@@ -1,0 +1,183 @@
+{
+  "reviewer": "independent read-only tooling reviewer",
+  "createdAt": "2026-10-31T06:23:59.804Z",
+  "sourceHashes": {
+    "engine.cjs": "06396abc501eda1c9b11ee942270a15947b0a63b1825eed086e61123fdfa7e7c",
+    "cli.cjs": "e915310a7aed13d4602749dbb6b4799f882687c6b115bc26a80c50b9b096ff86",
+    "contracts.json": "32701109d36bb59c33bccc26c7106b945a46d55d1d4e06cedd1f7da43eac9684",
+    "changes.cjs": "6082c4afafebe5e2858d60c46a03eff985c155a477e02f26ccc0a6a855d06105"
+  },
+  "endHashes": {
+    "engine.cjs": "06396abc501eda1c9b11ee942270a15947b0a63b1825eed086e61123fdfa7e7c",
+    "cli.cjs": "e915310a7aed13d4602749dbb6b4799f882687c6b115bc26a80c50b9b096ff86",
+    "contracts.json": "32701109d36bb59c33bccc26c7106b945a46d55d1d4e06cedd1f7da43eac9684",
+    "changes.cjs": "6082c4afafebe5e2858d60c46a03eff985c155a477e02f26ccc0a6a855d06105"
+  },
+  "sourceStable": true,
+  "runs": [
+    {
+      "file": "probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "cli-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "edge-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "paint-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "html-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "attrs-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "changes-probe.cjs",
+      "exitCode": 0
+    },
+    {
+      "file": "lifecycle-probe.cjs",
+      "exitCode": 0
+    }
+  ],
+  "checks": [
+    {
+      "label": "alias/re-export/const-alias call targets canonical action",
+      "passed": true
+    },
+    {
+      "label": "wrapper retained in transitive callers",
+      "passed": true
+    },
+    {
+      "label": "inline module namespace call resolved",
+      "passed": true
+    },
+    {
+      "label": "linked local route traversed and guarded",
+      "passed": true
+    },
+    {
+      "label": "contract mutation invalidates graph",
+      "passed": true
+    },
+    {
+      "label": "constant lifecycle bypass detected",
+      "passed": true
+    },
+    {
+      "label": "attribute-based paint override detected",
+      "passed": true
+    },
+    {
+      "label": "computed import remains explicit unknown",
+      "passed": true
+    },
+    {
+      "label": "invalid JavaScript is an explicit violation",
+      "passed": true
+    },
+    {
+      "label": "validate cannot skip cached static violation",
+      "passed": true
+    },
+    {
+      "label": "new entrypoint invalidates graph",
+      "passed": true
+    },
+    {
+      "label": "tool-source mutation invalidates graph",
+      "passed": true
+    },
+    {
+      "label": "mutable lifecycle name is not folded as immutable",
+      "passed": true
+    },
+    {
+      "label": "nonexecutable JSON metadata is not parsed as JavaScript",
+      "passed": true
+    },
+    {
+      "label": "reasoned exact CSS exception is recorded",
+      "passed": true
+    },
+    {
+      "label": "empty exception reason rejected",
+      "passed": true
+    },
+    {
+      "label": "border shorthand override detected",
+      "passed": true
+    },
+    {
+      "label": "canonical fill variable override detected",
+      "passed": true
+    },
+    {
+      "label": "literal HTML canonical clones detected",
+      "passed": true
+    },
+    {
+      "label": "literal product button requires shared ownership",
+      "passed": true
+    },
+    {
+      "label": "template class whitespace does not bypass ownership",
+      "passed": true
+    },
+    {
+      "label": "explicit native author-tool boundary supported",
+      "passed": true
+    },
+    {
+      "label": "reserved style attribute whitespace does not bypass ownership",
+      "passed": true
+    },
+    {
+      "label": "runtime component attributes remain explicit unknowns",
+      "passed": true
+    },
+    {
+      "label": "actual baseline source and token value changes reported",
+      "passed": true
+    },
+    {
+      "label": "partial baseline leaves current-only files explicitly unclassified",
+      "passed": true
+    },
+    {
+      "label": "real lifecycle contract exactly covers canonical definitions",
+      "passed": true
+    },
+    {
+      "label": "generic Status unavailable fallback bypass is rejected",
+      "passed": true
+    },
+    {
+      "label": "newly imported helper raw local button is blocked",
+      "passed": true
+    },
+    {
+      "label": "explicit reasoned native JS author boundary supported",
+      "passed": true
+    },
+    {
+      "label": "route receipts distinguish passed failed mixed and interrupted checks",
+      "passed": true
+    },
+    {
+      "label": "new routes malformed receipts remain unvisited without aesthetic inference",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "scope": "Owned static/CLI fixtures; no UI source edits or production API/runtime proof."
+}

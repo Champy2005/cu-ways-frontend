@@ -4,6 +4,8 @@ Mobile first, connected HTML prototypes for Tim's UX/UI tasks in Sprint Backlog 
 
 ## Open the previews
 
+Chp's US025/026/027/028/034 handoff is available separately in [chp-sprint-iii/](chp-sprint-iii/EXPORT.md). Run `node design/chp-sprint-iii/serve.mjs --port 4188` from the repository and open `http://127.0.0.1:4188/`. Its shared theme, local scenario studios, design index and review evidence are reference material; they do not modify the application or these connected Tim previews.
+
 From the frontend repository, run:
 
 ```powershell

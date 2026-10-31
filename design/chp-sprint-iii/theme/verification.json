@@ -1,0 +1,66 @@
+{
+  "verdict": "VERIFIED",
+  "scope": "Reusable export source, generated projections and preview; application migration not performed",
+  "static": [
+    "5 native Node tests passed",
+    "JSON Schema via installed Ajv passed",
+    "Generated export freshness passed"
+  ],
+  "browser": {
+    "themes": [
+      {
+        "back": {
+          "decoration": "none",
+          "weight": "400"
+        },
+        "bottom": "rgb(223, 231, 240)",
+        "header": {
+          "fill": "rgb(238, 242, 247)",
+          "shadow": "rgba(255, 255, 255, 0.9) 0px 2px 0px 0px inset, rgba(64, 87, 117, 0.16) 0px -1px 0px 0px inset, rgba(255, 255, 255, 0.9) 0px -3px 0px 0px inset, rgba(23, 40, 62, 0.14) 0px 3px 14px 0px"
+        },
+        "overflow": false,
+        "recovery": {
+          "border": "rgb(203, 211, 221)",
+          "fill": "rgb(233, 237, 242)",
+          "ink": "rgb(52, 70, 92)",
+          "shadow": "rgba(23, 40, 62, 0.06) 0px 1px 2px 0px, rgba(23, 40, 62, 0.1) 0px 3px 8px 0px"
+        },
+        "theme": "light"
+      },
+      {
+        "back": {
+          "decoration": "none",
+          "weight": "400"
+        },
+        "bottom": "rgb(48, 65, 87)",
+        "header": {
+          "fill": "rgb(24, 34, 48)",
+          "shadow": "rgba(224, 234, 247, 0.18) 0px 2px 0px 0px inset, rgba(6, 12, 22, 0.18) 0px -1px 0px 0px inset, rgba(224, 234, 247, 0.18) 0px -3px 0px 0px inset, rgba(0, 0, 0, 0.14) 0px 3px 14px 0px"
+        },
+        "overflow": false,
+        "recovery": {
+          "border": "rgb(69, 88, 110)",
+          "fill": "rgb(41, 59, 80)",
+          "ink": "rgb(197, 208, 223)",
+          "shadow": "rgba(235, 243, 255, 0.027) 0px 1px 0px 0px inset, rgba(176, 207, 243, 0.027) 0px 1px 2px 0px, rgba(176, 207, 243, 0.047) 0px 3px 8px 0px"
+        },
+        "theme": "dark"
+      }
+    ],
+    "tertiaryInteraction": {
+      "hover": true,
+      "shadow": "rgba(176, 207, 243, 0.01) 0px 1px 2px 0px, rgba(176, 207, 243, 0.02) 0px 3px 8px 0px",
+      "transform": "matrix(1, 0, 0, 1, 0, -1)"
+    },
+    "focus": {
+      "focused": true,
+      "outline": "solid"
+    },
+    "errors": []
+  },
+  "unproven": [
+    "Application integration/runtime flows",
+    "Native-device glass, safe areas and virtual keyboards",
+    "Complete unshown component states"
+  ]
+}

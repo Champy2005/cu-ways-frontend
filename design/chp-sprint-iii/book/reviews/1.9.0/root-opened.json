@@ -1,0 +1,232 @@
+{
+  "reviewer": "root",
+  "scope": "Native child/group inspection; desktop whole-page images were displayed reduced for composition. This supplements, not duplicates, independent coverage.",
+  "images": [
+    {
+      "file": "evidence/1.9.0/reviewer/palette-lab/lab-final-light-1440-actions.png",
+      "sha256": "d5ee1cd9685d751fcec2a46bcdbfd8490cc824d40540bb8df17aad4f02a5160e",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-lab/lab-final-dark-1440-actions.png",
+      "sha256": "2b59b3f2efb20a3fed59a46ad5538712a0996d014ec698cf9c299d5c1a8f1126",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-lab/lab-final-dark-1440-statuses.png",
+      "sha256": "7c2b7ace26ad2b8ab0a5efb688be5f3c19d2478e76e807d6fb8e1567edbd8224",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-lab/lab-final-light-1440-card-back.png",
+      "sha256": "96b013876b9685f5d57c38aaeae3e278d67593239a4078bffc7b10a81cb9fb92",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-dialog.png",
+      "sha256": "b888f2011fe76db5b34d9b3714b1d8aad1f36b6b737f40c185751c100af35cf0",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-dialog.png",
+      "sha256": "a4dd6eea400cd92137f2d8b5de1c7bdc2f44a76f172ebffd7a7091157d9e489d",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-dialog.png",
+      "sha256": "b5653f913a4d64fa6da7af8b9b79753b625c11e3e6e9cf7316e42cc2ec336649",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-viewport.png",
+      "sha256": "469f27da7863770a19a7502549eec9e41744cf6004486fbb60dc30bc5171ab96",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "page composition"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-extra/us025-L02-dark-2560-1347-100-large-viewport.png",
+      "sha256": "6cb62febb476e20cb228ad1f6f3ddd52e6a513773adc650bcf6f962b080b21d7",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "page composition"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-extra/us025-L02-light-2560-1347-100-large-viewport.png",
+      "sha256": "3edacb2a3408faf9c02abd83f955d8b480c39fd3a49a5e5997ae0c683e3bd219",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/lab.mjs": "6df2b2506893e4b441bde4735b6d201aadf2ad0fa0925c74a2833bde3aba39e6",
+        "../theme/lab.css": "f16988678d03c161a612fb8023edcbf09d2971add645f003e4a22ebdf6fcffd8",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7",
+        "../stories/runtime.mjs": "91330d1924658364cacf495970a440b40de7fc95a53cda3b5a9fb54ac7a0e6e4",
+        "../stories/screen.css": "08753f8406873f0a68f5e67f27669a5f4373910d866a354c6722b839c1317124",
+        "../US-025/demo/screen.mjs": "66538951f67d7724ef5c78aef1f5f7694552dad9227ae592df08aead65e73fc5",
+        "../US-026/demo/screen.mjs": "12e532f3af3177d67a821ebe75bec4c4ca6304ea9c44a62f35f9017d4730708a",
+        "../US-027/demo/screen.mjs": "974c3c79aff401c3c8465d4c2a763e9f99d21b8013062aa43a23f90c33bd97e0",
+        "../US-028/demo/screen.mjs": "a0b929e1ae5ac88681e381d7b0ed7160fb632b4ed1664be25024adb21dd5e2df",
+        "../US-034/demo/screen.mjs": "dca905dc8ecedd9035c3bf80fba3eaa3d62cf6b2b88e367c92663c8bb36893ac",
+        "../US-025/demo/screen.css": "3150d16d669ce6e634dbf37c2208f54622daff27195171b2e3f5ca9ffaca45c5",
+        "../US-026/demo/screen.css": "403ecc59a044b4119a5e0ad5ba4a016bc540b223bf86762ae99c20e6f8e5c026"
+      },
+      "inspection": "opened by root",
+      "scope": "page composition"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-utility/palette-1440-light.png",
+      "sha256": "d406a2c019c8e1b12a2658d085000e0dc3b23e78b5d722f28a3d9153a27e0fc0",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    },
+    {
+      "file": "evidence/1.9.0/reviewer/palette-utility/palette-1440-dark.png",
+      "sha256": "dc16d551bb761e988b6667514ef09005b26099fd0f67410ef4a3176b5675d123",
+      "sourceHashes": {
+        "../theme/theme.json": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+        "../theme/tokens.css": "bbf99d0013a4489caf71563a604812ff305853911c66f9f69ad3bccb0c74bd93",
+        "../theme/recipes.css": "acf8e3edf6a674300d84bc600849094e2abd5c214b716ac4598e41d8b66c668e",
+        "../theme/components.mjs": "9a6af87c6b6c1e8a78bc1518507d226f7acdc95a65c9e0e6f3142c67ab5982c1",
+        "../theme/color-review.html": "1beba24cc450050611b8efec36a344ef6da886f88d81656f8d6d69dbcaed04f7"
+      },
+      "inspection": "opened by root",
+      "scope": "component/group detail"
+    }
+  ]
+}
