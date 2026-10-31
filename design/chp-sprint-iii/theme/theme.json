@@ -1,0 +1,2312 @@
+{
+  "$schema": "./theme.schema.json",
+  "meta": {
+    "name": "CU Ways Rose × Slate",
+    "version": "1.9.1",
+    "status": "Purple proposal rejected; slate-blue actions and blue-teal progress replacement pending human judgment",
+    "source": "../US-025/color-playground/round-10.html",
+    "sourceSha256": "292ada478cceedd916b43214ea26d855b01b6ef4ce7f9851b3a9c39150a45900",
+    "decisionDate": "2026-10-31",
+    "latestDecision": "Stronger shared compact pagination hover; text-only quiet controls retain transparent hover",
+    "frontendInspected": "3e8a041ed48bc4d613afe7d6d6e1049a3edb8cde",
+    "backendInspected": "439590f8132e8a3f1a47aa4cd4f19aa12214a19a",
+    "sourceRole": "Selected Round10 appearance is the visual reference. Later user corrections remove the header top rim and define contextual navigation; do not dismiss the reference because its files are historical."
+  },
+  "shared": {
+    "rim.highlight": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$status": "approved",
+      "$description": "Shared rim / highlight parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "rim.seam": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$status": "approved",
+      "$description": "Shared rim / seam parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "border.hairline": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$status": "approved",
+      "$description": "Shared border / hairline parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "radius.headerLower": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$status": "approved",
+      "$description": "Shared radius / headerLower parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "radius.bottomUpper": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$status": "approved",
+      "$description": "Shared radius / bottomUpper parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "radius.actionTray": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$status": "approved",
+      "$description": "Shared radius / actionTray parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "radius.action": {
+      "$type": "dimension",
+      "$value": ".625rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "radius.card": {
+      "$type": "dimension",
+      "$value": ".75rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "radius.status": {
+      "$type": "dimension",
+      "$value": ".25em",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "size.targetMin": {
+      "$type": "dimension",
+      "$value": "2.75rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "size.actionMin": {
+      "$type": "dimension",
+      "$value": "3rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "size.navRowMin": {
+      "$type": "dimension",
+      "$value": "4rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "size.navIconSlot": {
+      "$type": "dimension",
+      "$value": "1.375rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.actionInline": {
+      "$type": "dimension",
+      "$value": "1.125em",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.actionBlock": {
+      "$type": "dimension",
+      "$value": ".65em",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.iconGap": {
+      "$type": "dimension",
+      "$value": ".5em",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.navIconLabelGap": {
+      "$type": "dimension",
+      "$value": ".25rem",
+      "$status": "guidance",
+      "$description": "4px baseline gap between mobile icon and caption, independent of caption font size."
+    },
+    "space.trayInset": {
+      "$type": "dimension",
+      "$value": ".75rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.trayPadding": {
+      "$type": "dimension",
+      "$value": ".5rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.trayGap": {
+      "$type": "dimension",
+      "$value": ".75rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "space.contentClearance": {
+      "$type": "dimension",
+      "$value": "1.25rem",
+      "$status": "guidance",
+      "$description": "Scales with text/root size; validate intrinsic sizing and zoom."
+    },
+    "motion.lift": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$status": "approved",
+      "$description": "Interaction motion lift. Durations are milliseconds; reduced motion removes decorative movement."
+    },
+    "focus.width": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$status": "guidance",
+      "$description": "Shared focus / width parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "focus.offset": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$status": "guidance",
+      "$description": "Shared focus / offset parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "motion.action.duration": {
+      "$type": "duration",
+      "$value": 150,
+      "$status": "approved",
+      "$description": "Interaction motion action.duration. Durations are milliseconds; reduced motion removes decorative movement."
+    },
+    "motion.navigation.duration": {
+      "$type": "duration",
+      "$value": 240,
+      "$status": "approved",
+      "$description": "Interaction motion navigation.duration. Durations are milliseconds; reduced motion removes decorative movement."
+    },
+    "motion.feedback.duration": {
+      "$type": "duration",
+      "$value": 140,
+      "$status": "approved",
+      "$description": "Interaction motion feedback.duration. Durations are milliseconds; reduced motion removes decorative movement."
+    },
+    "text.body": {
+      "$type": "dimension",
+      "$value": "1rem",
+      "$status": "guidance",
+      "$description": "Shared text / body parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.caption": {
+      "$type": "dimension",
+      "$value": ".875rem",
+      "$status": "guidance",
+      "$description": "Shared text / caption parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.back": {
+      "$type": "dimension",
+      "$value": "1rem",
+      "$status": "guidance",
+      "$description": "Shared text / back parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.lineBody": {
+      "$type": "number",
+      "$value": 1.55,
+      "$status": "guidance",
+      "$description": "Shared text / lineBody parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.lineLabel": {
+      "$type": "number",
+      "$value": 1.25,
+      "$status": "guidance",
+      "$description": "Shared text / lineLabel parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.weight.action": {
+      "$type": "number",
+      "$value": 600,
+      "$status": "approved",
+      "$description": "Shared text / weight / action parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.weight.back": {
+      "$type": "number",
+      "$value": 400,
+      "$status": "approved",
+      "$description": "Shared text / weight / back parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.weight.navRest": {
+      "$type": "number",
+      "$value": 600,
+      "$status": "approved",
+      "$description": "Shared text / weight / navRest parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.weight.navSelectedMobile": {
+      "$type": "number",
+      "$value": 700,
+      "$status": "approved",
+      "$description": "Shared text / weight / navSelectedMobile parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "text.weight.navDesktop": {
+      "$type": "number",
+      "$value": 600,
+      "$status": "approved",
+      "$description": "Shared text / weight / navDesktop parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "motion.navigationEase": {
+      "$type": "string",
+      "$value": "cubic-bezier(.22,.8,.25,1)",
+      "$status": "approved",
+      "$description": "Interaction motion navigationEase. Durations are milliseconds; reduced motion removes decorative movement."
+    },
+    "opacity.contactFactor": {
+      "$type": "number",
+      "$value": 0.6,
+      "$status": "approved",
+      "$description": "Alpha proportion from 0 to 1 for contactFactor. Apply only to this effect/material layer, not the whole component or its text."
+    },
+    "color.depth.cool": {
+      "$type": "color",
+      "$value": "#B0CFF3",
+      "$status": "approved",
+      "$description": "Tint for cool depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+    },
+    "color.depth.darkEdge": {
+      "$type": "color",
+      "$value": "#EBF3FF",
+      "$status": "approved",
+      "$description": "Tint for darkEdge depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+    },
+    "color.tint.primaryLight": {
+      "$type": "color",
+      "$value": "#FFF0F7",
+      "$status": "approved",
+      "$description": "Semantic tint / primaryLight color. Validate against the actual composed surface, especially glass."
+    },
+    "color.tint.destructiveLight": {
+      "$type": "color",
+      "$value": "#FFE9E9",
+      "$status": "approved",
+      "$description": "Semantic tint / destructiveLight color. Validate against the actual composed surface, especially glass."
+    },
+    "depth.contactX": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: contactX. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.contactY": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: contactY. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.contactBlur": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: contactBlur. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.ambientX": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: ambientX. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.ambientY": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: ambientY. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.ambientBlur": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: ambientBlur. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.barY": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: barY. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.barBlur": {
+      "$type": "dimension",
+      "$value": "14px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: barBlur. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.menuBlur": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: menuBlur. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.trayBlur": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: trayBlur. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "depth.darkInnerEdge": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$status": "approved",
+      "$description": "Shadow/glow geometry: darkInnerEdge. X/Y are directional offsets; blur is CSS blur radius, with zero spread. Bounded px values are optical details, not page dimensions."
+    },
+    "radius.navTile": {
+      "$type": "dimension",
+      "$value": ".875rem",
+      "$status": "guidance",
+      "$description": "Shared radius / navTile parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "scale.navInactive": {
+      "$type": "number",
+      "$value": 0.9090909090909091,
+      "$status": "approved",
+      "$description": "Shared scale / navInactive parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "scale.navHover": {
+      "$type": "number",
+      "$value": 0.9545454545454546,
+      "$status": "approved",
+      "$description": "Shared scale / navHover parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "scale.navSelected": {
+      "$type": "number",
+      "$value": 1,
+      "$status": "approved",
+      "$description": "Shared scale / navSelected parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "stroke.navRest": {
+      "$type": "number",
+      "$value": 1.8,
+      "$status": "approved",
+      "$description": "Shared stroke / navRest parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "stroke.navHover": {
+      "$type": "number",
+      "$value": 2.1,
+      "$status": "approved",
+      "$description": "Shared stroke / navHover parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "color.error.charcoal": {
+      "$type": "color",
+      "$value": "#242426",
+      "$status": "approved",
+      "$description": "Feedback charcoal paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+    },
+    "color.error.redWash": {
+      "$type": "color",
+      "$value": "#923333",
+      "$status": "approved",
+      "$description": "Feedback redWash paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+    },
+    "weight.error.redWash": {
+      "$type": "number",
+      "$value": 0.25,
+      "$status": "approved",
+      "$description": "Opaque sRGB mix proportion (0–1) for error / redWash. Derived fill/border colors are recomputed from the source; this is not element opacity."
+    },
+    "text.navSelectedOpticalStrength": {
+      "$type": "dimension",
+      "$value": ".2px",
+      "$status": "approved",
+      "$description": "Shared text / navSelectedOpticalStrength parameter. Inherit unless a scoped, documented specialization is needed; this is not a page coordinate."
+    },
+    "size.targetFloor": {
+      "$type": "dimension",
+      "$value": "44px",
+      "$status": "guidance",
+      "$description": "Comfortable minimum target floor; pair with relative growth rather than freezing control height."
+    },
+    "rim.headerTop": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$status": "approved",
+      "$description": "No bright rim or reflection on the top edge of the header. The lower header edge remains 2px plus a separate 1px seam."
+    },
+    "border.bannerRail": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$status": "approved",
+      "$description": "Feedback accent rail on the inline-start edge. Matches the approved demo; it is a visual signal, never an interactive frame."
+    },
+    "radius.banner": {
+      "$type": "dimension",
+      "$value": ".625rem",
+      "$status": "guidance",
+      "$description": "Feedback corner radius; adapt to component scale without making the banner look like a button."
+    },
+    "space.bannerPadding": {
+      "$type": "dimension",
+      "$value": ".875em",
+      "$status": "guidance",
+      "$description": "Internal padding for feedback text and icon, scaling with text rather than viewport width."
+    },
+    "size.inlineIcon": {
+      "$type": "dimension",
+      "$value": "1.125em",
+      "$status": "guidance",
+      "$description": "Decorative action/feedback icon size relative to its visible label."
+    },
+    "stroke.icon": {
+      "$type": "number",
+      "$value": 1.8,
+      "$status": "guidance",
+      "$description": "Round-cap SVG stroke at a 24-unit viewBox. Use one outline family, including the refresh arrow."
+    },
+    "motion.spinnerDuration": {
+      "$type": "duration",
+      "$value": 800,
+      "$status": "guidance",
+      "$description": "One smooth spinner revolution in milliseconds; reduced motion shows a static arc and keeps its visible busy label."
+    },
+    "blur.bottom": {
+      "$type": "dimension",
+      "$value": "{blur.header}",
+      "$status": "approved",
+      "$description": "Bottom glass backdrop blur inherits the theme header blur: Light18px, Dark24px. Reduced transparency uses opaque material without filtering."
+    },
+    "font.family": {
+      "$type": "string",
+      "$value": "Inter, system-ui, sans-serif",
+      "$status": "guidance",
+      "$description": "Shared product UI font. Locally bundled Inter 400/600/700; application adoption still audits existing font ownership."
+    },
+    "text.compactBody": {
+      "$type": "dimension",
+      "$value": ".9375rem",
+      "$status": "guidance",
+      "$description": "Compact product density: 14px at the normal 16px root, matching selected Round10. Opt in explicitly; text enlargement still scales it."
+    },
+    "text.chrome": {
+      "$type": "dimension",
+      "$value": ".875rem",
+      "$status": "guidance",
+      "$description": "Header/menu and desktop navigation labels: 14px baseline. Independent of compact mobile captions."
+    },
+    "text.navCaption": {
+      "$type": "dimension",
+      "$value": ".6875rem",
+      "$status": "guidance",
+      "$description": "Short mobile destination captions: 11px baseline; keep full accessible names and scale with root/text enlargement."
+    },
+    "text.navLine": {
+      "$type": "dimension",
+      "$value": ".875rem",
+      "$status": "guidance",
+      "$description": "Mobile caption line box: 14px baseline, paired with the 22px icon slot and 4px gap."
+    },
+    "size.headerMin": {
+      "$type": "dimension",
+      "$value": "4.5rem",
+      "$status": "guidance",
+      "$description": "72px baseline header. This is a minimum, not a fixed height; wrap utilities when text enlargement requires it."
+    },
+    "size.headerIcon": {
+      "$type": "dimension",
+      "$value": "1.5rem",
+      "$status": "guidance",
+      "$description": "24px outline header utilities; preserve the independent 44px minimum target."
+    },
+    "size.brandCompact": {
+      "$type": "dimension",
+      "$value": "7.75rem",
+      "$status": "guidance",
+      "$description": "124px compact logo width; retain source aspect ratio rather than shrinking the bird/logo to fit arbitrary cells."
+    },
+    "size.brandWide": {
+      "$type": "dimension",
+      "$value": "9.5rem",
+      "$status": "guidance",
+      "$description": "152px wide-header logo width; host chooses compact presentation when navigation no longer fits."
+    },
+    "size.roleArtwork": {
+      "$type": "dimension",
+      "$value": "3.1875rem",
+      "$status": "guidance",
+      "$description": "51px source bird artwork width, preserving its full paired-bird silhouette."
+    },
+    "size.roleTarget": {
+      "$type": "dimension",
+      "$value": "3.25rem",
+      "$status": "guidance",
+      "$description": "52px role-switch target width at normal root size; never substitute a tiny inline icon."
+    },
+    "space.headerInline": {
+      "$type": "dimension",
+      "$value": "1rem",
+      "$status": "guidance",
+      "$description": "Compact header side padding baseline; host may adapt within the 1–2rem range."
+    },
+    "space.headerBlock": {
+      "$type": "dimension",
+      "$value": ".75rem",
+      "$status": "guidance",
+      "$description": "Header vertical padding, alongside a growable minimum height."
+    },
+    "space.headerTools": {
+      "$type": "dimension",
+      "$value": ".25rem",
+      "$status": "guidance",
+      "$description": "Compact utility gap. Utilities may wrap at enlarged text instead of shrinking source artwork."
+    },
+    "space.headerToolsWide": {
+      "$type": "dimension",
+      "$value": ".5rem",
+      "$status": "guidance",
+      "$description": "8px desktop utility gap from the selected Round10 shell; compact headers retain 4px."
+    },
+    "size.roleTargetWide": {
+      "$type": "dimension",
+      "$value": "3.5rem",
+      "$status": "guidance",
+      "$description": "56px desktop role-switch target around the shared 51px artwork; compact target remains 52px."
+    },
+    "size.bannerIcon": {
+      "$type": "dimension",
+      "$value": "1.25em",
+      "$status": "guidance",
+      "$description": "Feedback glyph size relative to message text. The same column is reserved for titled and body-only messages; do not scale by viewport width."
+    },
+    "space.bannerCopyGap": {
+      "$type": "dimension",
+      "$value": ".3em",
+      "$status": "guidance",
+      "$description": "Gap between a feedback title and its explanatory copy; omitted naturally when either is absent."
+    },
+    "space.feedbackGap": {
+      "$type": "dimension",
+      "$value": "1em",
+      "$status": "guidance",
+      "$description": "Clear unpainted separation between a message-only banner and its associated recovery controls. Controls remain outside the banner/live region."
+    },
+    "scale.viewport.desktop": {
+      "$type": "number",
+      "$value": 1.0625,
+      "$status": "guidance",
+      "$description": "Bounded viewport scale at the documented desktop breakpoint; multiply explicit text enlargement rather than replacing it."
+    },
+    "scale.viewport.wide": {
+      "$type": "number",
+      "$value": 1.125,
+      "$status": "guidance",
+      "$description": "Bounded viewport scale at the documented desktop breakpoint; multiply explicit text enlargement rather than replacing it."
+    },
+    "scale.viewport.large": {
+      "$type": "number",
+      "$value": 1.25,
+      "$status": "guidance",
+      "$description": "Bounded viewport scale at the documented desktop breakpoint; multiply explicit text enlargement rather than replacing it."
+    },
+    "scale.viewport.ultra": {
+      "$type": "number",
+      "$value": 1.375,
+      "$status": "guidance",
+      "$description": "Bounded viewport scale at the documented desktop breakpoint; multiply explicit text enlargement rather than replacing it."
+    },
+    "blur.dialog": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$status": "provisional",
+      "$description": "Content modal backdrop only; disabled by reduced-transparency preference."
+    },
+    "opacity.dialogScrim": {
+      "$type": "number",
+      "$value": 0.46,
+      "$status": "provisional",
+      "$description": "Content modal backdrop alpha; opaque fallback remains legible."
+    },
+    "layout.workspaceMax": {
+      "$type": "dimension",
+      "$value": "96rem",
+      "$status": "provisional",
+      "$description": "Fluid shared workspace outer cap. Content padding remains intrinsic; narrow/mobile widths remain100%."
+    }
+  },
+  "themes": {
+    "light": {
+      "color.surface.canvas": {
+        "$type": "color",
+        "$value": "#F3F4F7",
+        "$status": "approved",
+        "$description": "Source material for canvas. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.card": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Source material for card. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.header": {
+        "$type": "color",
+        "$value": "#EEF2F7",
+        "$status": "approved",
+        "$description": "Source material for header. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.bottom": {
+        "$type": "color",
+        "$value": "#DFE7F0",
+        "$status": "approved",
+        "$description": "Source material for bottom. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.field": {
+        "$type": "color",
+        "$value": "#EDEFF4",
+        "$status": "provisional",
+        "$description": "Observed supporting surface; input control states have not been designed."
+      },
+      "color.text.body": {
+        "$type": "color",
+        "$value": "#0D111A",
+        "$status": "approved",
+        "$description": "Semantic text / body color. Validate against the actual composed surface, especially glass."
+      },
+      "color.text.muted": {
+        "$type": "color",
+        "$value": "#596273",
+        "$status": "approved",
+        "$description": "Semantic text / muted color. Validate against the actual composed surface, especially glass."
+      },
+      "color.border.default": {
+        "$type": "color",
+        "$value": "#DCE1E8",
+        "$status": "approved",
+        "$description": "Semantic border / default color. Validate against the actual composed surface, especially glass."
+      },
+      "color.action.primary.fill": {
+        "$type": "color",
+        "$value": "#CB1C66",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.primary.ink": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Semantic primary / ink paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.destructive.fill": {
+        "$type": "color",
+        "$value": "#CF3447",
+        "$status": "approved",
+        "$description": "Semantic destructive / fill paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.destructive.ink": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Semantic destructive / ink paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.neutralSource": {
+        "$type": "color",
+        "$value": "#D9DFE9",
+        "$status": "approved",
+        "$description": "Semantic neutralSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.borderSource": {
+        "$type": "color",
+        "$value": "#79899F",
+        "$status": "approved",
+        "$description": "Semantic borderSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.recoverySource": {
+        "$type": "color",
+        "$value": "#D7DEE7",
+        "$status": "approved",
+        "$description": "Semantic recoverySource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.recoveryBorderSource": {
+        "$type": "color",
+        "$value": "#8B9DB3",
+        "$status": "approved",
+        "$description": "Semantic recoveryBorderSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.utility.ink": {
+        "$type": "color",
+        "$value": "#394454",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.ink": {
+        "$type": "color",
+        "$value": "#255D91",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.nav.selectedInk": {
+        "$type": "color",
+        "$value": "#214F7B",
+        "$status": "approved",
+        "$description": "Semantic nav / selectedInk color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.desktopSource": {
+        "$type": "color",
+        "$value": "#BFD3E9",
+        "$status": "approved",
+        "$description": "Semantic nav / desktopSource color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.mixBase": {
+        "$type": "color",
+        "$value": "#E8ECF2",
+        "$status": "approved",
+        "$description": "Semantic nav / mixBase color. Validate against the actual composed surface, especially glass."
+      },
+      "color.link.inline": {
+        "$type": "color",
+        "$value": "#225F9D",
+        "$status": "provisional",
+        "$description": "Ordinary inline link system still needs complete interaction validation."
+      },
+      "color.status.info.ink": {
+        "$type": "color",
+        "$value": "#235D85",
+        "$status": "approved",
+        "$description": "Semantic status / info / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.info.fill": {
+        "$type": "color",
+        "$value": "#E8F2FA",
+        "$status": "approved",
+        "$description": "Semantic status / info / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.progress.ink": {
+        "$type": "color",
+        "$value": "#24666F",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.status.progress.fill": {
+        "$type": "color",
+        "$value": "#E8F3F3",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.status.success.ink": {
+        "$type": "color",
+        "$value": "#176142",
+        "$status": "approved",
+        "$description": "Semantic status / success / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.success.fill": {
+        "$type": "color",
+        "$value": "#E3F4EB",
+        "$status": "approved",
+        "$description": "Semantic status / success / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.neutral.ink": {
+        "$type": "color",
+        "$value": "#566171",
+        "$status": "approved",
+        "$description": "Semantic status / neutral / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.neutral.fill": {
+        "$type": "color",
+        "$value": "#E9EDF2",
+        "$status": "approved",
+        "$description": "Semantic status / neutral / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.error.signal": {
+        "$type": "color",
+        "$value": "#AE424A",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.error.border": {
+        "$type": "color",
+        "$value": "{color.border.default}",
+        "$status": "approved",
+        "$description": "Feedback border paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+      },
+      "color.error.fill": {
+        "$type": "color",
+        "$value": "#FCF1F0",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.error.ink": {
+        "$type": "color",
+        "$value": "{color.text.body}",
+        "$status": "approved",
+        "$description": "Feedback ink paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+      },
+      "weight.utility.fill": {
+        "$type": "number",
+        "$value": 0.18,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for utility / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.utility.border": {
+        "$type": "number",
+        "$value": 0.35,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for utility / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.entry.fill": {
+        "$type": "number",
+        "$value": 0.25,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for entry / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.entry.border": {
+        "$type": "number",
+        "$value": 0.35,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for entry / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.recovery.fill": {
+        "$type": "number",
+        "$value": 0.3,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for recovery / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.recovery.border": {
+        "$type": "number",
+        "$value": 0.55,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for recovery / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.tertiary.fill": {
+        "$type": "number",
+        "$value": 0.12,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for tertiary / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.tertiary.border": {
+        "$type": "number",
+        "$value": 0.42,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for tertiary / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.nav.desktopFill": {
+        "$type": "number",
+        "$value": 0.5,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for nav / desktopFill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "color.action.utility.fill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.neutralSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.utility.fill}"
+          }
+        },
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.utility.border": {
+        "$type": "color",
+        "$value": "#C5CCD6",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.fill": {
+        "$type": "color",
+        "$value": "#EEF4FB",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.border": {
+        "$type": "color",
+        "$value": "#BACDE0",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.ink": {
+        "$type": "color",
+        "$value": "#255D91",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.fill": {
+        "$type": "color",
+        "$value": "#EEF4FB",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.border": {
+        "$type": "color",
+        "$value": "#BACDE0",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.fill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.neutralSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.tertiary.fill}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic tertiary / fill paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.tertiary.border": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.borderSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.tertiary.border}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic tertiary / border paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.tertiary.ink": {
+        "$type": "color",
+        "$value": "#515B6B",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.hoverBorder": {
+        "$type": "color",
+        "$value": "#7098BD",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.utility.hoverBorder": {
+        "$type": "color",
+        "$value": "{color.action.borderSource}",
+        "$status": "approved",
+        "$description": "Semantic utility / hoverBorder paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.entry.hoverBorder": {
+        "$type": "color",
+        "$value": "#7098BD",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.hoverFill": {
+        "$type": "color",
+        "$value": "#EDEFF3",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.hoverBorder": {
+        "$type": "color",
+        "$value": "#D9DDE4",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.nav.desktopFill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.desktopSource}",
+            "background": "{color.nav.mixBase}",
+            "weight": "{weight.nav.desktopFill}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / desktopFill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.hoverFill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.desktopSource}",
+            "background": "{color.nav.mixBase}",
+            "weight": 0.32
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / hoverFill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.hoverBorder": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.selectedInk}",
+            "background": "{color.nav.mixBase}",
+            "weight": 0.22
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / hoverBorder color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.header": {
+        "$type": "number",
+        "$value": 0.92,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / header. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.chrome.bottom": {
+        "$type": "number",
+        "$value": 0.92,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / bottom. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "blur.header": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$status": "approved",
+        "$description": "Backdrop blur for header. It blurs content behind the material, not the text/icons; reduced transparency uses an opaque fallback."
+      },
+      "opacity.chrome.shadow": {
+        "$type": "number",
+        "$value": 0.14,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / shadow. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.chrome.shadow": {
+        "$type": "color",
+        "$value": "#17283E",
+        "$status": "approved",
+        "$description": "Semantic chrome / shadow color. Validate against the actual composed surface, especially glass."
+      },
+      "color.chrome.seam": {
+        "$type": "color",
+        "$value": "#405775",
+        "$status": "approved",
+        "$description": "Semantic chrome / seam color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.seam": {
+        "$type": "number",
+        "$value": 0.16,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / seam. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.chrome.rim": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Semantic chrome / rim color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.rim": {
+        "$type": "number",
+        "$value": 0.16,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / rim. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.chrome.headerRim": {
+        "$type": "number",
+        "$value": 0.9,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / headerRim. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.depth.primary": {
+        "$type": "color",
+        "$value": "#17283E",
+        "$status": "approved",
+        "$description": "Tint for primary depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "color.depth.destructive": {
+        "$type": "color",
+        "$value": "#17283E",
+        "$status": "approved",
+        "$description": "Tint for destructive depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "color.depth.secondary": {
+        "$type": "color",
+        "$value": "#17283E",
+        "$status": "approved",
+        "$description": "Tint for secondary depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "opacity.depth.primary": {
+        "$type": "number",
+        "$value": 0.12,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / primary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.secondary": {
+        "$type": "number",
+        "$value": 0.1,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / secondary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.utility": {
+        "$type": "number",
+        "$value": 0.06,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / utility. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.tertiaryHover": {
+        "$type": "number",
+        "$value": 0.04,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / tertiaryHover. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.solidHoverBoost": {
+        "$type": "number",
+        "$value": 0.02,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / solidHoverBoost. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgePrimary": {
+        "$type": "number",
+        "$value": 0,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgePrimary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgeSecondary": {
+        "$type": "number",
+        "$value": 0,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgeSecondary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgeUtility": {
+        "$type": "number",
+        "$value": 0,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgeUtility. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.warning.signal": {
+        "$type": "color",
+        "$value": "#946223",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.warning.fill": {
+        "$type": "color",
+        "$value": "#FBF5E9",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.warning.ink": {
+        "$type": "color",
+        "$value": "{color.text.body}",
+        "$status": "guidance",
+        "$description": "Neutral readable warning title/body copy, independent of the caution signal."
+      },
+      "color.warning.border": {
+        "$type": "color",
+        "$value": "#DDCEAF",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.focus": {
+        "$type": "color",
+        "$value": "#306BBA",
+        "$status": "provisional",
+        "$description": "Focus ring color for light surfaces; verify against each composed control."
+      },
+      "color.surface.input": {
+        "$type": "color",
+        "$value": "#FAFBFD",
+        "$status": "guidance",
+        "$description": "Input well, distinct from the containing card in each theme."
+      },
+      "color.border.control": {
+        "$type": "color",
+        "$value": "#858F9D",
+        "$status": "guidance",
+        "$description": "Input and select boundary; stronger than decorative card outlines."
+      },
+      "color.rating": {
+        "$type": "color",
+        "$value": "#93601B",
+        "$status": "guidance",
+        "$description": "Rating stars, distinct from status and action roles."
+      },
+      "color.feedback.info.fill": {
+        "$type": "color",
+        "$value": "#F1F3FA",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.info.signal": {
+        "$type": "color",
+        "$value": "#5368A0",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.fill": {
+        "$type": "color",
+        "$value": "#EDF7F2",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.signal": {
+        "$type": "color",
+        "$value": "#267457",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.rating.bar": {
+        "$type": "color",
+        "$value": "#69798C",
+        "$status": "provisional",
+        "$description": "Single neutral review-count series, independent of amber star/status meaning; awaiting human judgment."
+      },
+      "color.rating.track": {
+        "$type": "color",
+        "$value": "{color.surface.field}",
+        "$status": "provisional",
+        "$description": "Rating-distribution track inherits the quiet field surface."
+      },
+      "color.feedback.info.border": {
+        "$type": "color",
+        "$value": "#CAD3E7",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.border": {
+        "$type": "color",
+        "$value": "#BBDCCC",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.accent.tertiary": {
+        "$type": "color",
+        "$value": "{color.action.tonal.ink}",
+        "$status": "provisional",
+        "$description": "Reserved supporting accent inherits slate-blue. Rejected purple is not offered by the current lab."
+      },
+      "color.accent.quaternary": {
+        "$type": "color",
+        "$value": "#267457",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.overlay.scrim": {
+        "$type": "color",
+        "$value": "#182031",
+        "$status": "provisional",
+        "$description": "Content-dialog scrim source; layout-origin menus never use it."
+      },
+      "color.action.secondary.fill": {
+        "$type": "color",
+        "$value": "#315D91",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.ink": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.border": {
+        "$type": "color",
+        "$value": "#315D91",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.hoverBorder": {
+        "$type": "color",
+        "$value": "#244A77",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tonal.fill": {
+        "$type": "color",
+        "$value": "#EDF2F7",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.ink": {
+        "$type": "color",
+        "$value": "#36516E",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.border": {
+        "$type": "color",
+        "$value": "#BCC9D7",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.hoverBorder": {
+        "$type": "color",
+        "$value": "#879CB3",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.outline.fill": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.ink": {
+        "$type": "color",
+        "$value": "#3D495C",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.border": {
+        "$type": "color",
+        "$value": "#98A5B7",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.hoverBorder": {
+        "$type": "color",
+        "$value": "#687C98",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.fill": {
+        "$type": "color",
+        "$value": "#F1F3F6",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.ink": {
+        "$type": "color",
+        "$value": "#465267",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.border": {
+        "$type": "color",
+        "$value": "#ABB6C5",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.hoverBorder": {
+        "$type": "color",
+        "$value": "#75869D",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      }
+    },
+    "dark": {
+      "color.surface.canvas": {
+        "$type": "color",
+        "$value": "#141519",
+        "$status": "approved",
+        "$description": "Source material for canvas. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.card": {
+        "$type": "color",
+        "$value": "#202228",
+        "$status": "approved",
+        "$description": "Source material for card. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.header": {
+        "$type": "color",
+        "$value": "#1B1E25",
+        "$status": "approved",
+        "$description": "Source material for header. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.bottom": {
+        "$type": "color",
+        "$value": "#303945",
+        "$status": "approved",
+        "$description": "Source material for bottom. Glass composites its own alpha over content; opaque fallback uses this exact source color."
+      },
+      "color.surface.field": {
+        "$type": "color",
+        "$value": "#30333B",
+        "$status": "provisional",
+        "$description": "Observed supporting surface; input control states have not been designed."
+      },
+      "color.text.body": {
+        "$type": "color",
+        "$value": "#F5F5F5",
+        "$status": "approved",
+        "$description": "Semantic text / body color. Validate against the actual composed surface, especially glass."
+      },
+      "color.text.muted": {
+        "$type": "color",
+        "$value": "#BBC0CA",
+        "$status": "approved",
+        "$description": "Semantic text / muted color. Validate against the actual composed surface, especially glass."
+      },
+      "color.border.default": {
+        "$type": "color",
+        "$value": "#383E48",
+        "$status": "approved",
+        "$description": "Semantic border / default color. Validate against the actual composed surface, especially glass."
+      },
+      "color.action.primary.fill": {
+        "$type": "color",
+        "$value": "#D51B6B",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.primary.ink": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Semantic primary / ink paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.destructive.fill": {
+        "$type": "color",
+        "$value": "#C92D49",
+        "$status": "approved",
+        "$description": "Semantic destructive / fill paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.destructive.ink": {
+        "$type": "color",
+        "$value": "#FFFFFF",
+        "$status": "approved",
+        "$description": "Semantic destructive / ink paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.neutralSource": {
+        "$type": "color",
+        "$value": "#4D586B",
+        "$status": "approved",
+        "$description": "Semantic neutralSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.borderSource": {
+        "$type": "color",
+        "$value": "#9099A7",
+        "$status": "approved",
+        "$description": "Semantic borderSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.recoverySource": {
+        "$type": "color",
+        "$value": "#3B4A59",
+        "$status": "approved",
+        "$description": "Semantic recoverySource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.recoveryBorderSource": {
+        "$type": "color",
+        "$value": "#8395A7",
+        "$status": "approved",
+        "$description": "Semantic recoveryBorderSource paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.utility.ink": {
+        "$type": "color",
+        "$value": "#E1E5EC",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.ink": {
+        "$type": "color",
+        "$value": "#BDD9F2",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.nav.selectedInk": {
+        "$type": "color",
+        "$value": "#E0F0FF",
+        "$status": "approved",
+        "$description": "Semantic nav / selectedInk color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.desktopSource": {
+        "$type": "color",
+        "$value": "#43556A",
+        "$status": "approved",
+        "$description": "Semantic nav / desktopSource color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.mixBase": {
+        "$type": "color",
+        "$value": "#292F39",
+        "$status": "approved",
+        "$description": "Semantic nav / mixBase color. Validate against the actual composed surface, especially glass."
+      },
+      "color.link.inline": {
+        "$type": "color",
+        "$value": "#9EC7F3",
+        "$status": "provisional",
+        "$description": "Ordinary inline link system still needs complete interaction validation."
+      },
+      "color.status.info.ink": {
+        "$type": "color",
+        "$value": "#ACD5F6",
+        "$status": "approved",
+        "$description": "Semantic status / info / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.info.fill": {
+        "$type": "color",
+        "$value": "#213B50",
+        "$status": "approved",
+        "$description": "Semantic status / info / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.progress.ink": {
+        "$type": "color",
+        "$value": "#A3D3DA",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.status.progress.fill": {
+        "$type": "color",
+        "$value": "#233A3E",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.status.success.ink": {
+        "$type": "color",
+        "$value": "#A4E4BA",
+        "$status": "approved",
+        "$description": "Semantic status / success / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.success.fill": {
+        "$type": "color",
+        "$value": "#203F2E",
+        "$status": "approved",
+        "$description": "Semantic status / success / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.neutral.ink": {
+        "$type": "color",
+        "$value": "#C0C8D3",
+        "$status": "approved",
+        "$description": "Semantic status / neutral / ink color. Validate against the actual composed surface, especially glass."
+      },
+      "color.status.neutral.fill": {
+        "$type": "color",
+        "$value": "#333D4B",
+        "$status": "approved",
+        "$description": "Semantic status / neutral / fill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.error.signal": {
+        "$type": "color",
+        "$value": "#EBA2AC",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.error.border": {
+        "$type": "color",
+        "$value": "{color.border.default}",
+        "$status": "approved",
+        "$description": "Feedback border paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+      },
+      "color.error.fill": {
+        "$type": "color",
+        "$value": "#34262B",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.error.ink": {
+        "$type": "color",
+        "$value": "{color.text.body}",
+        "$status": "approved",
+        "$description": "Feedback ink paint. Neutral ink/border are separate from the red signal; banners never contain actions."
+      },
+      "weight.utility.fill": {
+        "$type": "number",
+        "$value": 0.24,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for utility / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.utility.border": {
+        "$type": "number",
+        "$value": 0.48,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for utility / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.entry.fill": {
+        "$type": "number",
+        "$value": 0.32,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for entry / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.entry.border": {
+        "$type": "number",
+        "$value": 0.48,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for entry / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.recovery.fill": {
+        "$type": "number",
+        "$value": 0.55,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for recovery / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.recovery.border": {
+        "$type": "number",
+        "$value": 0.45,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for recovery / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.tertiary.fill": {
+        "$type": "number",
+        "$value": 0.14,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for tertiary / fill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.tertiary.border": {
+        "$type": "number",
+        "$value": 0.52,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for tertiary / border. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "weight.nav.desktopFill": {
+        "$type": "number",
+        "$value": 0.55,
+        "$status": "approved",
+        "$description": "Opaque sRGB mix proportion (0–1) for nav / desktopFill. Derived fill/border colors are recomputed from the source; this is not element opacity."
+      },
+      "color.action.utility.fill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.neutralSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.utility.fill}"
+          }
+        },
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.utility.border": {
+        "$type": "color",
+        "$value": "#606A79",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.fill": {
+        "$type": "color",
+        "$value": "#26394D",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.border": {
+        "$type": "color",
+        "$value": "#4C6985",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.entry.ink": {
+        "$type": "color",
+        "$value": "#BDD9F2",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.fill": {
+        "$type": "color",
+        "$value": "#26394D",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.border": {
+        "$type": "color",
+        "$value": "#4C6985",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.fill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.neutralSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.tertiary.fill}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic tertiary / fill paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.tertiary.border": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.borderSource}",
+            "background": "{color.surface.card}",
+            "weight": "{weight.tertiary.border}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic tertiary / border paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.tertiary.ink": {
+        "$type": "color",
+        "$value": "#C4CAD4",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.recovery.hoverBorder": {
+        "$type": "color",
+        "$value": "#80A5C7",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.utility.hoverBorder": {
+        "$type": "color",
+        "$value": "{color.action.borderSource}",
+        "$status": "approved",
+        "$description": "Semantic utility / hoverBorder paint. Choose the action role explicitly; labels do not determine hierarchy."
+      },
+      "color.action.entry.hoverBorder": {
+        "$type": "color",
+        "$value": "#80A5C7",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.hoverFill": {
+        "$type": "color",
+        "$value": "#343943",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.action.tertiary.hoverBorder": {
+        "$type": "color",
+        "$value": "#535E6D",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.nav.desktopFill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.desktopSource}",
+            "background": "{color.nav.mixBase}",
+            "weight": "{weight.nav.desktopFill}"
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / desktopFill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.hoverFill": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.desktopSource}",
+            "background": "{color.nav.mixBase}",
+            "weight": 0.34
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / hoverFill color. Validate against the actual composed surface, especially glass."
+      },
+      "color.nav.hoverBorder": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.nav.selectedInk}",
+            "background": "{color.nav.mixBase}",
+            "weight": 0.22
+          }
+        },
+        "$status": "approved",
+        "$description": "Semantic nav / hoverBorder color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.header": {
+        "$type": "number",
+        "$value": 0.65,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / header. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.chrome.bottom": {
+        "$type": "number",
+        "$value": 0.92,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / bottom. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "blur.header": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$status": "approved",
+        "$description": "Backdrop blur for header. It blurs content behind the material, not the text/icons; reduced transparency uses an opaque fallback."
+      },
+      "opacity.chrome.shadow": {
+        "$type": "number",
+        "$value": 0.14,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / shadow. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.chrome.shadow": {
+        "$type": "color",
+        "$value": "#000000",
+        "$status": "approved",
+        "$description": "Semantic chrome / shadow color. Validate against the actual composed surface, especially glass."
+      },
+      "color.chrome.seam": {
+        "$type": "color",
+        "$value": "#060C16",
+        "$status": "approved",
+        "$description": "Semantic chrome / seam color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.seam": {
+        "$type": "number",
+        "$value": 0.18,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / seam. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.chrome.rim": {
+        "$type": "color",
+        "$value": "#E0EAF7",
+        "$status": "approved",
+        "$description": "Semantic chrome / rim color. Validate against the actual composed surface, especially glass."
+      },
+      "opacity.chrome.rim": {
+        "$type": "number",
+        "$value": 0.18,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / rim. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.chrome.headerRim": {
+        "$type": "number",
+        "$value": 0.18,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for chrome / headerRim. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.depth.primary": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.primary.fill}",
+            "background": "{color.tint.primaryLight}",
+            "weight": 0.5
+          }
+        },
+        "$status": "approved",
+        "$description": "Tint for primary depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "color.depth.destructive": {
+        "$type": "color",
+        "$value": {
+          "mix": {
+            "foreground": "{color.action.destructive.fill}",
+            "background": "{color.tint.destructiveLight}",
+            "weight": 0.5
+          }
+        },
+        "$status": "approved",
+        "$description": "Tint for destructive depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "color.depth.secondary": {
+        "$type": "color",
+        "$value": "{color.depth.cool}",
+        "$status": "approved",
+        "$description": "Tint for secondary depth. Pair with the role opacity and shared compact offset/blur; never recolor the entire action."
+      },
+      "opacity.depth.primary": {
+        "$type": "number",
+        "$value": 0.06,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / primary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.secondary": {
+        "$type": "number",
+        "$value": 0.048,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / secondary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.utility": {
+        "$type": "number",
+        "$value": 0.039,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / utility. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.tertiaryHover": {
+        "$type": "number",
+        "$value": 0.02,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / tertiaryHover. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.solidHoverBoost": {
+        "$type": "number",
+        "$value": 0.005,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / solidHoverBoost. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgePrimary": {
+        "$type": "number",
+        "$value": 0.03,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgePrimary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgeSecondary": {
+        "$type": "number",
+        "$value": 0.028,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgeSecondary. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "opacity.depth.edgeUtility": {
+        "$type": "number",
+        "$value": 0.0265,
+        "$status": "approved",
+        "$description": "Alpha proportion from 0 to 1 for depth / edgeUtility. Apply only to this effect/material layer, not the whole component or its text."
+      },
+      "color.warning.signal": {
+        "$type": "color",
+        "$value": "#E0BE80",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.warning.fill": {
+        "$type": "color",
+        "$value": "#302B21",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.warning.ink": {
+        "$type": "color",
+        "$value": "{color.text.body}",
+        "$status": "guidance",
+        "$description": "Neutral readable warning title/body copy, independent of the caution signal."
+      },
+      "color.warning.border": {
+        "$type": "color",
+        "$value": "#685738",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.focus": {
+        "$type": "color",
+        "$value": "#8AB4E8",
+        "$status": "provisional",
+        "$description": "Focus ring color for dark surfaces; verify against each composed control."
+      },
+      "color.surface.input": {
+        "$type": "color",
+        "$value": "#191C22",
+        "$status": "guidance",
+        "$description": "Input well, distinct from the containing card in each theme."
+      },
+      "color.border.control": {
+        "$type": "color",
+        "$value": "#727D8C",
+        "$status": "guidance",
+        "$description": "Input and select boundary; stronger than decorative card outlines."
+      },
+      "color.rating": {
+        "$type": "color",
+        "$value": "#DDB875",
+        "$status": "guidance",
+        "$description": "Rating stars, distinct from status and action roles."
+      },
+      "color.feedback.info.fill": {
+        "$type": "color",
+        "$value": "#272D40",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.info.signal": {
+        "$type": "color",
+        "$value": "#B7C4EB",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.fill": {
+        "$type": "color",
+        "$value": "#1E302A",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.signal": {
+        "$type": "color",
+        "$value": "#89CCAE",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.rating.bar": {
+        "$type": "color",
+        "$value": "#A6B3C3",
+        "$status": "provisional",
+        "$description": "Single neutral review-count series, independent of amber star/status meaning; awaiting human judgment."
+      },
+      "color.rating.track": {
+        "$type": "color",
+        "$value": "{color.surface.field}",
+        "$status": "provisional",
+        "$description": "Rating-distribution track inherits the quiet field surface."
+      },
+      "color.feedback.info.border": {
+        "$type": "color",
+        "$value": "#4B5677",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.feedback.success.border": {
+        "$type": "color",
+        "$value": "#3D6554",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.accent.tertiary": {
+        "$type": "color",
+        "$value": "{color.action.tonal.ink}",
+        "$status": "provisional",
+        "$description": "Reserved supporting accent inherits slate-blue. Rejected purple is not offered by the current lab."
+      },
+      "color.accent.quaternary": {
+        "$type": "color",
+        "$value": "#89CCAE",
+        "$status": "provisional",
+        "$description": "1.8 semantic role proposal; inspect composed states in both themes. Human judgment pending."
+      },
+      "color.overlay.scrim": {
+        "$type": "color",
+        "$value": "#080B12",
+        "$status": "provisional",
+        "$description": "Content-dialog scrim source; layout-origin menus never use it."
+      },
+      "color.action.secondary.fill": {
+        "$type": "color",
+        "$value": "#A8C7ED",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.ink": {
+        "$type": "color",
+        "$value": "#152941",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.border": {
+        "$type": "color",
+        "$value": "#A8C7ED",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.secondary.hoverBorder": {
+        "$type": "color",
+        "$value": "#C4DAF5",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tonal.fill": {
+        "$type": "color",
+        "$value": "#2A3543",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.ink": {
+        "$type": "color",
+        "$value": "#CDDBEC",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.border": {
+        "$type": "color",
+        "$value": "#63758D",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.tonal.hoverBorder": {
+        "$type": "color",
+        "$value": "#A3B6CE",
+        "$status": "provisional",
+        "$description": "1.9 correction: purple rejected by human. Slate-blue task actions / muted blue-teal progress, pending human acceptance of replacement."
+      },
+      "color.action.outline.fill": {
+        "$type": "color",
+        "$value": "#282B33",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.ink": {
+        "$type": "color",
+        "$value": "#DDE3EC",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.border": {
+        "$type": "color",
+        "$value": "#73829A",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.outline.hoverBorder": {
+        "$type": "color",
+        "$value": "#A3B3CA",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.fill": {
+        "$type": "color",
+        "$value": "#303642",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.ink": {
+        "$type": "color",
+        "$value": "#DFE5EF",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.border": {
+        "$type": "color",
+        "$value": "#6A7A92",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      },
+      "color.action.tool.hoverBorder": {
+        "$type": "color",
+        "$value": "#A5B5CA",
+        "$status": "provisional",
+        "$description": "1.9 role proposal. Current human judgment pending. Hover changes boundary/ink; quiet controls do not paint a container."
+      }
+    }
+  },
+  "preferences": [
+    {
+      "id": "P01",
+      "topic": "Palette",
+      "rule": "Rose brand, slate secondary system; distinct canvas, cards, top and bottom chrome. Preserve neutral readable copy.",
+      "status": "approved"
+    },
+    {
+      "id": "P02",
+      "topic": "Action hierarchy",
+      "rule": "Three emphasis tiers. Secondary has explicit utility, entry and recovery roles. Intent and wording do not determine emphasis. Destructive is a separate intent.",
+      "status": "approved"
+    },
+    {
+      "id": "P03",
+      "topic": "Light recovery",
+      "rule": "Soft neutral slate with a stronger label; recovery must outrank Back navigation. Keep its fill steady on hover.",
+      "status": "approved"
+    },
+    {
+      "id": "P04",
+      "topic": "Back navigation",
+      "rule": "Contextual navigation: outside a card/panel, use muted regular plain text, left chevron and underline only on hover/focus, without fill or shadow. Inside a card/panel, use a bounded secondary utility or tertiary button treatment. Preserve anchor semantics for URL navigation.",
+      "status": "approved"
+    },
+    {
+      "id": "P05",
+      "topic": "Depth",
+      "rule": "Gentle Light shadows; compact tinted directional depth in Dark. No large surrounding halo or pulsing shine. Stable solid fills, small hover boosts.",
+      "status": "approved"
+    },
+    {
+      "id": "P06",
+      "topic": "Tertiary",
+      "rule": "Bounded quiet fill/border and flat at rest; functional tertiary has subtle fine-pointer hover lift/depth. Compact tools remain flat.",
+      "status": "approved"
+    },
+    {
+      "id": "P07",
+      "topic": "Mobile selection",
+      "rule": "Filled selected glyph plus stronger caption. No surrounding selection tile, border, underline marker or boxed pointer hover. Keep keyboard focus visible.",
+      "status": "approved"
+    },
+    {
+      "id": "P08",
+      "topic": "Desktop selection",
+      "rule": "Keep a moving soft tile. Use the same selected glyph family as mobile. Reserve expansion space; changing selection must not shift neighbors.",
+      "status": "approved"
+    },
+    {
+      "id": "P09",
+      "topic": "Motion",
+      "rule": "Calm glide; reduced motion makes state changes instant and removes lifts/nudges. No decorative logo motion.",
+      "status": "approved"
+    },
+    {
+      "id": "P10",
+      "topic": "Header menu",
+      "rule": "Compact overlaid dropdown attached below the header. Fill corner gaps, preserve visible header rim/shadow above menu, and do not push the page.",
+      "status": "approved"
+    },
+    {
+      "id": "P11",
+      "topic": "Bar geometry",
+      "rule": "Header TOP edge has no bright rim/reflection. Header lower edge and bottom bar upper edge retain the same 2px highlight plus 1px seam in both themes. Top lower corners 10px; bottom upper corners 12px. No gradient band.",
+      "status": "approved"
+    },
+    {
+      "id": "P12",
+      "topic": "Floating action tray",
+      "rule": "When a persistent primary is useful, retain the rounded rectangle behind it. Float the entire tray over content, disconnected from bottom navigation. Content scrolls behind; end padding clears it.",
+      "status": "approved"
+    },
+    {
+      "id": "P13",
+      "topic": "Artwork and theme switch",
+      "rule": "Preserve CU Ways logos and role-bird artwork. Sun means current Light, moon current Dark; accessible name announces next theme. Do not adopt the rejected role-pill redesign.",
+      "status": "approved"
+    },
+    {
+      "id": "P14",
+      "topic": "Statuses and errors",
+      "rule": "Feedback banners contain message content only. Put message-associated Retry/Refresh/Reopen/Check controls in an adjacent, unpainted sibling group via feedbackBlock. Primary domain actions such as Start stay in their action panel/tray; they are not banner controls. All message shapes share an icon column and one copy column. Keep neutral title/body copy and outer borders; semantic signal belongs to the icon/rail and quiet fill.",
+      "status": "approved"
+    },
+    {
+      "id": "P15",
+      "topic": "Layout",
+      "rule": "Use intrinsic, responsive composition and relative sizing. Avoid redundant subtitles, give title/filter a coherent group, and choose density from real content. Do not transplant demo positions or gaps.",
+      "status": "approved"
+    },
+    {
+      "id": "P16",
+      "topic": "Accessibility",
+      "rule": "Preserve focus, text scaling, safe areas, pending/disabled semantics, reduced transparency and reduced motion. Test actual composed surfaces.",
+      "status": "required"
+    },
+    {
+      "id": "P17",
+      "topic": "Specialization",
+      "rule": "Inherit global defaults. A story/page may specialize semantic/component aliases with an explicit scope, reason and evidence; shared changes require a versioned global decision.",
+      "status": "approved"
+    },
+    {
+      "id": "P18",
+      "topic": "Shared icons",
+      "rule": "Use one local SVG refresh arrow for read/retry/refresh actions, with a continuous rounded path and visible label. Busy uses a smooth single-arc spinner, never a segmented or recycling-arrow glyph. Decorative icons are aria-hidden. Reduced motion keeps a static arc and busy text.",
+      "status": "approved"
+    },
+    {
+      "id": "P19",
+      "topic": "HTML-first design handoff",
+      "rule": "Use runnable local HTML/CSS/JS for current and future story design, parameter tuning, effects, motion and handoff. Global component reference and story demo consume the same canonical package. Figma/SVG exports are historical snapshots; do not update them unless explicitly requested again.",
+      "status": "approved"
+    },
+    {
+      "id": "P20",
+      "topic": "Tuning authority",
+      "rule": "Live tuning creates a versioned draft proposal, not an automatic canonical edit. Export/import records its base version and scope. Promote reviewed shared changes through theme.json, regenerate, and verify both the component reference and affected story.",
+      "status": "required"
+    },
+    {
+      "id": "P21",
+      "topic": "Visual fidelity and shared chrome",
+      "rule": "Use the selected Round10 shell proportions and typography with later user corrections. Header controls and attached menu rows are their own shared chrome primitives, not tiered action buttons. The lab and story must use the same rendered component markup and recipes.",
+      "status": "required"
+    },
+    {
+      "id": "P22",
+      "topic": "Composition and navigation economy",
+      "rule": "Choose one return action per destination/state. Do not repeat Back to My Jobs in both page chrome and status cards. Keep mobile pagination to arrows plus a compact page indicator with full accessible names.",
+      "status": "required"
+    },
+    {
+      "id": "P23",
+      "topic": "Fresh rendered review",
+      "rule": "Before handoff, ask a fresh unbiased agent to inspect actual rendered screens against the user reference and report visual/interaction concerns. The implementation owner accepts or rejects findings with evidence; passing tests do not substitute for visual review.",
+      "status": "required"
+    },
+    {
+      "id": "P24",
+      "topic": "Feedback composition",
+      "rule": "Use the shared message-only banner and structured feedbackBlock for adjacent recovery controls in every current HTML consumer. Warning uses a muted amber icon/rail on Slate fill, distinct from error red and info/success signals. Do not duplicate message copy in the following card or repeat its recovery control elsewhere. Preserve primary domain actions in their owning panel/tray.",
+      "status": "required"
+    },
+    {
+      "id": "P25",
+      "topic": "Entity status placement",
+      "rule": "Lifecycle/status badges anchor at the upper right of the owning entity heading or card. Use intrinsic grid reflow; at narrow enlarged text give the right-aligned badge its own upper row rather than squeezing identity/title. Attachment tags and checklist icons remain their own content types.",
+      "status": "approved"
+    }
+  ],
+  "guidance": {
+    "units": "rem/em for text, targets, icons and spacing; unitless line-height; percentages for weights/alpha. px for thin edges, optical corrections, bounded blur/shadow and explicitly chosen bar corners. Never shrink the root font to preserve screenshots.",
+    "spacing": "Use a small relative scale; adjacent control gaps about0.4–0.75em, section gaps about1–2rem and page gutters about1–2rem are starting ranges, not constraints. Let content wrap and containers reflow.",
+    "navigation": "Choose the compact/desktop transition where labels plus utilities fit at enlarged text. Keep hit areas independent of painted selection. Start at3.5–4.5rem nav row; grow for labels/safe area. Reserve icon slot and label metrics; active glyph about1.1 times inactive and hover midpoint about1.05.",
+    "tray": "Start around0.5–1rem inset/gap; use measured rendered tray height for scroll-end clearance. Content viewport extends behind tray to nav. Avoid fixed bottom math; add safe area once and account for zoom/keyboard/short height.",
+    "shadows": "Reviewed geometry: contact0 1px2px and ambient0 3px8px, zero spread. Keep decorative depth compact; offset/blur may be optically adjusted for control scale within roughly2–12px, not in proportion to viewport width.",
+    "caps": "Light default ambient alpha: primary12%, secondary10%, utility6%; preferred ceilings15%,12%,8%. Solid hover increase usually0–2 percentage points. Recalibrate only with evidence.",
+    "radii": "Preserve approved top10px/bottom12px/action-tray16px references. Adapt control/card radius to size, starting0.625–0.875rem. Avoid giant pill buttons unless the component warrants it.",
+    "feedback": "Use one icon column and one copy column for title-only, body-only and title/body messages. Keep neutral copy, relative spacing and unpainted adjacent recovery actions. Primary domain controls remain in their task panel/tray. Tone follows the actual state: failure=error, unresolved caution=warning, neutral update=info, confirmed success=success; a lifecycle badge is not a banner.",
+    "handoff": "Default to one runnable HTML system with global component and story views; local fonts/assets, no network dependency, explicit fixture data and deterministic mock outcomes. Preserve dynamic relative layout and describe unresolved components rather than inventing global page coordinates.",
+    "rating": "Review-count bars use one restrained neutral series; star symbols remain distinct. Numeric values always remain visible. Avoid warning-like or decorative gradients for counts."
+  },
+  "openDecisions": [
+    "Global font-family migration: marketer uses Inter, root uses Geist. No universal font family was approved.",
+    "Forms, input/validation states, tables, charts, tabs, pagination, sidebars, tooltips, toasts, uploads, date pickers and other unshown components need local design and validation.",
+    "Global disabled/busy colors and alpha were not settled; do not adopt demo opacity as a rule. Pending vs disabled semantics must remain distinguishable.",
+    "Route inventory, mobile destination count, More behavior and route matching are product decisions; My Jobs is not automatically added to current frontend routes.",
+    "Breakpoint, bar height, tray eligibility, card density, title scale and page/container widths depend on real content and input behavior.",
+    "Complete dropdown/dialog keyboard and focus management requires implementation validation; demo behavior is not the contract.",
+    "Focus color and field/inline-link tokens are provisional until tested across the actual UI.",
+    "Native-device glass, browser zoom, localization, virtual keyboard and safe-area behavior require real runtime checks.",
+    "Dark/light optical equality is a visual judgment even when geometry is identical; no blanket accessibility certification."
+  ],
+  "specialization": {
+    "order": [
+      "global shared tokens",
+      "theme semantic tokens",
+      "shared component recipe",
+      "story or feature scope",
+      "page or instance exception"
+    ],
+    "allowed": [
+      "semantic/component aliases in an opt-in scope",
+      "layout, density and content-specific responsive composition",
+      "new status labels mapped by meaning to semantic status families"
+    ],
+    "restricted": [
+      "brand/logo replacement",
+      "global primary/status meanings",
+      "theme preference behavior",
+      "accessibility/focus removal",
+      "new global token values without shared decision"
+    ],
+    "record": [
+      "id",
+      "owner",
+      "scope",
+      "extends",
+      "reason",
+      "overrides",
+      "validation",
+      "reviewAfter"
+    ],
+    "promotion": "Promote repeated successful overrides into a versioned global decision; retire local duplication."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "revision": "1.7.0",
+  "method": "Individual view_image inspection of existing final source-bound captures; parents/pages linked in owning records.",
+  "files": [
+    "evidence/1.7.0/reviewer-shell/025-focus-final-dark-320-568-200-page.png",
+    "evidence/1.7.0/reviewer-shell/025-L02-dark-320-200-final-component.png",
+    "evidence/1.7.0/reviewer-reviews/final-034-A01-dark-1440x900-text100-standard-base-page.png",
+    "evidence/1.7.0/reviewer-reviews/final-034-A04-light-1440x900-text100-standard-base-review-list-component.png",
+    "evidence/1.7.0/reviewer-reviews/final-034-A04-dark-320x420-text200-long-stress-review-list-component.png",
+    "evidence/1.7.0/reviewer-reviews/final-034-B02-light-320x420-text200-long-stress-review-list-component.png",
+    "evidence/1.7.0/reviewer-reviews/final-028-A02-light-390x900-text100-standard-base-cancellation-task-component.png",
+    "evidence/1.7.0/reviewer-reviews/final-034-A01-light-1440x900-text100-standard-base-page.png"
+  ]
+}

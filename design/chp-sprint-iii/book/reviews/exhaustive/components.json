@@ -1,0 +1,397 @@
+[
+  {
+    "id": "navigation",
+    "title": "Navigation hover and selection",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "back-navigation",
+    "title": "Back navigation",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "responsive-scale",
+    "title": "Responsive size and type",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/progress.md",
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "dropdown",
+    "title": "Dropdown control and menu",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "feedback",
+    "title": "Feedback and recovery",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "actions",
+    "title": "Actions and links",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "job-card",
+    "title": "Job list card",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "job-overview",
+    "title": "Job overview and status panel",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "proof-workspace",
+    "title": "Proof workspace",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/progress.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "proof-header",
+    "title": "Proof page heading",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "evidence-link",
+    "title": "Delivery evidence link and type",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "jobs-entry",
+    "title": "Proof return-to-jobs entry",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/progress.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "dialog",
+    "title": "Dialog frame and actions",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "pending-operation",
+    "title": "Pending operation and background recovery",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "recovery-page",
+    "title": "Unavailable, loading and recovery page",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "completion-checklist",
+    "title": "Completion requirements and evidence",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "pagination",
+    "title": "Review pagination",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "minimal-copy",
+    "title": "Minimal copy and hierarchy",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us025-list",
+    "title": "My Jobs list",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us025-components.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us025-detail",
+    "title": "Job details and lifecycle",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/progress.md",
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us025-components.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us025-dialog",
+    "title": "Start confirmation and pending operation",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us025-components.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us026-proof",
+    "title": "Proof of delivery workspace",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us026-components.json",
+      "reviews/exhaustive/us026-curation.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us027-completion",
+    "title": "Job completion and its dialogs",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/progress.md",
+      "reviews/exhaustive/us027-independent-review.md",
+      "reviews/exhaustive/us027-independent-components.json",
+      "reviews/exhaustive/us027-independent-curation.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us028-cancellation",
+    "title": "Job cancellation",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/us028-us034-components.json",
+      "reviews/exhaustive/us028-us034-curation.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "us034-reviews",
+    "title": "Marketer profile and verified reviews",
+    "kind": "page",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/us028-us034-components.json",
+      "reviews/exhaustive/us028-us034-curation.json",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "design-book",
+    "title": "Design book and handoff entry",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/1.7.0/reviewer-book.md",
+      "reviews/1.7.0/book-inspection-ledger.json"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "status-placement",
+    "title": "Entity status heading",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "empty-state",
+    "title": "Empty list and filtered-result composition",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us025-review.md",
+      "reviews/exhaustive/us026-review.md",
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "review-list",
+    "title": "Verified review history and filters",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "review-comment",
+    "title": "Long review disclosure",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "rating-summary",
+    "title": "Rating summary and distribution",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  },
+  {
+    "id": "cancellation-task",
+    "title": "Cancellation effects and contract summary",
+    "kind": "component",
+    "status": "passed in documented design scope",
+    "evidence": [
+      "reviews/exhaustive/us028-us034-review.md",
+      "reviews/exhaustive/root-judgment.md"
+    ],
+    "humanColor": "awaiting human judgment"
+  }
+]

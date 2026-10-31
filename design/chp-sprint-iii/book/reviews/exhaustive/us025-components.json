@@ -1,0 +1,100 @@
+[
+  {
+    "component": "Shell header/brand/tools/menu/navigation",
+    "sources": "shellHeader/navItems,shared headerBar/navItem,recipes",
+    "coverage": "Round10 images,all41 page sheets,menu open Light/Dark,skip focus,short/large,glass/reduced transparency",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "List heading/filter/native picker",
+    "sources": "renderList/filterOptions/shared select CSS",
+    "coverage": "L01-L09/C06;native keyboard Space/ArrowDown/Enter,open picker Light/Dark",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Job card/identity/status/facts/entry",
+    "sources": "renderJobCard,screen.css,.cu-status-heading/action",
+    "coverage": "L02/L07/L08/C06;first card native390/1440;whole list and bottoms;320200/long",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "List empty/unavailable/skeleton",
+    "sources": "listEmptyState/listSkeleton/renderList",
+    "coverage": "L01/L03/L04/L05/L09 pages;close empty/skeleton;320200",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "List pager",
+    "sources": "listPagination,CHANGE_PAGE,scheduleListComplete",
+    "coverage": "filter=all20+1 page;first no Previous,last no Next;both themes390/1440/320200;Previous roundtrip",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Detail heading/return/recovery pages",
+    "sources": "pageTitle/topBack/renderDetail/unavailableContent",
+    "coverage": "D01-D10,R08/R09;generic private-safe unavailable variants;page sheets and bottom",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Contract/status/last confirmed/price/actions",
+    "sources": "detailStatePanel/detailActions/actionTray",
+    "coverage": "D02/D04/D05/R01/R04/R11/R14/C05;close crops and parent/page;accepted/progress/terminal/unknown/disabled",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Survey context/facts/brief",
+    "sources": "selectedMockJob/contextCard/safeBrief",
+    "coverage": "D02 standard full context,D09 missing repair,Unicode/zero-price long;both themes and enlarged",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Feedback/recovery controls",
+    "sources": "dynamicFeedback/listNotice,shared feedbackBlock/banner",
+    "coverage": "info/error/warning/loading;message paint separate recovery;R01/R03/R04/R07/R10/R11/R12/R14,C08;close crops/parents/pages",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Confirm dialog",
+    "sources": "renderModal,restoreFocus,dialog keydown trap",
+    "coverage": "C01 ordinary safe focus,Cancel/Escape restores Start;320200 and390300 title and scrolled Cancel within bounds",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Pending dialog/background notice",
+    "sources": "renderModal/operationSummary/scheduleStartResponse/resolveStart,operations.mjs",
+    "coverage": "C03/C04/C05;Escape/Continue/View progress,0 duplicate confirm,12s->checking,no Start;enlarged dismissal reachable",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Offline explanation",
+    "sources": "OPEN_CONFIRM R11/renderModal",
+    "coverage": "Pink Start preserved;Connection unavailable dialog;Escape close,read-only fixture behavior",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Safe URL/journal/restoration",
+    "sources": "navigation.mjs/state-machine.mjs/operationJournal",
+    "coverage": "Source reviewed;command URLs normalized;author postMessage verified actualstate;no claimed app persistence/API proof",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  },
+  {
+    "component": "Theme/material/motion/scale",
+    "sources": "theme.json/tokens/recipes,tuneTheme/measurePersistentChrome",
+    "coverage": "Both themes every baseline,17 enlarged families,5 short/large cases,glass + reduced transparency + reducedMotion settings;human color pending",
+    "staticJudgment": "reviewed; no additional supported defect beyond the two repaired findings",
+    "visualJudgment": "scoped inspection evidence listed; not universal future-content acceptance"
+  }
+]

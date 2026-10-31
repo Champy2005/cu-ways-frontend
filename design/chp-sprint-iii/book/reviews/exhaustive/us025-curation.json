@@ -1,0 +1,791 @@
+{
+  "reviewer": "fresh independent US025 reviewer",
+  "revision": "1.7.0",
+  "humanColorStatus": "awaiting human judgment",
+  "baselineSourceHashes": {
+    "UX UI/US-025/model/scenarios.json": "2d1b8c1744baaaa6bee004550d6dac4b41b10fecee2b39793aa965711a5418e1",
+    "UX UI/US-025/demo/screen.mjs": "cd19cbb2fd4c464ba8528b6fe78f2bb2ccd2aceeebf438238d97b3f8a477d767",
+    "UX UI/US-025/demo/screen.css": "0f8bcebd62b57f7e4c34866228b035296e81caa48375695e75150461fa11bb68",
+    "UX UI/US-025/demo/state-machine.mjs": "458f16bca26042e04daafcf24457392062acba9179a229fbe0f7f45e4eb27c83",
+    "UX UI/US-025/demo/navigation.mjs": "3ee2ea8da9ef867df0431a3fda3f33a473985ea9de460e9bc742d8dc7c6e2659",
+    "UX UI/US-025/demo/mock-jobs.mjs": "b4ad675ef197130f4e350ddb8508bf5dd7b7a273114556cbb9de6bf1a1b61f9f",
+    "UX UI/theme/components.mjs": "27aa493b6c965469f9663201b7447a2e83cb175d8b26a984fa6247f8bae011af",
+    "UX UI/theme/recipes.css": "4a415e5874c5b24c3e4fa23c0eb6ac73205f6eea0861625387e523951f5179da",
+    "UX UI/theme/theme.json": "82a64ee49e85a09c9274c8400fa4696443d8f3cd2cdb1649ed9ea38b5fd7505a",
+    "UX UI/theme/tokens.css": "4598c8b4af4fe65db39adc5ec5731c6b4a0466d716ba6c437c6e8e32efb1bb7c",
+    "UX UI/theme/operations.mjs": "5c9b48c62136bbc30e380154445f225190561402ba8d772331acfe0d52024bb9"
+  },
+  "baselineSourceStable": true,
+  "individualImages": [
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L01-light-390-844-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L02-light-390-844-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L02-dark-1440-900-100-rest-card-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L07-dark-390-844-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L08-light-1440-900-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C06-dark-1440-900-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C01-light-320-568-200-rest-dialog-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C03-dark-320-568-200-rest-dialog-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D02-light-320-568-200-rest-contract-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/R04-dark-320-568-200-rest-feedback-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L03-light-320-568-200-rest-empty-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L02-dark-320-568-200-rest-card-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/R11-light-320-568-200-rest-contract-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/R14-dark-320-568-200-rest-contract-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D02-light-320-568-200-rest-viewport.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L03-light-320-568-200-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C01-light-320-568-200-rest-viewport.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C01-light-390-300-100-rest-viewport.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D02-dark-2560-1347-100-rest-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L06-light-390-844-100-rest-feedback-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D08-dark-390-844-100-rest-feedback-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/R01-light-390-844-100-rest-feedback-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C05-dark-390-844-100-rest-feedback-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L02-light-390-844-100-rest-card-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/L02-dark-390-844-100-rest-card-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D02-light-1440-900-100-rest-context-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D02-dark-1440-900-100-rest-contract-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C01-light-1440-900-100-rest-dialog-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/C03-dark-1440-900-100-rest-dialog-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/R14-light-390-844-100-rest-contract-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D06-dark-390-844-100-rest-empty-component.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "Locator screenshot can contain fixed chrome overlay. Paired page/bottom/focus image supplies unobscured reading context."
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-light-390-100-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-dark-390-100-context.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-light-1440-100-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-dark-1440-100-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-long-light-390-100-context.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-long-dark-1440-100-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-long-light-320-200-context.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-dark-320-200-page.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-light-390-100-bottom.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/D09-repair-standard-dark-390-100-bottom.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/flow-repair-L02-light-320-200-standard-viewport.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/flow-repair-C05-dark-320-200-standard-focus.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C01-dark-320-568-200.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C01-dark-390-300-100.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C01-light-320-568-200.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C01-light-390-300-100.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C03-dark-320-568-200.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C03-dark-390-300-100.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C03-light-320-568-200.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/dialog-scroll-C03-light-390-300-100.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-select-open-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-menu-open-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-start-hover-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-focus-tab-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-glass-motion-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-reduced-transparency-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-light-390-100-page1.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-light-390-100-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-light-1440-100-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-light-320-200-page1.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-light-320-200-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-select-open-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-menu-open-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-start-hover-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-focus-tab-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-glass-motion-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-reduced-transparency-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-dark-390-100-page1.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-dark-390-100-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-dark-1440-100-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-dark-320-200-page1.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/pagination-dark-320-200-page2.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-pending-dismissed-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-pending-reopened-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-pending-timeout-light.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/interaction-offline-explanation-dark.png",
+      "inspection": "individually inspected",
+      "captureCaveat": "none"
+    }
+  ],
+  "sheets": [
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-01.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-02.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-03.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-04.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-05.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-06.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-07.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-08.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-09.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-10.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-bottoms-11.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C01-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C01-short-large.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C02-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C03-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C03-short-large.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C04-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C05-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C06-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C07-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-C08-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D01-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D02-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D02-short-large.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D03-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D04-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D05-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D06-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D07-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D08-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D09-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-D10-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-01.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-02.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-03.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-04.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-05.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-06.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-07.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-08.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-enlarged-09.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-C05-baseline.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-C05-long.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-C05-standard.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L02-baseline.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L02-long.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L02-standard.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L03-baseline.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L03-long.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-flow-repair-L03-standard.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "flow-repair.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L01-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L02-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L02-short-large.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L03-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L04-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L05-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L06-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L07-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L08-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-L09-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R01-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R02-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R03-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R04-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R04-short-large.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R05-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R06-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R07-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R08-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R09-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R10-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R11-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R12-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R13-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    },
+    {
+      "file": "evidence/1.7.0/exhaustive-us025/sheet-R14-page-comparison.jpg",
+      "inspection": "contact-sheet inspected",
+      "sourceSet": "capture-manifest.json"
+    }
+  ],
+  "supplementalManifests": [
+    "interactions.json",
+    "d09-repair.json",
+    "flow-repair.json",
+    "dialog-scroll.json",
+    "pagination.json"
+  ],
+  "scopeBoundary": "Page sheets are actual four independently selected rendered states, not individual image-file approval. See coverage.json and review.md. Original source failure images retained."
+}

@@ -1,0 +1,38 @@
+# Independent rendered review B — manual feedback batch, 29 October 2026
+
+Status: independent review and targeted repair review complete. All four reviewer findings are closed by inspected repairs; the additional narrow bounds repairs supplied by root also pass the documented retake. No open actionable finding remains in this scope. This is a local HTML handoff review. Human color judgment remains pending. Human whole-page review of US028 and US034 remains unvisited.
+
+## Requirements and comparison inputs
+
+Read workspace AGENTS.md, UX UI/WORKFLOW.md, book/README.md, PRINCIPLES.md, CAPTURES.md, and the existing completion-checklist, dialog, pending-operation, recovery-page, pagination, feedback, actions, responsive-scale and US027/028/034 records. Read the current canonical scenario requirements and runtime/state-machine sources. Older pending descriptions that block dismissal are superseded by the explicit new background-operation decision.
+
+Compared with the latest selected Round10 notes, retained Round10 Light desktop and Dark mobile renders, and inspected frontend desktop-confirmation/mobile-invitations captures. References supply appearance and composition; later human decisions prevail. No Figma, SVG, application implementation, or book record JSON was changed by this reviewer.
+
+## Findings sent promptly to root
+
+1. **Narrow enlarged dialog title fragmentation — closed.** Originally at 320×420 / 200%, the enlarged Close control remained beside the h2. US027 A02 split “Requirements incomplete” into short fragments; US028 A04 split “Cancel job” into “Canc / el job”. The original close images and their page/parent context are retained. Retake `*-retake-short-enlarged-title-*` shows the Close control above usable full-width titles in both themes. Native Tab/Shift-Tab traversal keeps focused actions visible inside the scrollable dialog; Escape dismisses it. Action captures use `*-retake-short-enlarged-actions-*`.
+2. **Keyboard focus partly covered by bottom navigation — closed.** Originally US027 A01 at 390×844 left Run completion check at y745.89–793.89 under a navbar starting y780. Retake `us027-a01-{light,dark}-390-retake-keyboard-complete-*` shows the focused button and its outline above navigation. Measurements and keyboard paths pass in retake-checks.json.
+3. **Navigating away forgets a dispatched operation — closed.** Originally dispatch → Continue browsing → Proof → browser Back silently restored A03 and enabled another write. The same actual path now restores explicit unknown/check state; a reload retains it. Both stories and themes pass the mobile reload retake. An explicit status read recovers the confirmed result, while settled Completed/Cancelled results survive Back/reload. Evidence uses `*-retake-journal-uncertainty-*` and `*-unknown-after-back-reload-*-retake-reload-*`. This is the local same-tab mock journal, not proof of product persistence.
+4. **Failed status read has no distinct feedback — closed.** The bounded status-read timeout now shows “Status check failed” plus the still-unknown completion/cancellation result. Both themes and stories were inspected in `*-retake-explicit-read-feedback-*`. The pending write still becomes unknown exactly at 12s; dismissal/reopen does not reset that budget or re-enable mutation.
+
+## Actual inspection coverage
+
+Curated captures and source hashes are in `UX UI/book/evidence/1.6.0/reviewer-b/capture-manifest.json`. All 192 curated images were opened and inspected. Components link opened parent/page captures. A total of 206 images were opened across the review; inspected or uninspected support that was not curated is preserved in support-captures/ and all-capture-manifest.json under this review directory. Original failures retain their original source identity. Initial tall screenshots can show fixed navigation at its live viewport position; centered-close and centered-pager images provide unoccluded close views.
+
+Personally inspected representative US027 A01/A02/A03/A04/R01/R02/R03 compositions and dispatched pending/background/read-pending recovery. Scope spans 390×844, 1440×900, 2560×1347, larger 3840×1600, and 320px with 200% text. Both themes were inspected across the main checklist, bounded confirmation dialog, met/missing signals, empty/saved evidence, unknown/read failure, and sparse unavailable compositions. This is not an image-by-image approval of all permutations.
+
+US028 extrapolated shared-pattern inspection includes normal/narrow confirmation, actual pending/background operation, Paid guard, read loading/failure and access-unavailable. US034 extrapolated shared-pattern inspection includes standard and no-rating composition, page 1/page 2 pagination, no-matching-rating state, read failure/profile unavailable, long Unicode at 320px / 200%, native rating dropdown in both themes and header-menu context. No page-level human acceptance is inferred.
+
+Independently exercised actual UI dispatch, Continue browsing, View progress, Escape, exact 11999/12000ms write timeout and subsequent bounded status read in both stories/themes using the browser clock. Closing/reopening preserves the pending operation; uncertainty hides mutation access. The awaited author Resolve control confirms a background result with one simulated POST after close/reopen/close for each story. The initial supplement harness read before postMessage delivery completed; its raw output is retained and superseded by the awaited retake. Proof removed after dismissal reports a warning without reopening a modal. US034 keyboard Next/Apply filter focus the Verified reviews heading. First page omits Previous; the indicator remains stable.
+
+No further concrete composition issue was found in the images actually inspected. Standard 390/1440 requirements heading vs item hierarchy, met-requirement signals, concise confirmation copy, separated feedback/recovery controls and clean small pagination were coherent. This scoped observation does not establish human color approval or blanket approval of 94 scenarios.
+
+## Additional root bounds repairs and final checks
+
+Root's wider layout check found narrow 200% cases outside the initial inspected scope: US027 A01 compact empty-evidence copy, US027 R02 and US028 B01 feedback copy, and US034 A01 pager columns. I independently inspected the repaired component, parent and page at 320×420/200% in both themes, then all four normal 390px compositions in both themes. The 32 `*-bounds-retake-*` images were opened. Empty copy and feedback now use the available width; the pager has a readable wrapped center and 48px arrow control. No visible text clipping remains in these inspected cases.
+
+The raw first bounds pass flagged four pager rows solely because the intentionally clipped `.cu-sr-only` Next label has a 1px box. That is a harness false positive, retained in bounds-retake-checks.json. The fresh visible-element check excludes that deliberate screen-reader-only text and passes 16/16 combinations in bounds-visible-check.json. Keyboard Next still reaches page 2 and focuses Verified reviews at narrow 200% and normal 390px in both themes.
+
+Final targeted checks: 28/28 in retake-checks.json; 11/11 reload/result checks in reload-retake-checks.json; 16/16 visible bounds checks. Reduced motion has no spinner animation and reduced transparency removes chrome/dialog backdrop blur. Functional evidence does not independently establish visual approval; the reported scope also has actual image inspection. These results do not upgrade unvisited states or human acceptance.
+
+Local fictional fixtures establish no application API permissions, concurrency, database or durable product persistence behavior. Application adoption remains a separate repository task.

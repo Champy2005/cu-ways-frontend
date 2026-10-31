@@ -1,0 +1,1086 @@
+{
+  "revision": "1.7.0",
+  "actualViewportBoundary": "Reviewer mobile390×843; owner smoke390×900; each capture retains its actual dimensions.",
+  "captures": [
+    {
+      "id": "book-light-390-page",
+      "file": "evidence/1.7.0/book-viewer/book-light-390-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-390-component",
+      "file": "evidence/1.7.0/book-viewer/book-light-390-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-390-parent",
+      "file": "evidence/1.7.0/book-viewer/book-light-390-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "library-light-390-page",
+      "file": "evidence/1.7.0/book-viewer/library-light-390-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-light-390-parent",
+      "file": "evidence/1.7.0/book-viewer/library-light-390-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-light-390-component",
+      "file": "evidence/1.7.0/book-viewer/library-light-390-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "book-dark-390-page",
+      "file": "evidence/1.7.0/book-viewer/book-dark-390-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "inspected by owner",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-390-component",
+      "file": "evidence/1.7.0/book-viewer/book-dark-390-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-390-parent",
+      "file": "evidence/1.7.0/book-viewer/book-dark-390-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "inspected by owner",
+      "disposition": "superseded"
+    },
+    {
+      "id": "library-dark-390-page",
+      "file": "evidence/1.7.0/book-viewer/library-dark-390-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-dark-390-parent",
+      "file": "evidence/1.7.0/book-viewer/library-dark-390-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-dark-390-component",
+      "file": "evidence/1.7.0/book-viewer/library-dark-390-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "book-light-1440-page",
+      "file": "evidence/1.7.0/book-viewer/book-light-1440-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "inspected by owner",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-1440-component",
+      "file": "evidence/1.7.0/book-viewer/book-light-1440-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "inspected by owner",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-1440-parent",
+      "file": "evidence/1.7.0/book-viewer/book-light-1440-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "library-light-1440-page",
+      "file": "evidence/1.7.0/book-viewer/library-light-1440-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-light-1440-parent",
+      "file": "evidence/1.7.0/book-viewer/library-light-1440-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-light-1440-component",
+      "file": "evidence/1.7.0/book-viewer/library-light-1440-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "book-dark-1440-page",
+      "file": "evidence/1.7.0/book-viewer/book-dark-1440-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-1440-component",
+      "file": "evidence/1.7.0/book-viewer/book-dark-1440-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-1440-parent",
+      "file": "evidence/1.7.0/book-viewer/book-dark-1440-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "superseded"
+    },
+    {
+      "id": "library-dark-1440-page",
+      "file": "evidence/1.7.0/book-viewer/library-dark-1440-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-dark-1440-parent",
+      "file": "evidence/1.7.0/book-viewer/library-dark-1440-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "library-dark-1440-component",
+      "file": "evidence/1.7.0/book-viewer/library-dark-1440-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-book-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-light-1440-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-1440-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-light-1440-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-1440-status-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-light-390-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-light-390-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-390-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-light-390-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-390-status-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-dark-1440-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-1440-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-1440-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-1440-status-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-dark-390-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-390-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-book-dark-390-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-390-status-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-repaired-navigation-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-light-1440-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-repaired-navigation-light-1440-filters-component",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-light-1440-filters-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-repaired-navigation-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-dark-390-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-repaired-navigation-dark-390-filters-component",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-dark-390-filters-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-finding-baseline-evidence-revision",
+      "file": "evidence/1.7.0/reviewer-book/initial-navigation-empty-light-1440-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1309,
+        "height": 818
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-finding-mobile-keyboard-outline",
+      "file": "evidence/1.7.0/reviewer-book/keyboard-search-dark-390-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 843
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-review-postfocus-light-390-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-390-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-page.jpg",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-page.jpg",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-390-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-390-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-result-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-390-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-390-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-result-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-result-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-390-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-result-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "height": 843,
+        "width": 390
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-result-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-parent.jpg",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-dark-1440-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-result-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-result-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-parent.jpg",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "book-review-postfocus-light-1440-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-result-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "inspectionStatus": "independently inspected",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-390-page",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-390-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-390-component",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-390-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-390-parent",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-390-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-390-page",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-390-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-390-parent",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-390-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-390-component",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-390-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-390-page",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-390-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-390-component",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-390-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-390-parent",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-390-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-390-page",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-390-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-390-parent",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-390-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-390-component",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-390-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-1440-page",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-1440-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-1440-component",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-1440-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-light-1440-parent",
+      "file": "evidence/1.7.0/book-viewer-final/book-light-1440-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-1440-page",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-1440-page.png",
+      "kind": "page",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-1440-parent",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-1440-parent.png",
+      "kind": "parent",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-light-1440-component",
+      "file": "evidence/1.7.0/book-viewer-final/library-light-1440-component.png",
+      "kind": "component",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-1440-page",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-1440-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-1440-component",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-1440-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-book-dark-1440-parent",
+      "file": "evidence/1.7.0/book-viewer-final/book-dark-1440-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-1440-page",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-1440-page.png",
+      "kind": "page",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-1440-parent",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-1440-parent.png",
+      "kind": "parent",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    },
+    {
+      "id": "final-owner-library-dark-1440-component",
+      "file": "evidence/1.7.0/book-viewer-final/library-dark-1440-component.png",
+      "kind": "component",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "inspectionStatus": "captured only",
+      "disposition": "current"
+    }
+  ]
+}

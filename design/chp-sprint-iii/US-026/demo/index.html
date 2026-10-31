@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-cu-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>US-026 · Proof of delivery · CU Ways demo</title>
+    <link rel="stylesheet" href="../../theme/tokens.css" />
+    <link rel="stylesheet" href="../../theme/recipes.css" />
+    <link rel="stylesheet" href="./demo.css" />
+    <script type="module" src="./author.mjs"></script>
+  </head>
+  <body class="cu-surface" data-density="compact">
+    <header class="studio-header" id="studio-header"></header>
+    <main class="studio-main">
+      <section class="story-intro" aria-labelledby="story-title">
+        <div>
+          <p class="eyebrow">US-026 · INTERACTIVE STORY DEMO</p>
+          <h1 id="story-title">Proof of delivery</h1>
+          <p class="lede">Add a shareable delivery link to an In Progress job, then check the evidence the creator can review.</p>
+        </div>
+        <nav class="source-links" aria-label="Story references">
+          <a href="../README.md">Story scope and source notes</a>
+          <a href="../README.md#read-only-source-archive">Original design archive</a>
+          <a href="../../WORKFLOW.md">HTML handoff workflow</a>
+        </nav>
+      </section>
+
+      <div class="studio-grid">
+        <aside class="author-panel" aria-label="Story controls">
+          <section class="control-section" aria-labelledby="scenario-label">
+            <p class="section-kicker">01 · Choose a moment</p>
+            <label class="control-label" id="scenario-label" for="scenario">Story state</label>
+            <select id="scenario"></select>
+            <dl id="scenario-definition" class="scenario-definition"></dl>
+          </section>
+
+          <fieldset class="control-section">
+            <legend>02 · Preview conditions</legend>
+            <div class="control-grid">
+              <label class="field-control" for="theme">Theme
+                <select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select>
+              </label>
+              <label class="field-control" for="material">Bar material
+                <select id="material"><option value="glass">Glass</option><option value="opaque">Opaque</option></select>
+              </label>
+              <label class="field-control" for="width">Screen width
+                <select id="width"><option value="320">320 · narrow</option><option value="390" selected>390 · mobile</option><option value="430">430 · mobile wide</option><option value="768">768 · tablet</option><option value="1024">1024 · desktop</option><option value="1280">1280 · wide desktop</option></select>
+              </label>
+              <label class="field-control" for="height">Screen height
+                <input id="height" type="number" min="320" max="1200" step="1" value="844" inputmode="numeric" />
+              </label>
+              <label class="field-control" for="text-scale">Text size
+                <select id="text-scale"><option value="100">100%</option><option value="150">150%</option><option value="200">200%</option></select>
+              </label>
+            </div>
+            <div class="toggle-list">
+              <label><input id="reduced-motion" type="checkbox" /> Reduce motion</label>
+              <label><input id="reduced-transparency" type="checkbox" /> Reduce transparency</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="control-section">
+            <legend>03 · Simulated responses</legend>
+            <div class="control-stack">
+              <label class="field-control" for="fixture">Content fixture
+                <select id="fixture"><option value="standard">Standard example</option><option value="long">Long URLs</option></select>
+              </label>
+              <label class="field-control" for="save-outcome">Next save result
+                <select id="save-outcome">
+                  <option value="confirmed">Confirmed save</option>
+                  <option value="type-rejected">Attachment type rejected</option>
+                  <option value="unknown-saved">Connection lost · saved</option>
+                  <option value="unknown-miss">Connection lost · not saved</option>
+                  <option value="job-completed">Job is no longer In Progress</option>
+                  <option value="access-revoked">Access is no longer available</option>
+                </select>
+              </label>
+              <label class="field-control" for="reconciliation-result">Unknown save contains
+                <select id="reconciliation-result"><option value="found">A saved Proof row</option><option value="miss">No new row</option><option value="unavailable">No readable result yet</option></select>
+              </label>
+              <label class="field-control" for="check-outcome">Reconciliation read
+                <select id="check-outcome"><option value="available">Available</option><option value="unavailable">Unavailable</option></select>
+              </label>
+              <label class="field-control" for="load-outcome">Initial list read
+                <select id="load-outcome"><option value="loaded">Loads successfully</option><option value="failed">Fails to load</option></select>
+              </label>
+              <label class="field-control" for="response-mode">Response timing
+                <select id="response-mode"><option value="automatic">Resolve automatically</option><option value="manual">Hold for inspection</option></select>
+              </label>
+            </div>
+            <button id="resolve-pending" class="studio-button studio-button--accent" type="button" hidden>Resolve simulated step</button>
+            <button id="reset-demo" class="studio-button" type="button">Reset demo</button>
+          </fieldset>
+
+          <section class="control-section criteria-section" aria-labelledby="criteria-title">
+            <p class="section-kicker">04 · Original requirements</p>
+            <h2 id="criteria-title">What this story must show</h2>
+            <ol id="criteria-list"></ol>
+            <p class="boundary-note">This is a local design simulation. It sends no application requests and proves no API, authorization, or persistence behavior.</p>
+          </section>
+        </aside>
+
+        <section class="preview-panel" aria-labelledby="preview-title">
+          <div class="preview-toolbar">
+            <div><p class="section-kicker">LIVE PRODUCT VIEW</p><h2 id="preview-title">Interactive preview</h2></div>
+            <div class="preview-meta"><span id="viewport-label">390 × 844</span><a id="open-screen" href="screen.html" target="_blank" rel="noopener">Open screen</a></div>
+          </div>
+          <div class="preview-scroll" id="preview-scroll">
+            <iframe id="screen-frame" title="US-026 proof of delivery product screen"></iframe>
+          </div>
+          <div class="preview-state" aria-live="polite">
+            <span class="state-indicator" aria-hidden="true"></span>
+            <p id="state-summary">Choose a story state to inspect its behavior.</p>
+          </div>
+          <details class="simulation-log" open>
+            <summary>Simulated request history</summary>
+            <p>No request leaves this browser. Entries below describe local mock operations, not agreed API routes.</p>
+            <ol id="request-log" aria-live="polite"><li class="log-empty">Interact with the preview to record a simulated operation.</li></ol>
+            <button id="clear-log" class="studio-text-button" type="button">Clear history</button>
+          </details>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

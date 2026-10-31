@@ -1,0 +1,158 @@
+// GENERATED from ../model/scenarios.json by ../../stories/build.mjs.
+export default {
+  "schemaVersion": 1,
+  "canonical": true,
+  "story": "US-028",
+  "title": "Cancel job",
+  "role": "Survey Creator",
+  "intro": "Review the contract and the records affected before cancelling.",
+  "source": {
+    "workbook": "Backlog (3).xlsx",
+    "acceptance": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+    "inspectedOn": "2026-10-29"
+  },
+  "criteria": [
+    {
+      "id": "US028-01",
+      "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+      "requirement": "Allow the owning creator to cancel Pending, Accepted or In Progress jobs only when no payment is Paid."
+    },
+    {
+      "id": "US028-02",
+      "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+      "requirement": "Confirmed cancellation sets Cancelled, closes active job requests and rejects remaining Pending offers."
+    },
+    {
+      "id": "US028-03",
+      "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+      "requirement": "Reject cancellation for Completed or Paid jobs, keep terminal states read-only and recover unknown outcomes with a read."
+    }
+  ],
+  "outcomes": [
+    [
+      "success",
+      "Cancellation confirmed"
+    ],
+    [
+      "paid",
+      "Payment became Paid"
+    ],
+    [
+      "completed",
+      "Job became Completed"
+    ],
+    [
+      "failed",
+      "Cancellation rejected"
+    ],
+    [
+      "unknown",
+      "Response lost · outcome unknown"
+    ],
+    [
+      "access",
+      "Access denied"
+    ]
+  ],
+  "scenarios": [
+    {
+      "id": "A01",
+      "title": "Pending job",
+      "trigger": "Open a Pending unpaid job.",
+      "expected": "Cancellation is available to the creator."
+    },
+    {
+      "id": "A02",
+      "title": "Accepted job",
+      "trigger": "Open an Accepted unpaid job.",
+      "expected": "Show current contract details and an explicit cancel action."
+    },
+    {
+      "id": "A03",
+      "title": "In Progress job",
+      "trigger": "Open an In Progress unpaid job.",
+      "expected": "Allow cancellation with its consequences explained."
+    },
+    {
+      "id": "A04",
+      "title": "Cancellation confirmation",
+      "trigger": "Choose Cancel job.",
+      "expected": "Show job identity and effects; Keep job closes the dialog without changes."
+    },
+    {
+      "id": "A05",
+      "title": "Cancellation pending",
+      "trigger": "Confirm cancellation.",
+      "expected": "Submit once. Permit Close, Escape, outside dismissal and Continue browsing while preserving the operation and View progress. A 12-second deadline or document return becomes unknown/check state with no automatic resubmission."
+    },
+    {
+      "id": "A06",
+      "title": "Cancellation confirmed",
+      "trigger": "Receive confirmed cancellation.",
+      "expected": "Show Cancelled, zero active requests and zero Pending offers; remove cancellation."
+    },
+    {
+      "id": "B01",
+      "title": "Paid job",
+      "trigger": "A payment is already Paid.",
+      "expected": "Explain why cancellation is unavailable and do not enable cancellation."
+    },
+    {
+      "id": "B02",
+      "title": "Completed job",
+      "trigger": "Read a Completed job.",
+      "expected": "Preserve payment and review history; do not allow cancellation."
+    },
+    {
+      "id": "B03",
+      "title": "Already Cancelled",
+      "trigger": "Read a Cancelled job.",
+      "expected": "Keep cancellation read-only and do not resubmit."
+    },
+    {
+      "id": "B04",
+      "title": "Unverified state",
+      "trigger": "The current state is not recognized.",
+      "expected": "Do not guess eligibility; offer a fresh read."
+    },
+    {
+      "id": "R01",
+      "title": "Unknown cancellation outcome",
+      "trigger": "Lose the cancellation response.",
+      "expected": "Check current job state before a new cancellation."
+    },
+    {
+      "id": "R02",
+      "title": "Cancellation rejected",
+      "trigger": "Receive a rejection without a state change.",
+      "expected": "Keep the current contract and offer refresh."
+    },
+    {
+      "id": "R03",
+      "title": "Access removed",
+      "trigger": "Lose access to the job.",
+      "expected": "Remove private contract data and mutation controls."
+    },
+    {
+      "id": "R04",
+      "title": "Job read failed",
+      "trigger": "Cannot read job eligibility.",
+      "expected": "Show failure rather than an empty or cancellable job."
+    },
+    {
+      "id": "R05",
+      "title": "Job loading",
+      "trigger": "Read the current job.",
+      "expected": "Prevent cancellation while eligibility is unknown."
+    }
+  ],
+  "presentationDecisions": {
+    "revision": "1.6.0",
+    "source": "../../book/README.md",
+    "principles": "../../book/PRINCIPLES.md",
+    "precedence": "Current human UX/UI guidance supersedes older presentation defaults; domain prerequisites remain unchanged.",
+    "loading": "Close presentation without claiming rollback; keep background result/reopen affordance, 12-second unknown/read recovery and a same-tab fictional operation journal. Never replay a write on return.",
+    "pagination": "Omit Previous entirely on the first page and Next on the last page.",
+    "copy": "Keep only meaningful consequences, validation, uncertainty and next steps; do not repeat a visible status."
+  }
+};

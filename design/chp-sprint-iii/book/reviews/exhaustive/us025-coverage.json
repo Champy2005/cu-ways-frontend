@@ -1,0 +1,1245 @@
+[
+  {
+    "id": "L01",
+    "title": "My Jobs loading",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L01-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-01.jpg"
+    },
+    "individualImages": [
+      "L01-light-390-844-100-rest-page.png"
+    ],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L02",
+    "title": "My Jobs with hired jobs",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L02-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-01.jpg"
+    },
+    "individualImages": [
+      "L02-light-390-844-100-rest-page.png",
+      "L02-dark-1440-900-100-rest-card-component.png",
+      "L02-dark-320-568-200-rest-card-component.png",
+      "L02-light-390-844-100-rest-card-component.png",
+      "L02-dark-390-844-100-rest-card-component.png",
+      "flow-repair-L02-light-320-200-standard-viewport.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": "Accepted enlarged lead-in obstruction repaired and retaken standard/long320200 both themes, focus,scroll end and normal390/1440.",
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L03",
+    "title": "No active jobs",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L03-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-01.jpg"
+    },
+    "individualImages": [
+      "L03-light-320-568-200-rest-empty-component.png",
+      "L03-light-320-568-200-rest-page.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": "Accepted enlarged lead-in obstruction repaired and retaken standard/long320200 both themes, focus,scroll end and normal390/1440.",
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L04",
+    "title": "No hired jobs",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L04-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-01.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L05",
+    "title": "No jobs for this status",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L05-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-02.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L06",
+    "title": "My Jobs load error",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L06-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-02.jpg"
+    },
+    "individualImages": [
+      "L06-light-390-844-100-rest-feedback-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L07",
+    "title": "Previously loaded jobs",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L07-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-02.jpg"
+    },
+    "individualImages": [
+      "L07-dark-390-844-100-rest-page.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L08",
+    "title": "Changing list filter or page",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L08-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-02.jpg"
+    },
+    "individualImages": [
+      "L08-light-1440-900-100-rest-page.png"
+    ],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "L09",
+    "title": "My Jobs unavailable",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-L09-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-03.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D01",
+    "title": "Job details loading",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D01-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-03.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D02",
+    "title": "Accepted job ready to start",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D02-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-03.jpg"
+    },
+    "individualImages": [
+      "D02-light-320-568-200-rest-contract-component.png",
+      "D02-light-320-568-200-rest-viewport.png",
+      "D02-dark-2560-1347-100-rest-page.png",
+      "D02-light-1440-900-100-rest-context-component.png",
+      "D02-dark-1440-900-100-rest-contract-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D03",
+    "title": "Job details load error",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D03-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-03.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D04",
+    "title": "Job in progress",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D04-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-04.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D05",
+    "title": "Completed or cancelled job",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D05-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-04.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D06",
+    "title": "Job unavailable",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D06-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-04.jpg"
+    },
+    "individualImages": [
+      "D06-dark-390-844-100-rest-empty-component.png"
+    ],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D07",
+    "title": "Marketer access required",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D07-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-04.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D08",
+    "title": "Job details need refreshing",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D08-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-05.jpg"
+    },
+    "individualImages": [
+      "D08-dark-390-844-100-rest-feedback-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D09",
+    "title": "Accepted job with optional context missing",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D09-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-05.jpg"
+    },
+    "individualImages": [
+      "D09-repair-standard-light-390-100-page.png",
+      "D09-repair-standard-dark-390-100-context.png",
+      "D09-repair-standard-light-1440-100-page.png",
+      "D09-repair-standard-dark-1440-100-page.png",
+      "D09-repair-long-light-390-100-context.png",
+      "D09-repair-long-dark-1440-100-page.png",
+      "D09-repair-long-light-320-200-context.png",
+      "D09-repair-standard-dark-320-200-page.png",
+      "D09-repair-standard-light-390-100-bottom.png",
+      "D09-repair-standard-dark-390-100-bottom.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": "Accepted default-fixture defect repaired and retaken; fallback + start + confirmation retention + other-job isolation checked.",
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "D10",
+    "title": "Session expired",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-D10-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-05.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C01",
+    "title": "Confirm start",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C01-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-05.jpg"
+    },
+    "individualImages": [
+      "C01-light-320-568-200-rest-dialog-component.png",
+      "C01-light-320-568-200-rest-viewport.png",
+      "C01-light-390-300-100-rest-viewport.png",
+      "C01-light-1440-900-100-rest-dialog-component.png",
+      "dialog-scroll-C01-dark-320-568-200.png",
+      "dialog-scroll-C01-dark-390-300-100.png",
+      "dialog-scroll-C01-light-320-568-200.png",
+      "dialog-scroll-C01-light-390-300-100.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C02",
+    "title": "Confirmation dismissed",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C02-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-06.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C03",
+    "title": "Start request submitting",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C03-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-06.jpg"
+    },
+    "individualImages": [
+      "C03-dark-320-568-200-rest-dialog-component.png",
+      "C03-dark-1440-900-100-rest-dialog-component.png",
+      "dialog-scroll-C03-dark-320-568-200.png",
+      "dialog-scroll-C03-dark-390-300-100.png",
+      "dialog-scroll-C03-light-320-568-200.png",
+      "dialog-scroll-C03-light-390-300-100.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C04",
+    "title": "Start request taking longer",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C04-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-06.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C05",
+    "title": "Pending confirmation dismissed",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C05-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-06.jpg"
+    },
+    "individualImages": [
+      "C05-dark-390-844-100-rest-feedback-component.png",
+      "flow-repair-C05-dark-320-200-standard-focus.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": "Accepted enlarged lead-in obstruction repaired and retaken standard/long320200 both themes, focus,scroll end and normal390/1440.",
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C06",
+    "title": "Safe return after navigation",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C06-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-07.jpg"
+    },
+    "individualImages": [
+      "C06-dark-1440-900-100-rest-page.png"
+    ],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C07",
+    "title": "Job started",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C07-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-07.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "C08",
+    "title": "Start rejected; recheck required",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-C08-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-07.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R01",
+    "title": "Checking job status",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R01-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-07.jpg"
+    },
+    "individualImages": [
+      "R01-light-390-844-100-rest-feedback-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R02",
+    "title": "Already in progress",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R02-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-08.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R03",
+    "title": "Accepted after outcome check",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R03-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-08.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R04",
+    "title": "Start status not confirmed",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R04-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-08.jpg"
+    },
+    "individualImages": [
+      "R04-dark-320-568-200-rest-feedback-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "light",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 390,
+        "height": 300,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 2560,
+        "height": 1347,
+        "scale": 100,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R05",
+    "title": "Repeated start already in progress",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R05-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-08.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R06",
+    "title": "Job is terminal",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R06-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-09.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R07",
+    "title": "Start permission denied",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R07-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-09.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R08",
+    "title": "Access no longer available",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R08-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-09.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R09",
+    "title": "Session expired during start check",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R09-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-09.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R10",
+    "title": "Required start details invalid",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R10-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-10.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R11",
+    "title": "Offline before start",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R11-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-10.jpg"
+    },
+    "individualImages": [
+      "R11-light-320-568-200-rest-contract-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R12",
+    "title": "Rejected start; latest status unavailable",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R12-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-10.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R13",
+    "title": "Rechecking after returning to the page",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R13-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-10.jpg"
+    },
+    "individualImages": [],
+    "additionalScopes": [],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  },
+  {
+    "id": "R14",
+    "title": "Latest details could not refresh after start",
+    "static": "scenario + owning render/state sources read",
+    "baseline": {
+      "light390": "contact-sheet inspected",
+      "dark390": "contact-sheet inspected",
+      "light1440": "contact-sheet inspected",
+      "dark1440": "contact-sheet inspected",
+      "actualSelectedIdsVerified": true,
+      "sheet": "evidence/1.7.0/exhaustive-us025/sheet-R14-page-comparison.jpg",
+      "mobileThroughBottom": "contact-sheet inspected: sheet-bottoms-11.jpg"
+    },
+    "individualImages": [
+      "R14-dark-320-568-200-rest-contract-component.png",
+      "R14-light-390-844-100-rest-contract-component.png"
+    ],
+    "additionalScopes": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "scale": 200,
+        "inspection": "contact-sheet inspected top/bottom; unique crops separately named"
+      }
+    ],
+    "repair": null,
+    "human": "not granted",
+    "color": "awaiting human judgment"
+  }
+]

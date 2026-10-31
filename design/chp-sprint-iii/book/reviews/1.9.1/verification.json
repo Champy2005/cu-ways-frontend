@@ -1,0 +1,68 @@
+{
+  "revision": "1.9.1",
+  "scope": "Standalone design export only; no application adoption or API/persistence proof.",
+  "unitTests": {
+    "passed": 85,
+    "failed": 0
+  },
+  "pagination": {
+    "passed": 59,
+    "failed": 0
+  },
+  "contracts": {
+    "layouts": 376,
+    "assertions": 1532,
+    "passed": true
+  },
+  "hierarchy": {
+    "layouts": 376,
+    "assertions": 1138,
+    "passed": true
+  },
+  "browserSmoke": {
+    "checks": 25,
+    "errors": []
+  },
+  "generation": [
+    {
+      "name": "generated-theme",
+      "args": [
+        "theme/build.mjs",
+        "--check"
+      ],
+      "status": 0
+    },
+    {
+      "name": "generated-US-025-demo",
+      "args": [
+        "US-025/demo/build.mjs",
+        "--check"
+      ],
+      "status": 0
+    },
+    {
+      "name": "generated-US-026-demo",
+      "args": [
+        "US-026/demo/build.mjs",
+        "--check"
+      ],
+      "status": 0
+    },
+    {
+      "name": "generated-stories",
+      "args": [
+        "stories/build.mjs",
+        "--check"
+      ],
+      "status": 0
+    }
+  ],
+  "independentReview": "coverage.json",
+  "frontend": [
+    "pnpm format:check",
+    "pnpm lint",
+    "pnpm typecheck"
+  ],
+  "notRun": "Full pnpm check / application build, API integration and database tests; application source is unchanged.",
+  "humanPaletteJudgment": "pending"
+}

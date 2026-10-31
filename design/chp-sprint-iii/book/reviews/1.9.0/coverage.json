@@ -1,0 +1,1559 @@
+{
+  "revision": "1.9.0",
+  "reviewer": "/root/iteration5_review",
+  "normalStates": 94,
+  "normalRows": 376,
+  "normalSheetCountActuallyOpened": 94,
+  "normalScope": "Both themes 390x844 initial viewport; reduced 1440x900 overall and primary component. All 94 sheets actually opened after purple correction.",
+  "normalCountsByStory": {
+    "025": 41,
+    "026": 14,
+    "027": 14,
+    "028": 15,
+    "034": 10
+  },
+  "captureCounts": {
+    "sheet-inspected": 554,
+    "captured-only": 1926,
+    "opened": 45
+  },
+  "totalCaptureEntries": 2525,
+  "nativeUniqueImagesActuallyOpened": 45,
+  "extraMatrix": {
+    "rows": 90,
+    "scope": "320x568 at 200%, 390x300, 2560x1347; all captured and no horizontal overflow, selected individual images opened only."
+  },
+  "liveScope": "34 checks, 30 source-pinned corrected-palette captures; Accepted paint equality, quiet hover transparency, Stop waiting, escaped/background completion, keyboard reachability. Functional checks do not imply visual acceptance.",
+  "unvisited": "All captures marked captured-only; unshown full-page/end pixels; frontend application integration; runtime APIs/permissions/persistence/concurrency. Human color acceptance pending.",
+  "preCorrection": "inspection-ledger.json preserves prior purple-phase actual scope. Original capture-manifest.json sourcesStable=false is diagnostic only. No old image relabeled as final.",
+  "findings": [
+    {
+      "key": "criterion-required-state-copy",
+      "status": "resolved",
+      "rootDecision": "Accepted clarification",
+      "finding": "US027 B03 unmet criterion asserted Job is In Progress while current entity was Accepted.",
+      "resolution": "In Progress status / Completed status",
+      "evidence": [
+        "current-final::current-us027-B03-light-390-844-100-current-task",
+        "palette-sheets/027-B03.jpg"
+      ]
+    },
+    {
+      "key": "initial-modal-focus-ring",
+      "status": "declined",
+      "rootDecision": "Retain safe-action focus",
+      "reason": "Real pointer opening focuses safe action without :focus-visible ring; keyboard Enter opening correctly shows ring. URL-seeded snapshot ring is input-modality behavior, not erroneous resting border.",
+      "evidence": [
+        "focus-policy/A01-pointer.png",
+        "focus-policy/A01-keyboard.png"
+      ],
+      "provenance": "Focus-policy diagnostic files lack their own hash manifest; use in conjunction with source-bound palette-live hover/focus checks. Not rebound to current hashes."
+    },
+    {
+      "key": "author-held-start-controls",
+      "status": "clarified-and-verified",
+      "reason": "Resolve/Leave handle pending starts only; R13 is held detail read with its own Stop waiting. Current labels explicitly say held start. Applicable C03 buttons enable and restore disabled paint after resolution.",
+      "evidence": [
+        "author-current::pending-parent",
+        "author-current::pending-resolve",
+        "author-current::resolved-resolve"
+      ],
+      "limit": "Earlier R13 failed probe files were overwritten by C03 recapture before preservation request; no R13 preserved-image claim."
+    }
+  ],
+  "sourceEquivalence": {
+    "oldThemeHash": "04b276861de9883678c08985dfa67ef79ef18599a7bed6e89996a5c55f6b04f1",
+    "newThemeHash": "add7b0753c47902c953f95cded3970903641bfe42ad61c4eb0a2665c70e249b1",
+    "change": "Reserved color.accent.tertiary aliases slate-blue tonal ink instead of rejected purple. No recipe or story consumes that reserved token (independent rg source search). Original captures retain original hashes.",
+    "comparisons": [
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-C01-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-C01-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-1440-900-100-current-card.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-1440-900-100-normal-card.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-1440-900-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-1440-900-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-390-844-100-current-card.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-390-844-100-normal-card.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-1440-900-100-current-card.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-card.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-1440-900-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-390-844-100-current-card.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-390-844-100-normal-card.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us025-L02-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us025-L02-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-1440-900-100-current-workspace.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-1440-900-100-normal-workspace.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-dark-390-844-100-current-workspace.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-dark-390-844-100-normal-workspace.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-1440-900-100-current-workspace.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-1440-900-100-normal-workspace.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A01-light-390-844-100-current-workspace.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A01-light-390-844-100-normal-workspace.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us026-A02-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us026-A02-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A02-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A02-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": false,
+        "differenceBounds": [
+          31,
+          515,
+          35,
+          516
+        ],
+        "changedPixelCount": 2,
+        "maxChannelDifference": 4
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-dialog.png",
+        "pixelIdentical": false,
+        "differenceBounds": [
+          11,
+          10,
+          352,
+          272
+        ],
+        "changedPixelCount": 39,
+        "maxChannelDifference": 1
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-page.png",
+        "pixelIdentical": false,
+        "differenceBounds": [
+          30,
+          296,
+          371,
+          558
+        ],
+        "changedPixelCount": 38,
+        "maxChannelDifference": 1
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-A04-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-A04-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-1440-900-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-1440-900-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-390-844-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-390-844-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-1440-900-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-1440-900-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-390-844-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-390-844-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us027-B03-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us027-B03-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-1440-900-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-1440-900-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-390-844-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-390-844-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-1440-900-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-1440-900-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-390-844-100-current-task.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-390-844-100-normal-task.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A02-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A02-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-1440-900-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-1440-900-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-390-844-100-current-dialog.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-390-844-100-normal-dialog.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us028-A04-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us028-A04-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-header.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-header.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-history.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-history.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-header.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-header.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-history.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-history.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-dark-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-dark-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-header.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-header.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-history.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-history.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-1440-900-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-1440-900-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-end.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-end.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-header.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-header.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-history.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-history.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-page.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-page.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-parent.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-parent.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      },
+      {
+        "current": "evidence/1.9.0/reviewer/current-final/current-us034-A01-light-390-844-100-current-viewport.png",
+        "original": "evidence/1.9.0/reviewer/palette-final/palette-us034-A01-light-390-844-100-normal-viewport.png",
+        "pixelIdentical": true,
+        "differenceBounds": null,
+        "changedPixelCount": 0,
+        "maxChannelDifference": 0
+      }
+    ],
+    "identicalCount": 181
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "STORY-ID/component/context",
+  "owner": "Assign a designer or feature owner",
+  "scope": "One named feature/page root",
+  "extends": {
+    "source": "./theme.json",
+    "version": "1.5.0"
+  },
+  "reason": "Example only: content density may require an intrinsic local layout alias.",
+  "overrides": {
+    "layout.sectionGap": {
+      "value": "clamp(1rem, 2vi, 1.5rem)",
+      "reason": "Candidate responsive spacing; validate actual content. This is not a globally approved spacing rule."
+    }
+  },
+  "validation": {
+    "status": "pending",
+    "publish": false,
+    "evidence": []
+  },
+  "reviewAfter": "Review during implementation; promote only if multiple consumers benefit."
+}

@@ -6,6 +6,8 @@ For Sprint 3 screens and future UI work, follow [the design guide](design.md). I
 
 Tim's Sprint 3 HTML previews for payment recording, transaction history and reviews are in [design/](design/README.md), with a behavior and route guide for each screen.
 
+Chp's standalone Sprint III handoff for starting jobs, delivery proof, completion, cancellation and marketer reviews is in [design/chp-sprint-iii/](design/chp-sprint-iii/EXPORT.md). It includes the shared theme, scenario studios, searchable design records and review evidence; application adoption remains separate.
+
 ## Quick start
 
 Requirements: Node.js 22.13.0 or newer (CI uses Node.js 24 LTS) and pnpm 11.25.0.

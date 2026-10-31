@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" data-cu-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>US-025 interactive handoff</title>
+    <link rel="stylesheet" href="../../theme/tokens.css" />
+    <link rel="stylesheet" href="../../theme/recipes.css" />
+    <link rel="stylesheet" href="./demo.css" />
+    <script type="module" src="./author.mjs"></script>
+  </head>
+  <body class="author-page">
+    <a class="skip-link" href="#preview">Skip to product preview</a>
+    <header class="author-header">
+      <div>
+        <p class="eyebrow">US-025 · interactive implementation handoff</p>
+        <h1>Start an accepted job</h1>
+        <p class="intro">Choose a canonical state, content fixture and viewport. The screen uses fictional data and mock requests only.</p>
+      </div>
+      <a data-cu-component="back" data-layout-class="author-theme-link" href="../../theme/lab.html">Open shared theme lab</a>
+    </header>
+
+    <main class="author-grid">
+      <aside class="author-panel" aria-label="Demo controls and state definitions">
+        <form id="controls" class="controls-form">
+          <fieldset>
+            <legend>Story state</legend>
+            <label for="scenario">Scenario</label>
+            <select id="scenario" name="scenario" required></select>
+            <label for="fixture">Content fixture</label>
+            <select id="fixture" name="fixture"></select>
+            <p class="control-hint">Fixtures cover long Unicode content, missing optional values, both terminal states and a mock rate-limited read.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Viewport and presentation</legend>
+            <label for="width">Viewport width</label>
+            <select id="width" name="width">
+              <option value="320">320 px · narrow phone</option>
+              <option value="390" selected>390 px · phone</option>
+              <option value="768">768 px · tablet</option>
+              <option value="1024">1024 px · compact desktop</option>
+              <option value="1440">1440 px · desktop</option>
+            </select>
+            <label for="height">Viewport height</label>
+            <input id="height" name="height" type="number" min="225" max="1440" step="1" value="844" inputmode="numeric" />
+            <label for="text-scale">Text scale</label>
+            <select id="text-scale" name="text-scale">
+              <option value="100" selected>100%</option>
+              <option value="150">150%</option>
+              <option value="200">200%</option>
+            </select>
+            <label for="theme">Theme</label>
+            <select id="theme" name="theme">
+              <option value="light" selected>Light</option>
+              <option value="dark">Dark</option>
+            </select>
+            <label for="material">Chrome material</label>
+            <select id="material" name="material">
+              <option value="opaque" selected>Opaque</option>
+              <option value="glass">Glass</option>
+            </select>
+            <label class="checkbox-label" for="reduced-motion">
+              <input id="reduced-motion" name="reduced-motion" type="checkbox" />
+              Reduce motion
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Mock start response</legend>
+            <label for="start-outcome">Chosen result</label>
+            <select id="start-outcome" name="start-outcome">
+              <option value="started" selected>Started successfully</option>
+              <option value="already_in_progress">Already in progress</option>
+              <option value="rejected">Known rejection</option>
+              <option value="unknown">Unknown outcome / timeout</option>
+              <option value="forbidden">Permission denied</option>
+              <option value="session_expired">Session expired</option>
+              <option value="invalid">Required data invalid</option>
+              <option value="terminal">Job is terminal</option>
+            </select>
+            <label for="refresh-outcome">Follow-up status read</label>
+            <select id="refresh-outcome" name="refresh-outcome">
+              <option value="in-progress" selected>In Progress</option>
+              <option value="accepted">Accepted</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="unavailable">Access unavailable</option>
+              <option value="session_expired">Session expired</option>
+              <option value="invalid">Required data invalid</option>
+              <option value="failed">Read fails</option>
+            </select>
+            <label for="response-mode">Response timing</label>
+            <select id="response-mode" name="response-mode">
+              <option value="immediate" selected>Immediate · 700 ms</option>
+              <option value="slow">Slow · show message after 10 s</option>
+              <option value="hold">Hold until I resolve it</option>
+            </select>
+            <span id="resolve-pending" data-cu-component="action" data-layout-class="control-button" data-variant="utility" data-disabled="true">Resolve held start</span>
+            <span id="leave-pending" data-cu-component="action" data-layout-class="control-button" data-variant="utility" data-disabled="true">Leave while starting</span>
+            <p class="control-hint">Resolve finishes a held start request. Job reads have their own Stop waiting control.</p>
+          </fieldset>
+        </form>
+
+        <section class="flow-links" aria-labelledby="flow-links-title">
+          <h2 id="flow-links-title">Flow overview</h2>
+          <nav aria-label="US-025 state groups">
+            <a href="#flow-list" data-state-group="L">L · My Jobs list <span>L01–L09</span></a>
+            <a href="#flow-detail" data-state-group="D">D · Job details <span>D01–D10</span></a>
+            <a href="#flow-confirm" data-state-group="C">C · Confirmation <span>C01–C08</span></a>
+            <a href="#flow-recovery" data-state-group="R">R · Recovery <span>R01–R14</span></a>
+          </nav>
+          <div class="source-links">
+            <a href="../02-flows-and-states.md">Open written flow specification</a>
+            <a href="../model/scenarios.json">Open canonical scenario definitions</a>
+            <a href="./README.md">Implementation notes and proof limits</a>
+          </div>
+        </section>
+
+        <details class="definition-panel" open>
+          <summary>Selected state definition</summary>
+          <dl id="definition" class="definition-list"></dl>
+        </details>
+      </aside>
+
+      <section id="preview" class="preview-panel" aria-labelledby="preview-title">
+        <div class="preview-heading">
+          <div>
+            <h2 id="preview-title">Product screen</h2>
+            <p id="screen-state" class="preview-state">Loading the local screen…</p>
+          </div>
+          <a id="screen-link" href="./screen.html" target="_blank" rel="noreferrer">Open screen in a new tab</a>
+        </div>
+        <div class="viewport-scroller" id="viewport-scroller">
+          <iframe id="screen-frame" title="US-025 My Jobs product screen preview" src="./screen.html"></iframe>
+        </div>
+        <section class="request-panel" aria-labelledby="request-title">
+          <div>
+            <h3 id="request-title">Mock request log</h3>
+            <p>Read-only record of simulated reads, writes and safe navigation. No request reaches an API.</p>
+          </div>
+          <ol id="request-log" class="request-log" aria-live="polite" aria-relevant="additions"></ol>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

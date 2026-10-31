@@ -1,0 +1,3 @@
+# Chp standalone UX/UI handoff
+
+This folder is reference HTML/CSS/JS, not Next.js application code. Start with EXPORT.md, WORKFLOW.md and book/README.md. Shared decisions live in theme/theme.json and shared recipes/components; use tools/ui/cli.cjs inspect/affected/check/validate and the existing book record before global edits. Keep current human decisions and explicit unvisited/color-pending scope. Review component, parent/siblings and page in both themes with fresh independent review before visual acceptance. Do not import these fixtures or mock state machines into src/ as application implementation without a separate adoption task. Preserve byte-exact source snapshots; this folder runs its own generation/ownership/behavior checks rather than the app formatter.

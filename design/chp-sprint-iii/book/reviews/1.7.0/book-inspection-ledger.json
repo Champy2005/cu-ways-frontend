@@ -1,0 +1,343 @@
+{
+  "revision": "1.7.0",
+  "reviewer": "Independent iteration3 book reviewer",
+  "actualInspection": "Each current page was separately emitted through CUA and visually inspected. Each current close crop was separately opened with view_image. Parent copies have the identical image hash as their corresponding opened page and were inspected through that exact image; they are not claimed as separate newly opened pixels. Historical page copies similarly retain exact image identity. The initial evidence-revision and keyboard clipping failures were individually emitted and inspected. Failed compositor/crop diagnostic files are excluded.",
+  "captures": [
+    {
+      "id": "book-light-1440-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-light-1440-parent.jpg",
+      "imageSha256": "b748573ce0eb36c1f5313b57bf963e48955eadefc2e20033a42dd4f9c7c07c47",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-1440-page.jpg",
+      "imageSha256": "b748573ce0eb36c1f5313b57bf963e48955eadefc2e20033a42dd4f9c7c07c47",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-1440-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-1440-status-component.png",
+      "imageSha256": "e3971169d1defc0c0576db4077dbeee5829b775def05d34a36bee9a27544f36e",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-390-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-light-390-parent.jpg",
+      "imageSha256": "2faf3daf4c29256ee64ce9afd0c01a7cecdfeae02196f8e95055b6f1c9a3db61",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-390-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-390-page.jpg",
+      "imageSha256": "2faf3daf4c29256ee64ce9afd0c01a7cecdfeae02196f8e95055b6f1c9a3db61",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-light-390-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-light-390-status-component.png",
+      "imageSha256": "eac044b578c761f2534cb278bb017a2ff72b5a27bd7fe536de30ba7c3d4ad9eb",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-1440-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-dark-1440-parent.jpg",
+      "imageSha256": "1cc309953de8dc56ff7fcb0f4dcedb3b412ec6a3ead33dcf5d0b2949f47704cf",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-1440-page.jpg",
+      "imageSha256": "1cc309953de8dc56ff7fcb0f4dcedb3b412ec6a3ead33dcf5d0b2949f47704cf",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-1440-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-1440-status-component.png",
+      "imageSha256": "a66e11edde95ef04a4af7b91495d04d5d5b68dac8ee8cb4081ec73ade655c817",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-390-parent",
+      "file": "evidence/1.7.0/reviewer-book/viewer-book-dark-390-parent.jpg",
+      "imageSha256": "dd6334d6c15de95140411aba7490d3ff24660da5b469d746db0d5bbe5e076fb8",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-390-page.jpg",
+      "imageSha256": "dd6334d6c15de95140411aba7490d3ff24660da5b469d746db0d5bbe5e076fb8",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "book-dark-390-status-component",
+      "file": "evidence/1.7.0/reviewer-book/inspected-book-dark-390-status-component.png",
+      "imageSha256": "d8aac1ce055cc9f1e698b6124bc7340d71471f550d0cdfa2d7b8da7b23c8677a",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "repaired-navigation-light-1440-page",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-light-1440-page.jpg",
+      "imageSha256": "a1bba91fbdc03f2666e7a6011f8d4852001da45b26e7ee60275628a6c5752f44",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "repaired-navigation-light-1440-filters-component",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-light-1440-filters-component.png",
+      "imageSha256": "69bc0f101b9bd4dfe8b7464e3639544f2a95ee27c3ead33f1680d38d0c5b5659",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "repaired-navigation-dark-390-page",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-dark-390-page.jpg",
+      "imageSha256": "9299268a1d92c0502740f22b9e7c619f1de559faa0d8266c27bb7fcd5b7a061a",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "repaired-navigation-dark-390-filters-component",
+      "file": "evidence/1.7.0/reviewer-book/repaired-navigation-dark-390-filters-component.png",
+      "imageSha256": "0e1ac4337e115aa8ee31e5686d6514f5cf768c87b24e5464f6db8796bfae9c56",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "finding-baseline-evidence-revision",
+      "file": "evidence/1.7.0/reviewer-book/initial-navigation-empty-light-1440-page.jpg",
+      "imageSha256": "98a61ddb7b3eeb033707bc3c365fc4fcb01aa656c1e44403827c61ce7c3bdc9a",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "finding-mobile-keyboard-outline",
+      "file": "evidence/1.7.0/reviewer-book/keyboard-search-dark-390-page.jpg",
+      "imageSha256": "4cc4e8e8a73dd23e54c838d7a69c5c18d5c80f9ee997996272b7e1e8158c7cdc",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened image, or byte-identical page/parent copy of the individually opened image; see inspection ledger",
+      "disposition": "superseded"
+    },
+    {
+      "id": "postfocus-light-390-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-page.jpg",
+      "imageSha256": "eb65a48f38bfd3a2cfc97d0b61567ead76a4ce577f01207ad11c992c6cd1ddf2",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-390-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-page.jpg",
+      "imageSha256": "c3e820ca332f6d30816229b40cf8b88283561267faf4d5f77025752891fb77e7",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-page.jpg",
+      "imageSha256": "acab66c8aeedf0785ab023d47fa0b1a1a0b59fc1178fae146d80802e4455b600",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-page.jpg",
+      "imageSha256": "d5c0484e20fd4f35953e8406e81ddd21b577ed71caf1ae581165b45f56715cd8",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-page.jpg",
+      "imageSha256": "6bbcf510cce911137c977e3768691b93ce0a501cd772520ed1db28a98f3d19a4",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-page.jpg",
+      "imageSha256": "254a31b26cd16cf80ec3d1d7ad2f32128cad6ab20462b76af098ccc4daafe676",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-first",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-page.jpg",
+      "imageSha256": "045916881b741ea9cdbef461345fbbd2999f4643407646a2cfebe87525f0f293",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-last",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-page.jpg",
+      "imageSha256": "6c68c93133f8f2e598aa6d649bc97677e83966b373136b38af89daae04ea7281",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually emitted and visually inspected full-page viewport screenshot through CUA",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-390-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-parent.jpg",
+      "imageSha256": "eb65a48f38bfd3a2cfc97d0b61567ead76a4ce577f01207ad11c992c6cd1ddf2",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-390-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-first-result-component.png",
+      "imageSha256": "92b1fa1128131977306f3c8ede5f6228ce386a0d5556b5b2e00ba92f61e0aca4",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-390-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-parent.jpg",
+      "imageSha256": "c3e820ca332f6d30816229b40cf8b88283561267faf4d5f77025752891fb77e7",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-390-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-390-last-result-component.png",
+      "imageSha256": "d2a6aee30730c8bb39614516f3d0c98d46d7d72351fc01f204f016387a063edd",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-parent.jpg",
+      "imageSha256": "acab66c8aeedf0785ab023d47fa0b1a1a0b59fc1178fae146d80802e4455b600",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-first-result-component.png",
+      "imageSha256": "8ff821ee90646a609eb83415ac25d81cf8261ce07fa39370e57dd71cd091ea42",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-parent.jpg",
+      "imageSha256": "d5c0484e20fd4f35953e8406e81ddd21b577ed71caf1ae581165b45f56715cd8",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-390-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-390-last-result-component.png",
+      "imageSha256": "6157ea71061364591e3fcb1744d9a1ae359e3268834248813ba3c73bd7396023",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-parent.jpg",
+      "imageSha256": "6bbcf510cce911137c977e3768691b93ce0a501cd772520ed1db28a98f3d19a4",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-first-result-component.png",
+      "imageSha256": "54f0d1758023edc714c417a6f66c997beb523901832724faedd741e52a23b4fa",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-parent.jpg",
+      "imageSha256": "254a31b26cd16cf80ec3d1d7ad2f32128cad6ab20462b76af098ccc4daafe676",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-dark-1440-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-dark-1440-last-result-component.png",
+      "imageSha256": "7dc2c3786590d69a786454309fbca26dd3ef37855af1a7010e533510333a8018",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-first-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-parent.jpg",
+      "imageSha256": "045916881b741ea9cdbef461345fbbd2999f4643407646a2cfebe87525f0f293",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-first-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-first-result-component.png",
+      "imageSha256": "00c671c2668b92cee0799e4cdc4d577771b8379471e8e33ae076270556a1bb80",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-last-parent",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-parent.jpg",
+      "imageSha256": "6c68c93133f8f2e598aa6d649bc97677e83966b373136b38af89daae04ea7281",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "byte-identical to the individually emitted and inspected page screenshot",
+      "disposition": "current"
+    },
+    {
+      "id": "postfocus-light-1440-last-result-component",
+      "file": "evidence/1.7.0/reviewer-book/postfocus-light-1440-last-result-component.png",
+      "imageSha256": "de2d52d8bef65e5c7ed745b9adb7036937740d1884822f721073f841740308c9",
+      "inspectionStatus": "independently inspected",
+      "originalInspection": "individually opened local lossless close crop with view_image after the full-page inspection",
+      "disposition": "current"
+    }
+  ]
+}

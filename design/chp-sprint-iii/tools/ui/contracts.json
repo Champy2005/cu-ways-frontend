@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "entryRoots": [
+    {
+      "path": ".",
+      "recursive": false
+    },
+    {
+      "path": "theme",
+      "recursive": true
+    },
+    {
+      "path": "book",
+      "recursive": false
+    },
+    {
+      "path": "US-025/demo",
+      "recursive": true
+    },
+    {
+      "path": "US-026/demo",
+      "recursive": true
+    },
+    {
+      "path": "US-027/demo",
+      "recursive": true
+    },
+    {
+      "path": "US-028/demo",
+      "recursive": true
+    },
+    {
+      "path": "US-034/demo",
+      "recursive": true
+    }
+  ],
+  "components": {
+    "Action": {
+      "owner": "theme/components.mjs",
+      "export": "action",
+      "selectors": [
+        ".cu-action"
+      ],
+      "records": [
+        "actions"
+      ],
+      "aliases": [
+        "button",
+        "buttons",
+        "action hierarchy",
+        "Got it",
+        "Keep job",
+        "Stop waiting",
+        "pagination",
+        "Next",
+        "Previous"
+      ],
+      "checks": [
+        "node --test \"UX UI/theme/components.test.mjs\"",
+        "node \"UX UI/stories/hierarchy-check.cjs\"",
+        "node \"UX UI/stories/pagination-check.cjs\""
+      ]
+    },
+    "Lifecycle": {
+      "owner": "theme/components.mjs",
+      "export": "lifecycleBadge",
+      "selectors": [
+        ".cu-status[data-lifecycle]"
+      ],
+      "records": [
+        "status-placement"
+      ],
+      "aliases": [
+        "badge",
+        "Accepted",
+        "In Progress",
+        "Completed",
+        "Cancelled",
+        "status"
+      ],
+      "checks": [
+        "node \"UX UI/stories/hierarchy-check.cjs\""
+      ]
+    },
+    "BackLink": {
+      "owner": "theme/components.mjs",
+      "export": "backLink",
+      "selectors": [
+        ".cu-back-link"
+      ],
+      "records": [
+        "back-navigation"
+      ],
+      "aliases": [
+        "back",
+        "Back to workspace",
+        "return"
+      ],
+      "checks": [
+        "node \"UX UI/stories/hierarchy-check.cjs\""
+      ]
+    },
+    "Feedback": {
+      "owner": "theme/components.mjs",
+      "export": "banner",
+      "selectors": [
+        ".cu-banner",
+        ".cu-feedback"
+      ],
+      "records": [
+        "feedback"
+      ],
+      "aliases": [
+        "banner",
+        "message",
+        "error",
+        "warning"
+      ],
+      "checks": [
+        "node \"UX UI/stories/consistency-check.cjs\""
+      ]
+    },
+    "Close": {
+      "owner": "theme/components.mjs",
+      "export": "closeControl",
+      "selectors": [
+        ".cu-close"
+      ],
+      "records": [
+        "dialog"
+      ],
+      "aliases": [
+        "close",
+        "X",
+        "dismiss modal"
+      ],
+      "checks": [
+        "node \"UX UI/stories/consistency-check.cjs\""
+      ]
+    },
+    "Loading": {
+      "owner": "theme/components.mjs",
+      "export": "loadingScaffold",
+      "selectors": [
+        ".cu-loading-layout",
+        ".cu-operation"
+      ],
+      "records": [
+        "pending-operation"
+      ],
+      "aliases": [
+        "loading",
+        "skeleton",
+        "progress"
+      ],
+      "checks": [
+        "node \"UX UI/stories/iteration4-regressions.cjs\""
+      ]
+    },
+    "Evidence": {
+      "owner": "theme/components.mjs",
+      "export": "evidenceLink",
+      "selectors": [
+        ".cu-evidence-link"
+      ],
+      "records": [
+        "evidence-link"
+      ],
+      "aliases": [
+        "proof link",
+        "URL",
+        "evidence"
+      ],
+      "checks": [
+        "node \"UX UI/stories/exhaustive-regressions.cjs\""
+      ]
+    },
+    "Header": {
+      "owner": "theme/components.mjs",
+      "export": "headerBar",
+      "selectors": [
+        ".cu-header",
+        ".cu-header-control"
+      ],
+      "records": [
+        "navigation"
+      ],
+      "aliases": [
+        "header",
+        "hamburger",
+        "navigation"
+      ],
+      "checks": [
+        "node \"UX UI/stories/hierarchy-check.cjs\""
+      ]
+    }
+  },
+  "rules": {
+    "lifecycleLabels": [
+      "Pending",
+      "Accepted",
+      "In Progress",
+      "Completed",
+      "Cancelled",
+      "Paid",
+      "Unverified",
+      "Status unavailable"
+    ],
+    "canonicalMarkup": [
+      "cu-action",
+      "cu-status",
+      "cu-back-link",
+      "cu-close"
+    ],
+    "paintProperties": [
+      "color",
+      "background",
+      "background-color",
+      "border-color",
+      "border-top-color",
+      "border-bottom-color",
+      "border-inline-start-color",
+      "border-inline-end-color",
+      "box-shadow"
+    ],
+    "canonicalPaintOwner": "theme/recipes.css",
+    "nativeJsTools": [
+      {
+        "file": "theme/lab.mjs",
+        "reason": "Native token reset/editor controls outside the product preview; the preview uses canonical renderers."
+      }
+    ],
+    "nativeHtmlTools": [
+      {
+        "file": "theme/lab.html",
+        "reason": "Theme editor controls; product preview uses shared renderers."
+      },
+      {
+        "file": "book/index.html",
+        "reason": "Optional reference viewer controls; no product task UI."
+      },
+      {
+        "file": "US-025/demo/index.html",
+        "reason": "Scenario author studio outside the product iframe."
+      },
+      {
+        "file": "US-026/demo/index.html",
+        "reason": "Scenario author studio outside the product iframe."
+      },
+      {
+        "file": "US-027/demo/index.html",
+        "reason": "Scenario author studio outside the product iframe."
+      },
+      {
+        "file": "US-028/demo/index.html",
+        "reason": "Scenario author studio outside the product iframe."
+      },
+      {
+        "file": "US-034/demo/index.html",
+        "reason": "Scenario author studio outside the product iframe."
+      }
+    ],
+    "exceptions": []
+  }
+}

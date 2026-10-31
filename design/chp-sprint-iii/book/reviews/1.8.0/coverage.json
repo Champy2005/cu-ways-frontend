@@ -1,0 +1,21 @@
+{
+  "revision": "1.8.0",
+  "status": "complete; independent/root design review and portable candidate audit passed in documented scope",
+  "namedStates": 94,
+  "jobsProof": "jobs-proof/coverage.json",
+  "stories": "stories/coverage.json",
+  "sourceValidation": [
+    {
+      "review": "jobs-proof",
+      "rows": 1171,
+      "currentSourcesMatch": true
+    },
+    {
+      "review": "stories",
+      "rows": 552,
+      "currentSourcesMatch": true
+    }
+  ],
+  "humanAcceptance": "pending separately",
+  "unvisited": "Parameter combinations outside each reviewer’s named scope remain unvisited. Parent/frame URL mismatches do not grant new human visits."
+}

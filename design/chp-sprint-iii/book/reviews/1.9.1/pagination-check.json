@@ -1,0 +1,555 @@
+{
+  "checks": [
+    {
+      "label": "025/light/390 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(81, 91, 107)",
+        "width": 44,
+        "height": 44,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/light/390 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "025/light/390 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(237, 242, 247)",
+        "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+        "ink": "rgb(34, 95, 157)",
+        "width": 44,
+        "height": 44,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/light/390 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "025/light/390 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 44,
+          "height": 44,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 44,
+          "height": 44,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "025/light/390 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "025/light/390 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "025/light/1440 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(81, 91, 107)",
+        "width": 46.75,
+        "height": 46.75,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/light/1440 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "025/light/1440 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(237, 242, 247)",
+        "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+        "ink": "rgb(34, 95, 157)",
+        "width": 46.75,
+        "height": 46.75,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/light/1440 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "025/light/1440 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 46.75,
+          "height": 46.75,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 46.75,
+          "height": 46.75,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "025/light/1440 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "025/light/1440 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "025/dark/390 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(196, 202, 212)",
+        "width": 44,
+        "height": 44,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/dark/390 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "025/dark/390 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(42, 53, 67)",
+        "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+        "ink": "rgb(158, 199, 243)",
+        "width": 44,
+        "height": 44,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/dark/390 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "025/dark/390 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 44,
+          "height": 44,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 44,
+          "height": 44,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "025/dark/390 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "025/dark/390 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "025/dark/1440 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(196, 202, 212)",
+        "width": 46.75,
+        "height": 46.75,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/dark/1440 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "025/dark/1440 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(42, 53, 67)",
+        "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+        "ink": "rgb(158, 199, 243)",
+        "width": 46.75,
+        "height": 46.75,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "025/dark/1440 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "025/dark/1440 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 46.75,
+          "height": 46.75,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 46.75,
+          "height": 46.75,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "025/dark/1440 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "025/dark/1440 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "034/light/390 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(81, 91, 107)",
+        "width": 46,
+        "height": 48,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/light/390 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "034/light/390 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(237, 242, 247)",
+        "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+        "ink": "rgb(34, 95, 157)",
+        "width": 46,
+        "height": 48,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/light/390 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "034/light/390 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 46,
+          "height": 48,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 46,
+          "height": 48,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "034/light/390 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "034/light/390 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "034/light/1440 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(81, 91, 107)",
+        "width": 48.875,
+        "height": 51,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/light/1440 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "034/light/1440 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(237, 242, 247)",
+        "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+        "ink": "rgb(34, 95, 157)",
+        "width": 48.875,
+        "height": 51,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/light/1440 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "034/light/1440 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 48.875,
+          "height": 51,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(237, 242, 247)",
+          "shadow": "rgb(188, 201, 215) 0px 0px 0px 1px inset",
+          "ink": "rgb(34, 95, 157)",
+          "width": 48.875,
+          "height": 51,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "034/light/1440 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "034/light/1440 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "034/dark/390 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(196, 202, 212)",
+        "width": 46,
+        "height": 48,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/dark/390 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "034/dark/390 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(42, 53, 67)",
+        "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+        "ink": "rgb(158, 199, 243)",
+        "width": 46,
+        "height": 48,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/dark/390 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "034/dark/390 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 46,
+          "height": 48,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 46,
+          "height": 48,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "034/dark/390 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "034/dark/390 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "034/dark/1440 quiet rest",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(196, 202, 212)",
+        "width": 48.875,
+        "height": 51,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/dark/1440 first page omits previous",
+      "passed": true
+    },
+    {
+      "label": "034/dark/1440 clearly bounded tonal hover",
+      "passed": true,
+      "data": {
+        "fill": "rgb(42, 53, 67)",
+        "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+        "ink": "rgb(158, 199, 243)",
+        "width": 48.875,
+        "height": 51,
+        "radius": "50%",
+        "outline": "none"
+      }
+    },
+    {
+      "label": "034/dark/1440 hover preserves geometry",
+      "passed": true
+    },
+    {
+      "label": "034/dark/1440 both directions share hover",
+      "passed": true,
+      "data": {
+        "back": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 48.875,
+          "height": 51,
+          "radius": "50%",
+          "outline": "none"
+        },
+        "hover": {
+          "fill": "rgb(42, 53, 67)",
+          "shadow": "rgb(99, 117, 141) 0px 0px 0px 1px inset",
+          "ink": "rgb(158, 199, 243)",
+          "width": 48.875,
+          "height": 51,
+          "radius": "50%",
+          "outline": "none"
+        }
+      }
+    },
+    {
+      "label": "034/dark/1440 keyboard focus visible",
+      "passed": true
+    },
+    {
+      "label": "034/dark/1440 previous returns to first page",
+      "passed": true
+    },
+    {
+      "label": "Quiet text dismissal keeps transparent hover",
+      "passed": true,
+      "data": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "shadow": "none",
+        "ink": "rgb(158, 199, 243)",
+        "width": 78.90625,
+        "height": 51,
+        "radius": "10.625px",
+        "outline": "solid"
+      }
+    },
+    {
+      "label": "Reduced motion retains static hover feedback",
+      "passed": true
+    },
+    {
+      "label": "Touch navigation does not retain pointer hover fill",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

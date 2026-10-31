@@ -1,0 +1,9 @@
+import {mountStaticComponents} from '../theme/static-components.mjs';
+mountStaticComponents();
+import{esc,action,icon}from'../theme/components.mjs';
+import{handoffStories}from'./scope.mjs';
+const stories=[['025','Start a job',41,'Find accepted work, confirm Start, and recover from stale or unknown outcomes.'],['026','Proof of delivery',14,'Save delivery links as Proof and review saved URLs and timestamps.'],['027','Job completion',14,'Understand missing proof and all conditions that guard job sign-off.'],['028','Cancel a job',15,'Review cancellation consequences and protect completed or Paid contracts.'],['029','Record a payment',14,'Select a payment method and validate the exact accepted price.'],['032','Transaction history',10,'Read completed-job breakdowns, filter your role and browse history.'],['033','Review completed work',15,'Choose 1–5 stars, add optional feedback and save one review.'],['034','Marketer reviews',10,'Explore verified review cards, rating summaries, filters and empty states.']];
+document.querySelector('#stories').innerHTML=stories.filter(([n])=>handoffStories.includes(n)).map(([n,title,count,description])=>`<article><small>US-${n} · ${count} STATES</small><h2>${esc(title)}</h2><p>${esc(description)}</p><div class="actions">${action('Explore story',{href:`US-${n}/demo/index.html`,secondary:'entry'})}${action('Open screen',{href:`US-${n}/demo/screen.html`,emphasis:'tertiary'})}</div></article>`).join('');
+const toggle=document.querySelector('#theme-toggle');
+function renderToggle(){const dark=document.documentElement.dataset.cuTheme==='dark';toggle.innerHTML=icon(dark?'moon':'sun')+`<span>${dark?'Dark':'Light'}</span>`;toggle.setAttribute('aria-label',`Switch to ${dark?'light':'dark'} theme`);}
+toggle.onclick=()=>{document.documentElement.dataset.cuTheme=document.documentElement.dataset.cuTheme==='dark'?'light':'dark';renderToggle();};renderToggle();

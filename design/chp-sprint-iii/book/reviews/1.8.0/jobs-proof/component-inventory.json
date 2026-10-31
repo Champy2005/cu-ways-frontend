@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "scope": [
+    "US-025",
+    "US-026"
+  ],
+  "components": [
+    {
+      "recordId": "job-card",
+      "selectors": [
+        ".job-card",
+        ".job-card-heading",
+        ".result-heading"
+      ],
+      "consumers": [
+        "US-025 L02,L04,L05,C06"
+      ],
+      "source": "US-025/demo/screen.mjs",
+      "reviewDecision": "Top-right status; two-line title preview; full Unicode names on detail; visible View job destination.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "job-overview",
+      "selectors": [
+        ".action-panel",
+        ".context-card",
+        ".survey-list"
+      ],
+      "consumers": [
+        "US-025 detail and recovery states"
+      ],
+      "source": "US-025/demo/screen.mjs",
+      "reviewDecision": "Distinct contract/status vs overview hierarchy; original full normal family sheets both themes.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "dialog",
+      "selectors": [
+        ".cu-content-dialog",
+        ".cu-close",
+        ".dialog-topline"
+      ],
+      "consumers": [
+        "US-025 C01-C04",
+        "US-026 A02,A03,A05,B01,B04"
+      ],
+      "source": "theme/components.mjs",
+      "reviewDecision": "Shared content backdrop and borderless-at-rest X; visible keyboard outline; single pending dismissal; focus/title overflow repairs.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "proof-workspace",
+      "selectors": [
+        ".proof-workspace",
+        ".proof-list",
+        ".empty-state"
+      ],
+      "consumers": [
+        "US-026 A01,A04,A06,B02,B03,C02"
+      ],
+      "source": "US-026/demo/screen.mjs",
+      "reviewDecision": "Compact icon/copy empty row; modal entry leaves list coordinates unchanged; no redundant reminders.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "proof-header",
+      "selectors": [
+        ".story-heading",
+        ".title-row",
+        ".job-context"
+      ],
+      "consumers": [
+        "US-026 all readable job states"
+      ],
+      "source": "US-026/demo/screen.css",
+      "reviewDecision": "Page title plus top-right job status; mixed-case job context underneath; recovery keeps same anchors.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "evidence-link",
+      "selectors": [
+        ".cu-evidence-link",
+        ".cu-evidence-path",
+        ".proof-row"
+      ],
+      "consumers": [
+        "US-026 proof/draft rows",
+        "shared US027 consumer reviewed elsewhere"
+      ],
+      "source": "theme/components.mjs",
+      "reviewDecision": "Blue destination vs neutral Proof label; two-line bounded path; complete href/title/aria-label retained.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "feedback",
+      "selectors": [
+        ".cu-feedback",
+        ".cu-banner"
+      ],
+      "consumers": [
+        "US-025 list/detail read/write outcomes",
+        "US-026 B02-B04,C01,C02,A04"
+      ],
+      "source": "theme/recipes.css",
+      "reviewDecision": "Restrained role surfaces; warning amber, error rose, success sage, info violet; blue recovery action remains distinct. Human palette judgment pending.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "pending-operation",
+      "selectors": [
+        ".cu-operation",
+        ".cu-loading-layout"
+      ],
+      "consumers": [
+        "US-025 L09,D01,C03,C04,R01,R13",
+        "US-026 A03,C04/read/save background"
+      ],
+      "source": "theme/components.mjs",
+      "reviewDecision": "Integrated loading; Stop waiting/close preserves navigation; dispatched operation continues separately with result/reconciliation.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "recovery-page",
+      "selectors": [
+        ".unavailable-state"
+      ],
+      "consumers": [
+        "US-025 D03,D06-D08,D10,R08,R09",
+        "US-026 C01,C03"
+      ],
+      "source": "theme/recipes.css",
+      "reviewDecision": "Left content anchor, bounded prose. 025 external Job details title and026 internal unavailable h1 differ for semantics, not forced identical.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "navigation",
+      "selectors": [
+        ".cu-header",
+        ".cu-nav",
+        ".cu-nav-item"
+      ],
+      "consumers": [
+        "US-025 andUS-026 normal/short/enlarged chrome"
+      ],
+      "source": "theme/recipes.css",
+      "reviewDecision": "Sticky normal header; short/enlarged flow fallback; layout menu unblurred; content modal alone blurs/dims.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "back-navigation",
+      "selectors": [
+        ".cu-back-link",
+        ".page-back",
+        ".page-return"
+      ],
+      "consumers": [
+        "US-025 details",
+        "US-026 all non-list destinations"
+      ],
+      "source": "theme/recipes.css",
+      "reviewDecision": "Consistent return placement/sizing and preserved parent route.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    },
+    {
+      "recordId": "dropdown",
+      "selectors": [
+        "#job-filter",
+        ".cu-select"
+      ],
+      "consumers": [
+        "US-025 normal list"
+      ],
+      "source": "theme/components.mjs",
+      "reviewDecision": "Inherited rounded/popover select pattern; no new source edit in reviewer scope.",
+      "status": "independently reviewed within exact evidence coverage; human colors pending"
+    }
+  ]
+}

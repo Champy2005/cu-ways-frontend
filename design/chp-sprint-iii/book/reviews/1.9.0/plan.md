@@ -1,0 +1,3 @@
+# 1.9 consistency and hierarchy iteration
+
+Implement canonical lifecycle badges, explicit functional action hierarchy, quiet text-only hover, discoverable content tools, matching back links, wider desktop content and fresh color research. Implement the source-derived AST graph/agent CLI/enforcement/impact-report tooling for the runnable UX/UI app. Preserve prior archives and original captures. No new fade animations, hidden-until-hover controls, application adoption or Figma/SVG edits. Review proactively beyond annotations, in both themes and relevant responsive/keyboard/pointer states. Human palette judgment remains separate.

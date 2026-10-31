@@ -1,0 +1,856 @@
+[
+  {
+    "story": "US-028",
+    "id": "A01",
+    "title": "Pending job",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A01-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A01-light-390-844-100-bottom",
+      "exhaustive-current-current-028-A01-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A01-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A01-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A01-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A01-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-A01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A01-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A01-baseline",
+      "sheet-current-028-enlarged-01",
+      "sheet-current-028-bottoms-01"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "A02",
+    "title": "Accepted job",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A02-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A02-light-390-844-100-bottom",
+      "exhaustive-current-current-028-A02-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A02-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A02-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A02-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A02-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-A02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A02-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A02-baseline",
+      "sheet-current-028-enlarged-01",
+      "sheet-current-028-bottoms-01"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "A03",
+    "title": "In Progress job",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A03-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A03-light-390-844-100-bottom",
+      "exhaustive-current-current-028-A03-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A03-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A03-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A03-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A03-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-A03-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A03-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A03-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A03-baseline",
+      "sheet-current-028-enlarged-02",
+      "sheet-current-028-bottoms-01"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "A04",
+    "title": "Cancellation confirmation",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A04-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A04-light-390-844-100-bottom",
+      "exhaustive-current-current-028-A04-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A04-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A04-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A04-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A04-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-A04-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A04-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A04-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A04-baseline",
+      "sheet-current-028-enlarged-02",
+      "sheet-current-028-bottoms-01"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "A05",
+    "title": "Cancellation pending",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A05-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A05-light-390-844-100-bottom",
+      "exhaustive-current-current-028-A05-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A05-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A05-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A05-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A05-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-A05-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A05-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A05-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A05-baseline",
+      "sheet-current-028-enlarged-03",
+      "sheet-current-028-bottoms-02"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "A06",
+    "title": "Cancellation confirmed",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-A06-light-390-844-100-viewport",
+      "exhaustive-current-current-028-A06-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-A06-light-320-568-200-viewport",
+      "exhaustive-current-current-028-A06-light-320-568-200-bottom",
+      "exhaustive-current-current-028-A06-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-A06-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-A06-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-A06-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-A06-baseline",
+      "sheet-current-028-enlarged-03",
+      "sheet-current-028-bottoms-02"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "B01",
+    "title": "Paid job",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-B01-light-390-844-100-viewport",
+      "exhaustive-current-current-028-B01-light-390-844-100-bottom",
+      "exhaustive-current-current-028-B01-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-B01-light-320-568-200-viewport",
+      "exhaustive-current-current-028-B01-light-320-568-200-bottom",
+      "exhaustive-current-current-028-B01-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-B01-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-B01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-B01-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-B01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-B01-baseline",
+      "sheet-current-028-enlarged-04",
+      "sheet-current-028-bottoms-02"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "B02",
+    "title": "Completed job",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-B02-light-390-844-100-viewport",
+      "exhaustive-current-current-028-B02-light-390-844-100-bottom",
+      "exhaustive-current-current-028-B02-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-B02-light-320-568-200-viewport",
+      "exhaustive-current-current-028-B02-light-320-568-200-bottom",
+      "exhaustive-current-current-028-B02-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-B02-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-B02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-B02-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-B02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-B02-baseline",
+      "sheet-current-028-enlarged-04",
+      "sheet-current-028-bottoms-02"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "B03",
+    "title": "Already Cancelled",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-B03-light-390-844-100-viewport",
+      "exhaustive-current-current-028-B03-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-B03-light-320-568-200-viewport",
+      "exhaustive-current-current-028-B03-light-320-568-200-bottom",
+      "exhaustive-current-current-028-B03-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-B03-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-B03-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-B03-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-B03-baseline",
+      "sheet-current-028-enlarged-05",
+      "sheet-current-028-bottoms-03"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "B04",
+    "title": "Unverified state",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-B04-light-390-844-100-viewport",
+      "exhaustive-current-current-028-B04-light-390-844-100-bottom",
+      "exhaustive-current-current-028-B04-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-B04-light-320-568-200-viewport",
+      "exhaustive-current-current-028-B04-light-320-568-200-bottom",
+      "exhaustive-current-current-028-B04-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-B04-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-B04-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-B04-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-B04-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-B04-baseline",
+      "sheet-current-028-enlarged-05",
+      "sheet-current-028-bottoms-03"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "R01",
+    "title": "Unknown cancellation outcome",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-R01-light-390-844-100-viewport",
+      "exhaustive-current-current-028-R01-light-390-844-100-bottom",
+      "exhaustive-current-current-028-R01-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-R01-light-320-568-200-viewport",
+      "exhaustive-current-current-028-R01-light-320-568-200-bottom",
+      "exhaustive-current-current-028-R01-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-R01-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-R01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-R01-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-R01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-R01-baseline",
+      "sheet-current-028-enlarged-06",
+      "sheet-current-028-bottoms-03"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "R02",
+    "title": "Cancellation rejected",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-R02-light-390-844-100-viewport",
+      "exhaustive-current-current-028-R02-light-390-844-100-bottom",
+      "exhaustive-current-current-028-R02-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-R02-light-320-568-200-viewport",
+      "exhaustive-current-current-028-R02-light-320-568-200-bottom",
+      "exhaustive-current-current-028-R02-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-R02-dark-390-844-100-bottom",
+      "exhaustive-current-current-028-R02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-R02-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-R02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-R02-baseline",
+      "sheet-current-028-enlarged-06",
+      "sheet-current-028-bottoms-03"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "R03",
+    "title": "Access removed",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-R03-light-390-844-100-viewport",
+      "exhaustive-current-current-028-R03-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-R03-light-320-568-200-viewport",
+      "exhaustive-current-current-028-R03-light-320-568-200-bottom",
+      "exhaustive-current-current-028-R03-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-R03-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-R03-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-R03-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-R03-baseline",
+      "sheet-current-028-enlarged-07",
+      "sheet-current-028-bottoms-04"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "R04",
+    "title": "Job read failed",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-R04-light-390-844-100-viewport",
+      "exhaustive-current-current-028-R04-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-R04-light-320-568-200-viewport",
+      "exhaustive-current-current-028-R04-light-320-568-200-bottom",
+      "exhaustive-current-current-028-R04-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-R04-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-R04-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-R04-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-R04-baseline",
+      "sheet-current-028-enlarged-07",
+      "sheet-current-028-bottoms-04"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-028",
+    "id": "R05",
+    "title": "Job loading",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-028-R05-light-390-844-100-viewport",
+      "exhaustive-current-current-028-R05-light-1440-900-100-viewport",
+      "exhaustive-current-current-028-R05-light-320-568-200-viewport",
+      "exhaustive-current-current-028-R05-light-320-568-200-bottom",
+      "exhaustive-current-current-028-R05-dark-390-844-100-viewport",
+      "exhaustive-current-current-028-R05-dark-1440-900-100-viewport",
+      "exhaustive-current-current-028-R05-dark-320-568-200-viewport",
+      "exhaustive-current-current-028-R05-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-028-R05-baseline",
+      "sheet-current-028-enlarged-08",
+      "sheet-current-028-bottoms-04"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "A01",
+    "title": "Verified reviews",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-A01-light-390-844-100-viewport",
+      "exhaustive-current-current-034-A01-light-390-844-100-bottom",
+      "exhaustive-current-current-034-A01-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-A01-light-1440-900-100-bottom",
+      "exhaustive-current-current-034-A01-light-320-568-200-viewport",
+      "exhaustive-current-current-034-A01-light-320-568-200-bottom",
+      "exhaustive-current-current-034-A01-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-A01-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-A01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-A01-dark-1440-900-100-bottom",
+      "exhaustive-current-current-034-A01-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-A01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-A01-baseline",
+      "sheet-current-034-enlarged-01",
+      "sheet-current-034-bottoms-01",
+      "sheet-current-034-A01-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "A02",
+    "title": "No reviews yet",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-A02-light-390-844-100-viewport",
+      "exhaustive-current-current-034-A02-light-390-844-100-bottom",
+      "exhaustive-current-current-034-A02-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-A02-light-320-568-200-viewport",
+      "exhaustive-current-current-034-A02-light-320-568-200-bottom",
+      "exhaustive-current-current-034-A02-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-A02-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-A02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-A02-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-A02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-A02-baseline",
+      "sheet-current-034-enlarged-01",
+      "sheet-current-034-bottoms-01",
+      "sheet-current-034-A02-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "A03",
+    "title": "Rating-only reviews",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-A03-light-390-844-100-viewport",
+      "exhaustive-current-current-034-A03-light-390-844-100-bottom",
+      "exhaustive-current-current-034-A03-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-A03-light-1440-900-100-bottom",
+      "exhaustive-current-current-034-A03-light-320-568-200-viewport",
+      "exhaustive-current-current-034-A03-light-320-568-200-bottom",
+      "exhaustive-current-current-034-A03-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-A03-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-A03-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-A03-dark-1440-900-100-bottom",
+      "exhaustive-current-current-034-A03-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-A03-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-A03-baseline",
+      "sheet-current-034-enlarged-02",
+      "sheet-current-034-bottoms-01",
+      "sheet-current-034-A03-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "A04",
+    "title": "Long written review",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-A04-light-390-844-100-viewport",
+      "exhaustive-current-current-034-A04-light-390-844-100-bottom",
+      "exhaustive-current-current-034-A04-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-A04-light-1440-900-100-bottom",
+      "exhaustive-current-current-034-A04-light-320-568-200-viewport",
+      "exhaustive-current-current-034-A04-light-320-568-200-bottom",
+      "exhaustive-current-current-034-A04-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-A04-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-A04-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-A04-dark-1440-900-100-bottom",
+      "exhaustive-current-current-034-A04-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-A04-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-A04-baseline",
+      "sheet-current-034-enlarged-02",
+      "sheet-current-034-bottoms-01",
+      "sheet-current-034-A04-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "A05",
+    "title": "Next review page",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-A05-light-390-844-100-viewport",
+      "exhaustive-current-current-034-A05-light-390-844-100-bottom",
+      "exhaustive-current-current-034-A05-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-A05-light-1440-900-100-bottom",
+      "exhaustive-current-current-034-A05-light-320-568-200-viewport",
+      "exhaustive-current-current-034-A05-light-320-568-200-bottom",
+      "exhaustive-current-current-034-A05-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-A05-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-A05-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-A05-dark-1440-900-100-bottom",
+      "exhaustive-current-current-034-A05-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-A05-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-A05-baseline",
+      "sheet-current-034-enlarged-03",
+      "sheet-current-034-bottoms-02",
+      "sheet-current-034-A05-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "B01",
+    "title": "Nonqualifying records excluded",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-B01-light-390-844-100-viewport",
+      "exhaustive-current-current-034-B01-light-390-844-100-bottom",
+      "exhaustive-current-current-034-B01-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-B01-light-1440-900-100-bottom",
+      "exhaustive-current-current-034-B01-light-320-568-200-viewport",
+      "exhaustive-current-current-034-B01-light-320-568-200-bottom",
+      "exhaustive-current-current-034-B01-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-B01-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-B01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-B01-dark-1440-900-100-bottom",
+      "exhaustive-current-current-034-B01-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-B01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-B01-baseline",
+      "sheet-current-034-enlarged-03",
+      "sheet-current-034-bottoms-02",
+      "sheet-current-034-B01-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "B02",
+    "title": "No matching rating",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-B02-light-390-844-100-viewport",
+      "exhaustive-current-current-034-B02-light-390-844-100-bottom",
+      "exhaustive-current-current-034-B02-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-B02-light-320-568-200-viewport",
+      "exhaustive-current-current-034-B02-light-320-568-200-bottom",
+      "exhaustive-current-current-034-B02-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-B02-dark-390-844-100-bottom",
+      "exhaustive-current-current-034-B02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-B02-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-B02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-B02-baseline",
+      "sheet-current-034-enlarged-04",
+      "sheet-current-034-bottoms-02",
+      "sheet-current-034-B02-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "R01",
+    "title": "Reviews loading",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-R01-light-390-844-100-viewport",
+      "exhaustive-current-current-034-R01-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-R01-light-320-568-200-viewport",
+      "exhaustive-current-current-034-R01-light-320-568-200-bottom",
+      "exhaustive-current-current-034-R01-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-R01-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-R01-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-R01-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-R01-baseline",
+      "sheet-current-034-enlarged-04",
+      "sheet-current-034-bottoms-02",
+      "sheet-current-034-R01-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "R02",
+    "title": "Reviews read failed",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-R02-light-390-844-100-viewport",
+      "exhaustive-current-current-034-R02-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-R02-light-320-568-200-viewport",
+      "exhaustive-current-current-034-R02-light-320-568-200-bottom",
+      "exhaustive-current-current-034-R02-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-R02-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-R02-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-R02-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-R02-baseline",
+      "sheet-current-034-enlarged-05",
+      "sheet-current-034-bottoms-03",
+      "sheet-current-034-R02-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  },
+  {
+    "story": "US-034",
+    "id": "R03",
+    "title": "Profile unavailable",
+    "actualSelectedVerified": true,
+    "normalLightDark3901440": "contact-sheet inspected current source",
+    "enlargedLightDark320200": "top and page end contact-sheet inspected current source; distinct interior component examples inspected separately",
+    "pageEnd": "mobile actual scroll end/no-scroll; desktop actual scroll end/no-scroll, dialogs have separate inner-scroll evidence",
+    "sourceScope": "current",
+    "staticJudgment": true,
+    "visualJudgment": "no unresolved supported defect in reviewed composition; human color pending",
+    "captures": [
+      "exhaustive-current-current-034-R03-light-390-844-100-viewport",
+      "exhaustive-current-current-034-R03-light-1440-900-100-viewport",
+      "exhaustive-current-current-034-R03-light-320-568-200-viewport",
+      "exhaustive-current-current-034-R03-light-320-568-200-bottom",
+      "exhaustive-current-current-034-R03-dark-390-844-100-viewport",
+      "exhaustive-current-current-034-R03-dark-1440-900-100-viewport",
+      "exhaustive-current-current-034-R03-dark-320-568-200-viewport",
+      "exhaustive-current-current-034-R03-dark-320-568-200-bottom"
+    ],
+    "sheets": [
+      "sheet-current-034-R03-baseline",
+      "sheet-current-034-enlarged-05",
+      "sheet-current-034-bottoms-03",
+      "sheet-current-034-R03-desktop-end"
+    ],
+    "remainingGaps": [
+      "human color judgment",
+      "non-Chromium and real screen-reader interaction",
+      "real application API/persistence/concurrency INCONCLUSIVE"
+    ]
+  }
+]

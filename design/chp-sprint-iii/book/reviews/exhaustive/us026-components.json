@@ -1,0 +1,146 @@
+[
+  {
+    "id": "proof-header",
+    "selector": ".story-heading",
+    "record": "proof-header",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Readable task title/job identity, upper-right lifecycle slot; narrow enlargement stacks without clipping.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "page-return",
+    "selector": ".page-return",
+    "record": "back-navigation",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "One top return; quiet navigation hierarchy.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "workspace-header",
+    "selector": ".proof-list-head",
+    "record": "proof-workspace",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Count and compact Add proof in one content-driven container.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "empty-state",
+    "selector": ".empty-state",
+    "record": "empty-state",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Quiet icon and hierarchy; capped art/full-width copy at enlargement.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "delivery-field",
+    "selector": ".proof-field",
+    "record": "proof-workspace",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Label/value, invalid state and meaningful field error; Enter submission.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "proof-actions",
+    "selector": ".form-actions",
+    "record": "actions",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Save/Close and busy/Continue browsing; normal-word enlargement wrapping repaired.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "saved-row",
+    "selector": ".proof-row",
+    "record": "evidence-link",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Neutral type, full destination/external cue and ICT timestamp; newest-first fixture.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "retained-draft",
+    "selector": ".retained-draft",
+    "record": "proof-workspace",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Rejected/unconfirmed destination remains available; explicit checked-miss form repaired.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "proof-feedback",
+    "selector": ".proof-feedback",
+    "record": "feedback",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Success/rejection/uncertainty/read/status tone and external recovery buttons; result focus repaired.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "operation",
+    "selector": ".cu-operation",
+    "record": "pending-operation",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Dismissible pending presentation/reopen/background result; deadline/check guards.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "loading-skeleton",
+    "selector": ".loading-skeleton",
+    "record": "recovery-page",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Neutral list-read placeholders without empty-state claim or submission.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "access-unavailable",
+    "selector": ".unavailable-state",
+    "record": "recovery-page",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Private details/draft cleared; restrained card with one return.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "jobs-entry",
+    "selector": ".jobs-placeholder",
+    "record": "jobs-entry",
+    "source": "UX UI/US-026/demo/screen.mjs + screen.css",
+    "judgment": "Identity/status/title/action separation; large-text action words repaired.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "header-menu",
+    "selector": ".cu-header",
+    "record": "navigation",
+    "source": "UX UI/theme/components.mjs + recipes.css",
+    "judgment": "Rounded joined menu, keyboard open/Tab/Escape and restored trigger focus.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "bottom-navigation",
+    "selector": ".cu-bottom-nav",
+    "record": "navigation",
+    "source": "UX UI/theme/components.mjs + recipes.css",
+    "judgment": "Icon selection/targets; fixed normal viewport edge and in-flow short/enlarged fallback.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  },
+  {
+    "id": "desktop-navigation",
+    "selector": ".cu-nav--desktop",
+    "record": "navigation",
+    "source": "UX UI/theme/components.mjs + recipes.css",
+    "judgment": "Rounded selection family/intrinsic header; consistent role artwork.",
+    "scope": "Both themes normal390/1440; unique relevant states plus scoped narrow/short/large/interaction evidence. See per-capture inspectionStatus; not every file individually opened.",
+    "humanColorStatus": "awaiting human judgment"
+  }
+]

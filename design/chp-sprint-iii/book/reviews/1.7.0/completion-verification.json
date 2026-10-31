@@ -1,0 +1,162 @@
+{
+  "revision": "1.7.0",
+  "completedOn": "2026-10-30",
+  "status": "complete",
+  "scope": "Local HTML design handoff for five Chp Sprint III stories",
+  "focusedNodeTests": {
+    "passed": 71,
+    "failed": 0,
+    "executable": "node",
+    "arguments": [
+      "--test",
+      "UX UI/theme/build.test.mjs",
+      "UX UI/theme/components.test.mjs",
+      "UX UI/US-025/demo/behavior.test.mjs",
+      "UX UI/US-025/demo/navigation.test.mjs",
+      "UX UI/US-026/demo/state-machine.test.mjs",
+      "UX UI/stories/chp.behavior.test.mjs",
+      "UX UI/stories/manual-guidance.test.mjs",
+      "UX UI/stories/reviews.behavior.test.mjs"
+    ]
+  },
+  "storyBrowserChecks": {
+    "passed": 204,
+    "failed": 0
+  },
+  "repeatedRenderedDefectChecks": {
+    "passed": 26,
+    "failed": 0,
+    "source": "stories/visual-regressions.cjs"
+  },
+  "layoutMatrix": {
+    "cases": 1316,
+    "focusCases": 80,
+    "errors": [],
+    "variants": [
+      {
+        "width": 390,
+        "height": 844,
+        "textScale": 100
+      },
+      {
+        "width": 1440,
+        "height": 1000,
+        "textScale": 100
+      },
+      {
+        "width": 320,
+        "height": 420,
+        "textScale": 200
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "textScale": 200
+      },
+      {
+        "width": 390,
+        "height": 568,
+        "textScale": 200
+      },
+      {
+        "width": 2560,
+        "height": 1347,
+        "textScale": 100
+      },
+      {
+        "width": 3840,
+        "height": 1600,
+        "textScale": 100
+      }
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "actualStateAudit": {
+      "verified": 94,
+      "normalizedUrlCasesReplacedByAuthorSelectedSnapshots": 84
+    }
+  },
+  "navigationAndResultChecks": {
+    "passed": 14,
+    "failed": 0
+  },
+  "bookBrowserChecks": {
+    "passed": 150,
+    "failed": 0,
+    "actualTabOutlineCases": 16
+  },
+  "generatedChecks": {
+    "passed": true,
+    "commands": [
+      "node \"UX UI/theme/build.mjs\" --check",
+      "node \"UX UI/US-025/demo/build.mjs\" --check",
+      "node \"UX UI/US-026/demo/build.mjs\" --check",
+      "node \"UX UI/stories/build.mjs\" --check",
+      "node \"UX UI/book/validate.mjs\""
+    ]
+  },
+  "book": {
+    "records": 32,
+    "captureReferences": 1884,
+    "uniqueLinkedImagePaths": 959,
+    "old1_6EvidencePreserved": true
+  },
+  "independentReviews": [
+    {
+      "report": "reviewer-shell.md",
+      "findingsAcceptedAndRepaired": 2,
+      "individuallyOpenedImages": 94,
+      "capturedOnlyCompanions": 121
+    },
+    {
+      "report": "reviewer-reviews.md",
+      "findingsAcceptedAndRepaired": 3,
+      "curatedImages": 143,
+      "individuallyOpenedImages": 34,
+      "interactionAssertions": 103,
+      "keyboardRecoveryChecks": 8,
+      "geometryCases": 30
+    },
+    {
+      "report": "reviewer-book.md",
+      "findingsAcceptedAndRepaired": 4,
+      "currentEntries": 24,
+      "currentOpenedPages": 8,
+      "currentOpenedComponents": 8,
+      "byteIdenticalParentCopies": 8,
+      "supersededEntries": 18
+    }
+  ],
+  "sourceHashes": {
+    "theme/theme.json": "82a64ee49e85a09c9274c8400fa4696443d8f3cd2cdb1649ed9ea38b5fd7505a",
+    "theme/components.mjs": "27aa493b6c965469f9663201b7447a2e83cb175d8b26a984fa6247f8bae011af",
+    "theme/recipes.css": "4a415e5874c5b24c3e4fa23c0eb6ac73205f6eea0861625387e523951f5179da",
+    "theme/tokens.css": "4598c8b4af4fe65db39adc5ec5731c6b4a0466d716ba6c437c6e8e32efb1bb7c",
+    "stories/runtime.mjs": "b7fa4ecea26527e1bd5a0b2132ee258b4fb630a8e953d1adc2bb4ebef8d1f24c",
+    "stories/screen.css": "c6d6951b4839ae80475bf34fea00f9602f2c33ea1824291b12ba9f7a85b45c83",
+    "US-025/demo/screen.mjs": "cd19cbb2fd4c464ba8528b6fe78f2bb2ccd2aceeebf438238d97b3f8a477d767",
+    "US-025/demo/screen.css": "0f8bcebd62b57f7e4c34866228b035296e81caa48375695e75150461fa11bb68",
+    "US-026/demo/screen.mjs": "11e71bf6f0c3f2abdb6e4adb32c03c219b2a409f46ced826eef65059cb43d544",
+    "US-027/demo/screen.mjs": "ded7a1f35ec00577915d97f7524ce9c751e54127ae06335c0ac6d03f042e8750",
+    "US-028/demo/screen.mjs": "d81ce940b9f3c88de51d05bc8d82afb38cbdae5b4628e6bfa72fafa4b13cd6d2",
+    "US-034/demo/screen.mjs": "f196c96fb1d2a4e84d6a2f4f83a67d0a29f29ae3d36870f52a0840ac279af426",
+    "US-034/demo/state-machine.mjs": "d75c35e109274e29e1ba99a35388fd664d92b6943887a42f5b6bc6f996823658",
+    "book/app.mjs": "3a7d3e93edd4a41e821008ef6635e4d34ec32a07edc36c5a4bec0c92ed401b6d",
+    "book/book.css": "cbdedb528b214df7a83c486405e954195d8c4b4fd6fd1224a83aeeacc91a8afe",
+    "book/validate.mjs": "5b8d50ad20a31318c711974b83dc8120cb84b8136ac3be7674b24afa1851c8dc"
+  },
+  "harnessHistory": "Initial timing/selector/clip-ancestor harness errors and safety-normalized URL snapshots remain in workspace diagnostics; successful corrections are separate. No failing run was relabelled green.",
+  "humanJudgment": "Colors and complete-page acceptance pending; named feedback and all other human-unvisited states remain explicit in records.",
+  "proofBoundary": "Rendered Chromium/CUA and fictional local operations only. Application API, permission, concurrency, persistence and integration proof INCONCLUSIVE. Both application repositories, Figma and SVG untouched.",
+  "portable": {
+    "passed": true,
+    "checkedFiles": 1175,
+    "checkedHashes": 1174,
+    "checks": 3539,
+    "bookValidation": "32 searchable records; 1884 linked capture references; sources, tokens, reviews and context links exist.",
+    "recordedBeforeFinalReceiptPackaging": true,
+    "finalAudit": "The final receipt is included in the rebuilt archive; final archive identity and extraction audit are saved separately in workspace portable-check.json."
+  }
+}
