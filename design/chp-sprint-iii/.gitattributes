@@ -1,5 +1,1 @@
-# Preserve fingerprints; recognize CRLF as line endings in snapshot diffs.
 * -text whitespace=cr-at-eol
-# Preserve existing/generated whitespace details with their source hashes.
-theme/engine.mjs whitespace=-blank-at-eof,cr-at-eol
-theme/tokens.css whitespace=-blank-at-eof,cr-at-eol
