@@ -1,32 +1,24 @@
-# Chp Sprint III UX/UI handoff ·1.9.1
+# Run, check and export
 
-Standalone runnable reference for US025, US026, US027, US028 and US034 (94 named states). This export adds a more visible shared circular pagination hover to Reviews and My Jobs. It does not change the Next.js app or Tim's previews. Human palette acceptance remains pending.
-
-From the frontend repository:
+From this folder (Node.js 22.13+):
 
 ~~~powershell
-node design/chp-sprint-iii/serve.mjs --port 4188
+node serve.mjs --port 4188
 ~~~
 
-Open http://127.0.0.1:4188/ . No backend, credentials or build is needed. Ctrl+C stops only this design server.
+Open <http://127.0.0.1:4188/>. No app dependencies or backend are needed.
 
-For source/ownership checks:
+In another terminal:
 
 ~~~powershell
-cd design/chp-sprint-iii
-node tools/ui/cli.cjs ui:check
-node tools/ui/cli.cjs ui:inspect Action
-node tools/ui/cli.cjs ui:affected Action
-$env:CUWAYS_STORY_ORIGIN = 'http://127.0.0.1:4188'
-node tools/ui/cli.cjs ui:validate Action .artifacts/impact.json
-node stories/pagination-check.cjs
-node book/validate.mjs
+node check-handoff.mjs
+node package-handoff.mjs
 ~~~
 
-Compiler/browser checks resolve the frontend's existing TypeScript/Playwright dependencies; serving and cached CLI queries need only Node. No dependency installation is part of the export. Paths in older workspace commands prefixed UX UI/ should be made relative to this folder. Generated .artifacts/ files are ignored.
+The check validates local HTML/Markdown links, module/asset references, generated theme/scenario modules, the five-story scope, and retained behavior tests using Node's standard library. Source checks do not establish visual acceptance or application integration.
 
-Source entry points: theme/theme.json, theme/components.mjs, theme/recipes.css, US-*/demo/, stories/runtime.mjs. book/INDEX.md and tools/ui/graph.json locate ownership/consumers. book/records/ owns guidance; current close/parent/page captures and inspected comparison sheets are included.
+Packaging uses an explicit source selection and writes .artifacts/export/CU-Ways-HTML-Handoff-v1.9.1.zip plus a SHA-256 manifest. Extract the ZIP anywhere and run `node serve.mjs --port 4188` from its root. Output folders, screenshots, logs, old references and diagnostics cannot enter the ZIP. Generated exports are ignored by Git.
 
-Historical capture images and uncurated raw matrices are kept outside Git in the original workspace archive. Current records retain guidance/history but show only included1.9/1.9.1 evidence; archive-only raw ledger entries are labelled. Historical review text is provenance, not a promise its entire old image matrix is local. Previous full archive SHA256: 461ae803dfe6de7da4f10c084754e1029d1a2f05aadc90fe27bdf135efd3b4b1. Prior archives are unchanged.
+Canonical sources: theme/theme.json, theme/components.mjs, theme/recipes.css, each US-*/model/scenarios.json, story screens/state machines, and stories/runtime.mjs. Bundled WOFF2 fonts and SVG artwork are required runtime assets.
 
-See book/reviews/1.9.1/ for focused review/59-check scope and book/reviews/1.9.0/ for the earlier broader review. Local fixtures do not prove real API permissions, concurrency or persistence. Application adoption remains separate.
+After intentional edits regenerate with `node theme/build.mjs`, `node US-025/demo/build.mjs`, `node US-026/demo/build.mjs` and `node stories/build.mjs`, then rerun `node check-handoff.mjs`. See [WORKFLOW.md](WORKFLOW.md). The full workspace capture/review workflow is outside this export; old review results are not presented as current export evidence.

@@ -1,5 +1,7 @@
 # Interaction branches and state machine
 
+> Retained story specification. Current theme/decisions and user corrections take precedence over historical visual proposals. Screenshots and review archives stay in the original workspace; this export makes no new visual-acceptance claim.
+
 > **Current presentation authority · 1.6.0:** Read the [design book](../book/README.md), [human principles](../book/PRINCIPLES.md) and canonical [scenario model](model/scenarios.json). Older copy, layout and pending-dismissal descriptions below are retained research/provenance, not current presentation requirements. Current UI uses concise Contract/survey hierarchy and declarative bounded dialogs. Pending operations can dismiss/reopen with12-second unknown/read recovery; closing UI does not claim rollback. Offline Start opens feedback without a write. Domain eligibility, access and server-authority requirements still apply.
 
 State IDs below are referenced in copy, layouts, frames and acceptance cases. These cover meaningful product states; they do not claim every possible infrastructure failure has its own screen.

@@ -1,12 +1,14 @@
 # Decisions and implementation readiness
 
+> Retained story specification. Current theme/decisions and user corrections take precedence over historical visual proposals. Screenshots and review archives stay in the original workspace; this export makes no new visual-acceptance claim.
+
 > **Current presentation authority · 1.6.0:** Read the [design book](../book/README.md), [human principles](../book/PRINCIPLES.md) and canonical [scenario model](model/scenarios.json). Older copy, layout and pending-dismissal descriptions below are retained research/provenance, not current presentation requirements. Current UI uses concise Contract/survey hierarchy and declarative bounded dialogs. Pending operations can dismiss/reopen with12-second unknown/read recovery; closing UI does not claim rollback. Offline Start opens feedback without a write. Domain eligibility, access and server-authority requirements still apply.
 
 ## Reviewed HTML baseline · 25 October 2026
 
 Use [demo/index.html](demo/index.html) and canonical `model/scenarios.json` for interactive design. The Rose × Slate 1.3.0 proposal carries the selected Round 10 appearance and inspected frontend patterns forward with later explicit user corrections. Do not dismiss Round 10 as historical during visual comparison. Keep Figma/SVG read-only unless the user explicitly authorizes edits. The older decision tables below retain functional research and API proposals; visual sizes or layout rules that conflict with the accepted 1.3.0 decisions are superseded by the current theme/component/responsive documents.
 
-Fresh, unbiased reviewers inspected the actual rendered HTML in both themes and the relevant responsive/keyboard states; see [coverage and limits](../REVIEW.md). Future material changes still require fresh review. The root evaluates each finding against the user decisions, source and rendered evidence, rejecting an inaccurate finding only with direct evidence. Green functional checks alone do not approve visual fidelity.
+Fresh, unbiased reviewers inspected the actual rendered HTML in both themes and the relevant responsive/keyboard states; see coverage and limits (workspace archive; excluded from export). Future material changes still require fresh review. The root evaluates each finding against the user decisions, source and rendered evidence, rejecting an inaccurate finding only with direct evidence. Green functional checks alone do not approve visual fidelity.
 
 The HTML handoff is a deterministic local simulator. It can demonstrate branches, keyboard interactions and visual/motion parameters; it does not implement or prove product authorization, API semantics, concurrency or persistence. Application integration remains separate work. US-026 has existing design material awaiting adoption/audit; it is no longer an assignment-only stub. Other stories retain their documented readiness.
 

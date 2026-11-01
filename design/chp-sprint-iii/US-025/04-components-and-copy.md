@@ -1,8 +1,10 @@
 # Components, styling and exact copy
 
+> Retained story specification. Current theme/decisions and user corrections take precedence over historical visual proposals. Screenshots and review archives stay in the original workspace; this export makes no new visual-acceptance claim.
+
 > **Current presentation authority · 1.6.0:** Read the [design book](../book/README.md), [human principles](../book/PRINCIPLES.md) and canonical [scenario model](model/scenarios.json). Older copy, layout and pending-dismissal descriptions below are retained research/provenance, not current presentation requirements. Current UI uses concise Contract/survey hierarchy and declarative bounded dialogs. Pending operations can dismiss/reopen with12-second unknown/read recovery; closing UI does not claim rollback. Offline Start opens feedback without a write. Domain eligibility, access and server-authority requirements still apply.
 
-Updated 25 October 2026 for the Rose × Slate 1.3.0 feedback revision; see [rendered coverage and limits](../REVIEW.md). The current design surface is [the runnable HTML demo](demo/index.html); global components and parameters live in the [shared theme](../theme/README.md). Keep the selected Round 10 appearance and inspected frontend available as visual-comparison inputs. Later explicit user corrections override those references.
+Updated 25 October 2026 for the Rose × Slate 1.3.0 feedback revision; see rendered coverage and limits (workspace archive; excluded from export). The current design surface is [the runnable HTML demo](demo/index.html); global components and parameters live in the [shared theme](../theme/README.md). Keep the selected Round 10 appearance and inspected frontend available as visual-comparison inputs. Later explicit user corrections override those references.
 
 ## Authority and ownership
 

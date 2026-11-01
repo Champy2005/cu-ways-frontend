@@ -1,6 +1,6 @@
 # Theme parameters and derived effects
 
-This guide documents the CU Ways Rose × Slate 1.7.0 manual-review revision. See [the review record](../REVIEW.md) for actual rendered coverage and limits. `theme.json` remains the canonical parameter source for promoted decisions. The guide explains what parameter types mean and how they affect a component; it deliberately does not duplicate the token table: [REFERENCE.md](REFERENCE.md) lists generated Light/Dark values, status and source description. The interactive [theme lab](lab.html) lets you inspect those values and propose browser-local changes.
+This guide documents the CU Ways Rose × Slate 1.7.0 manual-review revision. See the review record (workspace archive; excluded from export) for actual rendered coverage and limits. `theme.json` remains the canonical parameter source for promoted decisions. The guide explains what parameter types mean and how they affect a component; it deliberately does not duplicate the token table: [REFERENCE.md](REFERENCE.md) lists generated Light/Dark values, status and source description. The interactive [theme lab](lab.html) lets you inspect those values and propose browser-local changes.
 
 ## Parameter types and units
 
@@ -66,12 +66,12 @@ Secondary action fill and border weights still mix their source paints with the 
 
 ## Manual-review parameters · 1.7.0
 
-The [design book](../book/index.html) reads token definitions directly from theme.json. Back links use1rem. Viewport scale is bounded at1440/1920/2560/3840 CSS pixels and multiplies explicit text enlargement. Feedback has a3px rail and distinct feedback-only info/success tones; warning/error and Dark quiet-action boundaries are provisional pending human judgment.
+The [design book](../book/README.md) reads token definitions directly from theme.json. Back links use1rem. Viewport scale is bounded at1440/1920/2560/3840 CSS pixels and multiplies explicit text enlargement. Feedback has a3px rail and distinct feedback-only info/success tones; warning/error and Dark quiet-action boundaries are provisional pending human judgment.
 
-Shared recipes own the rounded supported native picker, neutral attachment tag, deliberate evidence URL wrapping and dialog/operation primitives. Story layouts own the28rem bounded dialog, intrinsic card/workspace composition, measured navigation clearance and narrow enlarged stacking. The [pending-operation record](../book/index.html#pending-operation) describes the12-second presentation budget and fictional same-tab journal. None of these values authorizes real server rollback or proves application persistence.
+Shared recipes own the rounded supported native picker, neutral attachment tag, deliberate evidence URL wrapping and dialog/operation primitives. Story layouts own the28rem bounded dialog, intrinsic card/workspace composition, measured navigation clearance and narrow enlarged stacking. The [pending-operation record](../book/README.md) describes the12-second presentation budget and fictional same-tab journal. None of these values authorizes real server rollback or proves application persistence.
 
 ## Latest manual-review parameters ·1.7
 
 Lifecycle status uses a two-column intrinsic grid with1rem column/.75rem row gaps. At max30rem and enlarged text, it uses a right-aligned badge row and full-width copy. These values describe composition, not fixed screenshot coordinates.
 
-`color.rating.bar` and `color.rating.track` distinguish count distribution from gold rating stars. The track inherits the field surface. Their values and provisional human color status live in theme.json. Review history uses68ch maximum comment measure; comments over420 source characters use an up-to240-grapheme preview and five-line CSS bound. These review-specific values remain in the story specialization. See the [owning records](../book/index.html#review-comment).
+`color.rating.bar` and `color.rating.track` distinguish count distribution from gold rating stars. The track inherits the field surface. Their values and provisional human color status live in theme.json. Review history uses68ch maximum comment measure; comments over420 source characters use an up-to240-grapheme preview and five-line CSS bound. These review-specific values remain in the story specialization. See the [owning records](../book/README.md).

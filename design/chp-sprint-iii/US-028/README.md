@@ -2,7 +2,7 @@
 
 [Interactive handoff](demo/index.html) · [Product screen](demo/screen.html) · [Canonical scenarios](model/scenarios.json)
 
-Runnable local HTML with shared theme 1.8.0 and 15 named states. Representative rendered states were independently reviewed in both themes; see the review record for scope and limitations.
+Runnable local HTML with shared theme 1.9.1. Human palette and complete-page acceptance remain pending; rendered review archives are excluded from this export.
 
 ## Requirements and provenance
 
@@ -16,7 +16,7 @@ Cancellation closes active requests and rejects remaining Pending offers. Accept
 
 ## Run and play
 
-Run `node "UX UI/serve.mjs" --port 4180` from CUWAY, then open `http://127.0.0.1:4180/US-028/demo/index.html`. The studio keeps author controls outside the product iframe. Choose a state and operate the actual screen. Configure responses, or select Hold for inspection then Resolve pending step. Unknown outcomes need a read before another explicit mutation. Reload chooses a deterministic snapshot and never replays a command.
+From the handoff root, run `node serve.mjs --port 4180`, then open `http://127.0.0.1:4180/US-028/demo/index.html`. The studio keeps author controls outside the product iframe. Choose a state and operate the actual screen. Configure responses, or select Hold for inspection then Resolve pending step. Unknown outcomes need a read before another explicit mutation. Reload chooses a deterministic snapshot and never replays a command.
 
 | ID | State | Expected behavior |
 | --- | --- | --- |
@@ -46,6 +46,6 @@ Native dialogs contain focus and initially focus safe dismissal. Pending dialogs
 
 ## Checks and portable handoff
 
-Run `node "UX UI/stories/build.mjs" --check` and `node --test "UX UI/stories/chp.behavior.test.mjs"`. Browser evidence and independent review status: [completion record](../stories/REVIEW.md). Package with `node "UX UI/package-handoff.mjs"`.
+Run `node "stories/build.mjs" --check` and `node --test "stories/chp.behavior.test.mjs"`. Review archives are excluded. See [export instructions](../EXPORT.md) for current checks and packaging.
 
 Fixtures are fictional and transitions are in memory. They do not prove application API permissions, concurrency, payment processing or durable persistence. Frontend adoption is separate. Figma/SVG stay read-only.

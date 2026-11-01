@@ -3,7 +3,7 @@
 Current1.9: `lifecycleBadge(label,{attrs})` owns lifecycle icon/tone; generic badge must not represent a lifecycle state. `action(label,{variant})` owns six roles: primary, secondary, tonal, outline, utility, quiet. Functional View proof/activity use tonal; Add delivery proof uses secondary; safe Keep job/In Progress use outline; Stop waiting uses utility; quiet is acknowledgment/return only. Quiet content hover remains transparent with text emphasis; no filled container. More content tools use explicit outline+compact with a reserved visible hit area. No new fades. Purple was rejected; slate-blue/blue-teal replacement remains pending human judgment.
 
 
-The CU Ways Rose × Slate 1.9.0 feedback revision is described here; see [current review status and limits](../REVIEW.md). Shared markup lives in [components.mjs](components.mjs); its opt-in appearance lives in [recipes.css](recipes.css), backed by generated [tokens.css](tokens.css). The [theme lab](lab.html) and [US-025 story demo](../US-025/demo/index.html) consume the same shared header, attached-menu, bottom-navigation, action and status recipes. They are the starting point for future HTML handoffs. The selected Round 10 appearance remains a visual-comparison input, with later user corrections taking precedence. The complete values and parameter meanings are in [REFERENCE.md](REFERENCE.md) and [PARAMETERS.md](PARAMETERS.md).
+The CU Ways Rose × Slate 1.9.0 feedback revision is described here; see current review status and limits (workspace archive; excluded from export). Shared markup lives in [components.mjs](components.mjs); its opt-in appearance lives in [recipes.css](recipes.css), backed by generated [tokens.css](tokens.css). The [theme lab](lab.html) and [US-025 story demo](../US-025/demo/index.html) consume the same shared header, attached-menu, bottom-navigation, action and status recipes. They are the starting point for future HTML handoffs. The selected Round 10 appearance remains a visual-comparison input, with later user corrections taking precedence. The complete values and parameter meanings are in [REFERENCE.md](REFERENCE.md) and [PARAMETERS.md](PARAMETERS.md).
 
 The snippets below show the exported markup API. Pass only static, author-controlled HTML in the optional `attrs` field; it is appended to generated markup and is not a safe place for user-provided strings. Labels, body text and `href` values are escaped/checked by the shared helpers.
 
@@ -148,7 +148,7 @@ Review shared markup and recipes in Light and Dark, then in the actual story com
 - keepFocusVisible(root) measures actual chrome and scrolls focused content clear of it. The host still owns native dialog focus/dismissal.
 - action accepts native button type button, submit or reset; Proof uses submit so native form keyboard submission works.
 
-See the [book](../book/index.html) for parameters, child/parent/page evidence and current human review status.
+See the [book](../book/README.md) for parameters, child/parent/page evidence and current human review status.
 
 ## Entity headings and measured focus clearance ·1.7
 

@@ -76,10 +76,10 @@ if (process.argv.includes('--check')) {
   try {
     existing = await readFile(outputPath, 'utf8');
   } catch {
-    throw new Error('demo/scenarios.mjs is missing. Run `node "UX UI/US-025/demo/build.mjs"` to generate it.');
+    throw new Error('demo/scenarios.mjs is missing. Run `node "US-025/demo/build.mjs"` to generate it.');
   }
   if (existing !== output) {
-    throw new Error('demo/scenarios.mjs is stale. Run `node "UX UI/US-025/demo/build.mjs"` to regenerate it.');
+    throw new Error('demo/scenarios.mjs is stale. Run `node "US-025/demo/build.mjs"` to regenerate it.');
   }
   console.log(`Scenario module is current (${model.scenarios.length} states, ${Object.keys(model.fixtures).length} fixtures).`);
 } else {

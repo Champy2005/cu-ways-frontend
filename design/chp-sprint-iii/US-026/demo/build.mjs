@@ -4,14 +4,13 @@ import path from 'node:path';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const modelPath = path.join(here, '..', 'model', 'scenarios.json');
-const legacyPath = path.join(here, '..', 'design', 'manifest.json');
 const outputPath = path.join(here, 'scenarios.mjs');
 const expectedIds = [
   'A01', 'A02', 'A03', 'A04', 'A05', 'A06',
   'B01', 'B02', 'B03', 'B04', 'C01', 'C02', 'C03', 'C04',
 ];
 
-function assertValidModel(model, legacy) {
+function assertValidModel(model) {
   if (model.schemaVersion !== 1 || model.canonical !== true || model.story !== 'US-026') {
     throw new Error('model/scenarios.json must declare schemaVersion 1, canonical=true, and story US-026.');
   }
@@ -21,9 +20,6 @@ function assertValidModel(model, legacy) {
   const ids = model.scenarios.map((scenario) => scenario.id);
   if (ids.length !== expectedIds.length || ids.some((id, index) => id !== expectedIds[index])) {
     throw new Error(`Expected the 14 US-026 scenario IDs in order: ${expectedIds.join(', ')}.`);
-  }
-  if (JSON.stringify(legacy.states.map((state) => state.id).sort()) !== JSON.stringify([...expectedIds].sort())) {
-    throw new Error('The canonical model must cover every state in the retained US-026 source design manifest.');
   }
   const known = new Set(ids);
   for (const scenario of model.scenarios) {
@@ -60,13 +56,8 @@ function renderModule(model) {
   ].join('\n');
 }
 
-const [modelText, legacyText] = await Promise.all([
-  readFile(modelPath, 'utf8'),
-  readFile(legacyPath, 'utf8'),
-]);
-const model = JSON.parse(modelText);
-const legacy = JSON.parse(legacyText);
-assertValidModel(model, legacy);
+const model = JSON.parse(await readFile(modelPath, 'utf8'));
+assertValidModel(model);
 const output = renderModule(model);
 
 if (process.argv.includes('--check')) {
@@ -74,10 +65,10 @@ if (process.argv.includes('--check')) {
   try {
     existing = await readFile(outputPath, 'utf8');
   } catch {
-    throw new Error('demo/scenarios.mjs is missing. Run `node "UX UI/US-026/demo/build.mjs"` to generate it.');
+    throw new Error('demo/scenarios.mjs is missing. Run `node "US-026/demo/build.mjs"` to generate it.');
   }
   if (existing !== output) {
-    throw new Error('demo/scenarios.mjs is stale. Run `node "UX UI/US-026/demo/build.mjs"` to regenerate it.');
+    throw new Error('demo/scenarios.mjs is stale. Run `node "US-026/demo/build.mjs"` to regenerate it.');
   }
   console.log(`US-026 scenario module is current (${model.scenarios.length} states, ${model.criteria.length} acceptance criteria).`);
 } else {

@@ -51,6 +51,6 @@ Long list names can use ellipsis if a real detail destination reveals the full t
 
 Prefer the generated component/source/consumer index and canonical JSON records as a small machine-searchable database. The human viewer is optional. Do not spend effort polishing documentation presentation. Regenerate/check the lookup and run rendered consistency checks so a global component change reaches every actual consumer.
 
-Use the implemented UI context CLI before shared edits and validate afterward. Compiler-resolved calls plus CSS/token edges supply potential scope; actual route receipts distinguish checked routes from unvisited ones. A database, a stale map or green geometry alone cannot establish visual consistency or human approval.
+The full workspace uses compiler-derived UI context tooling to inspect scope before shared edits. That tooling is excluded from this lightweight export; use the original workspace for material shared design changes.
 
 Compact arrow pagination has a named exception to quiet text hover: enabled icons show a soft tonal circle with a fine inset edge. Rest stays borderless, geometry stable, focus visible and touch/reduced-motion behavior appropriate.
