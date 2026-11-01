@@ -1,0 +1,17 @@
+title = "CU Ways secret scanning"
+
+[extend]
+useDefault = true
+
+# The standalone handoff pins CSS/token artifacts by SHA-256. The default
+# generic-key rule interprets these filename keys as credential identifiers.
+# Match only complete fingerprint properties in that handoff's JSON metadata.
+# Credentials elsewhere, other properties on these files, and provider-specific
+# rules remain scanned. Do not replace this with a directory/commit exclusion.
+[[allowlists]]
+description = "Chp handoff token-artifact SHA-256 fingerprint properties"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^design/chp-sprint-iii/.*\.json$''']
+regexTarget = "line"
+regexes = ['''^\s*"(?:(?:(?:\.\./|UX UI/)?theme/)?tokens\.css|(?:theme/)?resolved-tokens\.json)":\s*"[a-f0-9]{64}",?\s*$''']

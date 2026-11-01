@@ -11,3 +11,5 @@ public/
 src/lib/api/generated/
 AGENTS.md
 CLAUDE.md
+# Preserve standalone source and evidence fingerprints; use its own checks.
+design/chp-sprint-iii/

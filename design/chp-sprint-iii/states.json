@@ -1,0 +1,993 @@
+{
+  "revision": "1.9.1",
+  "stories": [
+    {
+      "id": "025",
+      "title": "Start an accepted job",
+      "criteria": [],
+      "states": [
+        {
+          "id": "L01",
+          "title": "My Jobs loading",
+          "trigger": "Open My Jobs without usable cached data.",
+          "expected": "Show the My Jobs heading, filter skeleton, and three noninteractive card skeletons; mark the main region aria-busy. Do not flash an empty state or mutate data.",
+          "action": "Wait for the hired-jobs list read.",
+          "next": [
+            "L02",
+            "L03",
+            "L04",
+            "L06",
+            "L09"
+          ]
+        },
+        {
+          "id": "L02",
+          "title": "My Jobs with hired jobs",
+          "trigger": "The authorized list read returns one or more hired jobs.",
+          "expected": "Show only owned jobs with Job #ID, survey names, creator, agreed price, deadline, lifecycle badge, and View job. Sort Job ID descending, 20 per page; do not show inline Start.",
+          "action": "View job, change the status filter, or change page.",
+          "next": [
+            "D01",
+            "L08"
+          ]
+        },
+        {
+          "id": "L03",
+          "title": "No active jobs",
+          "trigger": "The Active jobs filter returns no jobs.",
+          "expected": "Show “No active jobs” and “Jobs appear here after a creator accepts your offer.” View all my jobs switches to All; also show Back to overview.",
+          "action": "View all my jobs or Back to overview.",
+          "next": [
+            "L02",
+            "L04"
+          ]
+        },
+        {
+          "id": "L04",
+          "title": "No hired jobs",
+          "trigger": "The All my jobs filter returns no jobs.",
+          "expected": "Show “No hired jobs yet” and “Jobs appear here after a creator accepts your offer.” Do not route to the unavailable Invitations page as a successful next step.",
+          "action": "Back to overview.",
+          "next": []
+        },
+        {
+          "id": "L05",
+          "title": "No jobs for this status",
+          "trigger": "A selected status filter returns no jobs.",
+          "expected": "Show “No jobs with this status” and retain the selected filter.",
+          "action": "Clear filter to return to Active jobs.",
+          "next": [
+            "L02",
+            "L03"
+          ]
+        },
+        {
+          "id": "L06",
+          "title": "My Jobs load error",
+          "trigger": "Initial list request fails.",
+          "expected": "Show “Jobs couldn’t load. Try again.” Do not show fake records or empty-state language.",
+          "action": "Try again.",
+          "next": [
+            "L02",
+            "L03",
+            "L04",
+            "L09"
+          ]
+        },
+        {
+          "id": "L07",
+          "title": "Previously loaded jobs",
+          "trigger": "A list refresh, filter, or page request fails after results have loaded.",
+          "expected": "Show a warning that latest results could not load and mark retained cards “Previously loaded results.” Keep controls usable; opening a job always revalidates it.",
+          "action": "Retry the list read or open a job to revalidate.",
+          "next": [
+            "L02",
+            "L03",
+            "L04",
+            "L05"
+          ]
+        },
+        {
+          "id": "L08",
+          "title": "Changing list filter or page",
+          "trigger": "Change status filter or page in My Jobs.",
+          "expected": "Keep the filter accessible while results load; preserve filter/page in the URL, reset page to 1 on filter change, announce result count, and ignore late responses from prior filters.",
+          "action": "Wait for the selected results.",
+          "next": [
+            "L02",
+            "L03",
+            "L04",
+            "L05",
+            "L07"
+          ]
+        },
+        {
+          "id": "L09",
+          "title": "My Jobs unavailable",
+          "trigger": "The hired-jobs feature is unavailable.",
+          "expected": "Show “My Jobs isn’t available yet. Please return to your overview.” Do not loop loading or substitute demo fixtures.",
+          "action": "Back to overview.",
+          "next": []
+        },
+        {
+          "id": "D01",
+          "title": "Job details loading",
+          "trigger": "Open a job link or refresh job details while a read is pending.",
+          "expected": "Keep the detail layout with skeleton content and no Start action; mark loading accessibly. Do not expose unverified job data.",
+          "action": "Wait for the authoritative read.",
+          "next": [
+            "D02",
+            "D03",
+            "D04",
+            "D05",
+            "D06",
+            "D07",
+            "D08",
+            "D09",
+            "D10"
+          ]
+        },
+        {
+          "id": "D02",
+          "title": "Accepted job ready to start",
+          "trigger": "Authoritative read confirms an owned Accepted job with its valid selected Accepted offer.",
+          "expected": "Show the Contract heading, Accepted badge, agreed price, verified survey context and an enabled Start job action. Omit repeated explanations of the visible status.",
+          "action": "Start job.",
+          "next": [
+            "C01"
+          ]
+        },
+        {
+          "id": "D03",
+          "title": "Job details load error",
+          "trigger": "Initial job detail network or server read fails.",
+          "expected": "Show “Job details couldn’t load” with “Try again.” Show no old job title, context, or enabled Start.",
+          "action": "Try again or Back to My Jobs.",
+          "next": [
+            "D01",
+            "L02"
+          ]
+        },
+        {
+          "id": "D04",
+          "title": "Job in progress",
+          "trigger": "The hired-job read confirms In Progress.",
+          "expected": "Show the Contract heading, In Progress badge and agreed price. Keep the page read-only with Refresh job and the consistent top-left return link; omit repeated status descriptions.",
+          "action": "Refresh job or Back to My Jobs.",
+          "next": [
+            "D01",
+            "L02"
+          ]
+        },
+        {
+          "id": "D05",
+          "title": "Completed or cancelled job",
+          "trigger": "The hired-job read confirms Completed or Cancelled.",
+          "expected": "Show the matching textual badge and read-only context. Add no Start, review, payment, or cancellation action.",
+          "action": "Back to My Jobs.",
+          "next": [
+            "L02"
+          ]
+        },
+        {
+          "id": "D06",
+          "title": "Job unavailable",
+          "trigger": "The authorized read cannot verify a job available to this marketer.",
+          "expected": "Show “Job unavailable” and “This job couldn’t be found or you don’t have access to it.” Do not show job title, creator, offer, price, or other identifying context.",
+          "action": "Back to My Jobs.",
+          "next": [
+            "L02"
+          ]
+        },
+        {
+          "id": "D07",
+          "title": "Marketer access required",
+          "trigger": "No active marketer membership is found.",
+          "expected": "Show “Marketer access required” and “Use an account with marketer access to view hired jobs.” Show no job data; role switching is not permission elevation.",
+          "action": "Back to workspace.",
+          "next": []
+        },
+        {
+          "id": "D08",
+          "title": "Job details need refreshing",
+          "trigger": "Required job data or start capability cannot be verified.",
+          "expected": "Show “Job details need refreshing” and “This job isn’t ready to start. Refresh its details or contact support.” Hide untrusted fields; do not mutate or display false status such as Cancelled.",
+          "action": "Refresh job.",
+          "next": [
+            "D01",
+            "D06"
+          ]
+        },
+        {
+          "id": "D09",
+          "title": "Accepted job with optional context missing",
+          "trigger": "Authoritative read confirms an eligible Accepted job with one or more optional fields absent.",
+          "expected": "Keep the normal Accepted detail and enabled Start action. Use “No brief attached,” “No deadline set,” “Target not specified,” “Link unavailable,” or “Not specified” for absent optional values; do not invent a deadline or block start.",
+          "action": "Start job.",
+          "next": [
+            "C01"
+          ]
+        },
+        {
+          "id": "D10",
+          "title": "Session expired",
+          "trigger": "Initial detail read returns unauthenticated.",
+          "expected": "Send the viewer to sign-in with a same-origin allowlisted return URL. Show “Your session expired. Sign in to check this job’s status.” Re-read after login; never auto-start or auto-replay.",
+          "action": "Sign in.",
+          "next": [
+            "D01"
+          ]
+        },
+        {
+          "id": "C01",
+          "title": "Confirm start",
+          "trigger": "Select Start job on D02 or D09.",
+          "expected": "Use the declarative Start job title, Job #ID and the server-provided agreed THB price. Initially focus Cancel, or the visible heading if the dialog scrolls; preserve a focus trap and a close control. Do not repeat the obvious status transition.",
+          "action": "Start job or Cancel.",
+          "next": [
+            "C02",
+            "C03"
+          ]
+        },
+        {
+          "id": "C02",
+          "title": "Confirmation dismissed",
+          "trigger": "Select Cancel or close icon, press Escape, press outside, or use browser Back before confirmation.",
+          "expected": "Return to the Accepted detail and originating scroll position; restore focus to Start job when the page remains. Send zero start requests. Browser Back follows normal history and sends no mutation.",
+          "action": "Start job again or continue normal navigation.",
+          "next": [
+            "D02",
+            "L02"
+          ]
+        },
+        {
+          "id": "C03",
+          "title": "Start request submitting",
+          "trigger": "Confirm with click, Enter, or Space on the focused Start job button.",
+          "expected": "Show one busy submission with concise progress. Prevent duplicate submission while keeping Close, Escape, outside dismissal and Continue browsing available. Dismissal preserves the operation and a View progress affordance.",
+          "action": "Continue browsing, reopen progress, or await the result.",
+          "next": [
+            "C04",
+            "C07",
+            "C08",
+            "R01",
+            "R05",
+            "R06",
+            "R07",
+            "R08",
+            "R09",
+            "R10"
+          ]
+        },
+        {
+          "id": "C04",
+          "title": "Start request taking longer",
+          "trigger": "The same request is still pending after six seconds.",
+          "expected": "Keep the same concise progress presentation and enabled dismissal. A 12-second presentation deadline becomes an unknown outcome with read recovery; it never asserts rollback or sends another POST.",
+          "action": "Continue browsing, reopen progress, or check after an unknown result.",
+          "next": [
+            "C07",
+            "C08",
+            "R01",
+            "R05",
+            "R06",
+            "R07",
+            "R08",
+            "R09",
+            "R10"
+          ]
+        },
+        {
+          "id": "C05",
+          "title": "Pending confirmation dismissed",
+          "trigger": "Press Escape or outside the dialog while a request is pending.",
+          "expected": "Close the confirmation, keep the original operation active and expose View progress. Do not duplicate the write or claim cancellation. On return after document navigation, retain unknown/check state without replaying intent.",
+          "action": "Continue browsing or reopen progress.",
+          "next": [
+            "C04",
+            "C07",
+            "C08",
+            "R01",
+            "R05",
+            "R06",
+            "R07",
+            "R08",
+            "R09",
+            "R10"
+          ]
+        },
+        {
+          "id": "C06",
+          "title": "Safe return after navigation",
+          "trigger": "Navigate, reload, or close the tab during submission.",
+          "expected": "Allow normal browser navigation without a beforeunload trap or undo promise. On return, make a fresh authoritative read through the safe internal return path; never auto-repeat POST or expose cached private details before authorization.",
+          "action": "Navigate normally; re-read the job on return.",
+          "next": [
+            "D01"
+          ]
+        },
+        {
+          "id": "C07",
+          "title": "Job started",
+          "trigger": "A valid start response confirms outcome=started and In Progress.",
+          "expected": "Close the dialog, show the In Progress badge and “Job started” / “Status changed to In Progress.” Announce once, focus the detail heading, invalidate list/detail caches, and retain the confirmed result if a background read fails.",
+          "action": "Refresh job or Back to My Jobs.",
+          "next": [
+            "D04",
+            "R14",
+            "L02"
+          ]
+        },
+        {
+          "id": "C08",
+          "title": "Start rejected; recheck required",
+          "trigger": "A retryable business rejection explicitly confirms no mutation.",
+          "expected": "Close the dialog and show a persistent error alert with the latest details. Keep Start disabled until an authoritative read confirms retry eligibility; do not automatically POST. The approved docs specify no exact body copy for this rejection.",
+          "action": "Refresh job.",
+          "next": [
+            "D02",
+            "D04",
+            "D05",
+            "D06",
+            "D07",
+            "D08",
+            "D10",
+            "R12"
+          ]
+        },
+        {
+          "id": "R01",
+          "title": "Checking job status",
+          "trigger": "Start request times out, connection is lost after submit, server returns 5xx, or success body is malformed.",
+          "expected": "Close the dialog, show “Checking job status…,” and disable Start while issuing a fresh detail GET. A transport failure does not prove rollback.",
+          "action": "Wait for the authoritative status read.",
+          "next": [
+            "R02",
+            "R03",
+            "R04",
+            "R06",
+            "R07",
+            "R08",
+            "R09",
+            "R10"
+          ]
+        },
+        {
+          "id": "R02",
+          "title": "Already in progress",
+          "trigger": "Fresh detail GET after an uncertain start shows owned In Progress.",
+          "expected": "Show In Progress and “This job is already in progress.” Do not send a second POST or claim this tab caused the transition.",
+          "action": "Refresh job or Back to My Jobs.",
+          "next": [
+            "D04",
+            "L02"
+          ]
+        },
+        {
+          "id": "R03",
+          "title": "Accepted after outcome check",
+          "trigger": "Reconciliation GET confirms valid owned Accepted after an ambiguous request.",
+          "expected": "Show “The latest check shows Accepted. You can try again.” Enable a fresh confirmation only under the atomic idempotent contract: an earlier request may still commit, so the GET alone does not make retry safe.",
+          "action": "Start job to open a new confirmation.",
+          "next": [
+            "C01"
+          ]
+        },
+        {
+          "id": "R04",
+          "title": "Start status not confirmed",
+          "trigger": "The detail GET following an uncertain start fails.",
+          "expected": "Show “Start status not confirmed” and “We couldn’t confirm whether this job started. Refresh to check its current status.” Retain details only as last confirmed; do not label Accepted as current or enable Start.",
+          "action": "Refresh job.",
+          "next": [
+            "R02",
+            "R03",
+            "R04",
+            "R06",
+            "R07",
+            "R08",
+            "R09",
+            "R10"
+          ]
+        },
+        {
+          "id": "R05",
+          "title": "Repeated start already in progress",
+          "trigger": "The server returns 200 and outcome=already_in_progress for an authorized repeated start.",
+          "expected": "Show the In Progress badge and informational “This job is already in progress.” Treat repeat start as success, not a 409; do not claim which session started it.",
+          "action": "Refresh job or Back to My Jobs.",
+          "next": [
+            "D04",
+            "L02"
+          ]
+        },
+        {
+          "id": "R06",
+          "title": "Job is terminal",
+          "trigger": "Start returns job_not_startable and re-read confirms Completed or Cancelled.",
+          "expected": "Show the authoritative terminal badge and “This job is now {status} and can’t be started.” Remove Start; add no terminal action.",
+          "action": "Back to My Jobs.",
+          "next": [
+            "D05",
+            "L02"
+          ]
+        },
+        {
+          "id": "R07",
+          "title": "Start permission denied",
+          "trigger": "Start returns 403 and a separate authorized read confirms the viewer may still see this job.",
+          "expected": "Show “Unable to start job” and “You don’t have permission to start this job.” Remove Start and refresh details/capability; retain context only while read permission remains valid.",
+          "action": "Refresh job.",
+          "next": [
+            "D02",
+            "D04",
+            "D05",
+            "D06",
+            "D08",
+            "D10"
+          ]
+        },
+        {
+          "id": "R08",
+          "title": "Access no longer available",
+          "trigger": "Start or refreshed read returns not found or inaccessible.",
+          "expected": "Show the same generic “Job unavailable” page as a missing job, clear cached job details, and reveal no owner, offer, title, or price.",
+          "action": "Back to My Jobs.",
+          "next": [
+            "L02"
+          ]
+        },
+        {
+          "id": "R09",
+          "title": "Session expired during start check",
+          "trigger": "Start or re-read returns 401.",
+          "expected": "Clear private job details and show “Your session expired. Sign in to check this job’s status.” Use a safe return URL; re-read after sign-in and never auto-resubmit.",
+          "action": "Sign in.",
+          "next": [
+            "D01"
+          ]
+        },
+        {
+          "id": "R10",
+          "title": "Required start details invalid",
+          "trigger": "The accepted job has no valid selected Accepted offer for this job.",
+          "expected": "Show “This job isn’t ready to start. Refresh its details or contact support.” Do not show an offer selector or raw database/trigger errors; do not enable Start.",
+          "action": "Refresh job.",
+          "next": [
+            "D01",
+            "D08"
+          ]
+        },
+        {
+          "id": "R11",
+          "title": "Offline before start",
+          "trigger": "The browser knows it is offline before Start is submitted.",
+          "expected": "Retain the pink Start job affordance. Activation explains the connection requirement and sends no write; it does not silently queue a request. Accepted remains the last confirmed status until refreshed.",
+          "action": "Read the connection feedback, then reconnect and refresh.",
+          "next": [
+            "D01"
+          ]
+        },
+        {
+          "id": "R12",
+          "title": "Rejected start; latest status unavailable",
+          "trigger": "A known start rejection is followed by a failed refresh.",
+          "expected": "Show the start-status error and “Latest status unavailable.” Keep Start disabled until an authoritative refresh succeeds and no earlier start remains unresolved.",
+          "action": "Refresh job.",
+          "next": [
+            "D01"
+          ]
+        },
+        {
+          "id": "R13",
+          "title": "Rechecking after returning to the page",
+          "trigger": "This page regains focus after another tab may have started the job.",
+          "expected": "Run one background authoritative refresh, show “Checking job status…,” and disable Start while checking. Preserve focus; use no polling loop or realtime promise.",
+          "action": "Wait for the background refresh.",
+          "next": [
+            "D02",
+            "D03",
+            "D04",
+            "D05",
+            "D06",
+            "D07",
+            "D08",
+            "D09",
+            "D10"
+          ]
+        },
+        {
+          "id": "R14",
+          "title": "Latest details could not refresh after start",
+          "trigger": "After a confirmed start, the background refresh fails.",
+          "expected": "Keep In Progress labeled as last confirmed and show “Couldn’t load the latest details. Showing the last confirmed information.” Offer Refresh job; never revert to Accepted or claim the start failed.",
+          "action": "Refresh job or Back to My Jobs.",
+          "next": [
+            "D01",
+            "L02"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "026",
+      "title": "Proof of delivery",
+      "criteria": [
+        {
+          "id": "US026-01",
+          "source": "Project Backlog row 27; Sprint Backlog III rows 31–33, 35 and 38",
+          "requirement": "For an In Progress job, the marketer can submit a delivery URL as a Proof attachment and see the saved URL and upload timestamp."
+        },
+        {
+          "id": "US026-02",
+          "source": "Project Backlog row 27; Sprint Backlog III rows 30, 34 and 36",
+          "requirement": "An attachment type outside Brief, Proof and Other is rejected. This form always submits Proof and does not offer binary file upload."
+        },
+        {
+          "id": "US026-03",
+          "source": "Sprint Backlog III row 37",
+          "requirement": "Proof submission is available only while the job is In Progress."
+        }
+      ],
+      "states": [
+        {
+          "id": "A01",
+          "title": "Start with no proof",
+          "trigger": "The In Progress job and its saved-proof list have loaded successfully, with no rows.",
+          "expected": "Show one compact saved-proof workspace with an empty state and Add proof action. Opening Add proof reveals an inline Delivery link form in the same workspace.",
+          "action": "Open Add proof and enter a delivery link.",
+          "next": [
+            "A02",
+            "B01"
+          ]
+        },
+        {
+          "id": "A02",
+          "title": "Paste a delivery link",
+          "trigger": "The marketer enters a candidate delivery URL.",
+          "expected": "Show the Delivery link field above the saved list in one workspace. Keep the attachment type fixed internally to Proof. URL shape alone does not verify remote sharing permissions.",
+          "action": "Save proof.",
+          "next": [
+            "A03",
+            "B01"
+          ]
+        },
+        {
+          "id": "A03",
+          "title": "Save once",
+          "trigger": "A valid URL is submitted.",
+          "expected": "Submit once and retain the draft until confirmation. Continue browsing closes the form while saving continues; View progress reopens it. A 12-second deadline or document return restores explicit uncertainty and check-before-retry.",
+          "action": "Wait for the simulated response.",
+          "next": [
+            "A04",
+            "B02",
+            "B03",
+            "C02",
+            "C03"
+          ]
+        },
+        {
+          "id": "A04",
+          "title": "Proof is saved",
+          "trigger": "The save receives a confirmed success response.",
+          "expected": "Show one saved Proof URL and its server-generated timestamp. Clear the draft only after confirmation.",
+          "action": "Add another proof or review the saved evidence.",
+          "next": [
+            "A05"
+          ]
+        },
+        {
+          "id": "A05",
+          "title": "Add another link",
+          "trigger": "The marketer starts a second proof while existing evidence is present.",
+          "expected": "Keep existing evidence visible below the inline form in the same saved-proof workspace.",
+          "action": "Enter and save another URL.",
+          "next": [
+            "A03",
+            "B01"
+          ]
+        },
+        {
+          "id": "A06",
+          "title": "Review delivery evidence",
+          "trigger": "The saved-proof list contains multiple records.",
+          "expected": "Show full clickable URLs and timestamps newest first. Saving proof does not complete the job.",
+          "action": "Review a link or add another proof while the job is In Progress.",
+          "next": [
+            "A05"
+          ]
+        },
+        {
+          "id": "B01",
+          "title": "Correct the URL",
+          "trigger": "The marketer submits an empty or malformed URL.",
+          "expected": "Keep the draft, show an inline field error, focus the input, and create no saved row.",
+          "action": "Correct the URL.",
+          "next": [
+            "A02"
+          ]
+        },
+        {
+          "id": "B02",
+          "title": "Attachment type rejected",
+          "trigger": "The simulated server rejects the Proof attachment type.",
+          "expected": "Show an explicit rejection, create no visible row, and retain the URL for recovery.",
+          "action": "Reopen the proof form.",
+          "next": [
+            "A02"
+          ]
+        },
+        {
+          "id": "B03",
+          "title": "Connection lost during save",
+          "trigger": "The save response is interrupted and its outcome is unknown.",
+          "expected": "Do not optimistically show a saved row or submit again. Read the authoritative list before deciding whether a retry is safe.",
+          "action": "Check saved proof.",
+          "next": [
+            "B04",
+            "A04"
+          ]
+        },
+        {
+          "id": "B04",
+          "title": "Checked: link was not saved",
+          "trigger": "A successful reconciliation read confirms the new link is absent.",
+          "expected": "Keep the URL and make one explicit retry available. Never replay the original request automatically.",
+          "action": "Choose Save proof to make a new explicit attempt.",
+          "next": [
+            "A03"
+          ]
+        },
+        {
+          "id": "C01",
+          "title": "Saved proof cannot load",
+          "trigger": "The initial list read fails.",
+          "expected": "Show a consistent top-left return, page header and one recovery group. Do not present failed loading as an empty list or enable submission without known context.",
+          "action": "Try again.",
+          "next": [
+            "A01",
+            "A06"
+          ]
+        },
+        {
+          "id": "C02",
+          "title": "Job status has changed",
+          "trigger": "A fresh response says the job is no longer In Progress.",
+          "expected": "Remove the submit action and refresh the job context before showing its current status.",
+          "action": "Refresh job.",
+          "next": [
+            "A06"
+          ]
+        },
+        {
+          "id": "C03",
+          "title": "Access is no longer available",
+          "trigger": "The server denies access to the job.",
+          "expected": "Clear private job details, proof URLs, and the unsaved draft from the screen.",
+          "action": "Return to My Jobs.",
+          "next": []
+        },
+        {
+          "id": "C04",
+          "title": "Loading saved proof",
+          "trigger": "The initial job and saved-proof read is pending.",
+          "expected": "Show neutral progress and Stop waiting, plus navigation. After 12 seconds expose read recovery. Do not imply an empty list or enable submit while context is unknown.",
+          "action": "Wait for the simulated read.",
+          "next": [
+            "A01",
+            "A06",
+            "C01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "027",
+      "title": "Job completion",
+      "criteria": [
+        {
+          "id": "US027-01",
+          "source": "Project Backlog row 28; US-031 row 32; Sprint Backlog III row 39",
+          "requirement": "Block completion without at least one Proof attachment; Brief and Other do not qualify."
+        },
+        {
+          "id": "US027-02",
+          "source": "Project Backlog row 28; US-031 row 32; Sprint Backlog III row 39",
+          "requirement": "Complete only an In Progress job with a valid selected Accepted offer, Paid payment and Proof."
+        },
+        {
+          "id": "US027-03",
+          "source": "Project Backlog row 28; US-031 row 32; Sprint Backlog III row 39",
+          "requirement": "Keep status unchanged on rejection and reconcile unknown outcomes before retrying."
+        }
+      ],
+      "states": [
+        {
+          "id": "A01",
+          "title": "Missing proof",
+          "trigger": "Open an In Progress job with no Proof attachments.",
+          "expected": "Show missing Proof and keep the job In Progress. Run completion check opens the blocked warning."
+        },
+        {
+          "id": "A02",
+          "title": "Completion blocked warning",
+          "trigger": "Attempt completion with no Proof.",
+          "expected": "Use a compact Requirements incomplete dialog, short blocker list and clear proof route. Keep status unchanged; avoid repeated paragraphs and competing recovery buttons."
+        },
+        {
+          "id": "A03",
+          "title": "All requirements met",
+          "trigger": "A Proof record, Paid payment and correct Accepted offer exist.",
+          "expected": "Enable an explicit completion check; proof alone is not sufficient."
+        },
+        {
+          "id": "A04",
+          "title": "Confirm completion",
+          "trigger": "Run completion check when all conditions are met.",
+          "expected": "Confirm job identity and the final transition before sending a request."
+        },
+        {
+          "id": "A05",
+          "title": "Completion pending",
+          "trigger": "Confirm completion.",
+          "expected": "Submit once. Permit Close, Escape, outside dismissal and Continue browsing while preserving the operation and View progress. A 12-second deadline or document return becomes unknown/check state with no automatic resubmission."
+        },
+        {
+          "id": "A06",
+          "title": "Completion confirmed",
+          "trigger": "Receive a confirmed completion response.",
+          "expected": "Show Completed and remove the completion mutation."
+        },
+        {
+          "id": "B01",
+          "title": "Payment is not Paid",
+          "trigger": "Proof exists but payment is unpaid.",
+          "expected": "Show the missing payment prerequisite and block completion."
+        },
+        {
+          "id": "B02",
+          "title": "Accepted offer mismatch",
+          "trigger": "The selected offer is not a valid Accepted offer for this job.",
+          "expected": "Explain the offer prerequisite and keep status unchanged."
+        },
+        {
+          "id": "B03",
+          "title": "Job has not started",
+          "trigger": "The job is Accepted.",
+          "expected": "Do not expose a completion request for an unstarted job."
+        },
+        {
+          "id": "B04",
+          "title": "Cancelled job",
+          "trigger": "Read a Cancelled job.",
+          "expected": "Keep the terminal state read-only."
+        },
+        {
+          "id": "R01",
+          "title": "Unknown completion outcome",
+          "trigger": "The completion response is lost.",
+          "expected": "Offer a read-only status check; never automatically repeat completion."
+        },
+        {
+          "id": "R02",
+          "title": "Requirements unavailable",
+          "trigger": "A job read fails.",
+          "expected": "Show read failure rather than known prerequisites and disable completion."
+        },
+        {
+          "id": "R03",
+          "title": "Access removed",
+          "trigger": "Access is denied.",
+          "expected": "Remove all private job and delivery data."
+        },
+        {
+          "id": "R04",
+          "title": "Requirements loading",
+          "trigger": "The initial requirements read is pending.",
+          "expected": "Announce the read and prevent completion until resolved."
+        }
+      ]
+    },
+    {
+      "id": "028",
+      "title": "Cancel job",
+      "criteria": [
+        {
+          "id": "US028-01",
+          "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+          "requirement": "Allow the owning creator to cancel Pending, Accepted or In Progress jobs only when no payment is Paid."
+        },
+        {
+          "id": "US028-02",
+          "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+          "requirement": "Confirmed cancellation sets Cancelled, closes active job requests and rejects remaining Pending offers."
+        },
+        {
+          "id": "US028-03",
+          "source": "Project Backlog row 29; Sprint Backlog III rows 47–48",
+          "requirement": "Reject cancellation for Completed or Paid jobs, keep terminal states read-only and recover unknown outcomes with a read."
+        }
+      ],
+      "states": [
+        {
+          "id": "A01",
+          "title": "Pending job",
+          "trigger": "Open a Pending unpaid job.",
+          "expected": "Cancellation is available to the creator."
+        },
+        {
+          "id": "A02",
+          "title": "Accepted job",
+          "trigger": "Open an Accepted unpaid job.",
+          "expected": "Show current contract details and an explicit cancel action."
+        },
+        {
+          "id": "A03",
+          "title": "In Progress job",
+          "trigger": "Open an In Progress unpaid job.",
+          "expected": "Allow cancellation with its consequences explained."
+        },
+        {
+          "id": "A04",
+          "title": "Cancellation confirmation",
+          "trigger": "Choose Cancel job.",
+          "expected": "Show job identity and effects; Keep job closes the dialog without changes."
+        },
+        {
+          "id": "A05",
+          "title": "Cancellation pending",
+          "trigger": "Confirm cancellation.",
+          "expected": "Submit once. Permit Close, Escape, outside dismissal and Continue browsing while preserving the operation and View progress. A 12-second deadline or document return becomes unknown/check state with no automatic resubmission."
+        },
+        {
+          "id": "A06",
+          "title": "Cancellation confirmed",
+          "trigger": "Receive confirmed cancellation.",
+          "expected": "Show Cancelled, zero active requests and zero Pending offers; remove cancellation."
+        },
+        {
+          "id": "B01",
+          "title": "Paid job",
+          "trigger": "A payment is already Paid.",
+          "expected": "Explain why cancellation is unavailable and do not enable cancellation."
+        },
+        {
+          "id": "B02",
+          "title": "Completed job",
+          "trigger": "Read a Completed job.",
+          "expected": "Preserve payment and review history; do not allow cancellation."
+        },
+        {
+          "id": "B03",
+          "title": "Already Cancelled",
+          "trigger": "Read a Cancelled job.",
+          "expected": "Keep cancellation read-only and do not resubmit."
+        },
+        {
+          "id": "B04",
+          "title": "Unverified state",
+          "trigger": "The current state is not recognized.",
+          "expected": "Do not guess eligibility; offer a fresh read."
+        },
+        {
+          "id": "R01",
+          "title": "Unknown cancellation outcome",
+          "trigger": "Lose the cancellation response.",
+          "expected": "Check current job state before a new cancellation."
+        },
+        {
+          "id": "R02",
+          "title": "Cancellation rejected",
+          "trigger": "Receive a rejection without a state change.",
+          "expected": "Keep the current contract and offer refresh."
+        },
+        {
+          "id": "R03",
+          "title": "Access removed",
+          "trigger": "Lose access to the job.",
+          "expected": "Remove private contract data and mutation controls."
+        },
+        {
+          "id": "R04",
+          "title": "Job read failed",
+          "trigger": "Cannot read job eligibility.",
+          "expected": "Show failure rather than an empty or cancellable job."
+        },
+        {
+          "id": "R05",
+          "title": "Job loading",
+          "trigger": "Read the current job.",
+          "expected": "Prevent cancellation while eligibility is unknown."
+        }
+      ]
+    },
+    {
+      "id": "034",
+      "title": "Marketer reviews",
+      "criteria": [
+        {
+          "id": "US034-01",
+          "source": "Project Backlog row 35; Sprint Backlog III rows 98–100",
+          "requirement": "Show only reviews on Completed jobs where this marketer held the accepted offer."
+        },
+        {
+          "id": "US034-02",
+          "source": "Project Backlog row 35; Sprint Backlog III rows 98–100",
+          "requirement": "Display a 1–5 rating, optional comment, created_at and linked job_id."
+        },
+        {
+          "id": "US034-03",
+          "source": "Project Backlog row 35; Sprint Backlog III rows 98–100",
+          "requirement": "When no qualifying reviews exist, show No reviews yet / No ratings yet and no numeric zero average."
+        },
+        {
+          "id": "US034-04",
+          "source": "Project Backlog row 35; Sprint Backlog III rows 98–100",
+          "requirement": "Keep loading and read errors distinct; support long comments, rating filters and pagination."
+        }
+      ],
+      "states": [
+        {
+          "id": "A01",
+          "title": "Verified reviews",
+          "trigger": "Open a marketer profile with qualifying reviews.",
+          "expected": "Show average, count and verified cards from completed jobs."
+        },
+        {
+          "id": "A02",
+          "title": "No reviews yet",
+          "trigger": "There are no qualifying reviews.",
+          "expected": "Show No reviews yet and No ratings yet without a 0.00 average."
+        },
+        {
+          "id": "A03",
+          "title": "Rating-only reviews",
+          "trigger": "Reviews have no written comments.",
+          "expected": "Show rating, date and linked job without inventing a comment."
+        },
+        {
+          "id": "A04",
+          "title": "Long written review",
+          "trigger": "A review contains long Unicode text.",
+          "expected": "Show a bounded preview with native Read full review / Show less disclosure. Preserve the complete Unicode comment, author, date and rating; expansion survives appearance re-renders."
+        },
+        {
+          "id": "A05",
+          "title": "Next review page",
+          "trigger": "Open a longer review history.",
+          "expected": "Show bounded pagination and retain rating filter."
+        },
+        {
+          "id": "B01",
+          "title": "Nonqualifying records excluded",
+          "trigger": "Fixture includes uncompleted, wrong-marketer and invalid-rating records.",
+          "expected": "Exclude them from cards, count, average and distribution."
+        },
+        {
+          "id": "B02",
+          "title": "No matching rating",
+          "trigger": "Filter to 1 star when no 1-star reviews exist.",
+          "expected": "Keep the true overall rating, show a compact filter-specific empty state and Show all ratings reset. Omit redundant single-page pagination."
+        },
+        {
+          "id": "R01",
+          "title": "Reviews loading",
+          "trigger": "Review read is pending.",
+          "expected": "Do not invent a zero rating or empty review conclusion."
+        },
+        {
+          "id": "R02",
+          "title": "Reviews read failed",
+          "trigger": "Cannot read verified records.",
+          "expected": "Show retry and suppress the unavailable rating."
+        },
+        {
+          "id": "R03",
+          "title": "Profile unavailable",
+          "trigger": "Profile access is denied.",
+          "expected": "Show a generic unavailable state without review details."
+        }
+      ]
+    }
+  ]
+}
