@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, Eye, Home, Mail, Receipt, UserRound } from "lucide-react";
+import { Briefcase, Eye, Home, Mail, Receipt, ReceiptText, UserRound } from "lucide-react";
 
 import { navigateDemo, useLocalQuery } from "../local-navigation";
 import { usePathname } from "next/navigation";
@@ -12,11 +12,12 @@ export const ownerViews = [
   { id: "services", label: "Services", icon: Briefcase },
   { id: "invitations", label: "Invitations", icon: Mail },
   { id: "offers", label: "My Offers", icon: Receipt },
+  { id: "transactions", label: "Transactions", icon: ReceiptText },
   { id: "profile", label: "Profile", icon: UserRound },
 ] as const;
 
 export const demoViews = [
-  ...ownerViews.filter((view) => view.id !== "offers"),
+  ...ownerViews.filter((view) => view.id !== "offers" && view.id !== "transactions"),
   { id: "viewer", label: "Creator view", icon: Eye },
 ] as const;
 
