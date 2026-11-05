@@ -5,11 +5,14 @@ import CreatorJobPage from "@/app/(creator)/creator/jobs/[id]/page";
 import { loadJobBriefs, saveJobBrief } from "@/features/jobs/brief-actions";
 import { loadSavedJob } from "@/features/jobs/job-actions";
 import { cacheProjectBriefHistory, readProjectBriefHistory } from "@/features/jobs/project-brief";
+import { getJobWorkflow } from "@/features/transactions/queries";
 import { getUser } from "@/features/users/api";
+import { ApiError } from "@/lib/api/errors";
 import { requireSession } from "@/lib/auth/guards";
 
 vi.mock("@/lib/auth/guards", () => ({ requireSession: vi.fn() }));
 vi.mock("@/features/users/api", () => ({ getUser: vi.fn() }));
+vi.mock("@/features/transactions/queries", () => ({ getJobWorkflow: vi.fn() }));
 vi.mock("@/features/jobs/job-actions", () => ({
   loadSavedJob: vi.fn(),
   addJobSurveys: vi.fn(),
@@ -28,6 +31,9 @@ beforeEach(() => {
   vi.resetAllMocks();
   sessionStorage.clear();
   vi.stubGlobal("fetch", vi.fn());
+  vi.mocked(getJobWorkflow).mockRejectedValue(
+    new ApiError(409, "accepted_offer_required", "An accepted offer is required."),
+  );
   vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   const original = {
     attachment_id: 7,

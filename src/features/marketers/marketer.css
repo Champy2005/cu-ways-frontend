@@ -1218,11 +1218,14 @@ body:has(.marketer-theme) {
   line-height: 1.4;
   color: var(--mk-muted);
 }
-.workspace-status[data-status="Pending"] {
+.workspace-status[data-status="Pending"],
+.workspace-status[data-status="Held"] {
   color: var(--mk-caution);
 }
 .workspace-status[data-status="Accepted"],
 .workspace-status[data-status="Completed"],
+.workspace-status[data-status="Paid"],
+.workspace-status[data-status="Released"],
 .workspace-status[data-status="Published"] {
   color: var(--mk-positive);
 }

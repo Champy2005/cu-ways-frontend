@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ export function MarketerRolePicker({
   userId?: number;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [role, setRole] = useState<Role>(initialRole);
   const next: Role = role === "Marketer" ? "Creator" : "Marketer";
   return (
@@ -42,7 +43,9 @@ export function MarketerRolePicker({
           if (!preview) {
             if (userId)
               document.cookie = `${WORKSPACE_COOKIE}=${userId}:${next}; Path=/; SameSite=Lax; Max-Age=31536000`;
-            router.push(workspaceHref[next]);
+            const inHistory =
+              pathname === "/creator/transactions" || pathname === "/marketer/transactions";
+            router.push(inHistory ? `/${next.toLowerCase()}/transactions` : workspaceHref[next]);
           }
         }}
       >

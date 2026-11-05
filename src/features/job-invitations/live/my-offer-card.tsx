@@ -76,9 +76,17 @@ export function MyOfferCard({
         </Button>
       )}
       {offer.offer_status === "Accepted" && (
-        <Button type="button" disabled className="w-full">
-          Withdraw offer
-        </Button>
+        <>
+          <Link
+            href={`/marketer/jobs/${request.job_id}`}
+            className="ji-primary mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl px-4 text-sm font-semibold"
+          >
+            View job
+          </Link>
+          <Button type="button" disabled className="w-full">
+            Withdraw offer
+          </Button>
+        </>
       )}
       {canResubmit && (
         <Link
