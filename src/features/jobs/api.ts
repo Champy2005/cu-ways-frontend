@@ -121,6 +121,21 @@ export async function getJobOffers(
   return validateJobOffers(response, jobId);
 }
 
+export type JobPaymentData = {
+  job: CreatorJobSummary;
+  acceptedOffer: JobOfferComparison | null;
+};
+
+/** Loads the owned job, then its accepted offer (the price a payment must match). */
+export async function loadJobPaymentData(jobId: number): Promise<JobPaymentData> {
+  const job = await getCreatorJob(jobId);
+  const accepted = await getJobOffers(jobId, "Accepted");
+  return {
+    job,
+    acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
+  };
+}
+
 export async function loadJobOffersInitialData(jobId: number): Promise<JobOffersInitialData> {
   const job = await getCreatorJob(jobId);
   try {

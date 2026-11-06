@@ -1,0 +1,129 @@
+.pay-card {
+  border: 1px solid var(--mk-border);
+  border-radius: 1rem;
+  background: var(--mk-surface);
+  box-shadow: var(--mk-shadow);
+  padding: 1rem;
+  color: var(--mk-text);
+}
+.pay-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+}
+.pay-help {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--mk-muted);
+}
+.pay-error {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--mk-error);
+}
+.pay-details {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+}
+.pay-details > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.pay-details dt {
+  flex-shrink: 0;
+  color: var(--mk-muted);
+}
+.pay-details dd {
+  min-width: 0;
+  text-align: right;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.pay-method-list {
+  display: grid;
+  gap: 0.625rem;
+}
+.pay-method {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--mk-border);
+  border-radius: 0.75rem;
+  background: var(--mk-field);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pay-method:has(input:checked) {
+  border-color: var(--mk-accent);
+}
+.pay-method:has(input:focus-visible) {
+  outline: 2px solid var(--mk-accent);
+  outline-offset: 3px;
+}
+.pay-method:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.pay-method input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--mk-accent);
+}
+.pay-method input:focus-visible {
+  outline: none;
+}
+.pay-method > svg {
+  margin-left: auto;
+  color: var(--mk-muted);
+}
+.pay-method-list[data-invalid="true"] .pay-method {
+  border-color: var(--mk-error);
+}
+.pay-money {
+  position: relative;
+}
+.pay-money input {
+  padding-right: 3.75rem;
+  border-color: var(--mk-border);
+  background: var(--mk-field);
+  color: var(--mk-text);
+}
+.pay-money input[aria-invalid="true"] {
+  border-color: var(--mk-error);
+}
+.pay-money span {
+  position: absolute;
+  top: 50%;
+  right: 0.875rem;
+  transform: translateY(-50%);
+  color: var(--mk-muted);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+.pay-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--mk-muted);
+}
+.pay-note svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+.pay-amount {
+  margin-top: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}

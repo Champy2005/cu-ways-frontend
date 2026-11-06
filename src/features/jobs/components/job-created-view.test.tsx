@@ -61,3 +61,31 @@ it.each([0, 2])("prioritizes the next action with %i pending offers", (count) =>
     count ? "mk-primary-button" : "mk-secondary-button",
   );
 });
+
+describe("JobCreatedView payment entry", () => {
+  it.each([
+    ["Pending", false],
+    ["Accepted", true],
+    ["In Progress", true],
+    ["Completed", true],
+    ["Cancelled", false],
+  ] as const)("shows Record payment for %s: %s", (status, visible) => {
+    render(
+      <JobCreatedView
+        job={{
+          id: 41,
+          createdAt: "2026-10-01T10:00:00Z",
+          title: "Campus campaign",
+          compensation: "฿8,500 fixed",
+          deadline: "2026-10-28",
+          surveyCount: 2,
+          status,
+        }}
+        onEdit={() => undefined}
+      />,
+    );
+    const link = screen.queryByRole("link", { name: "Record payment" });
+    if (visible) expect(link).toHaveAttribute("href", "/creator/jobs/41/payment");
+    else expect(link).not.toBeInTheDocument();
+  });
+});
