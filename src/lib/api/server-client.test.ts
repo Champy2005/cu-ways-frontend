@@ -25,4 +25,14 @@ describe("server API envelope handling", () => {
     const headers = mocks.fetchBackend.mock.calls[0][1].headers as Headers;
     expect(headers.get("Authorization")).toBe("Bearer test-token");
   });
+  it("forwards a caller's abort signal so a read can be bounded", async () => {
+    mocks.fetchBackend.mockImplementation(async () =>
+      Response.json({ status: "success", data: {} }),
+    );
+    const signal = AbortSignal.timeout(1_000);
+    await serverApiGet("/bounded", { signal });
+    expect(mocks.fetchBackend.mock.calls[0][1]).toMatchObject({ method: "GET", signal });
+    await serverApiGet("/unbounded");
+    expect(mocks.fetchBackend.mock.calls[1][1]).not.toHaveProperty("signal");
+  });
 });

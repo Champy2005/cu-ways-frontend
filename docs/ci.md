@@ -48,6 +48,11 @@ while generated API types and type-only files are excluded. The 10% floor is int
 for the current partial implementation. Raise it as tested behavior grows; do not add tests for
 unfinished stories merely to satisfy the percentage.
 
+SonarQube Cloud reads `.sonarcloud.properties`. It excludes only the generated
+`src/lib/api/generated/backend.ts` from duplication detection, because openapi-typescript repeats
+type shapes by design. The file is still analysed for issues, and hand-written code keeps the normal
+duplication threshold. Do not add hand-written files to that exclusion.
+
 ## Configure the branch rule
 
 A workflow does not block a merge by itself. GitHub blocks a merge only when a branch rule or

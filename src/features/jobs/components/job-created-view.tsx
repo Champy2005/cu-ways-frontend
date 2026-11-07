@@ -12,6 +12,7 @@ import {
   JobSuccessNotification,
   type JobSuccessNotice,
 } from "@/features/jobs/components/job-success-notification";
+import { PAYABLE_JOB_STATUSES } from "@/features/jobs/payment";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 import { cn } from "@/lib/utils";
 
@@ -260,6 +261,14 @@ export function JobCreatedView({
               )}
             >
               View offers
+            </Link>
+          )}
+          {job.id && PAYABLE_JOB_STATUSES.includes(job.status) && (
+            <Link
+              href={`/creator/jobs/${job.id}/payment`}
+              className="mk-secondary-button inline-flex min-h-12 items-center justify-center border px-4 text-sm font-bold"
+            >
+              Record payment
             </Link>
           )}
           {job.id && job.status === "Pending" && (

@@ -1,5 +1,7 @@
 import { ApiError } from "@/lib/api/errors";
+import { isRecord } from "@/lib/api/envelope";
 import { serverApiGet } from "@/lib/api/server-client";
+import { isActivePayment, type ActivePayment } from "@/features/jobs/payment";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
@@ -41,8 +43,18 @@ export async function getCreatorJobs(): Promise<CreatorJobSummary[]> {
   return serverApiGet<CreatorJobSummary[]>("/api/v1/me/jobs");
 }
 
-export async function getCreatorJob(jobId: number): Promise<CreatorJobSummary> {
-  return serverApiGet<CreatorJobSummary>(`/api/v1/jobs/${jobId}`);
+type ReadOptions = { signal?: AbortSignal };
+
+/** Forwards read options only when given, so ordinary reads keep their exact call. */
+function getWith<T>(path: string, options?: ReadOptions): Promise<T> {
+  return options ? serverApiGet<T>(path, options) : serverApiGet<T>(path);
+}
+
+export async function getCreatorJob(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<CreatorJobSummary> {
+  return getWith<CreatorJobSummary>(`/api/v1/jobs/${jobId}`, options);
 }
 
 export async function getJobSentInvitations(jobId: number): Promise<SentJobInvitation[]> {
@@ -115,10 +127,59 @@ export async function loadJobInviteInitialData(jobId: number): Promise<JobInvite
 export async function getJobOffers(
   jobId: number,
   status?: OfferStatus,
+  options?: ReadOptions,
 ): Promise<JobOfferComparison[]> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
-  const response = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/offers${query}`);
+  const response = await getWith<unknown>(`/api/v1/jobs/${jobId}/offers${query}`, options);
   return validateJobOffers(response, jobId);
+}
+
+export type JobPaymentData = {
+  job: CreatorJobSummary;
+  acceptedOffer: JobOfferComparison | null;
+  /** The job's Pending or Paid payment from the backend, or null when none exists. */
+  currentPayment: ActivePayment | null;
+};
+
+/** Reads the owned job's active payment; throws when the response is not a valid record. */
+export async function getCurrentJobPayment(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<ActivePayment | null> {
+  const data = await getWith<unknown>(`/api/v1/jobs/${jobId}/payments/current`, options);
+  const payment = isRecord(data) ? data.payment : undefined;
+  if (payment === null) return null;
+  if (isActivePayment(payment, jobId)) return payment;
+  throw new Error("The payment record could not be read. Refresh and try again.");
+}
+
+/** The payment page never waits longer than this for its first data. */
+const PAYMENT_PAGE_LOAD_TIMEOUT_MS = 10_000;
+
+/**
+ * Loads the owned job, its accepted offer (the price a payment must match),
+ * and any payment already recorded, so a reload shows the saved record. All
+ * three reads share one timeout so a stalled backend cannot hang the page.
+ */
+export async function loadJobPaymentData(jobId: number): Promise<JobPaymentData> {
+  const options = { signal: AbortSignal.timeout(PAYMENT_PAGE_LOAD_TIMEOUT_MS) };
+  try {
+    const [job, accepted, currentPayment] = await Promise.all([
+      getCreatorJob(jobId, options),
+      getJobOffers(jobId, "Accepted", options),
+      getCurrentJobPayment(jobId, options),
+    ]);
+    return {
+      job,
+      acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
+      currentPayment,
+    };
+  } catch (error) {
+    if (options.signal.aborted) {
+      throw new Error("The payment details took too long to load. Refresh the page to try again.");
+    }
+    throw error;
+  }
 }
 
 export async function loadJobOffersInitialData(jobId: number): Promise<JobOffersInitialData> {
