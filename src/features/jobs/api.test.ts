@@ -6,12 +6,14 @@ import { listMarketers } from "@/features/marketer-discovery/api";
 import {
   getCreatorJobs,
   getCurrentJobPayment,
+  getCurrentJobReview,
   getJobOffers,
   getJobSentInvitations,
   loadCreatorJobs,
   loadJobInviteInitialData,
   loadJobOffersInitialData,
   loadJobPaymentData,
+  loadJobReviewData,
 } from "@/features/jobs/api";
 
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
@@ -307,6 +309,42 @@ describe("Creator job invitation data", () => {
     it("fails the page load when the job is not the Creator's", async () => {
       vi.mocked(serverApiGet).mockRejectedValue(new ApiError(403, "forbidden", "Forbidden"));
       await expect(loadJobPaymentData(17)).rejects.toThrow("Forbidden");
+    });
+  });
+
+  describe("Creator job review data", () => {
+    const review = {
+      review_id: 3,
+      job_id: 17,
+      rating: 4,
+      comment: "Good",
+      created_at: "2026-11-07T03:00:00Z",
+    };
+
+    it("reads the job's review, or null when it has none", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review });
+      await expect(getCurrentJobReview(17)).resolves.toEqual(review);
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/reviews/current");
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: null });
+      await expect(getCurrentJobReview(17)).resolves.toBeNull();
+    });
+
+    it("rejects a malformed review instead of showing it", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: { ...review, job_id: 99 } });
+      await expect(getCurrentJobReview(17)).rejects.toThrow(/could not be read/);
+    });
+
+    it("loads the job, its accepted offer and its review together", async () => {
+      vi.mocked(serverApiGet).mockImplementation(async (path: string) => {
+        if (path === "/api/v1/jobs/17") return job;
+        if (path === "/api/v1/jobs/17/offers?status=Accepted") return [];
+        if (path === "/api/v1/jobs/17/reviews/current") return { review };
+        throw new Error(`unexpected ${path}`);
+      });
+      await expect(loadJobReviewData(17)).resolves.toMatchObject({
+        acceptedOffer: null,
+        currentReview: review,
+      });
     });
   });
 });

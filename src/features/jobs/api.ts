@@ -2,6 +2,7 @@ import { ApiError } from "@/lib/api/errors";
 import { isRecord } from "@/lib/api/envelope";
 import { serverApiGet } from "@/lib/api/server-client";
 import { isActivePayment, type ActivePayment } from "@/features/jobs/payment";
+import { isSavedReview, type SavedReview } from "@/features/jobs/review";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
@@ -123,6 +124,41 @@ export async function getJobOffers(
   return validateJobOffers(response, jobId);
 }
 
+/**
+ * Reads a job's single record (its payment or its review) from a
+ * `{ [key]: record | null }` response. Throws when the record is malformed so
+ * it is never shown as real.
+ */
+async function readCurrentJobRecord<T>(
+  path: string,
+  key: string,
+  isValid: (value: unknown) => value is T,
+  invalidMessage: string,
+): Promise<T | null> {
+  const data = await serverApiGet<unknown>(path);
+  const record = isRecord(data) ? data[key] : undefined;
+  if (record === null) return null;
+  if (isValid(record)) return record;
+  throw new Error(invalidMessage);
+}
+
+/** Loads the owned job, its accepted offer and one of its records, all at once. */
+async function loadJobWithRecord<T>(
+  jobId: number,
+  readRecord: (jobId: number) => Promise<T | null>,
+) {
+  const [job, accepted, record] = await Promise.all([
+    getCreatorJob(jobId),
+    getJobOffers(jobId, "Accepted"),
+    readRecord(jobId),
+  ]);
+  return {
+    job,
+    acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
+    record,
+  };
+}
+
 export type JobPaymentData = {
   job: CreatorJobSummary;
   acceptedOffer: JobOfferComparison | null;
@@ -131,12 +167,13 @@ export type JobPaymentData = {
 };
 
 /** Reads the owned job's active payment; throws when the response is not a valid record. */
-export async function getCurrentJobPayment(jobId: number): Promise<ActivePayment | null> {
-  const data = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/payments/current`);
-  const payment = isRecord(data) ? data.payment : undefined;
-  if (payment === null) return null;
-  if (isActivePayment(payment, jobId)) return payment;
-  throw new Error("The payment record could not be read. Refresh and try again.");
+export function getCurrentJobPayment(jobId: number): Promise<ActivePayment | null> {
+  return readCurrentJobRecord(
+    `/api/v1/jobs/${jobId}/payments/current`,
+    "payment",
+    (value): value is ActivePayment => isActivePayment(value, jobId),
+    "The payment record could not be read. Refresh and try again.",
+  );
 }
 
 /**
@@ -144,16 +181,35 @@ export async function getCurrentJobPayment(jobId: number): Promise<ActivePayment
  * and any payment already recorded, so a reload shows the saved record.
  */
 export async function loadJobPaymentData(jobId: number): Promise<JobPaymentData> {
-  const [job, accepted, currentPayment] = await Promise.all([
-    getCreatorJob(jobId),
-    getJobOffers(jobId, "Accepted"),
-    getCurrentJobPayment(jobId),
-  ]);
-  return {
-    job,
-    acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
-    currentPayment,
-  };
+  const { record, ...data } = await loadJobWithRecord(jobId, getCurrentJobPayment);
+  return { ...data, currentPayment: record };
+}
+
+export type JobReviewData = {
+  job: CreatorJobSummary;
+  /** The hired Marketer's offer; the reviewed Marketer is derived from it, never from user input. */
+  acceptedOffer: JobOfferComparison | null;
+  /** The job's saved review, or null when it has not been reviewed. */
+  currentReview: SavedReview | null;
+};
+
+/** Reads the owned job's review; throws when the response is not a valid record. */
+export function getCurrentJobReview(jobId: number): Promise<SavedReview | null> {
+  return readCurrentJobRecord(
+    `/api/v1/jobs/${jobId}/reviews/current`,
+    "review",
+    (value): value is SavedReview => isSavedReview(value, jobId),
+    "The review could not be read. Refresh and try again.",
+  );
+}
+
+/**
+ * Loads the owned job, the accepted offer that names the reviewed Marketer,
+ * and any saved review, so a reload shows the review instead of the form.
+ */
+export async function loadJobReviewData(jobId: number): Promise<JobReviewData> {
+  const { record, ...data } = await loadJobWithRecord(jobId, getCurrentJobReview);
+  return { ...data, currentReview: record };
 }
 
 export async function loadJobOffersInitialData(jobId: number): Promise<JobOffersInitialData> {
