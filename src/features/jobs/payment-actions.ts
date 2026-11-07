@@ -1,24 +1,45 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getCurrentJobPayment } from "@/features/jobs/api";
 import { ApiError } from "@/lib/api/errors";
 import { serverApiRequest } from "@/lib/api/server-client";
 import { getSession } from "@/lib/auth/session";
-import { isPaymentMethod, toSatang, type RecordedPayment } from "@/features/jobs/payment";
+import {
+  isPaymentMethod,
+  toSatang,
+  type ActivePayment,
+  type RecordedPayment,
+} from "@/features/jobs/payment";
 
 export type RecordPaymentResult =
   | { status: "recorded"; payment: RecordedPayment }
-  /** The backend already holds a Pending or Paid payment, so nothing new was created. */
-  | { status: "already_recorded"; message: string }
+  /** The job already had a Pending or Paid payment; it is the one read back from the backend. */
+  | { status: "existing"; payment: ActivePayment; message: string }
+  /** The backend refused a duplicate, but the existing payment could not be read. */
+  | { status: "existing_unconfirmed"; message: string }
   /** The backend rejected the amount because it differs from the accepted offer price. */
   | { status: "mismatch"; message: string }
   /** The job can no longer take a payment (status or accepted offer changed). */
   | { status: "unavailable"; message: string }
-  /** Nothing was recorded, or the outcome is unknown. Retrying is safe: duplicates are rejected. */
+  /** The backend refused the request, so nothing was recorded. Retrying is safe. */
+  | { status: "error"; message: string }
+  /** The request failed or timed out and no saved payment was found yet, so the outcome is unknown. */
+  | { status: "unknown"; message: string };
+
+export type CheckPaymentResult =
+  | { status: "found"; payment: ActivePayment }
+  | { status: "none" }
   | { status: "error"; message: string };
+
+/** A stalled backend must not hold the Creator in a pending state indefinitely. */
+const PAYMENT_REQUEST_TIMEOUT_MS = 15_000;
 
 const SESSION_EXPIRED = "Your session expired. Sign in again to continue.";
 const NO_ACCESS = "You no longer have access to this job. Return to your jobs to continue.";
+const ALREADY_EXISTS = "This job already has a payment, so no new payment was created.";
+const UNKNOWN_OUTCOME =
+  "We could not confirm whether the payment was saved. Check the payment status before trying again.";
 
 function validId(value: unknown): value is number {
   return (
@@ -39,20 +60,47 @@ function isRecordedPayment(value: unknown, jobId: number): value is RecordedPaym
   );
 }
 
-function mapPaymentError(error: unknown): RecordPaymentResult {
-  if (!(error instanceof ApiError)) {
+async function readCurrentPayment(jobId: number): Promise<ActivePayment | null | undefined> {
+  try {
+    return await getCurrentJobPayment(jobId);
+  } catch {
+    return undefined;
+  }
+}
+
+function revalidatePaymentPaths(jobId: number) {
+  revalidatePath(`/creator/jobs/${jobId}`);
+  revalidatePath(`/creator/jobs/${jobId}/payment`);
+}
+
+/** After a 409, read the real payment so a Pending record is never shown as Paid. */
+async function existingPaymentResult(jobId: number): Promise<RecordPaymentResult> {
+  const payment = await readCurrentPayment(jobId);
+  if (!payment) {
     return {
-      status: "error",
+      status: "existing_unconfirmed",
       message:
-        "We could not confirm the payment. Try again; a payment that was already saved will not be recorded twice.",
+        "This job already has a payment, but its details could not be confirmed. Check the payment status to see it.",
     };
   }
+  revalidatePaymentPaths(jobId);
+  return { status: "existing", payment, message: ALREADY_EXISTS };
+}
+
+/**
+ * The request failed in transit or timed out, so check whether the payment was
+ * saved anyway. Finding none is not proof it failed: a timed-out request may
+ * still be saving, so the Creator checks again instead of being told it failed.
+ */
+async function unconfirmedRequestResult(jobId: number): Promise<RecordPaymentResult> {
+  const payment = await readCurrentPayment(jobId);
+  if (!payment) return { status: "unknown", message: UNKNOWN_OUTCOME };
+  revalidatePaymentPaths(jobId);
+  return { status: "existing", payment, message: "This payment is saved for this job." };
+}
+
+function mapPaymentError(error: ApiError): RecordPaymentResult {
   switch (error.code) {
-    case "payment_already_exists":
-      return {
-        status: "already_recorded",
-        message: "A payment has already been recorded for this job. No new payment was created.",
-      };
     case "payment_amount_mismatch":
       return {
         status: "mismatch",
@@ -100,18 +148,37 @@ export async function recordJobPayment(
     payment = await serverApiRequest<unknown>(`/api/v1/jobs/${jobId}/payments`, {
       method: "POST",
       body: JSON.stringify({ method, amount: amount.trim() }),
+      signal: AbortSignal.timeout(PAYMENT_REQUEST_TIMEOUT_MS),
     });
   } catch (error) {
+    if (!(error instanceof ApiError)) return unconfirmedRequestResult(jobId);
+    if (error.code === "payment_already_exists") return existingPaymentResult(jobId);
     return mapPaymentError(error);
   }
-  if (!isRecordedPayment(payment, jobId)) {
+  if (!isRecordedPayment(payment, jobId)) return unconfirmedRequestResult(jobId);
+  revalidatePaymentPaths(jobId);
+  return { status: "recorded", payment };
+}
+
+/** Reads the job's payment again, for when an earlier request had an unknown result. */
+export async function checkJobPayment(jobId: unknown): Promise<CheckPaymentResult> {
+  if (!validId(jobId)) return { status: "error", message: "This job is not available." };
+  if (!(await getSession())) return { status: "error", message: SESSION_EXPIRED };
+  try {
+    const payment = await getCurrentJobPayment(jobId);
+    if (!payment) return { status: "none" };
+    revalidatePaymentPaths(jobId);
+    return { status: "found", payment };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) {
+      return { status: "error", message: SESSION_EXPIRED };
+    }
+    if (error instanceof ApiError && (error.status === 403 || error.status === 404)) {
+      return { status: "error", message: NO_ACCESS };
+    }
     return {
       status: "error",
-      message:
-        "The payment response could not be read. Reload the page before trying again; a duplicate will not be recorded.",
+      message: "The payment status could not be checked. Check your connection and try again.",
     };
   }
-  revalidatePath(`/creator/jobs/${jobId}`);
-  revalidatePath(`/creator/jobs/${jobId}/payment`);
-  return { status: "recorded", payment };
 }

@@ -37,8 +37,9 @@ export function PaymentConfirmDialog({
     <AlertDialog
       open
       onOpenChange={(open) => {
-        // Escape and outside clicks are ignored while the save is settling.
-        if (!open && !pending) onClose();
+        // Closing is always allowed, even mid-save: the request keeps running
+        // and the page shows its result, so the Creator is never trapped here.
+        if (!open) onClose();
       }}
     >
       <div ref={container} />
@@ -71,20 +72,20 @@ export function PaymentConfirmDialog({
             </dl>
           </div>
           <p className="jo-muted">This records a payment only. No money is collected or moved.</p>
+          {pending && (
+            <p role="status" className="jo-muted">
+              Recording the payment. You can close this window; it keeps saving and the page shows
+              the result. Closing does not cancel it.
+            </p>
+          )}
           {error && (
             <p role="alert" className="mk-error-notice rounded-lg p-3 text-sm">
               {error}
             </p>
           )}
           <div className="jo-card-actions">
-            <Button
-              ref={goBack}
-              variant="outline"
-              className="jo-secondary"
-              disabled={pending}
-              onClick={onClose}
-            >
-              Go back
+            <Button ref={goBack} variant="outline" className="jo-secondary" onClick={onClose}>
+              {pending ? "Close" : "Go back"}
             </Button>
             <Button className="jo-primary" disabled={pending} onClick={onConfirm}>
               {pending ? "Recording…" : error ? "Try again" : "Confirm record"}

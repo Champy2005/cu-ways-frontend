@@ -1,5 +1,7 @@
 import { ApiError } from "@/lib/api/errors";
+import { isRecord } from "@/lib/api/envelope";
 import { serverApiGet } from "@/lib/api/server-client";
+import { isActivePayment, type ActivePayment } from "@/features/jobs/payment";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import { EMPTY_MARKETER_QUERY } from "@/features/marketer-discovery/schemas";
@@ -124,15 +126,33 @@ export async function getJobOffers(
 export type JobPaymentData = {
   job: CreatorJobSummary;
   acceptedOffer: JobOfferComparison | null;
+  /** The job's Pending or Paid payment from the backend, or null when none exists. */
+  currentPayment: ActivePayment | null;
 };
 
-/** Loads the owned job, then its accepted offer (the price a payment must match). */
+/** Reads the owned job's active payment; throws when the response is not a valid record. */
+export async function getCurrentJobPayment(jobId: number): Promise<ActivePayment | null> {
+  const data = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/payments/current`);
+  const payment = isRecord(data) ? data.payment : undefined;
+  if (payment === null) return null;
+  if (isActivePayment(payment, jobId)) return payment;
+  throw new Error("The payment record could not be read. Refresh and try again.");
+}
+
+/**
+ * Loads the owned job, its accepted offer (the price a payment must match),
+ * and any payment already recorded, so a reload shows the saved record.
+ */
 export async function loadJobPaymentData(jobId: number): Promise<JobPaymentData> {
-  const job = await getCreatorJob(jobId);
-  const accepted = await getJobOffers(jobId, "Accepted");
+  const [job, accepted, currentPayment] = await Promise.all([
+    getCreatorJob(jobId),
+    getJobOffers(jobId, "Accepted"),
+    getCurrentJobPayment(jobId),
+  ]);
   return {
     job,
     acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
+    currentPayment,
   };
 }
 

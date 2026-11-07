@@ -1,15 +1,26 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { JobPaymentData } from "../api";
-import { recordJobPayment, type RecordPaymentResult } from "../payment-actions";
+import type { ActivePayment } from "../payment";
+import { checkJobPayment, recordJobPayment, type RecordPaymentResult } from "../payment-actions";
 import { testJob, testOffer } from "../testing/offer-fixtures";
 import { JobPaymentPage } from "./job-payment-page";
 
-vi.mock("../payment-actions", () => ({ recordJobPayment: vi.fn() }));
+vi.mock("../payment-actions", () => ({ recordJobPayment: vi.fn(), checkJobPayment: vi.fn() }));
 afterEach(cleanup);
 beforeEach(() => {
   vi.resetAllMocks();
 });
+
+const pendingPayment: ActivePayment = {
+  payment_id: 4,
+  job_id: 12,
+  method: "PromptPay",
+  amount: "2500.50",
+  payment_status: "Pending",
+  created_at: "2026-11-06T03:00:00Z",
+  paid_at: null,
+};
 
 const recorded: RecordPaymentResult = {
   status: "recorded",
@@ -30,6 +41,7 @@ function renderPage(overrides: Partial<JobPaymentData> = {}) {
       data={{
         job: { ...testJob, title: "Campus mobility study", job_status: "Accepted" },
         acceptedOffer: { ...testOffer(), offer_status: "Accepted" },
+        currentPayment: null,
         ...overrides,
       }}
     />,
@@ -108,7 +120,7 @@ describe("creator payment page", () => {
     );
   });
 
-  it("records once, disables the dialog while saving, then shows the read-only record", async () => {
+  it("records once, blocks a second confirm while saving, then shows the read-only record", async () => {
     let finish!: (result: RecordPaymentResult) => void;
     vi.mocked(recordJobPayment).mockImplementation(
       () =>
@@ -124,7 +136,7 @@ describe("creator payment page", () => {
 
     const saving = await within(dialog).findByRole("button", { name: "Recording…" });
     expect(saving).toBeDisabled();
-    expect(within(dialog).getByRole("button", { name: "Go back" })).toBeDisabled();
+    expect(within(dialog).getByRole("button", { name: "Close" })).toBeEnabled();
     fireEvent.click(saving);
     expect(recordJobPayment).toHaveBeenCalledExactlyOnceWith(12, "Bank Transfer", "2500.50");
 
@@ -174,10 +186,31 @@ describe("creator payment page", () => {
     expect(screen.getByRole("textbox", { name: /Amount/ })).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("turns a duplicate attempt into an already-recorded state", async () => {
+  it("shows the saved record on reload instead of an empty form", () => {
+    if (recorded.status !== "recorded") throw new Error("fixture");
+    renderPage({ currentPayment: recorded.payment });
+    expect(screen.getByRole("heading", { name: "Payment details" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Payment recorded" })).toBeInTheDocument();
+    expect(screen.getByText("#9")).toBeInTheDocument();
+    expect(screen.getByText("Bank Transfer")).toBeInTheDocument();
+    expect(screen.getByText("7 Nov 2026, 10:00 (Bangkok)")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+  });
+
+  it("shows an existing Pending payment as Pending, never as Paid", () => {
+    renderPage({ currentPayment: pendingPayment });
+    expect(screen.getByRole("heading", { name: "Payment pending" })).toBeInTheDocument();
+    expect(screen.getByText("Pending", { selector: "[data-status]" })).toBeInTheDocument();
+    expect(screen.queryByText("Paid")).not.toBeInTheDocument();
+    expect(screen.getByText("Created on")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+  });
+
+  it("shows the real status when a submit finds an existing Pending payment", async () => {
     vi.mocked(recordJobPayment).mockResolvedValue({
-      status: "already_recorded",
-      message: "A payment has already been recorded for this job.",
+      status: "existing",
+      payment: pendingPayment,
+      message: "This job already has a payment, so no new payment was created.",
     });
     renderPage();
     fillForm("PromptPay", "2500.50");
@@ -187,10 +220,116 @@ describe("creator payment page", () => {
         name: "Confirm record",
       }),
     );
+    expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeInTheDocument();
+    expect(screen.getByText(/no new payment was created/)).toBeInTheDocument();
+    expect(screen.queryByText("Paid")).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByRole("heading", { name: "Payment details" })).toHaveFocus(),
+    );
+  });
+
+  it("does not claim Paid when the existing payment cannot be read, and can check again", async () => {
+    vi.mocked(recordJobPayment).mockResolvedValue({
+      status: "existing_unconfirmed",
+      message: "This job already has a payment, but its details could not be confirmed.",
+    });
+    vi.mocked(checkJobPayment).mockResolvedValue({ status: "found", payment: pendingPayment });
+    renderPage();
+    fillForm("PromptPay", "2500.50");
+    review();
+    fireEvent.click(
+      within(await screen.findByRole("alertdialog")).getByRole("button", {
+        name: "Confirm record",
+      }),
+    );
     expect(
-      await screen.findByRole("heading", { name: "Payment already recorded" }),
+      await screen.findByRole("heading", { name: "Payment already exists" }),
     ).toBeInTheDocument();
+    expect(screen.queryByText("Paid")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+    expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeInTheDocument();
+    expect(checkJobPayment).toHaveBeenCalledExactlyOnceWith(12);
+  });
+
+  it("returns to the form when a status check finds no payment", async () => {
+    vi.mocked(recordJobPayment).mockResolvedValue({
+      status: "unknown",
+      message: "We could not confirm whether the payment was saved.",
+    });
+    vi.mocked(checkJobPayment).mockResolvedValue({ status: "none" });
+    renderPage();
+    fillForm("Credit Card", "2500.50");
+    review();
+    fireEvent.click(
+      within(await screen.findByRole("alertdialog")).getByRole("button", {
+        name: "Confirm record",
+      }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: "Payment status unknown" }),
+    ).toBeInTheDocument();
+    fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+    expect(await screen.findByText(/No payment is recorded/)).toHaveAttribute("role", "alert");
+    expect(screen.getByRole("radio", { name: "Credit Card" })).toBeChecked();
+    expect(screen.getByRole("textbox", { name: /Amount/ })).toHaveValue("2500.50");
+  });
+
+  it("lets the Creator close the dialog while saving without allowing a second submit", async () => {
+    let finish!: (result: RecordPaymentResult) => void;
+    vi.mocked(recordJobPayment).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    renderPage();
+    fillForm("Bank Transfer", "2500.50");
+    review();
+    const dialog = await screen.findByRole("alertdialog");
+    fireEvent.click(within(dialog).getByRole("button", { name: "Confirm record" }));
+    expect(await within(dialog).findByText(/Closing does not cancel it/)).toBeInTheDocument();
+
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("status")).toHaveTextContent("Still recording this payment");
+    const reviewButton = screen.getByRole("button", { name: "Recording…" });
+    expect(reviewButton).toHaveAttribute("aria-disabled", "true");
+    await waitFor(() => expect(reviewButton).toHaveFocus());
+
+    fireEvent.click(reviewButton);
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(recordJobPayment).toHaveBeenCalledTimes(1);
+
+    finish(recorded);
+    expect(await screen.findByRole("heading", { name: "Payment recorded" })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByRole("heading", { name: "Payment details" })).toHaveFocus(),
+    );
+  });
+
+  it("shows a failure on the form when it lands after the dialog was closed", async () => {
+    let finish!: (result: RecordPaymentResult) => void;
+    vi.mocked(recordJobPayment).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    renderPage();
+    fillForm("PromptPay", "2500.50");
+    review();
+    const dialog = await screen.findByRole("alertdialog");
+    fireEvent.click(within(dialog).getByRole("button", { name: "Confirm record" }));
+    fireEvent.click(await within(dialog).findByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
+
+    finish({ status: "error", message: "The payment was not recorded. Try again." });
+    expect(await screen.findByRole("alert")).toHaveTextContent("The payment was not recorded");
+    expect(await screen.findByRole("button", { name: "Review payment" })).not.toHaveAttribute(
+      "aria-disabled",
+    );
   });
 
   it.each([

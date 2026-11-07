@@ -422,6 +422,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/jobs/{id}/proofs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * List Proof of delivery links for a job
+         * @description Returns only attachment_type Proof rows, newest first (upload_at, then attachment_id). Readable by the job's Creator and by the Marketer whose offer was accepted.
+         */
+        get: operations["listJobProofs"];
+        put?: never;
+        /**
+         * Submit a delivery link as Proof (US-026)
+         * @description The Marketer whose offer was accepted adds a trimmed HTTP or HTTPS URL as an attachment_type Proof row while the job is In Progress. The server sets upload_at. Saving Proof never completes the job. Earlier proofs remain.
+         */
+        post: operations["addJobProof"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/jobs/{id}/requests": {
         parameters: {
             query?: never;
@@ -553,6 +579,28 @@ export interface paths {
          * @description The caller must have Creator membership and own the Job. The Job must be Accepted, In Progress, or Completed with a valid accepted offer. Amount must exactly match the accepted offer price. An existing Pending or Paid payment blocks creation; Failed and Refunded history is retained. The server saves Paid with created_at and paid_at set to the same UTC instant. This records the Creator's confirmation without processing money through a payment gateway or changing the Job status.
          */
         post: operations["createJobPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/payments/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * Read a Job's active payment
+         * @description The caller must have Creator membership and own the Job. Returns the Job's active payment, meaning the Pending or Paid payment that blocks a new one, or `payment` as null when there is none. Failed and Refunded history is not returned. It works for a Job in any status, so the Creator can see whether a payment was already recorded, for example after a payment request whose result was unknown.
+         */
+        get: operations["getCurrentJobPayment"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1077,6 +1125,43 @@ export interface components {
             status: "success";
             data: components["schemas"]["Brief"][];
         };
+        CreateProofRequest: {
+            /**
+             * Format: uri
+             * @description Surrounding whitespace is trimmed before saving.
+             */
+            url: string;
+            /**
+             * @default Proof
+             * @enum {string}
+             */
+            attachment_type: "Proof";
+        };
+        Proof: {
+            /** Format: int32 */
+            attachment_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /** @enum {string} */
+            attachment_type: "Proof";
+            /** Format: uri */
+            url: string;
+            /**
+             * Format: date-time
+             * @description Server-generated upload time (UTC).
+             */
+            upload_at: string;
+        };
+        ProofResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Proof"];
+        };
+        ProofListResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["Proof"][];
+        };
         CreateJobRequestsRequest: {
             marketer_ids: number[];
         };
@@ -1187,6 +1272,41 @@ export interface components {
              * @example 1500.00
              */
             amount: string;
+        };
+        CurrentPaymentResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                payment: components["schemas"]["ActivePayment"] | null;
+            };
+        };
+        ActivePayment: {
+            /** Format: int32 */
+            payment_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /**
+             * @description Other can appear only on legacy rows created before the method constraint.
+             * @enum {string}
+             */
+            method: "PromptPay" | "Bank Transfer" | "Credit Card" | "Other";
+            /**
+             * @description Amount formatted with exactly two decimal places.
+             * @example 1500.00
+             */
+            amount: string;
+            /** @enum {string} */
+            payment_status: "Pending" | "Paid";
+            /**
+             * Format: date-time
+             * @description Server-assigned UTC creation time. Legacy payments may have no value.
+             */
+            created_at: string | null;
+            /**
+             * Format: date-time
+             * @description UTC time the payment was confirmed. Null while Pending or on legacy rows.
+             */
+            paid_at: string | null;
         };
         PaymentResponse: {
             /** @enum {string} */
@@ -2987,6 +3107,135 @@ export interface operations {
             };
         };
     };
+    listJobProofs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Proof attachments. An empty list is valid. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProofListResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description forbidden - the caller is neither the job's Creator nor the Marketer hired through a still-Accepted offer. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description job_not_found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description validation_error - the job id is invalid. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    addJobProof: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateProofRequest"];
+            };
+        };
+        responses: {
+            /** @description Proof saved. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProofResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description marketer_required - the caller has no Marketer profile (for example a Creator-only account); forbidden - the caller is a Marketer but not the one hired through the job's accepted offer. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description job_not_found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description job_not_in_progress - the job is not In Progress; accepted_offer_mismatch - the job's accepted offer is no longer Accepted. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description invalid_attachment_type - attachment_type is not Proof (the database also restricts it to Brief, Proof or Other); invalid_proof_url - url is not an absolute HTTP or HTTPS URL; validation_error - malformed body, unknown field or invalid job id. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     listJobRequests: {
         parameters: {
             query?: never;
@@ -3447,6 +3696,64 @@ export interface operations {
                 };
             };
             /** @description Invalid ID, method, amount, or JSON body (validation_error), or amount does not equal the accepted offer price (payment_amount_mismatch). No payment is created. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getCurrentJobPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The active payment, or null when the Job has none. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentPaymentResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Missing Creator membership (creator_required) or the caller does not own the Job (forbidden). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job was not found (job_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid Job ID (validation_error). */
             422: {
                 headers: {
                     [name: string]: unknown;

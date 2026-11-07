@@ -3,6 +3,8 @@ import type { CreatorJobSummary } from "@/features/jobs/types";
 
 export type PaymentMethod = components["schemas"]["CreatePaymentRequest"]["method"];
 export type RecordedPayment = components["schemas"]["PaymentResponse"]["data"];
+/** The job's Pending or Paid payment, as read back from the backend. */
+export type ActivePayment = components["schemas"]["ActivePayment"];
 
 export const PAYMENT_METHODS = [
   "PromptPay",
@@ -22,6 +24,30 @@ const AMOUNT_PATTERN = /^(\d{1,8})(?:\.(\d{1,2}))?$/;
 
 export function isPaymentMethod(value: unknown): value is PaymentMethod {
   return typeof value === "string" && (PAYMENT_METHODS as readonly string[]).includes(value);
+}
+
+const ACTIVE_PAYMENT_METHODS: readonly string[] = [...PAYMENT_METHODS, "Other"];
+
+function isNullableTime(value: unknown): value is string | null {
+  return value === null || (typeof value === "string" && !Number.isNaN(Date.parse(value)));
+}
+
+/** Checks a backend payment record so a malformed response is never shown as real. */
+export function isActivePayment(value: unknown, jobId: number): value is ActivePayment {
+  if (typeof value !== "object" || value === null) return false;
+  const payment = value as Record<string, unknown>;
+  return (
+    typeof payment.payment_id === "number" &&
+    Number.isSafeInteger(payment.payment_id) &&
+    payment.payment_id > 0 &&
+    payment.job_id === jobId &&
+    typeof payment.method === "string" &&
+    ACTIVE_PAYMENT_METHODS.includes(payment.method) &&
+    typeof payment.amount === "string" &&
+    (payment.payment_status === "Pending" || payment.payment_status === "Paid") &&
+    isNullableTime(payment.created_at) &&
+    isNullableTime(payment.paid_at)
+  );
 }
 
 /** Parses a decimal amount into whole satang so comparisons never use floats. */
