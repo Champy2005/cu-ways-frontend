@@ -1,4 +1,8 @@
-"use server";
+/**
+ * Server-side payment save and status check, used by the payment API route
+ * (payment-route.ts). They are plain server functions, not server actions, so
+ * the page reaches them with an abortable fetch that never queues.
+ */
 
 import { revalidatePath } from "next/cache";
 import { getCurrentJobPayment } from "@/features/jobs/api";

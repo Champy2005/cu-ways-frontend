@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Info } from "lucide-react";
 import { SuccessToast } from "@/components/feedback/success-toast";
@@ -17,13 +17,8 @@ import {
   type PaymentFormErrors,
   type PaymentMethod,
 } from "../payment";
-import { PAYMENT_ACTION_DEADLINE_MS, withinDeadline } from "../action-deadline";
-import {
-  checkJobPayment,
-  recordJobPayment,
-  type CheckPaymentResult,
-  type RecordPaymentResult,
-} from "../payment-actions";
+import type { RecordPaymentResult } from "../payment-actions";
+import { requestPaymentRecord, requestPaymentStatus } from "../payment-client";
 import { PaymentAmountField } from "./payment-amount-field";
 import { PaymentConfirmDialog } from "./payment-confirm-dialog";
 import { PaymentMethodOptions } from "./payment-method-options";
@@ -38,42 +33,6 @@ type Outcome =
   | { kind: "unavailable"; message: string };
 
 type FocusTarget = "review" | "amount" | "heading";
-
-/**
- * Runs the save without ever rejecting. If the server action's response is
- * lost or never arrives, the backend may still have saved the payment, so the
- * result is "unknown" and the Creator checks the real status before retrying.
- */
-async function recordWithRecovery(
-  jobId: number,
-  method: PaymentMethod,
-  amount: string,
-): Promise<RecordPaymentResult> {
-  try {
-    return await withinDeadline(
-      recordJobPayment(jobId, method, amount),
-      PAYMENT_ACTION_DEADLINE_MS,
-    );
-  } catch {
-    return {
-      status: "unknown",
-      message:
-        "We could not confirm whether the payment was saved. Check the payment status before trying again.",
-    };
-  }
-}
-
-/** Runs the status check without ever rejecting, so the recovery view stays usable. */
-async function checkWithRecovery(jobId: number): Promise<CheckPaymentResult> {
-  try {
-    return await withinDeadline(checkJobPayment(jobId), PAYMENT_ACTION_DEADLINE_MS);
-  } catch {
-    return {
-      status: "error",
-      message: "The payment status could not be checked. Check your connection and try again.",
-    };
-  }
-}
 
 function unavailableReason({ job, acceptedOffer }: JobPaymentData): string | null {
   if (!PAYABLE_JOB_STATUSES.includes(job.job_status)) {
@@ -146,7 +105,13 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
   const [reviewing, setReviewing] = useState(false);
   const [dialogError, setDialogError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  // Saving and checking are tracked separately, never through one shared
+  // transition, so a save whose response never arrives cannot lock the status
+  // check. The refs block a second request before the state re-renders.
+  const [saving, setSaving] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const savingRef = useRef(false);
+  const checkingRef = useRef(false);
 
   const heading = useRef<HTMLHeadingElement>(null);
   const firstMethod = useRef<HTMLInputElement>(null);
@@ -185,7 +150,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
 
   function review(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
+    if (savingRef.current) return;
     setValidated(true);
     setFormAlert(null);
     const nextErrors = validatePaymentForm({ method, amount }, acceptedSatang);
@@ -247,17 +212,25 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
     }
   }
 
-  function confirm() {
-    if (pending || !method) return;
-    startTransition(async () => {
-      applyResult(await recordWithRecovery(job.job_id, method, amount.trim()));
-    });
+  async function confirm() {
+    if (savingRef.current || !method) return;
+    savingRef.current = true;
+    setSaving(true);
+    try {
+      // requestPaymentRecord never rejects and is bounded by its own timeout.
+      applyResult(await requestPaymentRecord(job.job_id, method, amount.trim()));
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
+    }
   }
 
-  function checkStatus() {
-    if (pending) return;
-    startTransition(async () => {
-      const result = await checkWithRecovery(job.job_id);
+  async function checkStatus() {
+    if (checkingRef.current) return;
+    checkingRef.current = true;
+    setChecking(true);
+    try {
+      const result = await requestPaymentStatus(job.job_id);
       if (result.status === "found") {
         settle({ kind: "payment", payment: result.payment });
       } else if (result.status === "none") {
@@ -270,7 +243,10 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
           current.kind === "unknown" ? { ...current, message: result.message } : current,
         );
       }
-    });
+    } finally {
+      checkingRef.current = false;
+      setChecking(false);
+    }
   }
 
   function finalFocus() {
@@ -326,7 +302,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
             jobId={job.job_id}
             title={outcome.title}
             message={outcome.message}
-            checking={pending}
+            checking={checking}
             onCheck={checkStatus}
           />
         )}
@@ -342,7 +318,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
                 {formAlert}
               </p>
             )}
-            {pending && !reviewing && (
+            {saving && !reviewing && (
               <p role="status" className="pay-note">
                 <Info aria-hidden="true" />
                 <span>
@@ -380,10 +356,10 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
               type="submit"
               // aria-disabled keeps focus here after the dialog closes mid-save;
               // review() ignores the click while a request is in flight.
-              aria-disabled={pending || undefined}
+              aria-disabled={saving || undefined}
               className="mk-primary-button h-12 w-full text-sm font-bold text-white aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
             >
-              {pending ? "Recording…" : "Review payment"}
+              {saving ? "Recording…" : "Review payment"}
             </Button>
           </form>
         )}
@@ -394,7 +370,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
           marketerName={acceptedOffer.marketer.name}
           method={method}
           amountSatang={toSatang(amount) ?? 0}
-          pending={pending}
+          pending={saving}
           error={dialogError}
           onConfirm={confirm}
           onClose={() => closeDialog("review")}
