@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { revalidatePath } from "next/cache";
 import { getCurrentJobPayment } from "@/features/jobs/api";
 import { getSession } from "@/lib/auth/session";
@@ -109,7 +109,9 @@ describe("recordJobPayment", () => {
         payment: pendingPayment,
         message: expect.stringMatching(/no new payment was created/),
       });
-      expect(getCurrentJobPayment).toHaveBeenCalledExactlyOnceWith(12);
+      expect(getCurrentJobPayment).toHaveBeenCalledExactlyOnceWith(12, {
+        signal: expect.any(AbortSignal),
+      });
       expect(serverApiRequest).toHaveBeenCalledTimes(1);
     });
 
@@ -167,7 +169,7 @@ describe("recordJobPayment", () => {
     vi.mocked(serverApiRequest).mockResolvedValue({ ...payment, job_id: 99 });
     vi.mocked(getCurrentJobPayment).mockResolvedValue(null);
     expect((await recordJobPayment(12, "PromptPay", "2500.50")).status).toBe("unknown");
-    expect(getCurrentJobPayment).toHaveBeenCalledWith(12);
+    expect(getCurrentJobPayment).toHaveBeenCalledWith(12, { signal: expect.any(AbortSignal) });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 });
@@ -201,5 +203,62 @@ describe("checkJobPayment", () => {
     vi.mocked(getSession).mockResolvedValue(null);
     expect((await checkJobPayment(12)).status).toBe("error");
     expect(getCurrentJobPayment).not.toHaveBeenCalled();
+  });
+});
+
+/** A status read that never answers on its own, only when its signal aborts. */
+function hangingRead(_jobId: number, options?: { signal?: AbortSignal }) {
+  return new Promise<never>((_, reject) => {
+    options?.signal?.addEventListener("abort", () => reject(options.signal?.reason));
+  });
+}
+
+describe("bounded status reads", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    // Node's AbortSignal.timeout ignores fake timers; build it on setTimeout so
+    // the test controls the clock and proves the real 10-second bound.
+    vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(new DOMException("Timed out", "TimeoutError")), ms);
+      return controller.signal;
+    });
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("gives up on a hanging reconciliation read after a timed-out save", async () => {
+    vi.mocked(serverApiRequest).mockRejectedValue(
+      new DOMException("The operation timed out.", "TimeoutError"),
+    );
+    vi.mocked(getCurrentJobPayment).mockImplementation(hangingRead);
+    const result = recordJobPayment(12, "PromptPay", "2500.50");
+    await vi.advanceTimersByTimeAsync(10_000);
+    await expect(result).resolves.toMatchObject({
+      status: "unknown",
+      message: expect.stringMatching(/Check the payment status/),
+    });
+  });
+
+  it("gives up on a hanging read after a duplicate, without claiming Paid", async () => {
+    vi.mocked(serverApiRequest).mockRejectedValue(
+      new ApiError(409, "payment_already_exists", "backend"),
+    );
+    vi.mocked(getCurrentJobPayment).mockImplementation(hangingRead);
+    const result = recordJobPayment(12, "PromptPay", "2500.50");
+    await vi.advanceTimersByTimeAsync(10_000);
+    await expect(result).resolves.toMatchObject({ status: "existing_unconfirmed" });
+  });
+
+  it("gives up on a hanging manual status check", async () => {
+    vi.mocked(getCurrentJobPayment).mockImplementation(hangingRead);
+    const result = checkJobPayment(12);
+    await vi.advanceTimersByTimeAsync(10_000);
+    await expect(result).resolves.toEqual({
+      status: "error",
+      message: expect.stringMatching(/could not be checked/),
+    });
   });
 });

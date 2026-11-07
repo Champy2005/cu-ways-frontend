@@ -17,7 +17,13 @@ import {
   type PaymentFormErrors,
   type PaymentMethod,
 } from "../payment";
-import { checkJobPayment, recordJobPayment, type RecordPaymentResult } from "../payment-actions";
+import { PAYMENT_ACTION_DEADLINE_MS, withinDeadline } from "../action-deadline";
+import {
+  checkJobPayment,
+  recordJobPayment,
+  type CheckPaymentResult,
+  type RecordPaymentResult,
+} from "../payment-actions";
 import { PaymentAmountField } from "./payment-amount-field";
 import { PaymentConfirmDialog } from "./payment-confirm-dialog";
 import { PaymentMethodOptions } from "./payment-method-options";
@@ -32,6 +38,42 @@ type Outcome =
   | { kind: "unavailable"; message: string };
 
 type FocusTarget = "review" | "amount" | "heading";
+
+/**
+ * Runs the save without ever rejecting. If the server action's response is
+ * lost or never arrives, the backend may still have saved the payment, so the
+ * result is "unknown" and the Creator checks the real status before retrying.
+ */
+async function recordWithRecovery(
+  jobId: number,
+  method: PaymentMethod,
+  amount: string,
+): Promise<RecordPaymentResult> {
+  try {
+    return await withinDeadline(
+      recordJobPayment(jobId, method, amount),
+      PAYMENT_ACTION_DEADLINE_MS,
+    );
+  } catch {
+    return {
+      status: "unknown",
+      message:
+        "We could not confirm whether the payment was saved. Check the payment status before trying again.",
+    };
+  }
+}
+
+/** Runs the status check without ever rejecting, so the recovery view stays usable. */
+async function checkWithRecovery(jobId: number): Promise<CheckPaymentResult> {
+  try {
+    return await withinDeadline(checkJobPayment(jobId), PAYMENT_ACTION_DEADLINE_MS);
+  } catch {
+    return {
+      status: "error",
+      message: "The payment status could not be checked. Check your connection and try again.",
+    };
+  }
+}
 
 function unavailableReason({ job, acceptedOffer }: JobPaymentData): string | null {
   if (!PAYABLE_JOB_STATUSES.includes(job.job_status)) {
@@ -208,14 +250,14 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
   function confirm() {
     if (pending || !method) return;
     startTransition(async () => {
-      applyResult(await recordJobPayment(job.job_id, method, amount.trim()));
+      applyResult(await recordWithRecovery(job.job_id, method, amount.trim()));
     });
   }
 
   function checkStatus() {
     if (pending) return;
     startTransition(async () => {
-      const result = await checkJobPayment(job.job_id);
+      const result = await checkWithRecovery(job.job_id);
       if (result.status === "found") {
         settle({ kind: "payment", payment: result.payment });
       } else if (result.status === "none") {

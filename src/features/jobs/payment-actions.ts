@@ -32,8 +32,19 @@ export type CheckPaymentResult =
   | { status: "none" }
   | { status: "error"; message: string };
 
-/** A stalled backend must not hold the Creator in a pending state indefinitely. */
+/**
+ * A stalled backend must not hold the Creator in a pending state indefinitely.
+ * Every backend call here is bounded: the save, the read that reconciles an
+ * unclear save, and the manual status check. The worst case for one action is
+ * the save plus one read (25 seconds), which stays inside the page's own
+ * deadline (PAYMENT_ACTION_DEADLINE_MS) so the server result normally wins.
+ */
 const PAYMENT_REQUEST_TIMEOUT_MS = 15_000;
+const PAYMENT_READ_TIMEOUT_MS = 10_000;
+
+function readCurrentPaymentWithin(jobId: number): Promise<ActivePayment | null> {
+  return getCurrentJobPayment(jobId, { signal: AbortSignal.timeout(PAYMENT_READ_TIMEOUT_MS) });
+}
 
 const SESSION_EXPIRED = "Your session expired. Sign in again to continue.";
 const NO_ACCESS = "You no longer have access to this job. Return to your jobs to continue.";
@@ -62,8 +73,9 @@ function isRecordedPayment(value: unknown, jobId: number): value is RecordedPaym
 
 async function readCurrentPayment(jobId: number): Promise<ActivePayment | null | undefined> {
   try {
-    return await getCurrentJobPayment(jobId);
+    return await readCurrentPaymentWithin(jobId);
   } catch {
+    // Failed or timed out: the outcome stays unknown rather than assumed.
     return undefined;
   }
 }
@@ -165,7 +177,7 @@ export async function checkJobPayment(jobId: unknown): Promise<CheckPaymentResul
   if (!validId(jobId)) return { status: "error", message: "This job is not available." };
   if (!(await getSession())) return { status: "error", message: SESSION_EXPIRED };
   try {
-    const payment = await getCurrentJobPayment(jobId);
+    const payment = await readCurrentPaymentWithin(jobId);
     if (!payment) return { status: "none" };
     revalidatePaymentPaths(jobId);
     return { status: "found", payment };

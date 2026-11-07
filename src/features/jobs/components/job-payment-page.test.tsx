@@ -1,5 +1,6 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { PAYMENT_ACTION_DEADLINE_MS } from "../action-deadline";
 import type { JobPaymentData } from "../api";
 import type { ActivePayment } from "../payment";
 import { checkJobPayment, recordJobPayment, type RecordPaymentResult } from "../payment-actions";
@@ -341,5 +342,100 @@ describe("creator payment page", () => {
     expect(screen.getByText("Payment is not available")).toBeInTheDocument();
     expect(screen.getByText(message)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+  });
+
+  describe("recovery when the server action's response does not arrive", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    /** Jumps past the page's real 35-second deadline without waiting for it. */
+    async function passPageDeadline() {
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(PAYMENT_ACTION_DEADLINE_MS);
+      });
+    }
+
+    async function confirmPayment() {
+      fillForm("Bank Transfer", "2500.50");
+      review();
+      fireEvent.click(
+        within(await screen.findByRole("alertdialog")).getByRole("button", {
+          name: "Confirm record",
+        }),
+      );
+    }
+
+    it("shows the unknown-result state instead of crashing when the response is lost", async () => {
+      vi.mocked(recordJobPayment).mockRejectedValue(
+        new TypeError("Simulated lost payment response"),
+      );
+      vi.mocked(checkJobPayment).mockResolvedValue({ status: "found", payment: pendingPayment });
+      renderPage();
+      await confirmPayment();
+
+      expect(await screen.findByRole("heading", { name: "Payment status unknown" })).toBeVisible();
+      expect(screen.getByText(/could not confirm whether the payment was saved/)).toBeVisible();
+      // No resubmit until the real status is known.
+      expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeVisible();
+      expect(recordJobPayment).toHaveBeenCalledTimes(1);
+    });
+
+    it("keeps the draft after a lost response once the check finds no payment", async () => {
+      vi.mocked(recordJobPayment).mockRejectedValue(new TypeError("Failed to fetch"));
+      vi.mocked(checkJobPayment).mockResolvedValue({ status: "none" });
+      renderPage();
+      await confirmPayment();
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByText(/No payment is recorded for this job yet/)).toBeVisible();
+      expect(screen.getByRole("radio", { name: "Bank Transfer" })).toBeChecked();
+      expect(screen.getByRole("textbox", { name: /Amount/ })).toHaveValue("2500.50");
+    });
+
+    it("keeps the recovery view usable when the status check itself fails", async () => {
+      vi.mocked(recordJobPayment).mockRejectedValue(new TypeError("Failed to fetch"));
+      vi.mocked(checkJobPayment)
+        .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+        .mockResolvedValueOnce({ status: "found", payment: pendingPayment });
+      renderPage();
+      await confirmPayment();
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByText(/status could not be checked/)).toBeVisible();
+      expect(screen.getByRole("heading", { name: "Payment status unknown" })).toBeVisible();
+
+      const retry = await screen.findByRole("button", { name: "Check payment status" });
+      expect(retry).toBeEnabled();
+      expect(screen.getAllByRole("link", { name: "Back to job details" })).not.toHaveLength(0);
+      fireEvent.click(retry);
+      expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeVisible();
+    });
+
+    it("stops waiting when the save never answers, and blocks a resubmit meanwhile", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      vi.mocked(recordJobPayment).mockReturnValue(new Promise(() => undefined));
+      renderPage();
+      await confirmPayment();
+      expect(await screen.findByRole("button", { name: "Recording…" })).toBeDisabled();
+      await passPageDeadline();
+      expect(await screen.findByRole("heading", { name: "Payment status unknown" })).toBeVisible();
+      expect(screen.queryByRole("button", { name: /Recording/ })).not.toBeInTheDocument();
+      expect(recordJobPayment).toHaveBeenCalledTimes(1);
+    });
+
+    it("stops waiting when the status check never answers", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      vi.mocked(recordJobPayment).mockRejectedValue(new TypeError("Failed to fetch"));
+      vi.mocked(checkJobPayment).mockReturnValue(new Promise(() => undefined));
+      renderPage();
+      await confirmPayment();
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByRole("button", { name: "Checking…" })).toBeDisabled();
+      await passPageDeadline();
+      expect(await screen.findByText(/status could not be checked/)).toBeVisible();
+      expect(await screen.findByRole("button", { name: "Check payment status" })).toBeEnabled();
+    });
   });
 });

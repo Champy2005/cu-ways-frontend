@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ApiError } from "@/lib/api/errors";
 import { serverApiGet } from "@/lib/api/server-client";
@@ -277,6 +277,11 @@ describe("Creator job invitation data", () => {
       await expect(getCurrentJobPayment(17)).resolves.toEqual(pending);
       expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/payments/current");
 
+      const signal = AbortSignal.timeout(1_000);
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ payment: null });
+      await getCurrentJobPayment(17, { signal });
+      expect(serverApiGet).toHaveBeenLastCalledWith("/api/v1/jobs/17/payments/current", { signal });
+
       vi.mocked(serverApiGet).mockResolvedValueOnce({ payment: null });
       await expect(getCurrentJobPayment(17)).resolves.toBeNull();
     });
@@ -307,6 +312,44 @@ describe("Creator job invitation data", () => {
     it("fails the page load when the job is not the Creator's", async () => {
       vi.mocked(serverApiGet).mockRejectedValue(new ApiError(403, "forbidden", "Forbidden"));
       await expect(loadJobPaymentData(17)).rejects.toThrow("Forbidden");
+    });
+  });
+
+  describe("payment page load timeout", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    });
+
+    it("gives up after 10 seconds when the backend does not answer", async () => {
+      vi.useFakeTimers();
+      // Node's AbortSignal.timeout ignores fake timers; build it on setTimeout.
+      vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(new DOMException("Timed out", "TimeoutError")), ms);
+        return controller.signal;
+      });
+      vi.mocked(serverApiGet).mockImplementation(
+        (_path: string, options?: { signal?: AbortSignal }) =>
+          new Promise((_, reject) => {
+            options?.signal?.addEventListener("abort", () => reject(options.signal?.reason));
+          }),
+      );
+      const load = loadJobPaymentData(17);
+      const assertion = expect(load).rejects.toThrow(/took too long to load/);
+      await vi.advanceTimersByTimeAsync(10_000);
+      await assertion;
+      expect(serverApiGet).toHaveBeenCalledTimes(3);
+      for (const call of vi.mocked(serverApiGet).mock.calls) {
+        expect(call[1]).toEqual({ signal: expect.any(AbortSignal) });
+      }
+    });
+
+    it("keeps the backend's own error when the load fails quickly", async () => {
+      vi.mocked(serverApiGet).mockRejectedValue(
+        new ApiError(404, "job_not_found", "Job not found"),
+      );
+      await expect(loadJobPaymentData(17)).rejects.toMatchObject({ status: 404 });
     });
   });
 });
