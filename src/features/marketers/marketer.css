@@ -1223,6 +1223,7 @@ body:has(.marketer-theme) {
 }
 .workspace-status[data-status="Accepted"],
 .workspace-status[data-status="Completed"],
+.workspace-status[data-status="Paid"],
 .workspace-status[data-status="Published"] {
   color: var(--mk-positive);
 }

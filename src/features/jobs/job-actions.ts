@@ -1,15 +1,25 @@
 "use server";
 
 import { createJobFieldErrors, type CreateJobValues } from "@/features/jobs/schemas";
-import { getCreatorJob } from "@/features/jobs/api";
+import { getCreatorJob, getCurrentJobReview } from "@/features/jobs/api";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 import { ApiError } from "@/lib/api/errors";
 import type { components } from "@/lib/api/generated/backend";
 import { serverApiRequest } from "@/lib/api/server-client";
 import { getSession } from "@/lib/auth/session";
 
+/** Whether a Completed job has its review; "unknown" when it could not be read. */
+export type JobReviewStatus = "reviewed" | "not_reviewed" | "unknown";
+
 export type SavedJobState =
-  | { status: "success"; job: CreatorJobSummary; creatorId: number; notice?: string }
+  | {
+      status: "success";
+      job: CreatorJobSummary;
+      creatorId: number;
+      notice?: string;
+      /** Set only for Completed jobs, which are the only ones that can be reviewed. */
+      review?: JobReviewStatus;
+    }
   | { status: "error"; message: string };
 
 export type CreatePendingJobState =
@@ -79,10 +89,21 @@ function failureMessage(error: unknown, fallback: string): string {
   return fallback;
 }
 
+/** A review read failure must not block the job details page. */
+async function readReviewStatus(jobId: number): Promise<JobReviewStatus> {
+  try {
+    return (await getCurrentJobReview(jobId)) ? "reviewed" : "not_reviewed";
+  } catch {
+    return "unknown";
+  }
+}
+
 export async function loadSavedJob(jobIdValue: string): Promise<SavedJobState> {
   try {
     const creatorId = await authenticatedCreatorId();
-    return { status: "success", job: await readOwnedJob(parseId(jobIdValue)), creatorId };
+    const job = await readOwnedJob(parseId(jobIdValue));
+    if (job.job_status !== "Completed") return { status: "success", job, creatorId };
+    return { status: "success", job, creatorId, review: await readReviewStatus(job.job_id) };
   } catch (error) {
     return {
       status: "error",

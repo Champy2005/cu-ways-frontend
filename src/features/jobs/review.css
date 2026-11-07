@@ -1,0 +1,60 @@
+/* US033 review: star rating input and saved review, on the shared pay-card frame. */
+.review-stars {
+  display: flex;
+  gap: 2px;
+  margin-top: 0.4rem;
+}
+.review-star {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.review-star:hover {
+  background: var(--mk-field);
+}
+.review-star input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.review-star:has(input:focus-visible) {
+  outline: 2px solid var(--mk-accent);
+  outline-offset: 1px;
+}
+.review-star svg {
+  width: 30px;
+  height: 30px;
+  color: var(--mk-muted);
+}
+.review-star[data-filled="true"] svg,
+.review-saved-stars svg {
+  color: var(--mk-caution);
+  fill: var(--mk-caution);
+}
+.review-saved-stars {
+  display: flex;
+  gap: 4px;
+  margin-top: 1rem;
+}
+.review-saved-stars svg {
+  width: 24px;
+  height: 24px;
+}
+/* Comments are plain text: keep the author's line breaks and wrap long words. */
+.review-comment {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+/* A long comment scrolls inside the confirmation so it stays within the viewport. */
+.review-dialog-comment {
+  max-height: 12rem;
+  overflow-y: auto;
+  margin-top: 0.75rem;
+}

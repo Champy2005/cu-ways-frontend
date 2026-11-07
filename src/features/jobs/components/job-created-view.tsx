@@ -3,7 +3,7 @@
 import { StatusText } from "@/components/ui/status-text";
 
 import Link from "next/link";
-import { Check, Circle } from "lucide-react";
+import { Check, Circle, Star } from "lucide-react";
 
 import { BackLink } from "@/components/ui/back-link";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import {
   JobSuccessNotification,
   type JobSuccessNotice,
 } from "@/features/jobs/components/job-success-notification";
+import type { JobReviewStatus } from "@/features/jobs/job-actions";
+import { PAYABLE_JOB_STATUSES } from "@/features/jobs/payment";
 import type { CreatorJobSummary } from "@/features/jobs/types";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +27,13 @@ export type JobCreatedDetails = {
   surveyCount: number;
   pendingOfferCount?: number;
   status: CreatorJobSummary["job_status"];
+};
+
+const REVIEW_LINK_LABELS: Record<JobReviewStatus, string> = {
+  reviewed: "View review",
+  not_reviewed: "Write a review",
+  // The review could not be read; the review page itself shows which applies.
+  unknown: "Open review",
 };
 
 const JOB_STATUS_SUBTITLES: Record<CreatorJobSummary["job_status"], string> = {
@@ -131,6 +140,27 @@ function JobStatusTracking({
   );
 }
 
+function JobReviewLink({
+  jobId,
+  reviewStatus = "unknown",
+}: {
+  jobId: number;
+  reviewStatus?: JobReviewStatus;
+}) {
+  return (
+    <Link
+      href={`/creator/jobs/${jobId}/review`}
+      className={cn(
+        reviewStatus === "not_reviewed" ? "mk-primary-button" : "mk-secondary-button",
+        "col-span-2 inline-flex min-h-12 items-center justify-center gap-2 border px-4 text-sm font-bold",
+      )}
+    >
+      <Star aria-hidden="true" className="size-4" />
+      {REVIEW_LINK_LABELS[reviewStatus]}
+    </Link>
+  );
+}
+
 function JobDeadline({ value }: { value: string }) {
   if (!value) return <>-</>;
   const formatted = new Intl.DateTimeFormat("en-GB", {
@@ -148,10 +178,13 @@ export function JobCreatedView({
   canEdit = true,
   notification,
   onDismissNotification,
+  reviewStatus,
 }: {
   job: JobCreatedDetails;
   onEdit: () => void;
   canEdit?: boolean;
+  /** Completed jobs only: picks "Write a review" or "View review". */
+  reviewStatus?: JobReviewStatus;
   notification?: JobSuccessNotice | null;
   onDismissNotification?: () => void;
 }) {
@@ -261,6 +294,17 @@ export function JobCreatedView({
             >
               View offers
             </Link>
+          )}
+          {job.id && PAYABLE_JOB_STATUSES.includes(job.status) && (
+            <Link
+              href={`/creator/jobs/${job.id}/payment`}
+              className="mk-secondary-button inline-flex min-h-12 items-center justify-center border px-4 text-sm font-bold"
+            >
+              Record payment
+            </Link>
+          )}
+          {job.id && job.status === "Completed" && (
+            <JobReviewLink jobId={job.id} reviewStatus={reviewStatus} />
           )}
           {job.id && job.status === "Pending" && (
             <Link

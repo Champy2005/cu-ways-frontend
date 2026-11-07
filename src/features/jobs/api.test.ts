@@ -5,11 +5,15 @@ import { serverApiGet } from "@/lib/api/server-client";
 import { listMarketers } from "@/features/marketer-discovery/api";
 import {
   getCreatorJobs,
+  getCurrentJobPayment,
+  getCurrentJobReview,
   getJobOffers,
   getJobSentInvitations,
   loadCreatorJobs,
   loadJobInviteInitialData,
   loadJobOffersInitialData,
+  loadJobPaymentData,
+  loadJobReviewData,
 } from "@/features/jobs/api";
 
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
@@ -256,6 +260,91 @@ describe("Creator job invitation data", () => {
 
       await expect(loadJobOffersInitialData(17)).rejects.toThrow("Job not found");
       expect(serverApiGet).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Creator job payment data", () => {
+    const pending = {
+      payment_id: 4,
+      job_id: 17,
+      method: "Bank Transfer" as const,
+      amount: "2500.00",
+      payment_status: "Pending" as const,
+      created_at: null,
+      paid_at: null,
+    };
+
+    it("reads the job's active payment, or null when there is none", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ payment: pending });
+      await expect(getCurrentJobPayment(17)).resolves.toEqual(pending);
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/payments/current");
+
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ payment: null });
+      await expect(getCurrentJobPayment(17)).resolves.toBeNull();
+    });
+
+    it.each([
+      ["a missing payment field", {}],
+      ["another job's payment", { payment: { ...pending, job_id: 99 } }],
+      ["an unknown status", { payment: { ...pending, payment_status: "Refunded" } }],
+      ["a malformed time", { payment: { ...pending, paid_at: "yesterday" } }],
+    ])("rejects %s instead of showing it", async (_name, response) => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce(response as never);
+      await expect(getCurrentJobPayment(17)).rejects.toThrow(/could not be read/);
+    });
+
+    it("loads the job, its accepted offer and its current payment together", async () => {
+      vi.mocked(serverApiGet).mockImplementation(async (path: string) => {
+        if (path === "/api/v1/jobs/17") return job;
+        if (path === "/api/v1/jobs/17/offers?status=Accepted") return [];
+        if (path === "/api/v1/jobs/17/payments/current") return { payment: pending };
+        throw new Error(`unexpected ${path}`);
+      });
+      await expect(loadJobPaymentData(17)).resolves.toMatchObject({
+        acceptedOffer: null,
+        currentPayment: pending,
+      });
+    });
+
+    it("fails the page load when the job is not the Creator's", async () => {
+      vi.mocked(serverApiGet).mockRejectedValue(new ApiError(403, "forbidden", "Forbidden"));
+      await expect(loadJobPaymentData(17)).rejects.toThrow("Forbidden");
+    });
+  });
+
+  describe("Creator job review data", () => {
+    const review = {
+      review_id: 3,
+      job_id: 17,
+      rating: 4,
+      comment: "Good",
+      created_at: "2026-11-07T03:00:00Z",
+    };
+
+    it("reads the job's review, or null when it has none", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review });
+      await expect(getCurrentJobReview(17)).resolves.toEqual(review);
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/reviews/current");
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: null });
+      await expect(getCurrentJobReview(17)).resolves.toBeNull();
+    });
+
+    it("rejects a malformed review instead of showing it", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: { ...review, job_id: 99 } });
+      await expect(getCurrentJobReview(17)).rejects.toThrow(/could not be read/);
+    });
+
+    it("loads the job, its accepted offer and its review together", async () => {
+      vi.mocked(serverApiGet).mockImplementation(async (path: string) => {
+        if (path === "/api/v1/jobs/17") return job;
+        if (path === "/api/v1/jobs/17/offers?status=Accepted") return [];
+        if (path === "/api/v1/jobs/17/reviews/current") return { review };
+        throw new Error(`unexpected ${path}`);
+      });
+      await expect(loadJobReviewData(17)).resolves.toMatchObject({
+        acceptedOffer: null,
+        currentReview: review,
+      });
     });
   });
 });
