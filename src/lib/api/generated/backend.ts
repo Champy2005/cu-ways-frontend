@@ -541,6 +541,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/jobs/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel a pending job
+         * @description Cancels a Pending job owned by the caller so the incomplete contract is logged. The request body is optional. In one transaction that rolls back completely on any failure, the job becomes Cancelled with cancelled_at set by the server and the optional trimmed cancel_reason, every Pending or Accepted job request on the job is Closed, and every Pending offer is Rejected. Payments are not changed. Only Pending jobs can be cancelled, and a job with a Paid payment cannot be cancelled.
+         */
+        post: operations["cancelJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/jobs/{id}/reviews": {
         parameters: {
             query?: never;
@@ -550,14 +572,35 @@ export interface paths {
             };
             cookie?: never;
         };
-        /** Read the saved review for the owning Creator */
-        get: operations["getJobReview"];
+        get?: never;
         put?: never;
         /**
          * Submit a review for a completed Job
          * @description The authenticated Creator must own the Job, and its status must be Completed. Only one review may be submitted for each Job. The server records created_at.
          */
         post: operations["submitJobReview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/reviews/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * Read a Job's review
+         * @description The caller must have Creator membership and own the Job. Returns the Job's review, or `review` as null when the Job has not been reviewed. A Job has at most one review because reviews.job_id is unique. It works for a Job in any status, so the Creator can see an existing review after a reload instead of the submission form.
+         */
+        get: operations["getCurrentJobReview"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -581,6 +624,28 @@ export interface paths {
          * @description The caller must have Creator membership and own the Job. The Job must be Accepted, In Progress, or Completed with a valid accepted offer. Amount must exactly match the accepted offer price. An existing Pending or Paid payment blocks creation; Failed and Refunded history is retained. The server saves Paid with created_at and paid_at set to the same UTC instant. This records the Creator's confirmation without processing money through a payment gateway or changing the Job status.
          */
         post: operations["createJobPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/jobs/{id}/payments/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /**
+         * Read a Job's active payment
+         * @description The caller must have Creator membership and own the Job. Returns the Job's active payment, meaning the Pending or Paid payment that blocks a new one, or `payment` as null when there is none. Failed and Refunded history is not returned. It works for a Job in any status, so the Creator can see whether a payment was already recorded, for example after a payment request whose result was unknown.
+         */
+        get: operations["getCurrentJobPayment"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1085,6 +1150,13 @@ export interface components {
             job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
             /** Format: date-time */
             created_at: string;
+            /**
+             * Format: date-time
+             * @description When the Creator cancelled the job. Null unless Cancelled, and for jobs cancelled before this was recorded.
+             */
+            cancelled_at?: string | null;
+            /** @description Optional reason the Creator gave when cancelling. */
+            cancel_reason?: string | null;
             surveys: components["schemas"]["JobSurveySummary"][];
         };
         CreatorJobSummaryResponse: {
@@ -1280,6 +1352,41 @@ export interface components {
              */
             amount: string;
         };
+        CurrentPaymentResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                payment: components["schemas"]["ActivePayment"] | null;
+            };
+        };
+        ActivePayment: {
+            /** Format: int32 */
+            payment_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /**
+             * @description Other can appear only on legacy rows created before the method constraint.
+             * @enum {string}
+             */
+            method: "PromptPay" | "Bank Transfer" | "Credit Card" | "Other";
+            /**
+             * @description Amount formatted with exactly two decimal places.
+             * @example 1500.00
+             */
+            amount: string;
+            /** @enum {string} */
+            payment_status: "Pending" | "Paid";
+            /**
+             * Format: date-time
+             * @description Server-assigned UTC creation time. Legacy payments may have no value.
+             */
+            created_at: string | null;
+            /**
+             * Format: date-time
+             * @description UTC time the payment was confirmed. Null while Pending or on legacy rows.
+             */
+            paid_at: string | null;
+        };
         PaymentResponse: {
             /** @enum {string} */
             status: "success";
@@ -1309,6 +1416,45 @@ export interface components {
                 paid_at: string;
             };
         };
+        CurrentReviewResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                review: components["schemas"]["JobReview"] | null;
+            };
+        };
+        JobReview: {
+            /** Format: int32 */
+            review_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /**
+             * Format: int32
+             * @description 1-5 stars. 0 can appear only on legacy reviews created before the 1-5 rule.
+             */
+            rating: number;
+            comment: string | null;
+            /**
+             * Format: date-time
+             * @description Server-assigned UTC submission time.
+             */
+            created_at: string;
+        };
+        ReviewResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** Format: int32 */
+                review_id: number;
+                /** Format: int32 */
+                job_id: number;
+                /** Format: int32 */
+                rating: number;
+                comment: string | null;
+                /** Format: date-time */
+                created_at: string;
+            };
+        };
         JobPayment: {
             /** Format: int32 */
             payment_id: number;
@@ -1334,22 +1480,6 @@ export interface components {
              */
             paid_at: string | null;
         };
-        ReviewResponse: {
-            /** @enum {string} */
-            status: "success";
-            data: components["schemas"]["JobReview"];
-        };
-        JobReview: {
-            /** Format: int32 */
-            review_id: number;
-            /** Format: int32 */
-            job_id: number;
-            /** Format: int32 */
-            rating: number;
-            comment: string | null;
-            /** Format: date-time */
-            created_at: string;
-        };
         JobSettlement: {
             /** Format: int32 */
             job_id: number;
@@ -1369,13 +1499,6 @@ export interface components {
             /** @enum {string} */
             status: "success";
             data: components["schemas"]["JobSettlement"];
-        };
-        JobReviewEnvelope: {
-            /** @enum {string} */
-            status: "success";
-            data: {
-                review: components["schemas"]["JobReview"] | null;
-            };
         };
         MarketerRating: {
             /** Format: double */
@@ -1421,6 +1544,25 @@ export interface components {
                 offer: components["schemas"]["Offer"];
                 rejected_offer_ids: number[];
                 closed_job_request_ids: number[];
+            };
+        };
+        CancelJobRequest: {
+            /** @description Optional reason, trimmed by the server. Blank is stored as null. */
+            cancel_reason?: string | null;
+        };
+        CancelJobResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** Format: int32 */
+                job_id: number;
+                /** @enum {string} */
+                job_status: "Cancelled";
+                /** Format: date-time */
+                cancelled_at: string;
+                cancel_reason: string | null;
+                closed_job_request_ids: number[];
+                rejected_offer_ids: number[];
             };
         };
         MarketerJobRequestListResponse: {
@@ -3161,7 +3303,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description forbidden - the caller is neither the job's Creator nor its accepted Marketer. */
+            /** @description forbidden - the caller is neither the job's Creator nor the Marketer hired through a still-Accepted offer. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3223,7 +3365,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description marketer_required - the caller has no Marketer profile; forbidden - the caller is not the Marketer of the job's accepted offer. */
+            /** @description marketer_required - the caller has no Marketer profile (for example a Creator-only account); forbidden - the caller is a Marketer but not the one hired through the job's accepted offer. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3241,7 +3383,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description job_not_in_progress - Proof can only be added while the job is In Progress. */
+            /** @description job_not_in_progress - the job is not In Progress; accepted_offer_mismatch - the job's accepted offer is no longer Accepted. */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -3585,7 +3727,7 @@ export interface operations {
             };
         };
     };
-    getJobReview: {
+    cancelJob: {
         parameters: {
             query?: never;
             header?: never;
@@ -3594,44 +3736,65 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CancelJobRequest"];
+            };
+        };
         responses: {
-            /** @description Saved job data. */
+            /** @description Job cancelled. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JobReviewEnvelope"];
+                    "application/json": components["schemas"]["CancelJobResponse"];
                 };
             };
-            /** @description Authentication required. */
+            /** @description Authentication is required or the token is invalid. */
             401: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
-            /** @description Access denied. */
+            /** @description The caller lacks Creator membership (code creator_required) or does not own the job (code forbidden). */
             403: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
-            /** @description Job not found. */
+            /** @description Job not found (code resource_not_found). */
             404: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
-            /** @description Job is not completed. */
+            /** @description The job is already Cancelled (code job_already_cancelled), is Accepted, In Progress or Completed (code job_not_cancellable), or has a Paid payment (code job_has_paid_payment). No state is changed. */
             409: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The job ID is not a positive int32 or the body is malformed or has unknown fields (code validation_error), or cancel_reason is longer than 300 characters (code invalid_cancel_reason). */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
         };
     };
@@ -3700,6 +3863,64 @@ export interface operations {
                 };
             };
             /** @description Invalid Job ID, rating, or JSON body. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getCurrentJobReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The Job's review, or null when there is none. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentReviewResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Missing Creator membership (creator_required) or the caller does not own the Job (forbidden). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job was not found (job_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid Job ID (validation_error). */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -3821,6 +4042,64 @@ export interface operations {
                 };
             };
             /** @description Invalid ID, method, amount, or JSON body (validation_error), or amount does not equal the accepted offer price (payment_amount_mismatch). No payment is created. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    getCurrentJobPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The active payment, or null when the Job has none. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentPaymentResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Missing Creator membership (creator_required) or the caller does not own the Job (forbidden). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Job was not found (job_not_found). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid Job ID (validation_error). */
             422: {
                 headers: {
                     [name: string]: unknown;

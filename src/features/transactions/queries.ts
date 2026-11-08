@@ -1,6 +1,6 @@
 import { serverApiGet } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
-import type { Proof, Review, Settlement, TransactionPage, Workspace } from "./types";
+import type { CurrentReview, Proof, Settlement, TransactionPage, Workspace } from "./types";
 
 export const transactionPageSize = 10;
 export const maxJobID = 2_147_483_647;
@@ -31,7 +31,7 @@ export function getProofs(id: string) {
 }
 
 export function getReview(id: string) {
-  return serverApiGet<{ review: Review | null }>(`${jobPath(id)}/reviews`);
+  return serverApiGet<CurrentReview>(`${jobPath(id)}/reviews/current`);
 }
 
 export async function getJobWorkflow(id: string, userId: number, workspace: Workspace) {

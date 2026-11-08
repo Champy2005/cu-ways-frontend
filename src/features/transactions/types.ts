@@ -6,7 +6,7 @@ export type Transaction = Schemas["Transaction"];
 export type TransactionPage = Schemas["TransactionListResponse"];
 export type Settlement = Schemas["JobSettlement"];
 export type Proof = Schemas["ProofListResponse"]["data"][number];
-export type Review = Schemas["JobReview"];
+export type CurrentReview = Schemas["CurrentReviewResponse"]["data"];
 export type PaymentInput = Schemas["CreatePaymentRequest"];
 
 export type JobMutation =

@@ -103,6 +103,9 @@ test("US032 shows completed paid jobs and linked records to both participants", 
     await page.goto("/creator/transactions");
     await expect(page.getByRole("heading", { name: "No transactions yet" })).toBeVisible();
 
+    await page.goto(`/creator/jobs/${jobId}/review`);
+    await expect(page.getByText("The job is not completed.")).toBeVisible();
+
     await page.goto(`/creator/jobs/${jobId}`);
     await page.getByRole("link", { name: "Record payment" }).click();
     await page.getByLabel("Payment method").selectOption("PromptPay");

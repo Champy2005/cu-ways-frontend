@@ -288,6 +288,9 @@ export async function ReviewPage({ id }: { id: string }) {
   let saved;
   try {
     saved = await Promise.all([getReview(id), getPayment(id)]);
+    if (saved[1].job_status !== "Completed") {
+      throw new ApiError(409, "job_not_completed", "The job is not completed.");
+    }
   } catch (error) {
     return (
       <div className="mx-auto max-w-2xl space-y-4">
