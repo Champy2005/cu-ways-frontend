@@ -616,7 +616,8 @@ export interface paths {
             };
             cookie?: never;
         };
-        get?: never;
+        /** Read the payment for the owning Creator or hired Marketer */
+        get: operations["getJobPayment"];
         put?: never;
         /**
          * Record a Creator-confirmed payment for a Job
@@ -651,6 +652,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/jobs/{id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Complete a paid job with proof as its owning Creator
+         * @description Sets the completion time and records simulated payout release. Repeating completion returns the saved state.
+         */
+        post: operations["completeJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/transactions": {
         parameters: {
             query?: never;
@@ -660,7 +681,7 @@ export interface paths {
         };
         /**
          * List my transaction history
-         * @description Returns the financial breakdown of Completed jobs that have a Paid payment and in which the authenticated user is the owning Creator or the hired Marketer (the accepted offer's marketer). Another user's jobs are never returned, and no user id is accepted from the request. Results are ordered by the newest payment first, then by job_id descending. paid_at is the time the payment was recorded, because jobs do not store a separate completion time. payout_status is derived rather than stored. Every listed job is Completed with a Paid payment (the Creator's confirmation of payment), so it is always Released, which means the simulated payout was recorded when the job completed. It does not confirm that the Marketer received money, and no money moves through a payment gateway.
+         * @description Returns the financial breakdown of Completed jobs that have a Paid payment and in which the authenticated user is the owning Creator or the hired Marketer (the accepted offer's marketer). Another user's jobs are never returned, and no user id is accepted from the request. Results are ordered by newest completion first, with unknown completion dates last, then by job_id descending. paid_at records the payment time. has_review is supplied only on the Creator side. payout_status is derived rather than stored. Every listed job is Completed with a Paid payment (the Creator's confirmation of payment), so it is always Released, which means the simulated payout was recorded when the job completed. It does not confirm that the Marketer received money, and no money moves through a payment gateway.
          */
         get: operations["listMyTransactions"];
         put?: never;
@@ -981,6 +1002,13 @@ export interface components {
              * @description When the Paid payment was recorded. Legacy payments may have no value.
              */
             paid_at: string | null;
+            /**
+             * Format: date-time
+             * @description Server-recorded completion time. Unknown for historical jobs.
+             */
+            completed_at: string | null;
+            /** @description Present only for the owning Creator outside the Marketer history. */
+            has_review?: boolean;
             /**
              * @description Derived from the job being Completed with a Paid payment. It is not stored. Released means the simulated payout was recorded at job completion; it does not confirm that the Marketer received money, and no money moves through a payment gateway.
              * @enum {string}
@@ -1426,6 +1454,51 @@ export interface components {
                 /** Format: date-time */
                 created_at: string;
             };
+        };
+        JobPayment: {
+            /** Format: int32 */
+            payment_id: number;
+            /** Format: int32 */
+            job_id: number;
+            /** @enum {string} */
+            method: "PromptPay" | "Bank Transfer" | "Credit Card" | "Other";
+            /**
+             * @description Amount formatted with exactly two decimal places.
+             * @example 1500.00
+             */
+            amount: string;
+            /** @enum {string} */
+            payment_status: "Paid";
+            /**
+             * Format: date-time
+             * @description Creation time assigned by the server in UTC.
+             */
+            created_at: string | null;
+            /**
+             * Format: date-time
+             * @description Server-generated UTC time of the Creator's confirmation.
+             */
+            paid_at: string | null;
+        };
+        JobSettlement: {
+            /** Format: int32 */
+            job_id: number;
+            job_title: string;
+            /** @enum {string} */
+            job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+            creator: components["schemas"]["TransactionParty"];
+            marketer: components["schemas"]["TransactionParty"];
+            accepted_price: string;
+            payment: components["schemas"]["JobPayment"] | null;
+            /** @enum {string|null} */
+            payout_status: "Held" | "Released" | null;
+            /** Format: date-time */
+            completed_at: string | null;
+        };
+        JobSettlementEnvelope: {
+            /** @enum {string} */
+            status: "success";
+            data: components["schemas"]["JobSettlement"];
         };
         MarketerRating: {
             /** Format: double */
@@ -3858,6 +3931,56 @@ export interface operations {
             };
         };
     };
+    getJobPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Saved job data. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobSettlementEnvelope"];
+                };
+            };
+            /** @description Authentication required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Access denied. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job has no accepted offer. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     createJobPayment: {
         parameters: {
             query?: never;
@@ -3984,6 +4107,56 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+        };
+    };
+    completeJob: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Completed job and payment. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobSettlementEnvelope"];
+                };
+            };
+            /** @description Authentication required. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Access denied. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job, accepted offer, Paid payment, or proof does not meet completion requirements. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
