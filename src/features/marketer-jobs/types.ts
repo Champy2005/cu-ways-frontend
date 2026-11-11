@@ -12,7 +12,25 @@ export type HiredJob = {
   deadline: string | null;
   targetResponses: number | null;
   briefUrl: string | null;
+  completion?: CompletionEvidence;
 };
+
+export type DeliveryProof = {
+  id: number;
+  url: string;
+  savedAt: string;
+};
+
+export type CompletionEvidence =
+  | {
+      status: "ready";
+      proofs: DeliveryProof[];
+      acceptedOffer: boolean;
+      paid: boolean;
+      marketer: string;
+      completedAt: string | null;
+    }
+  | { status: "error" };
 
 export type JobFailure = "error" | "unavailable" | "forbidden" | "expired" | "invalid";
 export type JobsResult<T> = { status: "success"; data: T } | { status: JobFailure };

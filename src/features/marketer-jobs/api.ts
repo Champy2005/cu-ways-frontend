@@ -5,6 +5,7 @@ import { serverApiGet } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
 import type { components } from "@/lib/api/generated/backend";
 import { jobStatuses, type HiredJob, type JobFailure } from "./types";
+import { getCompletionEvidence } from "./completion-api";
 
 type Settlement = components["schemas"]["JobSettlement"];
 
@@ -56,7 +57,15 @@ export async function getHiredJob(id: string, userId: number): Promise<HiredJob>
   const job = jobs.find((item) => item.id === Number(id));
   if (!job || !jobStatuses.some((status) => status === saved.job_status))
     throw new ApiError(422, "invalid_job", "Job details need refreshing.");
-  return { ...job, status: saved.job_status as HiredJob["status"], price: saved.accepted_price };
+  const detail: HiredJob = {
+    ...job,
+    status: saved.job_status as HiredJob["status"],
+    price: saved.accepted_price,
+  };
+  if (detail.status === "In Progress" || detail.status === "Completed") {
+    detail.completion = await getCompletionEvidence(saved);
+  }
+  return detail;
 }
 
 export function jobFailure(error: unknown): JobFailure {

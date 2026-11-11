@@ -13,6 +13,13 @@ import { requireSession } from "@/lib/auth/guards";
 vi.mock("@/lib/auth/guards", () => ({ requireSession: vi.fn() }));
 vi.mock("@/features/users/api", () => ({ getUser: vi.fn() }));
 vi.mock("@/features/transactions/queries", () => ({ getJobWorkflow: vi.fn() }));
+vi.mock("@/features/jobs/cancellation-actions", () => ({
+  loadCancellationDetails: async () => ({
+    status: "error",
+    message: "Cancellation details unavailable.",
+  }),
+  cancelCreatorJob: vi.fn(),
+}));
 vi.mock("@/features/jobs/job-actions", () => ({
   loadSavedJob: vi.fn(),
   addJobSurveys: vi.fn(),

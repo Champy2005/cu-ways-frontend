@@ -1,5 +1,6 @@
 import { InlineError } from "@/components/feedback/inline-error";
 import { JobDraftPage } from "@/features/jobs/components/job-draft-page";
+import { JobCancellation } from "@/features/jobs/components/job-cancellation";
 import { MutationFeedback } from "@/features/transactions/mutation-control";
 import { getJobWorkflow } from "@/features/transactions/queries";
 import { CreatorWorkflow, WorkflowError } from "@/features/transactions/workflow-page";
@@ -36,6 +37,7 @@ export default async function CreatorJobPage({ params }: { params: Promise<{ id:
         {result.workflow && <CreatorWorkflow {...result.workflow} />}
         {showError && <WorkflowError error={result.error} />}
       </MutationFeedback>
+      <JobCancellation jobId={id} creatorId={session.userId} />
     </>
   );
 }

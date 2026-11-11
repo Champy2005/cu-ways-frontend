@@ -1,0 +1,247 @@
+.summaryCard,
+.card {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--mk-border);
+  border-radius: 0.75rem;
+  background: var(--mk-surface);
+}
+.summaryCard {
+  margin-bottom: 1.25rem;
+}
+.identity {
+  min-width: 0;
+  flex: 1;
+}
+.identity > p {
+  margin-bottom: 0.35rem;
+  color: var(--mk-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+.identity h2 {
+  overflow-wrap: anywhere;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+.metadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 1rem 1.5rem;
+  margin-top: 1.125rem;
+}
+.metadata dt {
+  margin-bottom: 0.3rem;
+  font-size: 0.8125rem;
+  color: var(--mk-muted);
+}
+.metadata dd {
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.columns {
+  display: grid;
+  align-items: start;
+  gap: 1.25rem;
+}
+.card > h2 {
+  margin-bottom: 0.875rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+.card h2:focus-visible {
+  outline: 3px solid var(--mk-accent);
+  outline-offset: 4px;
+}
+.requirementCount {
+  margin: -0.15rem 0 0.6rem;
+  color: var(--mk-muted);
+  font-size: 0.93em;
+}
+.criteria {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.requirement {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--mk-border);
+  text-wrap: pretty;
+}
+.requirement:last-child {
+  border-bottom: 0;
+}
+.requirement > svg {
+  flex: none;
+  margin-top: 0.15rem;
+  color: var(--mk-caution);
+}
+.requirement[data-met="true"] > svg {
+  color: var(--mk-positive);
+  stroke-width: 2.2;
+}
+.requirement strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.requirement p {
+  margin-top: 0.25rem;
+  color: var(--mk-muted);
+  font-size: 0.9rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+.signOff {
+  margin-top: 0.875rem;
+  color: var(--mk-muted);
+  font-size: 0.8125rem;
+}
+.proofs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.proofRecord {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--mk-border);
+}
+.proofRecord:first-child {
+  padding-top: 0;
+}
+.proofRecord:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.attachmentTag {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--mk-border);
+  border-radius: 0.5rem;
+  color: var(--mk-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.proofLink {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--mk-secondary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.proofLink > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.proofLink > svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+.timestamp,
+.muted {
+  color: var(--mk-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.emptyEvidence {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+}
+.emptyEvidence > svg {
+  color: var(--mk-muted);
+}
+.emptyEvidence h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.emptyEvidence p {
+  max-width: 32ch;
+  color: var(--mk-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.completed {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--mk-positive) 35%, var(--mk-border));
+  border-radius: 0.75rem;
+  background: var(--mk-positive-soft);
+}
+.completed > svg {
+  flex: none;
+  margin-top: 0.125rem;
+  color: var(--mk-positive);
+}
+.completed h2 {
+  font-weight: 600;
+}
+.completed p {
+  margin-top: 0.25rem;
+  color: var(--mk-muted);
+  font-size: 0.875rem;
+}
+.dialogReference {
+  margin: 0.75rem 0 1rem;
+  color: var(--mk-muted);
+  font-size: 0.9rem;
+}
+.blockers {
+  display: grid;
+  gap: 0.6em;
+  margin: 0.75rem 0 1.25rem;
+  padding-inline-start: 1.15em;
+  list-style: disc;
+  font-size: 1rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1.25rem;
+  color: var(--mk-muted);
+}
+@container jobs (min-width: 60rem) {
+  .columns {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 25rem) {
+  .summaryCard,
+  .card {
+    padding: 1rem;
+  }
+  .actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

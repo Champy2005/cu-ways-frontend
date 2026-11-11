@@ -23,6 +23,7 @@ import {
   type JobsResult,
 } from "./types";
 import s from "./jobs.module.css";
+import { JobCompletion } from "./job-completion";
 
 function Fact({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -172,13 +173,31 @@ function useDetailState(id: string, initial: JobsResult<HiredJob>) {
   const showDialog = dialogOpen && (pending || !outcome);
 
   useEffect(() => {
-    if (outcome?.status === "started" || outcome?.status === "already-started")
-      document.getElementById("jobs-heading")?.focus();
-  }, [outcome]);
+    if (outcome?.status !== "started" && outcome?.status !== "already-started") return;
+    document.getElementById("jobs-heading")?.focus();
+    let active = true;
+    // A confirmed start enters US027. Load its live proof/payment requirements once.
+    void loadHiredJob(id)
+      .then((next) => {
+        if (!active) return;
+        if (next.status === "error") setReadFailed(true);
+        else {
+          setResult(next);
+          setReadFailed(false);
+        }
+      })
+      .catch(() => {
+        if (active) setReadFailed(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [id, outcome]);
 
   function refresh() {
+    const read = loadHiredJob(id).catch(() => ({ status: "error" as const }));
     startRefresh(async () => {
-      const next = await loadHiredJob(id).catch(() => ({ status: "error" as const }));
+      const next = await read;
       if (next.status === "error" && job) {
         setReadFailed(true);
         return;
@@ -190,6 +209,7 @@ function useDetailState(id: string, initial: JobsResult<HiredJob>) {
         clear();
       } else if (current?.phase === "settled") clear();
     });
+    return read;
   }
 
   function askStart() {
@@ -316,8 +336,19 @@ export function JobDetail({
         )}
       </section>
     );
+  if (job.status === "In Progress" || job.status === "Completed") {
+    return (
+      <JobCompletion
+        job={job}
+        backHref={backHref}
+        refreshing={refreshing}
+        readFailed={state.readFailed}
+        onRefresh={state.refresh}
+      />
+    );
+  }
+  const terminal = job.status === "Cancelled";
   const canStart = job.status === "Accepted" && !blocked;
-  const terminal = job.status === "Completed" || job.status === "Cancelled";
   return (
     <section className={s.page} aria-labelledby="jobs-heading" aria-busy={refreshing}>
       <JobsHeading title={`Job #${job.id}`} backHref={backHref} />
