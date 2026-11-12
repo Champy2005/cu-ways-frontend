@@ -302,3 +302,47 @@ describe("Saved job API actions", () => {
     expect(serverApiRequest).not.toHaveBeenCalled();
   });
 });
+
+describe("loadSavedJob review status", () => {
+  const completedJob = () => ({ ...mockJob(), job_status: "Completed" as const });
+  const review = {
+    review_id: 3,
+    job_id: 41,
+    rating: 5,
+    comment: null,
+    created_at: "2026-11-07T03:00:00Z",
+  };
+
+  it.each([
+    [{ review }, "reviewed"],
+    [{ review: null }, "not_reviewed"],
+  ])("reads the review of a Completed job (%j -> %s)", async (response, expected) => {
+    vi.mocked(serverApiGet).mockImplementation(
+      async (path: string) =>
+        (path.endsWith("/reviews/current") ? response : completedJob()) as never,
+    );
+    await expect(loadSavedJob("41")).resolves.toMatchObject({
+      status: "success",
+      review: expected,
+    });
+    expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/41/reviews/current");
+  });
+
+  it("still loads the job when its review cannot be read", async () => {
+    vi.mocked(serverApiGet).mockImplementation(async (path: string) => {
+      if (path.endsWith("/reviews/current")) throw new TypeError("fetch failed");
+      return completedJob() as never;
+    });
+    await expect(loadSavedJob("41")).resolves.toMatchObject({
+      status: "success",
+      review: "unknown",
+    });
+  });
+
+  it("does not read reviews for jobs that are not Completed", async () => {
+    const result = await loadSavedJob("41");
+    expect(result).toMatchObject({ status: "success" });
+    expect(result).not.toHaveProperty("review");
+    expect(serverApiGet).toHaveBeenCalledTimes(1);
+  });
+});

@@ -6,12 +6,14 @@ import { listMarketers } from "@/features/marketer-discovery/api";
 import {
   getCreatorJobs,
   getCurrentJobPayment,
+  getCurrentJobReview,
   getJobOffers,
   getJobSentInvitations,
   loadCreatorJobs,
   loadJobInviteInitialData,
   loadJobOffersInitialData,
   loadJobPaymentData,
+  loadJobReviewData,
 } from "@/features/jobs/api";
 
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
@@ -315,35 +317,77 @@ describe("Creator job invitation data", () => {
     });
   });
 
-  describe("payment page load timeout", () => {
+  describe("Creator job review data", () => {
+    const review = {
+      review_id: 3,
+      job_id: 17,
+      rating: 4,
+      comment: "Good",
+      created_at: "2026-11-07T03:00:00Z",
+    };
+
+    it("reads the job's review, or null when it has none", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review });
+      await expect(getCurrentJobReview(17)).resolves.toEqual(review);
+      expect(serverApiGet).toHaveBeenCalledWith("/api/v1/jobs/17/reviews/current");
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: null });
+      await expect(getCurrentJobReview(17)).resolves.toBeNull();
+    });
+
+    it("rejects a malformed review instead of showing it", async () => {
+      vi.mocked(serverApiGet).mockResolvedValueOnce({ review: { ...review, job_id: 99 } });
+      await expect(getCurrentJobReview(17)).rejects.toThrow(/could not be read/);
+    });
+
+    it("loads the job, its accepted offer and its review together", async () => {
+      vi.mocked(serverApiGet).mockImplementation(async (path: string) => {
+        if (path === "/api/v1/jobs/17") return job;
+        if (path === "/api/v1/jobs/17/offers?status=Accepted") return [];
+        if (path === "/api/v1/jobs/17/reviews/current") return { review };
+        throw new Error(`unexpected ${path}`);
+      });
+      await expect(loadJobReviewData(17)).resolves.toMatchObject({
+        acceptedOffer: null,
+        currentReview: review,
+      });
+    });
+  });
+
+  describe("payment and review page load timeout", () => {
     afterEach(() => {
       vi.useRealTimers();
       vi.restoreAllMocks();
     });
 
-    it("gives up after 10 seconds when the backend does not answer", async () => {
-      vi.useFakeTimers();
-      // Node's AbortSignal.timeout ignores fake timers; build it on setTimeout.
-      vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
-        const controller = new AbortController();
-        setTimeout(() => controller.abort(new DOMException("Timed out", "TimeoutError")), ms);
-        return controller.signal;
-      });
-      vi.mocked(serverApiGet).mockImplementation(
-        (_path: string, options?: { signal?: AbortSignal }) =>
-          new Promise((_, reject) => {
-            options?.signal?.addEventListener("abort", () => reject(options.signal?.reason));
-          }),
-      );
-      const load = loadJobPaymentData(17);
-      const assertion = expect(load).rejects.toThrow(/took too long to load/);
-      await vi.advanceTimersByTimeAsync(10_000);
-      await assertion;
-      expect(serverApiGet).toHaveBeenCalledTimes(3);
-      for (const call of vi.mocked(serverApiGet).mock.calls) {
-        expect(call[1]).toEqual({ signal: expect.any(AbortSignal) });
-      }
-    });
+    it.each([
+      ["payment", loadJobPaymentData],
+      ["review", loadJobReviewData],
+    ])(
+      "gives up on the %s page after 10 seconds when the backend does not answer",
+      async (_page, loadPage) => {
+        vi.useFakeTimers();
+        // Node's AbortSignal.timeout ignores fake timers; build it on setTimeout.
+        vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+          const controller = new AbortController();
+          setTimeout(() => controller.abort(new DOMException("Timed out", "TimeoutError")), ms);
+          return controller.signal;
+        });
+        vi.mocked(serverApiGet).mockImplementation(
+          (_path: string, options?: { signal?: AbortSignal }) =>
+            new Promise((_, reject) => {
+              options?.signal?.addEventListener("abort", () => reject(options.signal?.reason));
+            }),
+        );
+        const load = loadPage(17);
+        const assertion = expect(load).rejects.toThrow(/took too long to load/);
+        await vi.advanceTimersByTimeAsync(10_000);
+        await assertion;
+        expect(serverApiGet).toHaveBeenCalledTimes(3);
+        for (const call of vi.mocked(serverApiGet).mock.calls) {
+          expect(call[1]).toEqual({ signal: expect.any(AbortSignal) });
+        }
+      },
+    );
 
     it("keeps the backend's own error when the load fails quickly", async () => {
       vi.mocked(serverApiGet).mockRejectedValue(
