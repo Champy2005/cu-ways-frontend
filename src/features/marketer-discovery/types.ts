@@ -7,6 +7,8 @@ export type MarketerSearchParams = NonNullable<
   operations["searchMarketers"]["parameters"]["query"]
 >;
 export type AvailabilityStatus = components["schemas"]["MarketerProfile"]["availability_status"];
+export type MarketerReviewsPage = components["schemas"]["MarketerReviewsResponse"]["data"];
+export type MarketerReviewItem = MarketerReviewsPage["items"][number];
 
 // View models the discovery components render, mapped from the contract in
 // mapping.ts. Fields the backend has no source for are null or empty rather
@@ -30,9 +32,22 @@ export type ServicePackage = {
 
 export type MarketerReview = {
   review_id: number;
+  job_id: number;
   rating: number;
-  comment: string;
-  reviewer_name: string;
+  /** Null when the Creator left only a rating. */
+  comment: string | null;
+  created_at: string;
+  /** Null until the backend supplies the reviewer's name. */
+  reviewer_name: string | null;
+};
+
+/** Every qualifying review of one marketer, newest first, with the whole-set aggregates. */
+export type MarketerReviewHistory = {
+  reviews: MarketerReview[];
+  average_rating: number | null;
+  review_count: number;
+  /** True when the marketer has more reviews than the page cap lets us load. */
+  truncated: boolean;
 };
 
 export type MarketerPerformance = {
@@ -55,7 +70,6 @@ export type Marketer = MarketerSummary & {
   campuses: string[];
   performance: MarketerPerformance;
   service_packages: ServicePackage[];
-  reviews: MarketerReview[];
 };
 
 export type MarketerSortOption =

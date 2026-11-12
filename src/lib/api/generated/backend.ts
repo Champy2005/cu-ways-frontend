@@ -248,6 +248,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/marketers/{id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List a marketer's verified reviews
+         * @description Returns the verified reviews shown on a marketer's public profile: reviews tied to Completed Jobs in which that marketer held the accepted Offer, with a rating from 1 to 5. Results are newest first and paginated. average_rating is the mean over every qualifying review and review_count is their total; both describe the whole set, not just the current page. When the marketer has no qualifying review, items is empty, review_count is 0, and average_rating is null so the profile shows a no-rating empty state rather than a fabricated 0.00. The same Creator-or-administrator access as the marketer detail applies.
+         */
+        get: operations["listMarketerReviews"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/surveys": {
         parameters: {
             query?: never;
@@ -1642,6 +1662,43 @@ export interface components {
                 average_rating: number | null;
             };
         };
+        MarketerReviewsResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** @description One page of verified reviews, newest first. Empty when none qualify. */
+                items: {
+                    /** Format: int32 */
+                    review_id: number;
+                    /** Format: int32 */
+                    job_id: number;
+                    /** Format: int32 */
+                    rating: number;
+                    comment: string | null;
+                    /** Format: date-time */
+                    created_at: string;
+                }[];
+                /**
+                 * Format: double
+                 * @description Mean rating over every qualifying review. Null (not 0.00) when the marketer has no qualifying review.
+                 */
+                average_rating: number | null;
+                /**
+                 * Format: int64
+                 * @description Total number of verified reviews across all pages.
+                 */
+                review_count: number;
+                /** Format: int32 */
+                page: number;
+                /** Format: int32 */
+                page_size: number;
+                /**
+                 * Format: int64
+                 * @description Total number of verified reviews matching the query; equal to review_count.
+                 */
+                total: number;
+            };
+        };
         SuccessResponse: {
             /** @enum {string} */
             status: "success";
@@ -2570,6 +2627,69 @@ export interface operations {
             };
             /** @description The marketer profile does not exist or belongs to a deleted user. */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    listMarketerReviews: {
+        parameters: {
+            query?: {
+                /** @description One-based page number. */
+                page?: number;
+                /** @description Number of reviews per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description One page of verified reviews with the aggregate rating. items is an empty array and average_rating is null when none qualify. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketerReviewsResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description A creator profile or administrator role is required. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The marketer profile does not exist or belongs to a deleted user. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description page or page_size is invalid. */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };

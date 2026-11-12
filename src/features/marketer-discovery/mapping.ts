@@ -2,6 +2,8 @@ import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import type {
   Marketer,
   MarketerQuery,
+  MarketerReview,
+  MarketerReviewItem,
   MarketerSearchItem,
   MarketerSearchParams,
   MarketerSummary,
@@ -94,7 +96,22 @@ export function toMarketer(item: MarketerSearchItem): Marketer {
       rating_count: item.review_count,
     },
     service_packages: newestFirst.map(toPackage),
-    // No backend endpoint returns individual reviews yet.
-    reviews: [],
+  };
+}
+
+/**
+ * One backend review -> card view model. A blank comment is the same as no
+ * comment. The backend does not return the reviewer's name yet (the PR that
+ * adds the endpoint was asked to), so it is read only when present.
+ */
+export function toMarketerReview(item: MarketerReviewItem): MarketerReview {
+  const name = (item as { reviewer_name?: unknown }).reviewer_name;
+  return {
+    review_id: item.review_id,
+    job_id: item.job_id,
+    rating: item.rating,
+    comment: item.comment?.trim() ? item.comment : null,
+    created_at: item.created_at,
+    reviewer_name: typeof name === "string" && name.trim() ? name.trim() : null,
   };
 }
