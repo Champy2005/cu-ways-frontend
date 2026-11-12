@@ -1,8 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getCreatorJob, getCurrentJobPayment, getJobOffers } from "./api";
-import { validateSentJobInvitations } from "./types";
+import { getCreatorJob, getCurrentJobPayment, getJobOffers, getJobSentInvitations } from "./api";
+import { isActiveJobInvitation } from "./types";
+import { jobPath } from "@/features/transactions/queries";
 import {
   cancellationBlockedReason,
   type CancellationDetails,
@@ -11,12 +12,15 @@ import {
 } from "./cancellation";
 import { ApiError } from "@/lib/api/errors";
 import type { components } from "@/lib/api/generated/backend";
-import { serverApiGet, serverApiRequest } from "@/lib/api/server-client";
+import { serverApiRequest } from "@/lib/api/server-client";
 import { getSession } from "@/lib/auth/session";
 
 function parseJobId(value: string): number {
-  if (!/^[1-9]\d{0,9}$/.test(value) || Number(value) > 2_147_483_647)
+  try {
+    jobPath(value);
+  } catch {
     throw new ApiError(404, "job_not_found", "Job unavailable.");
+  }
   return Number(value);
 }
 
@@ -49,9 +53,7 @@ async function readCancellationDetails(jobId: number): Promise<CancellationDetai
     throw new Error("Invalid job response.");
   const [payment, requests, offers] = await Promise.all([
     getCurrentJobPayment(jobId, options),
-    serverApiGet<unknown>(`/api/v1/jobs/${jobId}/requests`, options).then((data) =>
-      validateSentJobInvitations(data, jobId),
-    ),
+    getJobSentInvitations(jobId, options),
     getJobOffers(jobId, undefined, options),
   ]);
   return {
@@ -59,9 +61,7 @@ async function readCancellationDetails(jobId: number): Promise<CancellationDetai
     title: job.title || `Job #${jobId}`,
     status: job.job_status,
     paid: payment?.payment_status === "Paid",
-    activeRequests: requests.filter((request) =>
-      ["Pending", "Accepted"].includes(request.request_status),
-    ).length,
+    activeRequests: requests.filter(isActiveJobInvitation).length,
     pendingOffers: offers.filter((offer) => offer.offer_status === "Pending").length,
     cancelledAt: job.cancelled_at ?? null,
     reason: job.cancel_reason ?? null,

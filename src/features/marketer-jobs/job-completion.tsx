@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { CheckCircle2, CircleAlert, ExternalLink, FileCheck2, LoaderCircle, X } from "lucide-react";
 import { StatusText } from "@/components/ui/status-text";
 import {
@@ -13,6 +14,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
+import { MutationFeedback } from "@/features/transactions/mutation-control";
+import { SubmitProof } from "@/features/transactions/workflow-controls";
 import { JobsHeading, JobsNotice, RefreshJobs } from "./jobs-ui";
 import {
   completionRequirements,
@@ -97,7 +100,9 @@ function ProofRecord({ proof }: { proof: DeliveryProof }) {
   );
 }
 
-function DeliveryEvidence({ proofs }: { proofs: DeliveryProof[] }) {
+const proofInputId = (jobId: number) => `delivery-proof-${jobId}`;
+
+function DeliveryEvidence({ job, proofs }: { job: HiredJob; proofs: DeliveryProof[] }) {
   return (
     <section className={c.card} aria-labelledby="delivery-evidence-heading">
       <h2 id="delivery-evidence-heading" tabIndex={-1}>
@@ -116,6 +121,11 @@ function DeliveryEvidence({ proofs }: { proofs: DeliveryProof[] }) {
           <p>Briefs and other attachments cannot replace delivery proof.</p>
         </div>
       )}
+      {job.status === "In Progress" && (
+        <MutationFeedback>
+          <SubmitProof job={{ job_id: job.id }} inputId={proofInputId(job.id)} />
+        </MutationFeedback>
+      )}
     </section>
   );
 }
@@ -133,6 +143,7 @@ function CompletionCheckDialog({
 }) {
   const container = useRef<HTMLDivElement>(null);
   const safe = useRef<HTMLButtonElement>(null);
+  const focusProof = useRef(false);
   const blockers = completionRequirements(job).filter((row) => !row.met);
   const missingProof = blockers.some((row) => row.label === "Proof of delivery");
   return (
@@ -148,7 +159,14 @@ function CompletionCheckDialog({
         <DialogPopup
           className={s.dialog}
           initialFocus={safe}
-          finalFocus={() => trigger.current ?? document.getElementById("jobs-heading")}
+          finalFocus={() => {
+            const target = focusProof.current
+              ? document.getElementById(proofInputId(job.id))
+              : trigger.current;
+            focusProof.current = false;
+            target?.scrollIntoView?.({ block: "center" });
+            return target ?? document.getElementById("jobs-heading");
+          }}
         >
           <div className={s.dialogHeading}>
             <DialogTitle>
@@ -169,7 +187,15 @@ function CompletionCheckDialog({
             <p>All completion requirements are met. The Creator can complete this job.</p>
           )}
           <div className={s.confirmActions}>
-            <button ref={safe} type="button" className={s.utility} onClick={onClose}>
+            <button
+              ref={safe}
+              type="button"
+              className={s.utility}
+              onClick={() => {
+                focusProof.current = false;
+                onClose();
+              }}
+            >
               Got it
             </button>
             {missingProof && (
@@ -177,15 +203,11 @@ function CompletionCheckDialog({
                 type="button"
                 className={s.entry}
                 onClick={() => {
+                  focusProof.current = true;
                   onClose();
-                  requestAnimationFrame(() => {
-                    const heading = document.getElementById("delivery-evidence-heading");
-                    heading?.scrollIntoView?.({ block: "center" });
-                    heading?.focus();
-                  });
                 }}
               >
-                View delivery evidence
+                Add delivery proof
               </button>
             )}
           </div>
@@ -256,6 +278,9 @@ export function JobCompletion({
         </div>
       )}
       <CompletionSummary job={job} />
+      <Link className={s.inlineLink} href={`/marketer/jobs/${job.id}/payment`}>
+        View payment
+      </Link>
       {refreshing && <JobsNotice title="Checking completion requirements…" busy />}
       {loading ? (
         <div className={c.loading} role="status">
@@ -314,7 +339,7 @@ export function JobCompletion({
             )}
             {!completed && <p className={c.signOff}>Final sign-off is completed by the Creator.</p>}
           </section>
-          <DeliveryEvidence proofs={evidence.proofs} />
+          <DeliveryEvidence job={job} proofs={evidence.proofs} />
         </div>
       )}
       <CompletionCheckDialog

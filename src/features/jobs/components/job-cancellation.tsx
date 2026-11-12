@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cancelCreatorJob, loadCancellationDetails } from "../cancellation-actions";
+import type { CreatorJobSummary } from "../types";
 import {
   cancellationBlockedReason,
   cancellationCheckKey,
@@ -25,7 +26,17 @@ import s from "./job-cancellation.module.css";
 type ReadState = CancellationRead | { status: "loading" };
 type Phase = "idle" | "reading" | "pending" | "check";
 
-export function JobCancellation({ jobId, creatorId }: { jobId: string; creatorId: number }) {
+export function JobCancellation({
+  jobId,
+  creatorId,
+  status,
+}: {
+  jobId: string;
+  creatorId: number;
+  status?: CreatorJobSummary["job_status"];
+}) {
+  // Keep cancellation history and post-reload confirmation for Cancelled jobs.
+  if (status && status !== "Pending" && status !== "Cancelled") return null;
   return <CancellationSection key={`${creatorId}:${jobId}`} jobId={jobId} creatorId={creatorId} />;
 }
 
@@ -59,13 +70,14 @@ function useCancellation({ jobId, creatorId }: { jobId: string; creatorId: numbe
     let showSuccess = false;
     try {
       uncertain = sessionStorage.getItem(checkKey) === "1";
-      if (sessionStorage.getItem(successKey) === "1") {
-        showSuccess = true;
-        sessionStorage.removeItem(successKey);
-      }
+      showSuccess = sessionStorage.getItem(successKey) === "1";
     } catch {
       /* The authorized read still determines what can be displayed. */
     }
+    // Hydrate the browser-only notice without waiting for the network read.
+    queueMicrotask(() => {
+      if (active) setToast(showSuccess);
+    });
     const timer = setTimeout(() => {
       if (!active) return;
       setRead({
@@ -77,7 +89,6 @@ function useCancellation({ jobId, creatorId }: { jobId: string; creatorId: numbe
     void loadCancellationDetails(jobId, creatorId)
       .then((next) => {
         if (!active) return;
-        setToast(showSuccess);
         clearTimeout(timer);
         setRead(next);
         if (next.status === "ready" && next.details.status === "Cancelled") {
@@ -104,6 +115,16 @@ function useCancellation({ jobId, creatorId }: { jobId: string; creatorId: numbe
       clearTimeout(timer);
     };
   }, [jobId, creatorId, checkKey, successKey]);
+
+  useEffect(() => {
+    if (!toast) return;
+    // Consume only after rendering the toast, independently of the details read.
+    try {
+      sessionStorage.removeItem(successKey);
+    } catch {
+      /* Best effort. */
+    }
+  }, [toast, successKey]);
 
   async function refresh() {
     if (reading.current || phase === "pending") return;
@@ -154,7 +175,6 @@ function useCancellation({ jobId, creatorId }: { jobId: string; creatorId: numbe
     if (result.status === "cancelled") {
       setRead({ status: "ready", details: result.details });
       setPhase("idle");
-      setToast(true);
       try {
         sessionStorage.setItem(successKey, "1");
       } catch {

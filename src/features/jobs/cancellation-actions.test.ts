@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth/session";
 import { serverApiGet, serverApiRequest } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
-import { getCreatorJob, getCurrentJobPayment, getJobOffers } from "./api";
+import { getCreatorJob, getCurrentJobPayment, getJobOffers, getJobSentInvitations } from "./api";
 import { cancelCreatorJob, loadCancellationDetails } from "./cancellation-actions";
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
@@ -13,6 +13,7 @@ vi.mock("./api", () => ({
   getCreatorJob: vi.fn(),
   getCurrentJobPayment: vi.fn(),
   getJobOffers: vi.fn(),
+  getJobSentInvitations: vi.fn(),
 }));
 
 const saved = {
@@ -41,6 +42,7 @@ beforeEach(() => {
   vi.mocked(getCurrentJobPayment).mockResolvedValue(null);
   vi.mocked(serverApiGet).mockResolvedValue([]);
   vi.mocked(getJobOffers).mockResolvedValue([]);
+  vi.mocked(getJobSentInvitations).mockResolvedValue([]);
   vi.mocked(serverApiRequest).mockResolvedValue(saved);
 });
 
@@ -64,7 +66,29 @@ describe("Creator cancellation boundary", () => {
     expect(await loadCancellationDetails("41", 4)).toMatchObject({ status: "unavailable" });
     expect(getCurrentJobPayment).not.toHaveBeenCalled();
     expect(getJobOffers).not.toHaveBeenCalled();
+    expect(getJobSentInvitations).not.toHaveBeenCalled();
     expect(serverApiGet).not.toHaveBeenCalled();
+  });
+
+  it("counts active requests consistently and retains the bounded read", async () => {
+    vi.mocked(getJobSentInvitations).mockResolvedValue(
+      (["Pending", "Accepted", "Closed", "Declined"] as const).map((request_status, index) => ({
+        job_request_id: index + 1,
+        job_id: 41,
+        marketer_id: index + 7,
+        marketer_name: "Test marketer",
+        request_status,
+        created_at: "2026-11-01T00:00:00Z",
+        responded_at: null,
+      })),
+    );
+    await expect(loadCancellationDetails("41", 4)).resolves.toMatchObject({
+      status: "ready",
+      details: { activeRequests: 2 },
+    });
+    expect(getJobSentInvitations).toHaveBeenCalledWith(41, {
+      signal: expect.any(AbortSignal),
+    });
   });
 
   it.each(["Accepted", "In Progress", "Completed"] as const)(

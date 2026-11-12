@@ -37,7 +37,11 @@ export default async function CreatorJobPage({ params }: { params: Promise<{ id:
         {result.workflow && <CreatorWorkflow {...result.workflow} />}
         {showError && <WorkflowError error={result.error} />}
       </MutationFeedback>
-      <JobCancellation jobId={id} creatorId={session.userId} />
+      <JobCancellation
+        jobId={id}
+        creatorId={session.userId}
+        status={result.workflow?.job.job_status}
+      />
     </>
   );
 }

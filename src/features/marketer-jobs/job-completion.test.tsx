@@ -4,6 +4,11 @@ import { JobDetail } from "./job-detail";
 import { JobsWorkspace } from "./jobs-workspace";
 import { loadHiredJob, startHiredJob } from "./actions";
 import type { HiredJob } from "./types";
+import { saveJobMutation } from "@/features/transactions/actions";
+
+const navigation = vi.hoisted(() => ({ refresh: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+vi.mock("@/features/transactions/actions", () => ({ saveJobMutation: vi.fn() }));
 
 vi.mock("./actions", () => ({ loadHiredJob: vi.fn(), startHiredJob: vi.fn() }));
 
@@ -61,6 +66,65 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("US027 on the Marketer job detail route", () => {
+  it("submits delivery proof with confirmation and refreshes the saved checklist", async () => {
+    vi.mocked(saveJobMutation).mockResolvedValue({ status: "saved" });
+    const view = show();
+    expect(screen.getByRole("link", { name: "View payment" })).toHaveAttribute(
+      "href",
+      "/marketer/jobs/41/payment",
+    );
+    fireEvent.change(screen.getByRole("textbox", { name: "Proof link" }), {
+      target: { value: "https://example.com/delivery" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit proof" }));
+    const dialog = await screen.findByRole("alertdialog", { name: "Submit delivery proof?" });
+    expect(saveJobMutation).not.toHaveBeenCalled();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Confirm proof" }));
+    await screen.findByText("Delivery proof saved.");
+    expect(saveJobMutation).toHaveBeenCalledExactlyOnceWith("41", {
+      kind: "proof",
+      url: "https://example.com/delivery",
+    });
+    expect(navigation.refresh).toHaveBeenCalledOnce();
+    view.rerender(
+      <JobsWorkspace>
+        <JobDetail
+          id="41"
+          initial={{ status: "success", data: withProof() }}
+          backHref="/marketer/jobs"
+        />
+      </JobsWorkspace>,
+    );
+    expect(screen.getByText("4 of 4 requirements met")).toBeVisible();
+    expect(screen.queryByText("No proof added yet")).not.toBeInTheDocument();
+  });
+
+  it("takes the missing-proof action directly to the proof input", async () => {
+    show();
+    fireEvent.click(screen.getByRole("button", { name: "Run completion check" }));
+    const dialog = await screen.findByRole("dialog", { name: "Requirements incomplete" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Add delivery proof" }));
+    await waitFor(() => expect(screen.getByRole("textbox", { name: "Proof link" })).toHaveFocus());
+  });
+
+  it("preserves the proof form and shows a server rejection", async () => {
+    vi.mocked(saveJobMutation).mockResolvedValue({
+      status: "error",
+      message: "Proof could not be saved.",
+    });
+    show();
+    fireEvent.change(screen.getByRole("textbox", { name: "Proof link" }), {
+      target: { value: "https://example.com/delivery" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit proof" }));
+    fireEvent.click(
+      within(await screen.findByRole("alertdialog")).getByRole("button", { name: "Confirm proof" }),
+    );
+    expect(await screen.findByText("Proof could not be saved.")).toBeVisible();
+    expect(navigation.refresh).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Proof link")).toHaveValue("https://example.com/delivery");
+  });
+
   it("shows missing proof without completing or restarting an In Progress job", async () => {
     show();
     expect(screen.getByRole("heading", { name: "Job completion" })).toBeVisible();
@@ -69,7 +133,7 @@ describe("US027 on the Marketer job detail route", () => {
     expect(screen.queryByRole("button", { name: "Start job" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Run completion check" }));
     const dialog = await screen.findByRole("dialog", { name: "Requirements incomplete" });
-    expect(within(dialog).getByText(/Add delivery proof/)).toBeVisible();
+    expect(within(dialog).getByText(/Add delivery proof\./)).toBeVisible();
     expect(screen.getByText("In Progress", { selector: ".workspace-status" })).toBeVisible();
     expect(startHiredJob).not.toHaveBeenCalled();
     expect(loadHiredJob).toHaveBeenCalledExactlyOnceWith("41");
@@ -122,6 +186,12 @@ describe("US027 on the Marketer job detail route", () => {
     expect(screen.getByText("12 Nov 2026, 15:00 ICT")).toBeVisible();
     expect(screen.queryByRole("button", { name: "Run completion check" })).not.toBeInTheDocument();
     expect(screen.getByRole("list", { name: "Delivery proof attachments" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Submit proof" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: "Proof link" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View payment" })).toHaveAttribute(
+      "href",
+      "/marketer/jobs/41/payment",
+    );
   });
 
   it("shows a read failure rather than inventing missing or satisfied requirements", () => {

@@ -1,13 +1,10 @@
 import { getMarketerOffers } from "@/features/job-invitations/live/api";
 import type { MarketerOfferItem } from "@/features/job-invitations/live/types";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
-import { serverApiGet } from "@/lib/api/server-client";
+import { getPayment } from "@/features/transactions/queries";
 import { ApiError } from "@/lib/api/errors";
-import type { components } from "@/lib/api/generated/backend";
 import { jobStatuses, type HiredJob, type JobFailure } from "./types";
 import { getCompletionEvidence } from "./completion-api";
-
-type Settlement = components["schemas"]["JobSettlement"];
 
 function hiredJob({ request, offer }: MarketerOfferItem): HiredJob {
   const job = request.job;
@@ -28,8 +25,8 @@ function hiredJob({ request, offer }: MarketerOfferItem): HiredJob {
 
 /** The Creator's /me/jobs endpoint cannot list hired Marketer jobs. Use the
  * authenticated invitation/offer history and only include this user's accepted offers. */
-export async function getHiredJobs(userId: number): Promise<HiredJob[]> {
-  const snapshot = await getMarketerOffers();
+export async function getHiredJobs(userId: number, jobId?: number): Promise<HiredJob[]> {
+  const snapshot = await getMarketerOffers(jobId);
   if (snapshot.offersUnavailable) throw new Error("The hired job history is incomplete.");
   const jobs = snapshot.offers
     .filter(
@@ -43,17 +40,19 @@ export async function getHiredJobs(userId: number): Promise<HiredJob[]> {
   return [...new Map(jobs.map((job) => [job.id, job])).values()].sort((a, b) => b.id - a.id);
 }
 
-export function validJobId(id: string) {
-  return /^[1-9]\d{0,9}$/.test(id) && Number(id) <= 2_147_483_647;
-}
-
 export async function getHiredJob(id: string, userId: number): Promise<HiredJob> {
-  if (!validJobId(id)) throw new ApiError(404, "job_not_found", "Job unavailable.");
   // This endpoint authorizes the hired Marketer before any private context is returned.
-  const saved = await serverApiGet<Settlement>(`/api/v1/jobs/${id}/payments`);
+  const saved = await getPayment(id);
   if (saved.job_id !== Number(id) || saved.marketer.user_id !== userId)
     throw new ApiError(404, "job_not_found", "Job unavailable.");
-  const jobs = await getHiredJobs(userId);
+  // Fetch only this job's offer history. Unrelated offer failures cannot break this read.
+  // Proofs can load alongside that history, after settlement authorization succeeds.
+  const [jobs, completion] = await Promise.all([
+    getHiredJobs(userId, saved.job_id),
+    saved.job_status === "In Progress" || saved.job_status === "Completed"
+      ? getCompletionEvidence(saved)
+      : undefined,
+  ]);
   const job = jobs.find((item) => item.id === Number(id));
   if (!job || !jobStatuses.some((status) => status === saved.job_status))
     throw new ApiError(422, "invalid_job", "Job details need refreshing.");
@@ -62,9 +61,7 @@ export async function getHiredJob(id: string, userId: number): Promise<HiredJob>
     status: saved.job_status as HiredJob["status"],
     price: saved.accepted_price,
   };
-  if (detail.status === "In Progress" || detail.status === "Completed") {
-    detail.completion = await getCompletionEvidence(saved);
-  }
+  if (completion) detail.completion = completion;
   return detail;
 }
 

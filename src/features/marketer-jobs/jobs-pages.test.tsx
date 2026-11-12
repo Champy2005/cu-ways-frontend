@@ -48,6 +48,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
@@ -135,6 +136,60 @@ describe("US025 route separation", () => {
     expect(await screen.findByText("Start status not confirmed")).toBeVisible();
     expect(screen.queryByRole("button", { name: "Start job" })).not.toBeInTheDocument();
     expect(sessionStorage.getItem("cuways:job-start:41")).toBe("check");
+  });
+
+  it("allows retry after a finished uncertain start is confirmed still Accepted", async () => {
+    vi.mocked(startHiredJob).mockResolvedValue({ status: "recheck" });
+    render(<JobsWorkspace>{detail()}</JobsWorkspace>);
+    fireEvent.click(screen.getByRole("button", { name: "Start job" }));
+    fireEvent.click(
+      within(await screen.findByRole("dialog")).getByRole("button", { name: "Start job" }),
+    );
+    await screen.findByText("Start status not confirmed");
+    fireEvent.click(screen.getAllByRole("button", { name: "Refresh job" })[0]);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start job" })).toBeEnabled());
+    expect(sessionStorage.getItem("cuways:job-start:41")).toBeNull();
+    expect(screen.queryByText("Start status not confirmed")).not.toBeInTheDocument();
+    expect(startHiredJob).toHaveBeenCalledTimes(1);
+  });
+
+  it("clears a restored marker only after a successful fresh read", async () => {
+    sessionStorage.setItem("cuways:job-start:41", "check");
+    vi.mocked(loadHiredJob).mockResolvedValueOnce({ status: "error" });
+    render(<JobsWorkspace>{detail()}</JobsWorkspace>);
+    fireEvent.click(screen.getAllByRole("button", { name: "Refresh job" })[0]);
+    await waitFor(() => expect(loadHiredJob).toHaveBeenCalledTimes(1));
+    expect(await screen.findByText("Start status not confirmed")).toBeVisible();
+    expect(sessionStorage.getItem("cuways:job-start:41")).toBe("check");
+    fireEvent.click(screen.getAllByRole("button", { name: "Refresh job" })[0]);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start job" })).toBeEnabled());
+    expect(sessionStorage.getItem("cuways:job-start:41")).toBeNull();
+    expect(startHiredJob).not.toHaveBeenCalled();
+  });
+
+  it("does not clear uncertainty while a timed-out start is still in flight", async () => {
+    let resolve!: (result: StartResult) => void;
+    vi.mocked(startHiredJob).mockImplementation(
+      () =>
+        new Promise((done) => {
+          resolve = done;
+        }),
+    );
+    render(<JobsWorkspace>{detail()}</JobsWorkspace>);
+    fireEvent.click(screen.getByRole("button", { name: "Start job" }));
+    const dialog = await screen.findByRole("dialog");
+    vi.useFakeTimers();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Start job" }));
+    await act(async () => vi.advanceTimersByTime(12_000));
+    fireEvent.click(screen.getAllByRole("button", { name: "Refresh job" })[0]);
+    await act(async () => {});
+    expect(sessionStorage.getItem("cuways:job-start:41")).toBe("check");
+    expect(screen.queryByRole("button", { name: "Start job" })).not.toBeInTheDocument();
+    await act(async () => resolve({ status: "recheck" }));
+    vi.useRealTimers();
+    fireEvent.click(screen.getAllByRole("button", { name: "Refresh job" })[0]);
+    expect(await screen.findByRole("button", { name: "Start job" })).toBeEnabled();
+    expect(startHiredJob).toHaveBeenCalledTimes(1);
   });
 
   it("renders a terminal job read-only", () => {

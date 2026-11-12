@@ -58,8 +58,11 @@ export async function getCreatorJob(
   return getWith<CreatorJobSummary>(`/api/v1/jobs/${jobId}`, options);
 }
 
-export async function getJobSentInvitations(jobId: number): Promise<SentJobInvitation[]> {
-  const response = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/requests`);
+export async function getJobSentInvitations(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<SentJobInvitation[]> {
+  const response = await getWith<unknown>(`/api/v1/jobs/${jobId}/requests`, options);
   return validateSentJobInvitations(response, jobId);
 }
 

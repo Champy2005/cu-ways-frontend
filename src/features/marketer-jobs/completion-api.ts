@@ -1,7 +1,7 @@
 import type { components } from "@/lib/api/generated/backend";
 import { isRecord } from "@/lib/api/envelope";
 import { ApiError } from "@/lib/api/errors";
-import { serverApiGet } from "@/lib/api/server-client";
+import { getProofs } from "@/features/transactions/queries";
 import type { CompletionEvidence, DeliveryProof } from "./types";
 
 type Settlement = components["schemas"]["JobSettlement"];
@@ -30,11 +30,11 @@ function readProofs(value: unknown, jobId: number): DeliveryProof[] {
   return proofs.sort((a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt) || b.id - a.id);
 }
 
-/** Called only after the settlement endpoint and hired-offer read authorize this Marketer. */
+/** Called only after the settlement endpoint authorizes this hired Marketer. */
 export async function getCompletionEvidence(saved: Settlement): Promise<CompletionEvidence> {
   try {
     const proofs = readProofs(
-      await serverApiGet<unknown>(`/api/v1/jobs/${saved.job_id}/proofs`, {
+      await getProofs(String(saved.job_id), {
         signal: AbortSignal.timeout(10_000),
       }),
       saved.job_id,

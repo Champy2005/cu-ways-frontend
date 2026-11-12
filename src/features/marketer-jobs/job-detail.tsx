@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { LoaderCircle, X } from "lucide-react";
 import { StatusText } from "@/components/ui/status-text";
@@ -204,7 +205,8 @@ function useDetailState(id: string, initial: JobsResult<HiredJob>) {
       }
       setReadFailed(false);
       setResult(next);
-      if (next.status === "success" && next.data.status !== "Accepted") {
+      // A fresh Accepted read also resolves uncertainty, once the write has finished.
+      if (next.status === "success" && !busy) {
         clearStartCheck(next.data.id);
         clear();
       } else if (current?.phase === "settled") clear();
@@ -367,6 +369,9 @@ export function JobDetail({
             <dt>Agreed price</dt>
             <dd>{formatJobPrice(job.price)}</dd>
           </dl>
+          <Link className={s.inlineLink} href={`/marketer/jobs/${job.id}/payment`}>
+            View payment
+          </Link>
           {!terminal && (
             <div className={s.contractActions}>
               {canStart && (

@@ -80,5 +80,39 @@ describe("hired marketer job reads", () => {
       status: "Completed",
       price: "9000.00",
     });
+    expect(getMarketerOffers).toHaveBeenCalledExactlyOnceWith(41);
+  });
+
+  it.each(["../41", "0", "2147483648"])("rejects invalid ID %s before any API read", async (id) => {
+    await expect(getHiredJob(id, 7)).rejects.toMatchObject({ status: 422 });
+    expect(serverApiGet).not.toHaveBeenCalled();
+    expect(getMarketerOffers).not.toHaveBeenCalled();
+  });
+
+  it("loads proofs while the selected job's history is still pending", async () => {
+    let resolveHistory!: (value: Awaited<ReturnType<typeof getMarketerOffers>>) => void;
+    vi.mocked(getMarketerOffers).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveHistory = resolve;
+        }),
+    );
+    vi.mocked(serverApiGet)
+      .mockResolvedValueOnce({
+        job_id: 41,
+        marketer: { user_id: 7, name: "Mali" },
+        job_status: "In Progress",
+        accepted_price: "9000.00",
+      })
+      .mockResolvedValueOnce([]);
+    const read = getHiredJob("41", 7);
+    await vi.waitFor(() =>
+      expect(serverApiGet).toHaveBeenCalledWith(
+        "/api/v1/jobs/41/proofs",
+        expect.objectContaining({ signal: expect.any(AbortSignal) }),
+      ),
+    );
+    resolveHistory({ offers: [item(41)], offersUnavailable: false });
+    await expect(read).resolves.toMatchObject({ completion: { status: "ready", proofs: [] } });
   });
 });

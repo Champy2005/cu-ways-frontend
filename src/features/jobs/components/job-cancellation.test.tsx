@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { StrictMode } from "react";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { cancelCreatorJob, loadCancellationDetails } from "../cancellation-actions";
 import {
@@ -48,6 +49,37 @@ afterEach(() => {
 });
 
 describe("Creator cancellation section", () => {
+  it.each(["Accepted", "In Progress", "Completed"] as const)(
+    "does not fetch cancellation details for a known %s job",
+    (status) => {
+      const view = render(<JobCancellation jobId="41" creatorId={4} status={status} />);
+      expect(view.container).toBeEmptyDOMElement();
+      expect(loadCancellationDetails).not.toHaveBeenCalled();
+    },
+  );
+
+  it("preserves post-reload success in StrictMode even while details never resolve", async () => {
+    const successKey = `${cancellationCheckKey(4, "41")}:success`;
+    sessionStorage.setItem(successKey, "1");
+    vi.mocked(loadCancellationDetails).mockImplementation(() => new Promise(() => {}));
+    render(
+      <StrictMode>
+        <JobCancellation jobId="41" creatorId={4} status="Cancelled" />
+      </StrictMode>,
+    );
+    expect(await screen.findByText("Job cancelled")).toBeVisible();
+    expect(sessionStorage.getItem(successKey)).toBeNull();
+    expect(screen.getByText(/Loading cancellation details/)).toBeVisible();
+  });
+
+  it("shows cancellation success even when the post-reload details request rejects", async () => {
+    sessionStorage.setItem(`${cancellationCheckKey(4, "41")}:success`, "1");
+    vi.mocked(loadCancellationDetails).mockRejectedValue(new Error("offline"));
+    mount();
+    expect(await screen.findByText("Job cancelled")).toBeVisible();
+    expect(await screen.findByText(/Cancellation details could not be loaded/)).toBeVisible();
+  });
+
   it("shows effects and counts, and Keep job performs no mutation", async () => {
     mount();
     const dialog = await openDialog();
