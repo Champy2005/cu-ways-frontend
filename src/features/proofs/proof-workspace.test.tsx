@@ -1,15 +1,17 @@
-import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Proof } from "@/features/transactions/types";
 import { formatProofTime, sortProofsNewestFirst } from "./format";
-import { saveProof } from "./actions";
-import { proofMessages, proofSaveDeadlineMs, ProofWorkspace } from "./proof-workspace";
+import { requestProofCheck, requestProofSave } from "./proof-client";
+import { PROOF_SERVER_BOUND_MS } from "./proof-limits";
+import { proofMessages, ProofWorkspace } from "./proof-workspace";
 
 const refresh = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh }) }));
-vi.mock("./actions", () => ({ saveProof: vi.fn() }));
+vi.mock("./proof-client", () => ({ requestProofSave: vi.fn(), requestProofCheck: vi.fn() }));
 
-const save = vi.mocked(saveProof);
+const save = vi.mocked(requestProofSave);
+const check = vi.mocked(requestProofCheck);
 
 afterEach(cleanup);
 beforeEach(() => {
@@ -109,7 +111,7 @@ describe("ProofWorkspace", () => {
 
     await waitFor(() => expect(screen.getByText("Proof saved")).toBeTruthy());
     expect(save).toHaveBeenCalledTimes(1);
-    expect(save).toHaveBeenCalledWith("7", "https://example.com/metrics");
+    expect(save).toHaveBeenCalledWith(7, "https://example.com/metrics");
     expect(refresh).toHaveBeenCalled();
     expect(screen.queryByRole("dialog")).toBeNull();
   });
@@ -136,7 +138,8 @@ describe("ProofWorkspace", () => {
   });
 
   it("asks to check the saved list when the outcome is unknown (B03)", async () => {
-    save.mockRejectedValue(new Error("network"));
+    save.mockResolvedValue({ status: "unknown" });
+    check.mockReturnValue(new Promise(() => {}));
     render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
     submitLink("https://example.com/metrics");
 
@@ -145,15 +148,21 @@ describe("ProofWorkspace", () => {
     expect(screen.queryByRole("button", { name: "Add proof" })).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: /Check saved proof/ }));
-    expect(refresh).toHaveBeenCalled();
+    expect(check).toHaveBeenCalledExactlyOnceWith(7);
+    await waitFor(() => expect(screen.getByText("Checking saved proof…")).toBeTruthy());
+    // The check is its own request; it never waits on a page refresh behind the save.
+    expect(refresh).not.toHaveBeenCalled();
   });
 
-  it("offers a retry when the check shows the link was not saved (B04)", async () => {
+  it("offers a retry once the server can no longer be saving the link (B04)", async () => {
+    const now = vi.spyOn(Date, "now").mockReturnValue(1_000);
     save.mockResolvedValue({ status: "unknown" });
+    check.mockResolvedValue({ status: "ok", proofs: [] });
     render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
     submitLink("https://example.com/metrics");
     await waitFor(() => screen.getByRole("button", { name: /Check saved proof/ }));
 
+    now.mockReturnValue(1_000 + PROOF_SERVER_BOUND_MS);
     fireEvent.click(screen.getByRole("button", { name: /Check saved proof/ }));
     await waitFor(() => expect(screen.getByText("This link wasn’t saved")).toBeTruthy());
 
@@ -163,24 +172,53 @@ describe("ProofWorkspace", () => {
     expect((within(dialog).getByLabelText("Delivery link") as HTMLInputElement).value).toBe(
       "https://example.com/metrics",
     );
+    now.mockRestore();
+  });
+
+  it("does not offer a retry while the server may still be saving the link", async () => {
+    const now = vi.spyOn(Date, "now").mockReturnValue(1_000);
+    save.mockResolvedValue({ status: "unknown" });
+    check.mockResolvedValue({ status: "ok", proofs: [] });
+    render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
+    submitLink("https://example.com/metrics");
+    await waitFor(() => screen.getByRole("button", { name: /Check saved proof/ }));
+
+    now.mockReturnValue(1_000 + PROOF_SERVER_BOUND_MS - 1);
+    fireEvent.click(screen.getByRole("button", { name: /Check saved proof/ }));
+    await waitFor(() => expect(screen.getByText("Not saved yet")).toBeTruthy());
+    expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Add proof" })).toBeNull();
+    expect(screen.getByRole("button", { name: /Check again/ })).toBeTruthy();
+    now.mockRestore();
   });
 
   it("confirms the save when the re-read list contains the link", async () => {
     save.mockResolvedValue({ status: "unknown" });
-    const { rerender } = render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
+    check.mockResolvedValue({
+      status: "ok",
+      proofs: [proof(9, "2026-10-28T07:20:00Z", "https://example.com/metrics")],
+    });
+    render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
     submitLink("https://example.com/metrics");
     await waitFor(() => screen.getByRole("button", { name: /Check saved proof/ }));
 
     fireEvent.click(screen.getByRole("button", { name: /Check saved proof/ }));
-    rerender(
-      <ProofWorkspace
-        jobId={7}
-        proofs={[proof(9, "2026-10-28T07:20:00Z", "https://example.com/metrics")]}
-        canAdd
-      />,
-    );
     await waitFor(() => expect(screen.getByText("Proof saved")).toBeTruthy());
     expect(screen.queryByText("Unconfirmed link")).toBeNull();
+    expect(refresh).toHaveBeenCalled();
+  });
+
+  it("keeps the outcome unknown when the check itself fails", async () => {
+    save.mockResolvedValue({ status: "unknown" });
+    check.mockResolvedValue({ status: "error", code: "check_failed", message: "failed" });
+    render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
+    submitLink("https://example.com/metrics");
+    await waitFor(() => screen.getByRole("button", { name: /Check saved proof/ }));
+
+    fireEvent.click(screen.getByRole("button", { name: /Check saved proof/ }));
+    await waitFor(() => expect(screen.getByText("Couldn’t check saved proof")).toBeTruthy());
+    expect(screen.getByText("Unconfirmed link")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Check again/ })).toBeTruthy();
   });
 });
 
@@ -226,21 +264,5 @@ describe("ProofWorkspace backend errors", () => {
     await waitFor(() => expect(screen.getByText("Your session expired")).toBeTruthy());
     expect(screen.getByRole("link", { name: "Sign in" }).getAttribute("href")).toBe("/login");
     expect(screen.getByText("Draft link")).toBeTruthy();
-  });
-
-  it("treats a save with no answer after the deadline as unconfirmed (A03)", async () => {
-    vi.useFakeTimers();
-    try {
-      save.mockReturnValue(new Promise(() => {}));
-      render(<ProofWorkspace jobId={7} proofs={[]} canAdd />);
-      submitLink("https://example.com/metrics");
-      expect(screen.getByRole("dialog").textContent).toContain("Saving proof");
-
-      await act(() => vi.advanceTimersByTimeAsync(proofSaveDeadlineMs));
-      expect(screen.getByText("We couldn’t confirm the save")).toBeTruthy();
-      expect(screen.getByText("Unconfirmed link")).toBeTruthy();
-    } finally {
-      vi.useRealTimers();
-    }
   });
 });

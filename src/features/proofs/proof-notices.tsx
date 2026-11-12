@@ -9,10 +9,15 @@ export type ProofOutcome =
   | { kind: "saved" }
   /** The server gave a definitive answer that the proof was not saved. */
   | { kind: "rejected"; error: ProofError }
-  /** The save may or may not have happened; read the list before retrying. */
-  | { kind: "unknown" }
-  /** The saved list is being re-read for this URL. */
-  | { kind: "checking"; url: string }
+  /**
+   * The save may or may not have happened; read the list before retrying.
+   * `stillSaving`: a check did not find it yet, but the server may still be saving it.
+   */
+  | { kind: "unknown"; stillSaving?: boolean }
+  /** The saved list is being re-read. */
+  | { kind: "checking" }
+  /** The saved list could not be read, so the outcome is still unknown. */
+  | { kind: "check-failed" }
   | { kind: "not-saved" };
 
 const tones = {
@@ -102,6 +107,53 @@ function RejectedNotice({
   );
 }
 
+const unconfirmedCopy = {
+  unknown: {
+    tone: "warning",
+    title: "We couldn’t confirm the save",
+    body: "Check the saved list before trying again.",
+    action: "Check saved proof",
+  },
+  stillSaving: {
+    tone: "warning",
+    title: "Not saved yet",
+    body: "The save may still be finishing. Check again in a few seconds before trying another save.",
+    action: "Check again",
+  },
+  checkFailed: {
+    tone: "error",
+    title: "Couldn’t check saved proof",
+    body: "The result is still unknown. Keep this link and check again before trying another save.",
+    action: "Check again",
+  },
+} as const;
+
+/** The save outcome is not known yet, so the only safe next step is to check the saved list. */
+function UnconfirmedNotice({
+  copy,
+  busy,
+  onCheck,
+}: {
+  copy: (typeof unconfirmedCopy)[keyof typeof unconfirmedCopy];
+  busy: boolean;
+  onCheck: () => void;
+}) {
+  return (
+    <Notice
+      tone={copy.tone}
+      title={copy.title}
+      action={
+        <NoticeAction onClick={onCheck} disabled={busy}>
+          <RefreshCw aria-hidden="true" className="size-4" />
+          {copy.action}
+        </NoticeAction>
+      }
+    >
+      {copy.body}
+    </Notice>
+  );
+}
+
 /** Feedback shown in the saved-proof workspace after a save attempt. */
 export function OutcomeNotice({
   outcome,
@@ -130,19 +182,14 @@ export function OutcomeNotice({
       );
     case "unknown":
       return (
-        <Notice
-          tone="warning"
-          title="We couldn’t confirm the save"
-          action={
-            <NoticeAction onClick={onCheck} disabled={busy}>
-              <RefreshCw aria-hidden="true" className="size-4" />
-              Check saved proof
-            </NoticeAction>
-          }
-        >
-          Check the saved list before trying again.
-        </Notice>
+        <UnconfirmedNotice
+          copy={outcome.stillSaving ? unconfirmedCopy.stillSaving : unconfirmedCopy.unknown}
+          busy={busy}
+          onCheck={onCheck}
+        />
       );
+    case "check-failed":
+      return <UnconfirmedNotice copy={unconfirmedCopy.checkFailed} busy={busy} onCheck={onCheck} />;
     case "checking":
       return (
         <p role="status" className="text-sm text-[var(--mk-muted)]">

@@ -5,9 +5,11 @@ import { useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
 import type { Proof } from "@/features/transactions/types";
-import { saveProof, type SaveProofResult } from "./actions";
 import { AddProofDialog } from "./add-proof-dialog";
 import { describeProofError } from "./errors";
+import type { CheckProofsResult, SaveProofResult } from "./proof-actions";
+import { requestProofCheck, requestProofSave } from "./proof-client";
+import { PROOF_SERVER_BOUND_MS } from "./proof-limits";
 import { DialogNotice, OutcomeNotice, type ProofOutcome } from "./proof-notices";
 import { ProofRecordList } from "./proof-list";
 
@@ -16,30 +18,31 @@ export const proofMessages = {
   invalid: "Enter a full link that starts with http:// or https://.",
 } as const;
 
-/** A03: after this long without an answer the save is treated as unconfirmed. */
-export const proofSaveDeadlineMs = 12_000;
+const currentTime = () => Date.now();
 
-function withDeadline(request: Promise<SaveProofResult>): Promise<SaveProofResult> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const deadline = new Promise<SaveProofResult>((resolve) => {
-    timer = setTimeout(() => resolve({ status: "unknown" }), proofSaveDeadlineMs);
-  });
-  return Promise.race([request, deadline]).finally(() => clearTimeout(timer));
-}
+/** States where the save outcome is not known yet, so another save must wait for a check. */
+const unresolvedKinds = new Set<ProofOutcome["kind"] | undefined>([
+  "unknown",
+  "checking",
+  "check-failed",
+]);
+const isUnresolved = (kind: ProofOutcome["kind"] | undefined) => unresolvedKinds.has(kind);
 
 /**
- * B03 → A04 / B04: once the authoritative list has been re-read, a pending check
- * resolves to whether the unconfirmed link is actually saved.
+ * B03 → A04 / B04: decide from the authoritative list whether the unconfirmed link
+ * was saved. A link that is missing while the server could still be saving it is
+ * not reported as "not saved", so the marketer cannot save it twice.
  */
-function resolveOutcome(
-  outcome: ProofOutcome | null,
-  refreshing: boolean,
-  proofs: readonly Proof[],
-): ProofOutcome | null {
-  if (outcome?.kind !== "checking" || refreshing) return outcome;
-  return proofs.some((proof) => proof.url === outcome.url)
-    ? { kind: "saved" }
-    : { kind: "not-saved" };
+function outcomeFromCheck(result: CheckProofsResult, url: string, sentAt: number): ProofOutcome {
+  if (result.status === "error") {
+    const error = describeProofError(result.code);
+    return error.kind === "session" || error.kind === "access"
+      ? { kind: "rejected", error }
+      : { kind: "check-failed" };
+  }
+  if (result.proofs.some((proof) => proof.url === url)) return { kind: "saved" };
+  if (currentTime() - sentAt < PROOF_SERVER_BOUND_MS) return { kind: "unknown", stillSaving: true };
+  return { kind: "not-saved" };
 }
 
 function EmptyProof({ canAdd }: { canAdd: boolean }) {
@@ -76,17 +79,18 @@ export function ProofWorkspace({
   const [draft, setDraft] = useState("");
   const [fieldError, setFieldError] = useState("");
   const [saving, setSaving] = useState(false);
-  const [rawOutcome, setOutcome] = useState<ProofOutcome | null>(null);
+  const [outcome, setOutcome] = useState<ProofOutcome | null>(null);
   const [refreshing, startRefresh] = useTransition();
   const inFlight = useRef(false);
+  /** When the last save was sent; the server may still be saving it until PROOF_SERVER_BOUND_MS later. */
+  const sentAt = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const addButton = useRef<HTMLButtonElement>(null);
   const progressButton = useRef<HTMLButtonElement>(null);
 
-  const outcome = resolveOutcome(rawOutcome, refreshing, proofs);
   const kind = outcome?.kind;
-  const unresolved = kind === "unknown" || kind === "checking";
-  const busy = saving || refreshing;
+  const unresolved = isUnresolved(kind);
+  const busy = saving || refreshing || kind === "checking";
   const retainedDraft = (kind === "rejected" || unresolved) && draft.trim();
 
   function openForm() {
@@ -106,15 +110,12 @@ export function ProofWorkspace({
       return;
     }
     inFlight.current = true;
+    sentAt.current = currentTime();
     setFieldError("");
     setOutcome(null);
     setSaving(true);
-    let result: SaveProofResult;
-    try {
-      result = await withDeadline(saveProof(String(jobId), url));
-    } catch {
-      result = { status: "unknown" };
-    }
+    // Never rejects: a lost or late (12 s) response comes back as "unknown".
+    const result = await requestProofSave(jobId, url);
     inFlight.current = false;
     setSaving(false);
     applyResult(result);
@@ -150,11 +151,17 @@ export function ProofWorkspace({
     startRefresh(() => router.refresh());
   }
 
-  function checkSaved() {
+  /** B03 → A04 / B04: read the authoritative list before deciding whether a retry is safe. */
+  async function checkSaved() {
     const url = parseProjectBriefUrl(draft.trim());
     if (!url) return setOutcome({ kind: "not-saved" });
-    setOutcome({ kind: "checking", url });
-    startRefresh(() => router.refresh());
+    setOutcome({ kind: "checking" });
+    const next = outcomeFromCheck(await requestProofCheck(jobId), url, sentAt.current);
+    setOutcome(next);
+    if (next.kind === "saved") {
+      setDraft("");
+      startRefresh(() => router.refresh());
+    }
   }
 
   return (
