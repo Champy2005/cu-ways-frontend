@@ -44,8 +44,18 @@ export async function getCreatorJobs(): Promise<CreatorJobSummary[]> {
   return serverApiGet<CreatorJobSummary[]>("/api/v1/me/jobs");
 }
 
-export async function getCreatorJob(jobId: number): Promise<CreatorJobSummary> {
-  return serverApiGet<CreatorJobSummary>(`/api/v1/jobs/${jobId}`);
+type ReadOptions = { signal?: AbortSignal };
+
+/** Forwards read options only when given, so ordinary reads keep their exact call. */
+function getWith<T>(path: string, options?: ReadOptions): Promise<T> {
+  return options ? serverApiGet<T>(path, options) : serverApiGet<T>(path);
+}
+
+export async function getCreatorJob(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<CreatorJobSummary> {
+  return getWith<CreatorJobSummary>(`/api/v1/jobs/${jobId}`, options);
 }
 
 export async function getJobSentInvitations(jobId: number): Promise<SentJobInvitation[]> {
@@ -118,9 +128,10 @@ export async function loadJobInviteInitialData(jobId: number): Promise<JobInvite
 export async function getJobOffers(
   jobId: number,
   status?: OfferStatus,
+  options?: ReadOptions,
 ): Promise<JobOfferComparison[]> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
-  const response = await serverApiGet<unknown>(`/api/v1/jobs/${jobId}/offers${query}`);
+  const response = await getWith<unknown>(`/api/v1/jobs/${jobId}/offers${query}`, options);
   return validateJobOffers(response, jobId);
 }
 
@@ -134,29 +145,43 @@ async function readCurrentJobRecord<T>(
   key: string,
   isValid: (value: unknown) => value is T,
   invalidMessage: string,
+  options?: ReadOptions,
 ): Promise<T | null> {
-  const data = await serverApiGet<unknown>(path);
+  const data = await getWith<unknown>(path, options);
   const record = isRecord(data) ? data[key] : undefined;
   if (record === null) return null;
   if (isValid(record)) return record;
   throw new Error(invalidMessage);
 }
 
-/** Loads the owned job, its accepted offer and one of its records, all at once. */
+/** A payment or review page never waits longer than this for its first data. */
+const RECORD_PAGE_LOAD_TIMEOUT_MS = 10_000;
+
+/**
+ * Loads the owned job, its accepted offer and one of its records, all at once.
+ * The three reads share one timeout so a stalled backend cannot hang the page.
+ */
 async function loadJobWithRecord<T>(
   jobId: number,
-  readRecord: (jobId: number) => Promise<T | null>,
+  readRecord: (jobId: number, options: ReadOptions) => Promise<T | null>,
+  timeoutMessage: string,
 ) {
-  const [job, accepted, record] = await Promise.all([
-    getCreatorJob(jobId),
-    getJobOffers(jobId, "Accepted"),
-    readRecord(jobId),
-  ]);
-  return {
-    job,
-    acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
-    record,
-  };
+  const options = { signal: AbortSignal.timeout(RECORD_PAGE_LOAD_TIMEOUT_MS) };
+  try {
+    const [job, accepted, record] = await Promise.all([
+      getCreatorJob(jobId, options),
+      getJobOffers(jobId, "Accepted", options),
+      readRecord(jobId, options),
+    ]);
+    return {
+      job,
+      acceptedOffer: accepted.find((offer) => offer.offer_status === "Accepted") ?? null,
+      record,
+    };
+  } catch (error) {
+    if (options.signal.aborted) throw new Error(timeoutMessage);
+    throw error;
+  }
 }
 
 export type JobPaymentData = {
@@ -167,12 +192,16 @@ export type JobPaymentData = {
 };
 
 /** Reads the owned job's active payment; throws when the response is not a valid record. */
-export function getCurrentJobPayment(jobId: number): Promise<ActivePayment | null> {
+export function getCurrentJobPayment(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<ActivePayment | null> {
   return readCurrentJobRecord(
     `/api/v1/jobs/${jobId}/payments/current`,
     "payment",
     (value): value is ActivePayment => isActivePayment(value, jobId),
     "The payment record could not be read. Refresh and try again.",
+    options,
   );
 }
 
@@ -181,7 +210,11 @@ export function getCurrentJobPayment(jobId: number): Promise<ActivePayment | nul
  * and any payment already recorded, so a reload shows the saved record.
  */
 export async function loadJobPaymentData(jobId: number): Promise<JobPaymentData> {
-  const { record, ...data } = await loadJobWithRecord(jobId, getCurrentJobPayment);
+  const { record, ...data } = await loadJobWithRecord(
+    jobId,
+    getCurrentJobPayment,
+    "The payment details took too long to load. Refresh the page to try again.",
+  );
   return { ...data, currentPayment: record };
 }
 
@@ -194,12 +227,16 @@ export type JobReviewData = {
 };
 
 /** Reads the owned job's review; throws when the response is not a valid record. */
-export function getCurrentJobReview(jobId: number): Promise<SavedReview | null> {
+export function getCurrentJobReview(
+  jobId: number,
+  options?: ReadOptions,
+): Promise<SavedReview | null> {
   return readCurrentJobRecord(
     `/api/v1/jobs/${jobId}/reviews/current`,
     "review",
     (value): value is SavedReview => isSavedReview(value, jobId),
     "The review could not be read. Refresh and try again.",
+    options,
   );
 }
 
@@ -208,7 +245,11 @@ export function getCurrentJobReview(jobId: number): Promise<SavedReview | null> 
  * and any saved review, so a reload shows the review instead of the form.
  */
 export async function loadJobReviewData(jobId: number): Promise<JobReviewData> {
-  const { record, ...data } = await loadJobWithRecord(jobId, getCurrentJobReview);
+  const { record, ...data } = await loadJobWithRecord(
+    jobId,
+    getCurrentJobReview,
+    "The review details took too long to load. Refresh the page to try again.",
+  );
   return { ...data, currentReview: record };
 }
 

@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, ClipboardList, Home, LogOut, Menu, Search, Settings } from "lucide-react";
+import {
+  Briefcase,
+  ClipboardList,
+  Home,
+  LogOut,
+  Menu,
+  Receipt,
+  Search,
+  Settings,
+} from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +26,7 @@ import { useLogout } from "@/components/layout/use-logout";
 export const creatorViews = [
   { href: "/creator/dashboard", label: "Overview", icon: Home },
   { href: "/creator/jobs", label: "My jobs", icon: Briefcase },
+  { href: "/creator/transactions", label: "Transactions", icon: Receipt },
   { href: "/surveys", label: "Surveys", icon: ClipboardList },
   { href: "/creator/discovery", label: "Discover", icon: Search },
   { href: "/creator/settings", label: "Settings", icon: Settings },

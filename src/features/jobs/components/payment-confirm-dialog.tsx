@@ -1,13 +1,26 @@
 "use client";
 
+import { useRef } from "react";
+import {
+  AlertDialog,
+  AlertDialogDescription,
+  AlertDialogOverlay,
+  AlertDialogPopup,
+  AlertDialogPortal,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { formatSatang, type PaymentMethod } from "../payment";
-import { ConfirmSaveDialog } from "./confirm-save-dialog";
 
 export function PaymentConfirmDialog({
   marketerName,
   method,
   amountSatang,
-  ...dialog
+  pending,
+  error,
+  onConfirm,
+  onClose,
+  finalFocus,
 }: {
   marketerName: string;
   method: PaymentMethod;
@@ -18,30 +31,68 @@ export function PaymentConfirmDialog({
   onClose: () => void;
   finalFocus: () => HTMLElement | null;
 }) {
+  const container = useRef<HTMLDivElement>(null);
+  const goBack = useRef<HTMLButtonElement>(null);
   return (
-    <ConfirmSaveDialog
-      {...dialog}
-      title="Record this payment?"
-      description="The payment will be saved as Paid for this job. Check the details before you confirm; a recorded payment cannot be edited here."
-      savingNote="Recording the payment."
-      confirmLabel="Confirm record"
-      pendingLabel="Recording…"
+    <AlertDialog
+      open
+      onOpenChange={(open) => {
+        // Closing is always allowed, even mid-save: the request keeps running
+        // and the page shows its result, so the Creator is never trapped here.
+        if (!open) onClose();
+      }}
     >
-      <dl className="pay-details">
-        <div>
-          <dt>Marketer</dt>
-          <dd>{marketerName}</dd>
-        </div>
-        <div>
-          <dt>Method</dt>
-          <dd>{method}</dd>
-        </div>
-        <div>
-          <dt>Amount</dt>
-          <dd>{formatSatang(amountSatang)}</dd>
-        </div>
-      </dl>
-      <p className="jo-muted mt-3">This records a payment only. No money is collected or moved.</p>
-    </ConfirmSaveDialog>
+      <div ref={container} />
+      <AlertDialogPortal container={container}>
+        <AlertDialogOverlay className="mk-dialog-backdrop fixed inset-0 z-[60]" />
+        <AlertDialogPopup
+          className="jo-modal jo-confirm mk-dialog-surface"
+          finalFocus={finalFocus}
+          initialFocus={goBack}
+        >
+          <AlertDialogTitle className="jo-modal-title">Record this payment?</AlertDialogTitle>
+          <AlertDialogDescription className="jo-muted">
+            The payment will be saved as Paid for this job. Check the details before you confirm; a
+            recorded payment cannot be edited here.
+          </AlertDialogDescription>
+          <div className="jo-confirm-summary">
+            <dl className="pay-details">
+              <div>
+                <dt>Marketer</dt>
+                <dd>{marketerName}</dd>
+              </div>
+              <div>
+                <dt>Method</dt>
+                <dd>{method}</dd>
+              </div>
+              <div>
+                <dt>Amount</dt>
+                <dd>{formatSatang(amountSatang)}</dd>
+              </div>
+            </dl>
+          </div>
+          <p className="jo-muted">This records a payment only. No money is collected or moved.</p>
+          {pending && (
+            <p role="status" className="jo-muted">
+              Recording the payment. You can close this window; it keeps saving and the page shows
+              the result. Closing does not cancel it.
+            </p>
+          )}
+          {error && (
+            <p role="alert" className="mk-error-notice rounded-lg p-3 text-sm">
+              {error}
+            </p>
+          )}
+          <div className="jo-card-actions">
+            <Button ref={goBack} variant="outline" className="jo-secondary" onClick={onClose}>
+              {pending ? "Close" : "Go back"}
+            </Button>
+            <Button className="jo-primary" disabled={pending} onClick={onConfirm}>
+              {pending ? "Recording…" : error ? "Try again" : "Confirm record"}
+            </Button>
+          </div>
+        </AlertDialogPopup>
+      </AlertDialogPortal>
+    </AlertDialog>
   );
 }

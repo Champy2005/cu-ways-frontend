@@ -2,11 +2,15 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { JobPaymentData } from "../api";
 import type { ActivePayment } from "../payment";
-import { checkJobPayment, recordJobPayment, type RecordPaymentResult } from "../payment-actions";
+import type { RecordPaymentResult } from "../payment-actions";
+import { requestPaymentRecord, requestPaymentStatus } from "../payment-client";
 import { testJob, testOffer } from "../testing/offer-fixtures";
 import { JobPaymentPage } from "./job-payment-page";
 
-vi.mock("../payment-actions", () => ({ recordJobPayment: vi.fn(), checkJobPayment: vi.fn() }));
+vi.mock("../payment-client", () => ({
+  requestPaymentRecord: vi.fn(),
+  requestPaymentStatus: vi.fn(),
+}));
 afterEach(cleanup);
 beforeEach(() => {
   vi.resetAllMocks();
@@ -95,7 +99,7 @@ describe("creator payment page", () => {
       expect.stringContaining("The amount must be exactly ฿2,500.50"),
     );
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-    expect(recordJobPayment).not.toHaveBeenCalled();
+    expect(requestPaymentRecord).not.toHaveBeenCalled();
 
     fireEvent.change(amount, { target: { value: "2500.50" } });
     expect(amount).not.toHaveAttribute("aria-invalid");
@@ -112,7 +116,7 @@ describe("creator payment page", () => {
 
     fireEvent.click(within(dialog).getByRole("button", { name: "Go back" }));
     await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
-    expect(recordJobPayment).not.toHaveBeenCalled();
+    expect(requestPaymentRecord).not.toHaveBeenCalled();
     expect(screen.getByRole("radio", { name: "Bank Transfer" })).toBeChecked();
     expect(screen.getByRole("textbox", { name: /Amount/ })).toHaveValue("2500.5");
     await waitFor(() =>
@@ -122,7 +126,7 @@ describe("creator payment page", () => {
 
   it("records once, blocks a second confirm while saving, then shows the read-only record", async () => {
     let finish!: (result: RecordPaymentResult) => void;
-    vi.mocked(recordJobPayment).mockImplementation(
+    vi.mocked(requestPaymentRecord).mockImplementation(
       () =>
         new Promise((resolve) => {
           finish = resolve;
@@ -138,7 +142,7 @@ describe("creator payment page", () => {
     expect(saving).toBeDisabled();
     expect(within(dialog).getByRole("button", { name: "Close" })).toBeEnabled();
     fireEvent.click(saving);
-    expect(recordJobPayment).toHaveBeenCalledExactlyOnceWith(12, "Bank Transfer", "2500.50");
+    expect(requestPaymentRecord).toHaveBeenCalledExactlyOnceWith(12, "Bank Transfer", "2500.50");
 
     finish(recorded);
     expect(await screen.findByRole("heading", { name: "Payment details" })).toBeInTheDocument();
@@ -150,7 +154,7 @@ describe("creator payment page", () => {
   });
 
   it("keeps a failed save inside the dialog so the Creator can retry", async () => {
-    vi.mocked(recordJobPayment)
+    vi.mocked(requestPaymentRecord)
       .mockResolvedValueOnce({ status: "error", message: "The payment could not be recorded." })
       .mockResolvedValueOnce(recorded);
     renderPage();
@@ -163,11 +167,11 @@ describe("creator payment page", () => {
     );
     fireEvent.click(await within(dialog).findByRole("button", { name: "Try again" }));
     expect(await screen.findByRole("heading", { name: "Payment details" })).toBeInTheDocument();
-    expect(recordJobPayment).toHaveBeenCalledTimes(2);
+    expect(requestPaymentRecord).toHaveBeenCalledTimes(2);
   });
 
   it("shows the server mismatch alert on the form and returns focus to the amount", async () => {
-    vi.mocked(recordJobPayment).mockResolvedValue({
+    vi.mocked(requestPaymentRecord).mockResolvedValue({
       status: "mismatch",
       message: "The amount does not match the accepted offer price.",
     });
@@ -207,7 +211,7 @@ describe("creator payment page", () => {
   });
 
   it("shows the real status when a submit finds an existing Pending payment", async () => {
-    vi.mocked(recordJobPayment).mockResolvedValue({
+    vi.mocked(requestPaymentRecord).mockResolvedValue({
       status: "existing",
       payment: pendingPayment,
       message: "This job already has a payment, so no new payment was created.",
@@ -229,11 +233,11 @@ describe("creator payment page", () => {
   });
 
   it("does not claim Paid when the existing payment cannot be read, and can check again", async () => {
-    vi.mocked(recordJobPayment).mockResolvedValue({
+    vi.mocked(requestPaymentRecord).mockResolvedValue({
       status: "existing_unconfirmed",
       message: "This job already has a payment, but its details could not be confirmed.",
     });
-    vi.mocked(checkJobPayment).mockResolvedValue({ status: "found", payment: pendingPayment });
+    vi.mocked(requestPaymentStatus).mockResolvedValue({ status: "found", payment: pendingPayment });
     renderPage();
     fillForm("PromptPay", "2500.50");
     review();
@@ -250,15 +254,15 @@ describe("creator payment page", () => {
 
     fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
     expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeInTheDocument();
-    expect(checkJobPayment).toHaveBeenCalledExactlyOnceWith(12);
+    expect(requestPaymentStatus).toHaveBeenCalledExactlyOnceWith(12);
   });
 
   it("returns to the form when a status check finds no payment", async () => {
-    vi.mocked(recordJobPayment).mockResolvedValue({
+    vi.mocked(requestPaymentRecord).mockResolvedValue({
       status: "unknown",
       message: "We could not confirm whether the payment was saved.",
     });
-    vi.mocked(checkJobPayment).mockResolvedValue({ status: "none" });
+    vi.mocked(requestPaymentStatus).mockResolvedValue({ status: "none" });
     renderPage();
     fillForm("Credit Card", "2500.50");
     review();
@@ -278,7 +282,7 @@ describe("creator payment page", () => {
 
   it("lets the Creator close the dialog while saving without allowing a second submit", async () => {
     let finish!: (result: RecordPaymentResult) => void;
-    vi.mocked(recordJobPayment).mockImplementation(
+    vi.mocked(requestPaymentRecord).mockImplementation(
       () =>
         new Promise((resolve) => {
           finish = resolve;
@@ -300,7 +304,7 @@ describe("creator payment page", () => {
 
     fireEvent.click(reviewButton);
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-    expect(recordJobPayment).toHaveBeenCalledTimes(1);
+    expect(requestPaymentRecord).toHaveBeenCalledTimes(1);
 
     finish(recorded);
     expect(await screen.findByRole("heading", { name: "Payment recorded" })).toBeInTheDocument();
@@ -311,7 +315,7 @@ describe("creator payment page", () => {
 
   it("shows a failure on the form when it lands after the dialog was closed", async () => {
     let finish!: (result: RecordPaymentResult) => void;
-    vi.mocked(recordJobPayment).mockImplementation(
+    vi.mocked(requestPaymentRecord).mockImplementation(
       () =>
         new Promise((resolve) => {
           finish = resolve;
@@ -341,5 +345,85 @@ describe("creator payment page", () => {
     expect(screen.getByText("Payment is not available")).toBeInTheDocument();
     expect(screen.getByText(message)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Review payment" })).not.toBeInTheDocument();
+  });
+
+  describe("recovery after a save with an unknown result", () => {
+    async function confirmPayment() {
+      fillForm("Bank Transfer", "2500.50");
+      review();
+      fireEvent.click(
+        within(await screen.findByRole("alertdialog")).getByRole("button", {
+          name: "Confirm record",
+        }),
+      );
+    }
+
+    const unknown: RecordPaymentResult = {
+      status: "unknown",
+      message: "We could not confirm whether the payment was saved.",
+    };
+
+    it("leaves the status check ready to use without the Creator pressing it", async () => {
+      // The reported bug: after a timed-out save the check showed "Checking…"
+      // and stayed disabled, because the save and the check shared one pending state.
+      vi.mocked(requestPaymentRecord).mockResolvedValue(unknown);
+      vi.mocked(requestPaymentStatus).mockResolvedValue({
+        status: "found",
+        payment: pendingPayment,
+      });
+      renderPage();
+      await confirmPayment();
+
+      expect(await screen.findByRole("heading", { name: "Payment status unknown" })).toBeVisible();
+      const check = await screen.findByRole("button", { name: "Check payment status" });
+      expect(check).toBeEnabled();
+      expect(screen.queryByRole("button", { name: "Checking…" })).not.toBeInTheDocument();
+      // No resubmit until the real status is known.
+      expect(screen.queryByRole("button", { name: /Review payment|Recording/ })).toBeNull();
+
+      fireEvent.click(check);
+      expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeVisible();
+      expect(requestPaymentStatus).toHaveBeenCalledExactlyOnceWith(12);
+      expect(requestPaymentRecord).toHaveBeenCalledTimes(1);
+    });
+
+    it("shows Checking… only while a check runs, then allows a retry", async () => {
+      let finishCheck!: (result: Awaited<ReturnType<typeof requestPaymentStatus>>) => void;
+      vi.mocked(requestPaymentRecord).mockResolvedValue(unknown);
+      vi.mocked(requestPaymentStatus)
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              finishCheck = resolve;
+            }),
+        )
+        .mockResolvedValueOnce({ status: "found", payment: pendingPayment });
+      renderPage();
+      await confirmPayment();
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByRole("button", { name: "Checking…" })).toBeDisabled();
+
+      finishCheck({ status: "error", message: "The payment status could not be checked." });
+      expect(await screen.findByText(/status could not be checked/)).toBeVisible();
+      const retry = await screen.findByRole("button", { name: "Check payment status" });
+      expect(retry).toBeEnabled();
+      expect(screen.getAllByRole("link", { name: "Back to job details" })).not.toHaveLength(0);
+      fireEvent.click(retry);
+      expect(await screen.findByRole("heading", { name: "Payment pending" })).toBeVisible();
+    });
+
+    it("keeps the draft when the check finds no payment", async () => {
+      vi.mocked(requestPaymentRecord).mockResolvedValue(unknown);
+      vi.mocked(requestPaymentStatus).mockResolvedValue({ status: "none" });
+      renderPage();
+      await confirmPayment();
+      fireEvent.click(await screen.findByRole("button", { name: "Check payment status" }));
+      expect(await screen.findByText(/No payment is recorded for this job yet/)).toBeVisible();
+      expect(screen.getByRole("radio", { name: "Bank Transfer" })).toBeChecked();
+      expect(screen.getByRole("textbox", { name: /Amount/ })).toHaveValue("2500.50");
+      expect(await screen.findByRole("button", { name: "Review payment" })).not.toHaveAttribute(
+        "aria-disabled",
+      );
+    });
   });
 });

@@ -1,5 +1,7 @@
-import { JobRecordLoading } from "@/features/jobs/components/job-record-route";
-
 export default function LoadingJobPayment() {
-  return <JobRecordLoading message="Loading payment details…" />;
+  return (
+    <p role="status" className="mx-auto w-full max-w-md text-sm text-[var(--mk-muted)]">
+      Loading payment details…
+    </p>
+  );
 }

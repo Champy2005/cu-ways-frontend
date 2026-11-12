@@ -20,6 +20,10 @@ export async function serverApiRequest<T>(path: string, init: RequestInit = {}):
   return payload.data as T;
 }
 
-export function serverApiGet<T>(path: string): Promise<T> {
-  return serverApiRequest<T>(path, { method: "GET" });
+/** `signal` lets a caller bound a read that must not hang, such as a status check. */
+export function serverApiGet<T>(path: string, options: { signal?: AbortSignal } = {}): Promise<T> {
+  return serverApiRequest<T>(
+    path,
+    options.signal ? { method: "GET", signal: options.signal } : { method: "GET" },
+  );
 }
