@@ -8,6 +8,25 @@ vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
 beforeEach(() => vi.resetAllMocks());
 
 describe("live invitation server reads", () => {
+  it("does not request unrelated offers when loading history for a single job", async () => {
+    const unrelated = {
+      ...receivedRequest(),
+      job_request_id: 88,
+      job_id: 99,
+      job: { ...receivedRequest().job, job_id: 99 },
+    };
+    vi.mocked(serverApiGet).mockImplementation(async (path) => {
+      if (path === "/api/v1/me/job-requests") return [receivedRequest(), unrelated];
+      if (path === "/api/v1/me/job-requests/7/offers") return [savedOffer("Accepted")];
+      throw new Error("Unrelated invitation is unavailable");
+    });
+    const snapshot = await getMarketerOffers(3);
+    expect(snapshot.offers).toHaveLength(1);
+    expect(snapshot.offersUnavailable).toBe(false);
+    expect(serverApiGet).toHaveBeenCalledTimes(2);
+    expect(serverApiGet).not.toHaveBeenCalledWith("/api/v1/me/job-requests/88/offers");
+  });
+
   it("keeps withdrawn history alongside replacement offers, newest first", async () => {
     vi.mocked(serverApiGet)
       .mockResolvedValueOnce([receivedRequest()])
