@@ -35,7 +35,9 @@ export default async function AdminJobsPage({ searchParams }: PageProps<"/admin/
             ))}
           </select>
         </label>
-        <button className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white">Filter jobs</button>
+        <button type="submit" className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white">
+          Filter jobs
+        </button>
       </form>
       {result.data ? (
         <>

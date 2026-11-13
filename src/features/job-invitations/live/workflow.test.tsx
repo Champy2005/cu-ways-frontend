@@ -109,7 +109,9 @@ describe("live US20 invitations", () => {
     fireEvent.click(
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Confirm" }),
     );
-    await waitFor(() => expect(router.push).toHaveBeenCalledWith("/marketer/offer/create?requestId=7"));
+    await waitFor(() =>
+      expect(router.push).toHaveBeenCalledWith("/marketer/offer/create?requestId=7"),
+    );
     expect(respondToInvitation).toHaveBeenCalledWith(7, undefined);
   });
   it("declines with optional reason and note", async () => {
