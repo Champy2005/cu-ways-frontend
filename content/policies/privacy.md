@@ -10,7 +10,7 @@ Signed-in Creators can view Marketer profiles, services, and verified reviews. J
 
 ## External links and payments
 
-Survey forms, briefs, and delivery evidence may open on external services. Those services have their own privacy rules. Check link permissions before sharing. CU Ways stores the recorded amount, method, and status. Payment account details and card numbers are entered outside CU Ways.
+Survey forms, briefs, and delivery evidence may open on external services. Those services have their own privacy rules. Check link permissions before sharing. CU Ways stores the simulated payment amount, method, and status. Do not enter payment account details or card numbers into CU Ways.
 
 ## Account and data requests
 

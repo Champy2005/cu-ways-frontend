@@ -66,7 +66,12 @@ export function JobDetails({
       {job.description && (
         <p className="mt-3 text-sm whitespace-pre-wrap break-words">{job.description}</p>
       )}
-      {job.budget && <p className="mt-2 text-sm ji-muted">Compensation: ฿{job.budget}</p>}
+      {job.budget && (
+        <p className="mt-3 text-sm ji-muted">
+          Creator&apos;s proposed compensation{" "}
+          <strong className="mt-1 block text-xl text-[var(--mk-text)]">฿{job.budget}</strong>
+        </p>
+      )}
       {!compact && (
         <p className="ji-surveys ji-live-survey-overview">
           {job.surveys.length} {job.surveys.length === 1 ? "survey" : "surveys"} attached

@@ -10,7 +10,7 @@ Creators and marketers agree to the work and price through an accepted offer. Cr
 
 ## Payments
 
-CU Ways records the Creator's payment confirmation. Participants arrange payment outside the platform. A Paid or Released status records a step in the job workflow. CU Ways does not collect, hold, or transfer funds.
+CU Ways provides simulated payments for the job workflow. A Paid or Released status records a simulated step. CU Ways does not collect, hold, or transfer funds.
 
 ## Reviews and accounts
 

@@ -35,11 +35,15 @@ export function reviewsHref(
 ): string {
   const query = new URLSearchParams();
   const origin = first(ref);
-  if (origin) query.set("ref", origin);
+  if (origin && origin !== "marketer-dashboard") query.set("ref", origin);
   if (rating !== "all") query.set("rating", String(rating));
   if (page > 1) query.set("page", String(page));
   const search = query.toString();
-  return `/marketers/${marketerID}/verified-performance${search ? `?${search}` : ""}`;
+  const path =
+    origin === "marketer-dashboard"
+      ? "/marketer/reviews"
+      : `/marketers/${marketerID}/verified-performance`;
+  return `${path}${search ? `?${search}` : ""}`;
 }
 
 export function ratingDistribution(reviews: MarketerReview[]) {

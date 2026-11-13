@@ -12,7 +12,7 @@ import { MutationFeedback } from "./mutation-control";
 import { getJobWorkflow, getPayment, getReview } from "./queries";
 import type { Proof, Settlement, Workspace } from "./types";
 import { ProofWorkspace } from "@/features/proofs/proof-workspace";
-import { CompleteJob, RecordPayment, StartJob, SubmitReview } from "./workflow-controls";
+import { RecordPayment, StartJob, SubmitReview } from "./workflow-controls";
 
 const jobTitle = (job: Settlement) => job.job_title || `Job #${job.job_id}`;
 
@@ -123,14 +123,12 @@ export function CreatorWorkflow({ job, proofs }: { job: Settlement; proofs: Proo
         <h3 className="font-semibold">Delivery proof</h3>
         <ProofList proofs={proofs} />
       </div>
-      {inProgress &&
-        (paidAgreedAmount && proofs.length > 0 ? (
-          <CompleteJob job={job} />
-        ) : (
-          <p className="text-sm text-[var(--mk-muted)]">
-            Completion requires a recorded payment for the agreed price and delivery proof.
-          </p>
-        ))}
+      {inProgress && !(paidAgreedAmount && proofs.length > 0) && (
+        <p className="text-sm text-[var(--mk-muted)]">
+          {!paidAgreedAmount ? "Make the simulated payment to complete this job. " : ""}Completion
+          also requires delivery proof.
+        </p>
+      )}
       {completed && (
         <p className="text-sm">
           Job completed.
@@ -264,7 +262,7 @@ export async function PaymentPage({ id, workspace }: { id: string; workspace: Wo
             <p>No payment has been recorded for this job.</p>
           )}
           <p className="text-sm text-[var(--mk-muted)]">
-            CU Ways records the payment and payout status. Funds move outside the platform.
+            This payment and payout are simulated. No funds are transferred.
           </p>
           {job.job_status === "Completed" && job.payment && (
             <Link

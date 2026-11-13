@@ -179,12 +179,14 @@ export function JobCreatedView({
   notification,
   onDismissNotification,
   reviewStatus,
+  completion,
 }: {
   job: JobCreatedDetails;
   onEdit: () => void;
   canEdit?: boolean;
   /** Completed jobs only: picks "Write a review" or "View review". */
   reviewStatus?: JobReviewStatus;
+  completion?: React.ReactNode;
   notification?: JobSuccessNotice | null;
   onDismissNotification?: () => void;
 }) {
@@ -317,6 +319,7 @@ export function JobCreatedView({
               Invite marketers
             </Link>
           )}
+          {completion && <div className="col-span-2">{completion}</div>}
         </div>
       </div>
     </section>

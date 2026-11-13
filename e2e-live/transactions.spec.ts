@@ -165,6 +165,18 @@ test("US032 shows completed paid jobs and linked records to both participants", 
       "href",
       "https://example.test/delivery",
     );
+    const completeButton = page.getByRole("button", { name: "Complete job" });
+    const offersLink = page.getByRole("link", { name: "View offers" });
+    await expect(completeButton).toHaveClass(/w-full/);
+    expect(
+      await offersLink.evaluate((link) => {
+        const button = document.querySelector("button.bg-emerald-700");
+        return (
+          button !== null &&
+          Boolean(link.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING)
+        );
+      }),
+    ).toBe(true);
     await page.getByRole("button", { name: "Complete job" }).click();
     await page.getByRole("button", { name: "Confirm completion" }).click();
     await expect(page.getByText("Released", { exact: true }).first()).toBeVisible();
@@ -217,10 +229,14 @@ test("US034 shows verified reviews to the marketer who received them", async ({ 
   const creator = await createAccount(false);
   const marketer = await createAccount(true);
   const { jobId, jobApi } = await createAcceptedJob(creator, marketer);
-  const performanceURL = `/marketers/${marketer.id}/verified-performance`;
-
   await signIn(page, marketer);
-  await page.goto(performanceURL);
+  await page.goto("/marketer/dashboard");
+  await page.getByRole("link", { name: /Your reviews/ }).click();
+  await expect(page).toHaveURL(/\/marketer\/reviews$/);
+  await expect(page.getByRole("link", { name: "Back", exact: true })).toHaveAttribute(
+    "href",
+    "/marketer/dashboard",
+  );
   await expect(page.getByRole("heading", { name: "No ratings yet" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "No reviews yet" })).toBeVisible();
 
@@ -243,4 +259,7 @@ test("US034 shows verified reviews to the marketer who received them", async ({ 
   await reviews.getByLabel("Filter by rating").selectOption("1");
   await expect(page).toHaveURL(/rating=1/);
   await expect(reviews.getByText("No reviews match this rating", { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/marketer\/reviews\?rating=1/);
+  await page.getByRole("link", { name: "Back", exact: true }).click();
+  await expect(page).toHaveURL(/\/marketer\/dashboard$/);
 });
