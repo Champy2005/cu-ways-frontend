@@ -49,7 +49,7 @@ afterEach(() => {
 });
 
 describe("Creator cancellation section", () => {
-  it.each(["Accepted", "In Progress", "Completed"] as const)(
+  it.each(["Completed"] as const)(
     "does not fetch cancellation details for a known %s job",
     (status) => {
       const view = render(<JobCancellation jobId="41" creatorId={4} status={status} />);
@@ -126,8 +126,8 @@ describe("Creator cancellation section", () => {
     { ...details, paid: true },
     { ...details, status: "Completed" as const },
     { ...details, status: "Cancelled" as const },
-    { ...details, status: "Accepted" as const },
-    { ...details, status: "In Progress" as const },
+    { ...details, status: "Accepted" as const, paid: true },
+    { ...details, status: "In Progress" as const, paid: true },
   ])("does not enable cancellation for $status, paid=$paid", async (snapshot) => {
     vi.mocked(loadCancellationDetails).mockResolvedValue({ status: "ready", details: snapshot });
     mount();

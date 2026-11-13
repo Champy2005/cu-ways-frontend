@@ -5,6 +5,7 @@ import { formatDate } from "@/features/job-invitations/format";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
 import { ApiError } from "@/lib/api/errors";
 import { requireSession } from "@/lib/auth/guards";
+import { JobContact } from "./job-contact";
 import { formatTHB } from "./format";
 import { RetryButton } from "./history-controls";
 import { MutationFeedback } from "./mutation-control";
@@ -101,6 +102,7 @@ export function CreatorWorkflow({ job, proofs }: { job: Settlement; proofs: Proo
   return (
     <section className="mk-card mx-auto mt-5 w-full max-w-4xl space-y-4 p-5">
       <h2 className="text-lg font-semibold">Payment and delivery</h2>
+      <JobContact contact={job.contact} heading="Marketer contact" />
       <div className="flex flex-wrap gap-x-5">
         <Link
           className="inline-flex min-h-12 items-center underline"

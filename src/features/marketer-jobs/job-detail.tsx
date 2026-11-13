@@ -24,6 +24,7 @@ import {
   type JobsResult,
 } from "./types";
 import s from "./jobs.module.css";
+import { JobContact } from "@/features/transactions/job-contact";
 import { JobCompletion } from "./job-completion";
 
 function Fact({ label, children }: { label: string; children: ReactNode }) {
@@ -44,7 +45,21 @@ function SurveyContext({ job }: { job: HiredJob }) {
       </div>
       <ul className={s.surveys}>
         {job.surveys.map((survey) => (
-          <li key={survey.id}>{survey.title}</li>
+          <li key={survey.id}>
+            {survey.url ? (
+              <a
+                href={survey.url}
+                className={s.inlineLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {survey.title}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            ) : (
+              survey.title
+            )}
+          </li>
         ))}
       </ul>
       <dl className={s.detailFacts}>
@@ -390,6 +405,7 @@ export function JobDetail({
           )}
         </section>
       </div>
+      <JobContact contact={job.contact} heading="Creator contact" />
       <StartDialog
         job={job}
         pending={pending}

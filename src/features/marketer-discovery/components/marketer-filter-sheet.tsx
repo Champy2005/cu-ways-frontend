@@ -115,6 +115,26 @@ export function MarketerFilterSheet({
 
           <fieldset>
             <legend className="mb-3 text-lg font-medium text-foreground">Rating</legend>
+            <label className="mb-3 flex flex-wrap items-center gap-2 text-sm">
+              Minimum rating
+              <select
+                value={draft.minRating ?? ""}
+                onChange={(event) =>
+                  onDraftChange({
+                    ...draft,
+                    minRating: event.target.value ? Number(event.target.value) : null,
+                  })
+                }
+                className="rounded-md border border-input bg-background px-2 py-1"
+              >
+                <option value="">Any rating</option>
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <option key={rating} value={rating}>
+                    {rating}+ stars
+                  </option>
+                ))}
+              </select>
+            </label>
             <div className="flex flex-wrap gap-2">
               {RATING_SORT_OPTIONS.map((option) => {
                 const selected = draft.sort === option.value;

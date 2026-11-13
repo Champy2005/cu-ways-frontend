@@ -28,6 +28,7 @@ type JobProjectBriefProps = {
   creatorId: number;
   creatorName?: string;
   onSaved?: () => void;
+  editable?: boolean;
 };
 
 function BriefDetails({ attachment }: { attachment: ProjectBriefAttachment }) {
@@ -63,7 +64,13 @@ export function JobProjectBrief(props: JobProjectBriefProps) {
   return <ProjectBriefSection key={`${props.creatorId}:${props.jobId}`} {...props} />;
 }
 
-function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProjectBriefProps) {
+function ProjectBriefSection({
+  jobId,
+  creatorId,
+  creatorName,
+  onSaved,
+  editable = true,
+}: JobProjectBriefProps) {
   const id = useId();
   const [cachedMetadata] = useState(() => readProjectBriefHistory(jobId, creatorId));
   const metadata = useRef(cachedMetadata);
@@ -196,7 +203,9 @@ function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProj
         Project Brief
       </h2>
       <p className="mt-0.5 text-xs leading-4 text-[var(--mk-muted)]">
-        Attach a reference document for this job
+        {editable
+          ? "Attach a reference document for this job"
+          : "Brief attachments are locked for this job."}
       </p>
 
       {state.status !== "success" ? (
@@ -224,21 +233,23 @@ function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProj
               className="size-6 shrink-0 -rotate-45 text-[var(--mk-accent)]"
             />
             <BriefDetails attachment={current} />
-            <Button
-              ref={editButton}
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Edit project brief"
-              disabled={saving}
-              onClick={() => {
-                setSaveFailure(null);
-                setEditing(true);
-              }}
-              className="shrink-0 text-[var(--mk-text)]"
-            >
-              <PencilLine aria-hidden="true" className="size-4" />
-            </Button>
+            {editable && (
+              <Button
+                ref={editButton}
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Edit project brief"
+                disabled={saving}
+                onClick={() => {
+                  setSaveFailure(null);
+                  setEditing(true);
+                }}
+                className="shrink-0 text-[var(--mk-text)]"
+              >
+                <PencilLine aria-hidden="true" className="size-4" />
+              </Button>
+            )}
           </div>
           <Button
             ref={historyButton}
@@ -258,24 +269,26 @@ function ProjectBriefSection({ jobId, creatorId, creatorName, onSaved }: JobProj
         <div className="mt-3 flex flex-col items-center rounded-xl border-2 border-dashed border-[var(--mk-border)] bg-[var(--mk-field)] px-4 py-4 text-center">
           <Link2 aria-hidden="true" className="size-6 -rotate-45 text-[var(--mk-muted)]" />
           <p className="mt-2 text-sm text-[var(--mk-muted)]">No project brief attached yet</p>
-          <Button
-            ref={addButton}
-            type="button"
-            variant="outline"
-            disabled={saving}
-            onClick={() => {
-              setSaveFailure(null);
-              setEditing(true);
-            }}
-            className="mt-3 h-8 gap-0.5 rounded-xl border-[var(--mk-accent)] bg-[var(--mk-accent-soft)] px-3 text-xs font-semibold text-[var(--mk-accent)] hover:bg-[var(--mk-accent-soft)] hover:text-[var(--mk-accent)]"
-          >
-            <Plus aria-hidden="true" className="size-3" />
-            Add Brief URL
-          </Button>
+          {editable && (
+            <Button
+              ref={addButton}
+              type="button"
+              variant="outline"
+              disabled={saving}
+              onClick={() => {
+                setSaveFailure(null);
+                setEditing(true);
+              }}
+              className="mt-3 h-8 gap-0.5 rounded-xl border-[var(--mk-accent)] bg-[var(--mk-accent-soft)] px-3 text-xs font-semibold text-[var(--mk-accent)] hover:bg-[var(--mk-accent-soft)] hover:text-[var(--mk-accent)]"
+            >
+              <Plus aria-hidden="true" className="size-3" />
+              Add Brief URL
+            </Button>
+          )}
         </div>
       )}
 
-      {editing && (
+      {editable && editing && (
         <ProjectBriefDialog
           initialValues={current}
           onSave={saveBrief}

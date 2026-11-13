@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
+import { JobContact } from "@/features/transactions/job-contact";
 import { MutationFeedback } from "@/features/transactions/mutation-control";
 import { SubmitProof } from "@/features/transactions/workflow-controls";
 import { JobsHeading, JobsNotice, RefreshJobs } from "./jobs-ui";
@@ -53,6 +54,31 @@ function CompletionSummary({ job }: { job: HiredJob }) {
           <dd>{formatJobPrice(job.price)}</dd>
         </div>
       </dl>
+      <JobContact contact={job.contact} heading="Creator contact" />
+      <ul className="mt-4 space-y-2" aria-label="Linked surveys">
+        {job.surveys.map((survey) => (
+          <li key={survey.id}>
+            {survey.url ? (
+              <a
+                href={survey.url}
+                className={s.inlineLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {survey.title}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            ) : (
+              survey.title
+            )}
+          </li>
+        ))}
+      </ul>
+      {job.briefUrl && (
+        <a href={job.briefUrl} className={s.inlineLink} target="_blank" rel="noopener noreferrer">
+          Open brief<span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      )}
     </section>
   );
 }

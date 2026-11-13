@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SurveyActions } from "@/features/surveys/components/survey-actions";
 import { SurveyCreatedNotice } from "@/features/surveys/components/survey-created-notice";
 import { notFound } from "next/navigation";
 import { BackLink } from "@/components/ui/back-link";
@@ -67,6 +68,7 @@ export default async function SurveyDetailsPage({
           </div>
         </dl>
       </section>
+      <SurveyActions survey={survey} />
       <Link
         href="/creator/jobs/create"
         className="mk-primary-button inline-flex min-h-12 w-full items-center justify-center px-4 text-sm font-semibold"

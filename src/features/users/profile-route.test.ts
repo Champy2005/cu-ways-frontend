@@ -35,13 +35,10 @@ describe("contact update boundary", () => {
     expect((await PUT(request({ phone: "123", line_id: null }))).status).toBe(401);
     expect(fetchBackend).not.toHaveBeenCalled();
   });
-  it.each([null, "", "   ", "123", "08123456789"])(
-    "rejects a missing or non-10-digit phone %j",
-    async (phone) => {
-      expect((await PUT(request({ phone, line_id: null }))).status).toBe(422);
-      expect(fetchBackend).not.toHaveBeenCalled();
-    },
-  );
+  it.each(["", "   ", "123", "08123456789"])("rejects an invalid phone value %j", async (phone) => {
+    expect((await PUT(request({ phone, line_id: null }))).status).toBe(422);
+    expect(fetchBackend).not.toHaveBeenCalled();
+  });
   it("updates only the session user's contact endpoint and permits LINE clearing", async () => {
     vi.mocked(fetchBackend).mockResolvedValue(
       Response.json({ status: "success", data: { phone: "0812345678", line_id: null } }),

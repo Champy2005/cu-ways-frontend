@@ -83,6 +83,7 @@ export type MarketerQuery = {
   minPrice: number | null;
   maxPrice: number | null;
   availability: AvailabilityStatus | null;
+  minRating?: number | null;
   sort: MarketerSortOption | null;
 };
 

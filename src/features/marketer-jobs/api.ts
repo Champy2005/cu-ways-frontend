@@ -1,6 +1,7 @@
 import { getMarketerOffers } from "@/features/job-invitations/live/api";
 import type { MarketerOfferItem } from "@/features/job-invitations/live/types";
 import { parseProjectBriefUrl } from "@/features/jobs/project-brief";
+import { safeSurveyUrl } from "@/features/surveys/schemas";
 import { getPayment } from "@/features/transactions/queries";
 import { ApiError } from "@/lib/api/errors";
 import { jobStatuses, type HiredJob, type JobFailure } from "./types";
@@ -13,7 +14,11 @@ function hiredJob({ request, offer }: MarketerOfferItem): HiredJob {
   return {
     id: request.job_id,
     status: job.job_status as HiredJob["status"],
-    surveys: job.surveys.map((survey) => ({ id: survey.survey_id, title: survey.title })),
+    surveys: job.surveys.map((survey) => ({
+      id: survey.survey_id,
+      title: survey.title,
+      url: safeSurveyUrl(survey.survey_link),
+    })),
     creator: job.creator.name,
     price: offer.offered_price,
     deliveryDate: offer.delivery_date,
@@ -60,6 +65,7 @@ export async function getHiredJob(id: string, userId: number): Promise<HiredJob>
     ...job,
     status: saved.job_status as HiredJob["status"],
     price: saved.accepted_price,
+    contact: saved.contact,
   };
   if (completion) detail.completion = completion;
   return detail;

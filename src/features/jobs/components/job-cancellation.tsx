@@ -36,7 +36,7 @@ export function JobCancellation({
   status?: CreatorJobSummary["job_status"];
 }) {
   // Keep cancellation history and post-reload confirmation for Cancelled jobs.
-  if (status && status !== "Pending" && status !== "Cancelled") return null;
+  if (status === "Completed") return null;
   return <CancellationSection key={`${creatorId}:${jobId}`} jobId={jobId} creatorId={creatorId} />;
 }
 

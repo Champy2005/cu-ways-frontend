@@ -34,6 +34,7 @@ export function toBackendSearchParams(
   if (query.minPrice !== null) add("min_price", query.minPrice);
   if (query.maxPrice !== null) add("max_price", query.maxPrice);
   if (query.availability !== null) add("availability_status", query.availability);
+  if (query.minRating != null) add("min_rating", query.minRating);
   if (query.sort !== null) add("sort", query.sort);
   return params;
 }

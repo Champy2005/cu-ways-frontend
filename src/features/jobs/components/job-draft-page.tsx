@@ -202,6 +202,7 @@ function SavedJobPage({
         />
         <JobLinkedSurveys
           surveys={surveys}
+          editable={job.job_status === "Pending"}
           pending={pending}
           onAdd={() => {
             setSelectingSurveys(true);
@@ -215,6 +216,7 @@ function SavedJobPage({
           jobId={jobId}
           creatorId={state.creatorId}
           creatorName={creatorName}
+          editable={job.job_status === "Pending"}
           onSaved={() => {
             setNotification({ kind: "brief-updated" });
             window.scrollTo({ top: 0, behavior: "smooth" });
