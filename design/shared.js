@@ -341,7 +341,7 @@
       const method = form.elements.method.value;
       const raw = form.elements.amount.value.trim();
       const validNumber = /^\d+(\.\d{1,2})?$/.test(raw);
-      const cents = validNumber ? Math.round(Number(raw) * 100) : NaN;
+      const cents = validNumber ? Math.round(Number(raw) * 100) : Number.NaN;
       const amountError = !raw
         ? "Enter the payment amount."
         : !validNumber || !Number.isSafeInteger(cents) || cents <= 0
@@ -759,8 +759,23 @@
         : PAGE === "review"
           ? `/creator/jobs/${jobId}/review`
           : `/${role.toLowerCase()}/transactions`;
-    document.querySelector("#preview-controls").innerHTML =
-      `<details><summary>Prototype controls</summary><p>Design preview with fictional data. These controls are for review only and do not belong in the product.</p><p>Intended route: <code>${escape(route)}</code></p><p>Signed in as Alex Kim. Switching workspace keeps the same account.</p><div class="tools-grid"><label>Preview state<select id="scenario">${scenarios.map(([value, label]) => `<option value="${value}" ${scenario === value ? "selected" : ""}>${label}</option>`).join("")}</select></label><div><label class="check"><input type="checkbox" id="fail-next" ${failNext ? "checked" : ""}>Fail the next save to check retry</label><button id="reset-preview" class="button">Reset all preview data</button></div></div><nav aria-label="Design previews"><a href="${href("payment", workspaceJobId())}">US029 Payment</a><a href="${href("history")}">US032 Transactions</a><a href="${href("review", "1038")}">US033 Review</a></nav><p>To follow the full flow: record payment for job #1042, choose Delivery submitted here, then complete the job and write its review. Proof links use an example page.</p></details>`;
+    const controls = document.querySelector("#preview-controls");
+    controls.innerHTML = `<details><summary>Prototype controls</summary><p>Design preview with fictional data. These controls are for review only and do not belong in the product.</p><p>Intended route: <code id="preview-route"></code></p><p>Signed in as Alex Kim. Switching workspace keeps the same account.</p><div class="tools-grid"><label>Preview state<select id="scenario"></select></label><div><label class="check"><input type="checkbox" id="fail-next">Fail the next save to check retry</label><button id="reset-preview" class="button">Reset all preview data</button></div></div><nav aria-label="Design previews"><a id="preview-payment">US029 Payment</a><a id="preview-history">US032 Transactions</a><a id="preview-review">US033 Review</a></nav><p>To follow the full flow: record payment for job #1042, choose Delivery submitted here, then complete the job and write its review. Proof links use an example page.</p></details>`;
+    controls.querySelector("#preview-route").textContent = route;
+    const scenarioSelect = controls.querySelector("#scenario");
+    for (const [value, label] of scenarios) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      option.selected = scenario === value;
+      scenarioSelect.append(option);
+    }
+    controls.querySelector("#fail-next").checked = failNext;
+    controls
+      .querySelector("#preview-payment")
+      .setAttribute("href", href("payment", workspaceJobId()));
+    controls.querySelector("#preview-history").setAttribute("href", href("history"));
+    controls.querySelector("#preview-review").setAttribute("href", href("review", "1038"));
     document.querySelector("#scenario").onchange = (event) => {
       scenario = event.target.value;
       const job = activeJob();

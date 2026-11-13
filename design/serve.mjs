@@ -1,10 +1,9 @@
 import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
-import { dirname, extname, resolve, sep } from "node:path";
+import { readFile, readdir, realpath } from "node:fs/promises";
+import { dirname, extname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const roots = [resolve(repository, "design"), resolve(repository, "public/marketer-assets")];
 const types = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -14,6 +13,18 @@ const types = {
   ".md": "text/plain; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
 };
+// Build an allowlist from real directory entries. Symbolic links are excluded.
+const assets = new Map();
+async function addAssets(directory, urlPrefix, root = directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const path = resolve(directory, entry.name);
+    const url = `${urlPrefix}/${entry.name}`;
+    if (entry.isDirectory()) await addAssets(path, url, root);
+    else if (entry.isFile() && types[extname(entry.name)]) assets.set(url, { path, root });
+  }
+}
+await addAssets(resolve(repository, "design"), "/design");
+await addAssets(resolve(repository, "public/marketer-assets"), "/public/marketer-assets");
 const port = Number(process.env.DESIGN_PORT || 3113);
 if (!Number.isInteger(port) || port < 1 || port > 65535)
   throw new Error("DESIGN_PORT must be a valid port number.");
@@ -36,15 +47,22 @@ const server = createServer(async (request, response) => {
       response.end();
       return;
     }
-    const target = resolve(repository, `.${pathname}`);
-    if (!roots.some((root) => target.startsWith(`${root}${sep}`)) || !types[extname(target)]) {
+    const target = assets.get(pathname);
+    if (!target) {
       response.writeHead(404);
       response.end("Not found");
       return;
     }
-    const body = await readFile(target);
+    const canonical = await realpath(target.path);
+    const withinRoot = relative(target.root, canonical);
+    if (isAbsolute(withinRoot) || withinRoot === ".." || withinRoot.startsWith(`..${sep}`)) {
+      response.writeHead(404);
+      response.end("Not found");
+      return;
+    }
+    const body = await readFile(canonical);
     response.writeHead(200, {
-      "Content-Type": types[extname(target)],
+      "Content-Type": types[extname(canonical)],
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
     });
