@@ -248,6 +248,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/marketers/{id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List a marketer's verified reviews
+         * @description Lists reviews for Completed Jobs in which the marketer held the accepted Offer. Reviews have a rating from 1 to 5 and include the job owner's name. Results are newest first and paginated. average_rating and review_count cover all qualifying reviews. When no reviews qualify, items is empty, review_count is 0, and average_rating is null. The profile owner, Creators, and administrators can access this endpoint.
+         */
+        get: operations["listMarketerReviews"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/surveys": {
         parameters: {
             query?: never;
@@ -701,7 +721,7 @@ export interface paths {
         };
         /**
          * List job requests sent to the authenticated marketer
-         * @description Returns the requests addressed to the caller, newest first, with the job context needed to decide on each one. The job deadline is the earliest linked survey deadline and target_responses sums the linked surveys' desired responses; either is null when no survey sets it. The brief is the newest Brief attachment.
+         * @description Returns the requests addressed to the caller, newest first, with the job context needed to decide on each one. The effective deadline is the earliest available date across the saved job deadline and the deadlines of its linked surveys, or null if none is set. The target_responses field sums the linked surveys' desired responses and is null when no survey sets a target. The brief is the newest Brief attachment.
          */
         get: operations["listMyJobRequests"];
         put?: never;
@@ -773,7 +793,7 @@ export interface paths {
         put?: never;
         /**
          * Submit a price offer for an accepted job request
-         * @description Creates a Pending offer for a request the caller has Accepted. A request may have only one active (Pending or Accepted) offer; a Withdrawn or Rejected offer allows a new one. The price is a non-negative decimal string with at most two decimal places, up to 99999999.99; zero is valid. The delivery date is a YYYY-MM-DD date that cannot be before today or after the job deadline (the earliest linked survey deadline), using the Asia/Bangkok calendar.
+         * @description Creates a Pending offer for a request the caller has Accepted. A request may have only one active (Pending or Accepted) offer; a Withdrawn or Rejected offer allows a new one. The price is a non-negative decimal string with at most two decimal places, up to 99999999.99; zero is valid. The delivery date is a YYYY-MM-DD date that cannot be before today in the Asia/Bangkok calendar. When an effective deadline exists, the delivery date cannot be later than the earliest available date across the saved job deadline and the deadlines of its linked surveys.
          */
         post: operations["submitMyJobRequestOffer"];
         delete?: never;
@@ -1282,7 +1302,10 @@ export interface components {
                     user_id: number;
                     name: string;
                 };
-                /** Format: date-time */
+                /**
+                 * Format: date-time
+                 * @description Earliest available date across the saved job deadline and the deadlines of its linked surveys. Null if no deadline is set.
+                 */
                 deadline: string | null;
                 title?: string;
                 description?: string;
@@ -1305,11 +1328,11 @@ export interface components {
             };
         };
         SubmitOfferRequest: {
-            /** @example 9000.00 */
+            /** @example 1500.00 */
             offered_price: string;
             /**
              * Format: date
-             * @example 2026-10-25
+             * @example 2099-12-31
              */
             delivery_date: string;
             message?: string | null;
@@ -1642,6 +1665,48 @@ export interface components {
                 average_rating: number | null;
             };
         };
+        MarketerReviewsResponse: {
+            /** @enum {string} */
+            status: "success";
+            data: {
+                /** @description One page of verified reviews, newest first. Empty when none qualify. */
+                items: {
+                    /** Format: int32 */
+                    review_id: number;
+                    /** Format: int32 */
+                    job_id: number;
+                    /**
+                     * @description The current name of the Creator who owns the job.
+                     * @example Narin Chai
+                     */
+                    reviewer_name: string;
+                    /** Format: int32 */
+                    rating: number;
+                    comment: string | null;
+                    /** Format: date-time */
+                    created_at: string;
+                }[];
+                /**
+                 * Format: double
+                 * @description Mean rating over every qualifying review. Null when the marketer has no qualifying reviews.
+                 */
+                average_rating: number | null;
+                /**
+                 * Format: int64
+                 * @description Total number of verified reviews across all pages.
+                 */
+                review_count: number;
+                /** Format: int32 */
+                page: number;
+                /** Format: int32 */
+                page_size: number;
+                /**
+                 * Format: int64
+                 * @description Total number of verified reviews matching the query; equal to review_count.
+                 */
+                total: number;
+            };
+        };
         SuccessResponse: {
             /** @enum {string} */
             status: "success";
@@ -1749,15 +1814,6 @@ export interface operations {
         };
         requestBody: {
             content: {
-                /**
-                 * @example {
-                 *       "name": "Jane Doe",
-                 *       "email": "jane@example.com",
-                 *       "password": "correct horse battery staple",
-                 *       "phone": null,
-                 *       "line_id": "jane.line"
-                 *     }
-                 */
                 "application/json": components["schemas"]["RegisterRequest"];
             };
         };
@@ -1811,8 +1867,8 @@ export interface operations {
             content: {
                 /**
                  * @example {
-                 *       "email": "jane@example.com",
-                 *       "password": "correct horse battery staple"
+                 *       "email": "demo.creator@example.test",
+                 *       "password": "demo-creator-password"
                  *     }
                  */
                 "application/json": components["schemas"]["LoginRequest"];
@@ -2579,6 +2635,69 @@ export interface operations {
             };
         };
     };
+    listMarketerReviews: {
+        parameters: {
+            query?: {
+                /** @description One-based page number. */
+                page?: number;
+                /** @description Number of reviews per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description One page of verified reviews with the aggregate rating. items is an empty array and average_rating is null when none qualify. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarketerReviewsResponse"];
+                };
+            };
+            /** @description Authentication is required or the token is invalid. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The caller lacks Creator membership and administrator access and does not own this marketer profile. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The marketer profile does not exist or belongs to a deleted user. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description page or page_size is invalid. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     createSurvey: {
         parameters: {
             query?: never;
@@ -2588,6 +2707,15 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "title": "Campus mobility survey",
+                 *       "survey_link": "https://example.test/campus-mobility",
+                 *       "description": "Collect student feedback about campus transportation.",
+                 *       "target_group": "University students",
+                 *       "desired_responses": 50
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreateSurveyRequest"];
             };
         };
@@ -2837,6 +2965,16 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "title": "Recruit respondents for the campus mobility survey",
+                 *       "description": "Reach 50 university students.",
+                 *       "budget": "2000.00",
+                 *       "survey_ids": [
+                 *         1
+                 *       ]
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreateJobRequest"];
             };
         };
@@ -3223,6 +3361,11 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "url": "https://example.test/campus-mobility/brief"
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreateBriefRequest"];
             };
         };
@@ -3343,6 +3486,11 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "url": "https://example.test/campus-mobility/delivery"
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreateProofRequest"];
             };
         };
@@ -3472,6 +3620,13 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "marketer_ids": [
+                 *         2
+                 *       ]
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreateJobRequestsRequest"];
             };
         };
@@ -3809,6 +3964,12 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "rating": 5,
+                 *       "comment": "Delivered the agreed work and kept us informed."
+                 *     }
+                 */
                 "application/json": {
                     /** Format: int32 */
                     rating: number;
@@ -3992,6 +4153,12 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "method": "PromptPay",
+                 *       "amount": "1500.00"
+                 *     }
+                 */
                 "application/json": components["schemas"]["CreatePaymentRequest"];
             };
         };
@@ -4445,6 +4612,13 @@ export interface operations {
         };
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "offered_price": "1500.00",
+                 *       "delivery_date": "2099-12-31",
+                 *       "message": "I can recruit the requested students and provide a delivery summary."
+                 *     }
+                 */
                 "application/json": components["schemas"]["SubmitOfferRequest"];
             };
         };

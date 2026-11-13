@@ -2,6 +2,8 @@ import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import type {
   Marketer,
   MarketerQuery,
+  MarketerReview,
+  MarketerReviewItem,
   MarketerSearchItem,
   MarketerSearchParams,
   MarketerSummary,
@@ -94,7 +96,16 @@ export function toMarketer(item: MarketerSearchItem): Marketer {
       rating_count: item.review_count,
     },
     service_packages: newestFirst.map(toPackage),
-    // No backend endpoint returns individual reviews yet.
-    reviews: [],
+  };
+}
+
+export function toMarketerReview(item: MarketerReviewItem): MarketerReview {
+  return {
+    review_id: item.review_id,
+    job_id: item.job_id,
+    rating: item.rating,
+    comment: item.comment?.trim() ? item.comment : null,
+    created_at: item.created_at,
+    reviewer_name: item.reviewer_name.trim() || null,
   };
 }

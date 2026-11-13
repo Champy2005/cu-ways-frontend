@@ -136,6 +136,5 @@ describe("search item mapping", () => {
     );
     expect(marketer.performance.completed_jobs).toBeNull();
     expect(marketer.performance.rating_count).toBe(4);
-    expect(marketer.reviews).toEqual([]);
   });
 });

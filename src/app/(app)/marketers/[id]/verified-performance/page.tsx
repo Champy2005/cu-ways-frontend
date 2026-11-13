@@ -1,14 +1,18 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { CheckSquare, SquareCheckBig, UserRound } from "lucide-react";
 
-import { EmptyState } from "@/components/feedback/empty-state";
 import { InlineError } from "@/components/feedback/inline-error";
 import { getMarketer } from "@/features/marketer-discovery/api";
 import { MarketerDetailShell } from "@/features/marketer-discovery/components/marketer-detail-shell";
 import { MarketerRating } from "@/features/marketer-discovery/components/marketer-rating";
-import { MarketerReviewCard } from "@/features/marketer-discovery/components/marketer-review-card";
+import {
+  MarketerReviewsSection,
+  ReviewsSkeleton,
+} from "@/features/marketer-discovery/components/marketer-reviews-section";
 import { MarketerStatTile } from "@/features/marketer-discovery/components/marketer-stat-tile";
 import { formatCount } from "@/features/marketer-discovery/format";
+import { parseReviewParams } from "@/features/marketer-discovery/reviews";
 import {
   buildMarketerHrefFromRef,
   type RawSearchParams,
@@ -28,7 +32,8 @@ export default async function VerifiedPerformancePage({
     return <InlineError title="Invalid marketer" message="The marketer ID is not valid." />;
   }
 
-  const { ref } = await searchParams;
+  const { ref, ...query } = await searchParams;
+  const { rating, page } = parseReviewParams(query);
 
   let marketer;
   try {
@@ -38,7 +43,7 @@ export default async function VerifiedPerformancePage({
   }
   if (!marketer) notFound();
 
-  const { performance, reviews } = marketer;
+  const { performance } = marketer;
   const statValue = (value: number | null) => (
     <span className="text-2xl font-medium text-foreground">{formatCount(value)}</span>
   );
@@ -72,27 +77,14 @@ export default async function VerifiedPerformancePage({
         />
       </div>
 
-      <h2 className="mt-8 mb-3 text-base font-medium text-foreground">Latest Reviews</h2>
-      {reviews.length === 0 ? (
-        <EmptyState
-          title={
-            performance.average_rating !== null
-              ? "Review comments aren't available yet"
-              : "No ratings yet"
-          }
-          description={
-            performance.average_rating !== null
-              ? "The rating above comes from completed jobs, but the backend doesn't return individual reviews yet."
-              : "This marketer has no reviews from completed jobs yet. Ratings appear here once a job is finished and reviewed."
-          }
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <MarketerReviewsSection
+          marketerID={marketerID}
+          rating={rating}
+          page={page}
+          refValue={Array.isArray(ref) ? (ref[0] ?? "") : (ref ?? "")}
         />
-      ) : (
-        <ul className="flex flex-col gap-3">
-          {reviews.map((review) => (
-            <MarketerReviewCard key={review.review_id} review={review} />
-          ))}
-        </ul>
-      )}
+      </Suspense>
     </MarketerDetailShell>
   );
 }
