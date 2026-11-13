@@ -98,7 +98,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
 
   const [outcome, setOutcome] = useState<Outcome>(() => initialOutcome(data));
   const [method, setMethod] = useState<PaymentMethod | "">("");
-  const [amount, setAmount] = useState(acceptedOffer?.offered_price ?? "");
+  const [amount, setAmount] = useState(() => acceptedOffer?.offered_price ?? "");
   const [errors, setErrors] = useState<PaymentFormErrors>({});
   const [validated, setValidated] = useState(false);
   const [formAlert, setFormAlert] = useState<string | null>(null);
