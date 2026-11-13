@@ -1,7 +1,8 @@
 import { InlineError } from "@/components/feedback/inline-error";
 import { getDisplayError } from "@/lib/api/errors";
 import { getUser } from "@/features/users/api";
-import { UserProfileCard } from "@/features/users/components/user-profile-card";
+import { AdminUserDetails } from "@/features/admin/user-details";
+import { requireAdmin } from "@/lib/auth/guards";
 
 export default async function AdminUserDetailsPage({
   params,
@@ -9,6 +10,7 @@ export default async function AdminUserDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await requireAdmin();
   const userID = Number(id);
   if (!Number.isSafeInteger(userID) || userID < 1) {
     return <InlineError title="Invalid user" message="The user ID is not valid." />;
@@ -21,5 +23,5 @@ export default async function AdminUserDetailsPage({
     return <InlineError message={getDisplayError(error)} />;
   }
 
-  return <UserProfileCard user={user} />;
+  return <AdminUserDetails user={user} canDeactivate={session.userId !== userID} />;
 }

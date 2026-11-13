@@ -28,12 +28,11 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
         <legend className="sr-only">Contact information</legend>
         <Field>
           <FieldLabel htmlFor={`${id}-phone`} className="mk-profile-label">
-            Phone number <span aria-hidden="true">*</span>
+            Phone number
           </FieldLabel>
           <Input
             id={`${id}-phone`}
             className="mk-profile-input"
-            required
             autoComplete="tel"
             inputMode="tel"
             maxLength={20}
@@ -60,7 +59,7 @@ export function ContactForm({ contact, onSave }: { contact: ContactProfile; onSa
         </Field>
       </fieldset>
       <FieldDescription id={`${id}-help`} className="mt-4 text-sm">
-        Phone number is required. LINE ID is optional.
+        Phone number and LINE ID are optional.
       </FieldDescription>
       <p className="mt-5 text-sm text-[var(--mk-muted)]">
         Joined{" "}

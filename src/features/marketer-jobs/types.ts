@@ -1,3 +1,5 @@
+import type { Settlement } from "@/features/transactions/types";
+
 export const jobStatuses = ["Accepted", "In Progress", "Completed", "Cancelled"] as const;
 export type JobStatus = (typeof jobStatuses)[number];
 export type JobFilter = JobStatus | "active" | "all";
@@ -5,7 +7,7 @@ export type JobFilter = JobStatus | "active" | "all";
 export type HiredJob = {
   id: number;
   status: JobStatus;
-  surveys: { id: number; title: string }[];
+  surveys: { id: number; title: string; url?: string | null }[];
   creator: string;
   price: string;
   deliveryDate: string | null;
@@ -13,6 +15,7 @@ export type HiredJob = {
   targetResponses: number | null;
   briefUrl: string | null;
   completion?: CompletionEvidence;
+  contact?: Settlement["contact"];
 };
 
 export type DeliveryProof = {

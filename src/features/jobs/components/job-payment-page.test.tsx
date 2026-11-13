@@ -77,6 +77,7 @@ describe("creator payment page", () => {
 
   it("blocks review with inline errors and focuses the first invalid field", () => {
     renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: /Amount/ }), { target: { value: "" } });
     review();
     expect(screen.getByText("Choose a payment method.")).toBeInTheDocument();
     expect(screen.getByText("Enter the payment amount.")).toBeInTheDocument();

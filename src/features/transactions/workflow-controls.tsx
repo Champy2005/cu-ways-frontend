@@ -116,7 +116,7 @@ export function CompleteJob({ job }: { job: Settlement }) {
     <MutationControl jobId={job.job_id}>
       {(ask, disabled) => (
         <Button
-          className="mk-primary-button"
+          className="min-h-12 w-full bg-emerald-700 font-bold text-white hover:bg-emerald-800"
           disabled={disabled}
           onClick={() =>
             ask({

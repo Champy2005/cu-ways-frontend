@@ -8,6 +8,7 @@ import { savedSurvey } from "./test-fixtures";
 
 vi.mock("./api", () => ({ getSurvey: vi.fn(), getSurveys: vi.fn() }));
 vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }),
   notFound: () => {
     throw new Error("not found");
   },

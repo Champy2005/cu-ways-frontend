@@ -45,14 +45,24 @@ export default async function VerifiedPerformancePage({
 
   const { performance } = marketer;
   const statValue = (value: number | null) => (
-    <span className="text-2xl font-medium text-foreground">{formatCount(value)}</span>
+    <span
+      className={
+        value === null ? "text-sm text-muted-foreground" : "text-2xl font-medium text-foreground"
+      }
+    >
+      {formatCount(value)}
+    </span>
   );
 
   return (
     <MarketerDetailShell
       title="Verified Performance"
       subtitle="Review, Rating and Complete job"
-      backHref={buildMarketerHrefFromRef(marketerID, ref)}
+      backHref={
+        ref === "marketer-dashboard"
+          ? "/marketer/dashboard"
+          : buildMarketerHrefFromRef(marketerID, ref)
+      }
     >
       <div className="grid grid-cols-2 gap-3">
         <MarketerStatTile

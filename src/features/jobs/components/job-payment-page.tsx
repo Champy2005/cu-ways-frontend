@@ -98,7 +98,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
 
   const [outcome, setOutcome] = useState<Outcome>(() => initialOutcome(data));
   const [method, setMethod] = useState<PaymentMethod | "">("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(() => acceptedOffer?.offered_price ?? "");
   const [errors, setErrors] = useState<PaymentFormErrors>({});
   const [validated, setValidated] = useState(false);
   const [formAlert, setFormAlert] = useState<string | null>(null);
@@ -310,8 +310,8 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
         {outcome.kind === "form" && (
           <form className="pay-card space-y-6" noValidate onSubmit={review}>
             <div>
-              <h2 className="pay-section-title">Payment record</h2>
-              <p className="pay-help">Choose the method used for the agreed amount.</p>
+              <h2 className="pay-section-title">Simulated payment</h2>
+              <p className="pay-help">Choose a method to simulate payment of the agreed amount.</p>
             </div>
             {formAlert && (
               <p role="alert" className="mk-error-notice rounded-lg p-3 text-sm">
@@ -349,7 +349,7 @@ export function JobPaymentPage({ data }: { data: JobPaymentData }) {
             />
             <p className="pay-note">
               <Info aria-hidden="true" />
-              <span>This records a payment only. No money is collected or transferred.</span>
+              <span>This is a simulation. No money is collected or transferred.</span>
             </p>
             <Button
               ref={reviewButton}

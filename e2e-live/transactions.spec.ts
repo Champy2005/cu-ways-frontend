@@ -67,6 +67,7 @@ async function createAcceptedJob(
     deadline: "2099-10-28",
   });
   const jobApi = `/api/v1/jobs/${jobId}`;
+  await api(`${jobApi}/briefs`, creator.token, "POST", { url: "https://example.test/brief" });
   const [request] = await api<{ job_request_id: number }[]>(
     `${jobApi}/requests`,
     creator.token,
@@ -112,36 +113,74 @@ test("US032 shows completed paid jobs and linked records to both participants", 
     await expect(page.getByRole("heading", { name: "No transactions yet" })).toBeVisible();
 
     await page.goto(`/creator/jobs/${jobId}/review`);
-    await expect(page.getByText("The job is not completed.")).toBeVisible();
+    await expect(
+      page
+        .locator("main")
+        .getByText("You can review the Marketer after the job is completed.", { exact: true }),
+    ).toBeVisible();
 
     await page.goto(`/creator/jobs/${jobId}`);
-    await page.getByRole("link", { name: "Record payment" }).click();
-    await page.getByLabel("Payment method").selectOption("PromptPay");
-    await page.getByLabel("Amount (THB)").fill("2500");
+    await expect(
+      page
+        .getByRole("region", { name: "Marketer contact" })
+        .getByRole("link", { name: marketer.email }),
+    ).toHaveAttribute("href", `mailto:${marketer.email}`);
+    await page.getByRole("link", { name: "Record payment" }).first().click();
+    await page.getByRole("radio", { name: "PromptPay", exact: true }).check();
+    await page.getByLabel(/Amount/).fill("2500");
     await page.getByRole("button", { name: "Review payment" }).click();
     await page.getByRole("button", { name: "Confirm record" }).click();
-    await expect(page.getByText("Held", { exact: true })).toBeVisible();
+    await expect(page.getByText("Paid", { exact: true }).first()).toBeVisible();
 
     await signIn(marketerPage, marketer);
     await marketerPage.goto("/marketer/offers");
-    await marketerPage.getByRole("link", { name: "View job" }).click();
-    await marketerPage.getByRole("button", { name: "Start job" }).click();
-    await marketerPage.getByRole("button", { name: "Confirm start" }).click();
+    await marketerPage.getByRole("link", { name: "View job", exact: true }).click();
+    const marketerJob = marketerPage.getByRole("main");
+    await expect(marketerJob.getByRole("link", { name: /Campus mobility survey/ })).toHaveAttribute(
+      "href",
+      "https://example.test/survey",
+    );
+    await expect(marketerJob.getByRole("link", { name: /Open brief/ })).toHaveAttribute(
+      "href",
+      "https://example.test/brief",
+    );
+    await expect(
+      marketerJob
+        .getByRole("region", { name: "Creator contact" })
+        .getByRole("link", { name: creator.email }),
+    ).toHaveAttribute("href", `mailto:${creator.email}`);
+    await marketerPage.getByRole("button", { name: "Start job", exact: true }).click();
+    await marketerPage
+      .getByRole("dialog")
+      .getByRole("button", { name: "Start job", exact: true })
+      .click();
     await expect(marketerPage.getByText("In Progress", { exact: true })).toBeVisible();
     await marketerPage.getByLabel("Proof link").fill("https://example.test/delivery");
     await marketerPage.getByRole("button", { name: "Submit proof" }).click();
     await marketerPage.getByRole("button", { name: "Confirm proof" }).click();
-    await expect(marketerPage.getByRole("link", { name: /Open delivery proof/ })).toBeVisible();
+    await expect(marketerPage.getByRole("link", { name: /example\.test\/delivery/ })).toBeVisible();
 
-    await page.getByRole("link", { name: "Back to job details" }).click();
+    await page.getByRole("link", { name: "Back to job details", exact: true }).first().click();
     await expect(page.getByRole("link", { name: /Open delivery proof/ })).toHaveAttribute(
       "href",
       "https://example.test/delivery",
     );
+    const completeButton = page.getByRole("button", { name: "Complete job" });
+    const offersLink = page.getByRole("link", { name: "View offers" });
+    await expect(completeButton).toHaveClass(/w-full/);
+    expect(
+      await offersLink.evaluate((link) => {
+        const button = document.querySelector("button.bg-emerald-700");
+        return (
+          button !== null &&
+          Boolean(link.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING)
+        );
+      }),
+    ).toBe(true);
     await page.getByRole("button", { name: "Complete job" }).click();
     await page.getByRole("button", { name: "Confirm completion" }).click();
-    await expect(page.getByText("Released", { exact: true })).toBeVisible();
-    await page.getByRole("link", { name: "Transactions", exact: true }).last().click();
+    await expect(page.getByText("Released", { exact: true }).first()).toBeVisible();
+    await page.goto("/creator/transactions");
     const creatorCard = page.getByRole("article");
     await expect(creatorCard.getByText("Released", { exact: true })).toBeVisible();
     await expect(creatorCard.locator("time")).toBeVisible();
@@ -154,15 +193,20 @@ test("US032 shows completed paid jobs and linked records to both participants", 
     await page.getByLabel("Comment (optional)").fill("Delivery was clear and complete.");
     await page.getByRole("button", { name: "Review & submit" }).click();
     await page.getByRole("button", { name: "Submit review" }).click();
-    await expect(page.getByRole("heading", { name: "Your review" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Review submitted" })).toBeVisible();
     await page.reload();
-    await expect(page.getByText("Delivery was clear and complete.", { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("main").getByText("Delivery was clear and complete.", { exact: true }),
+    ).toBeVisible();
     await page.goto("/creator/transactions");
     await page.getByRole("article").getByRole("link", { name: "View review" }).click();
-    await expect(page.getByRole("heading", { name: "Your review" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Review submitted" })).toBeVisible();
     await page.goto("/creator/transactions");
     await page.getByRole("article").getByRole("link", { name: "View payment" }).click();
-    await expect(page.getByText("Released", { exact: true })).toBeVisible();
+    await expect(page).toHaveURL(`/creator/jobs/${jobId}/payment`);
+    const recordedPayment = page.getByRole("region", { name: "Payment recorded", exact: true });
+    await expect(recordedPayment.getByText("Paid", { exact: true })).toBeVisible();
+    await expect(recordedPayment.getByText("PromptPay", { exact: true })).toBeVisible();
 
     await marketerPage.goto("/marketer/transactions");
     const marketerCard = marketerPage.getByRole("article");
@@ -170,8 +214,9 @@ test("US032 shows completed paid jobs and linked records to both participants", 
     await expect(marketerCard.getByRole("link", { name: /review/i })).toHaveCount(0);
     await marketerCard.getByRole("link", { name: "View payment" }).click();
     await marketerPage.reload();
-    await expect(marketerPage.getByText("PromptPay", { exact: true })).toBeVisible();
-    await expect(marketerPage.getByText("Released", { exact: true })).toBeVisible();
+    const paymentDetails = marketerPage.getByRole("main");
+    await expect(paymentDetails.getByText("PromptPay", { exact: true })).toBeVisible();
+    await expect(paymentDetails.getByText("Released", { exact: true })).toBeVisible();
     await expect(
       marketerPage.getByRole("button", { name: /record payment|complete job/i }),
     ).toHaveCount(0);
@@ -184,10 +229,14 @@ test("US034 shows verified reviews to the marketer who received them", async ({ 
   const creator = await createAccount(false);
   const marketer = await createAccount(true);
   const { jobId, jobApi } = await createAcceptedJob(creator, marketer);
-  const performanceURL = `/marketers/${marketer.id}/verified-performance`;
-
   await signIn(page, marketer);
-  await page.goto(performanceURL);
+  await page.goto("/marketer/dashboard");
+  await page.getByRole("link", { name: /Your reviews/ }).click();
+  await expect(page).toHaveURL(/\/marketer\/reviews$/);
+  await expect(page.getByRole("link", { name: "Back", exact: true })).toHaveAttribute(
+    "href",
+    "/marketer/dashboard",
+  );
   await expect(page.getByRole("heading", { name: "No ratings yet" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "No reviews yet" })).toBeVisible();
 
@@ -210,4 +259,7 @@ test("US034 shows verified reviews to the marketer who received them", async ({ 
   await reviews.getByLabel("Filter by rating").selectOption("1");
   await expect(page).toHaveURL(/rating=1/);
   await expect(reviews.getByText("No reviews match this rating", { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/marketer\/reviews\?rating=1/);
+  await page.getByRole("link", { name: "Back", exact: true }).click();
+  await expect(page).toHaveURL(/\/marketer\/dashboard$/);
 });

@@ -42,8 +42,8 @@ export function AppShell({ children, role }: AppShellProps) {
               Jobs
             </Link>
             {role === "admin" ? (
-              <Link className={navLinkClass} href="/admin/users">
-                Users
+              <Link className={navLinkClass} href="/admin">
+                Admin
               </Link>
             ) : null}
             <LogoutButton />

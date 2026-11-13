@@ -25,18 +25,23 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("UserProfileCard", () => {
-  it("requires a phone and preserves changes when a blank phone is submitted", () => {
+  it("clears a blank optional phone and updates the LINE ID", async () => {
+    vi.mocked(updateCurrentUser).mockResolvedValue({
+      ...mockUser,
+      phone: null,
+      line_id: "updated.line",
+    });
     render(<UserProfileCard user={mockUser} />);
     const phone = screen.getByRole("textbox", { name: "Phone number" });
-    expect(phone).toBeRequired();
-    expect(screen.getByText("Phone number is required. LINE ID is optional.")).toBeInTheDocument();
+    expect(phone).not.toBeRequired();
     fireEvent.change(phone, { target: { value: "" } });
     fireEvent.change(screen.getByLabelText("LINE ID"), { target: { value: "updated.line" } });
     fireEvent.submit(
       screen.getByRole("button", { name: "Save contact information" }).closest("form")!,
     );
-    expect(updateCurrentUser).not.toHaveBeenCalled();
-    expect(phone).toHaveAccessibleDescription("Phone number is required.");
+    await waitFor(() =>
+      expect(updateCurrentUser).toHaveBeenCalledWith({ phone: null, line_id: "updated.line" }),
+    );
     expect(screen.getByLabelText("LINE ID")).toHaveValue("updated.line");
   });
 

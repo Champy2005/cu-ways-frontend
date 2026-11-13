@@ -4,6 +4,43 @@
  */
 
 export interface paths {
+    "/api/v1/admin/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List jobs and payment records for an administrator */
+        get: operations["listAdminJobs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/flagged-marketers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List marketers with two or more flagged jobs
+         * @description Counts hired jobs that were cancelled or completed with a rating below three stars.
+         */
+        get: operations["listFlaggedMarketers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/healthz": {
         parameters: {
             query?: never;
@@ -574,7 +611,7 @@ export interface paths {
         put?: never;
         /**
          * Cancel a pending job
-         * @description Cancels a Pending job owned by the caller so the incomplete contract is logged. The request body is optional. In one transaction that rolls back completely on any failure, the job becomes Cancelled with cancelled_at set by the server and the optional trimmed cancel_reason, every Pending or Accepted job request on the job is Closed, and every Pending offer is Rejected. Payments are not changed. Only Pending jobs can be cancelled, and a job with a Paid payment cannot be cancelled.
+         * @description Cancels an unpaid Pending, Accepted, or In Progress job owned by the caller so the incomplete contract is logged. The request body is optional. In one transaction that rolls back completely on any failure, the job becomes Cancelled with cancelled_at set by the server and the optional trimmed cancel_reason, every Pending or Accepted job request on the job is Closed, and every Pending offer is Rejected. Payments are not changed. Only Pending jobs can be cancelled, and a job with a Paid payment cannot be cancelled.
          */
         post: operations["cancelJob"];
         delete?: never;
@@ -826,14 +863,53 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AdminJobPage: {
+            page: number;
+            page_size: number;
+            /** Format: int64 */
+            total: number;
+            items: {
+                /** Format: int32 */
+                job_id: number;
+                creator_name: string;
+                survey_titles: string[];
+                /** @enum {string} */
+                job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+                amount: string | null;
+                payment_status: string | null;
+                /** Format: date-time */
+                paid_at: string | null;
+            }[];
+        };
+        FlaggedMarketerPage: {
+            page: number;
+            page_size: number;
+            /** Format: int64 */
+            total: number;
+            items: {
+                /** Format: int32 */
+                marketer_id: number;
+                name: string;
+                /** Format: int64 */
+                flagged_jobs: number;
+                total_value: string;
+                /** Format: int64 */
+                attachment_count: number;
+            }[];
+        };
+        JobContact: {
+            email: string;
+            phone: string | null;
+            line_id: string | null;
+        };
         RegisterRequest: {
             name: string;
             /** Format: email */
             email: string;
             /** Format: password */
             password: string;
-            /** @description A 10-digit Thai mobile number, digits only. Must be unique across accounts. */
-            phone: string;
+            /** @description Optional 10-digit Thai mobile number. Must be unique when provided. */
+            phone?: string | null;
             line_id?: string | null;
             marketer_profile?: components["schemas"]["RegisterMarketerProfile"];
         };
@@ -881,8 +957,8 @@ export interface components {
             name?: string;
             /** Format: email */
             email?: string;
-            /** @description A 10-digit Thai mobile number, digits only. Can be changed but not removed. */
-            phone?: string;
+            /** @description A 10-digit Thai mobile number. Send null to remove it. */
+            phone?: string | null;
             line_id?: string | null;
         };
         UserResponse: {
@@ -1511,6 +1587,7 @@ export interface components {
             job_status: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
             creator: components["schemas"]["TransactionParty"];
             marketer: components["schemas"]["TransactionParty"];
+            contact?: components["schemas"]["JobContact"];
             accepted_price: string;
             payment: components["schemas"]["JobPayment"] | null;
             /** @enum {string|null} */
@@ -1731,6 +1808,103 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    listAdminJobs: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+                status?: "Pending" | "Accepted" | "In Progress" | "Completed" | "Cancelled";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Jobs ordered by descending ID */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        status: "success";
+                        data: components["schemas"]["AdminJobPage"];
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Administrator access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid report filters or pagination */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listFlaggedMarketers: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Report ordered by flagged count and then accepted offer value, descending */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        status: "success";
+                        data: components["schemas"]["FlaggedMarketerPage"];
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Administrator access required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid pagination */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     getHealth: {
         parameters: {
             query?: never;
@@ -3933,7 +4107,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description The job is already Cancelled (code job_already_cancelled), is Accepted, In Progress or Completed (code job_not_cancellable), or has a Paid payment (code job_has_paid_payment). No state is changed. */
+            /** @description The job is already Cancelled (code job_already_cancelled), is Completed (code job_not_cancellable), or has a Paid payment (code job_has_paid_payment). No state is changed. */
             409: {
                 headers: {
                     [name: string]: unknown;

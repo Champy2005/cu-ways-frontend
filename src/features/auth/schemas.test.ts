@@ -43,7 +43,7 @@ describe("authentication input validation", () => {
     expect(loginFieldErrors({ email: validRegistration.email, password: "x" })).toEqual({});
   });
 
-  it("rejects a blank phone after normalization", () => {
+  it("allows a blank phone after normalization", () => {
     const normalized = normalizeRegisterInput({
       ...validRegistration,
       phone: "   ",
@@ -51,13 +51,13 @@ describe("authentication input validation", () => {
     });
 
     expect(normalized).toMatchObject({ phone: null, line_id: null });
-    expect(validateRegisterInput(normalized)).toBe(false);
-    expect(registerValidationMessage(normalized)).toContain("Phone");
+    expect(validateRegisterInput(normalized)).toBe(true);
+    expect(registerValidationMessage(normalized)).toBeNull();
   });
 
-  it.each([undefined, null, "", "   "])("rejects a missing or empty phone (%s)", (phone) => {
+  it.each([undefined, null, "", "   "])("allows an omitted phone (%s)", (phone) => {
     const input = { ...validRegistration, phone };
-    expect(validateRegisterInput(input)).toBe(false);
+    expect(validateRegisterInput(normalizeRegisterInput(input))).toBe(true);
   });
 
   it("rejects a phone that is too long", () => {
@@ -109,8 +109,8 @@ describe("sign-up wizard steps", () => {
     expect(errors.password_confirmation).toBe("Passwords don’t match.");
   });
 
-  it("requires a phone, accepting the xxx-xxx-xxxx format", () => {
-    expect(contactStepErrors({ ...filled, phone: "" }).phone).toBe("Phone number is required.");
+  it("allows an omitted phone and accepts the xxx-xxx-xxxx format", () => {
+    expect(contactStepErrors({ ...filled, phone: "" }).phone).toBeUndefined();
     expect(contactStepErrors({ ...filled, phone: "081 234 5678" })).toEqual({});
     for (const phone of ["08x-234", "081-234-567", "081-234-56789"]) {
       expect(contactStepErrors({ ...filled, phone }).phone).toBe("Phone number must be 10 digits");

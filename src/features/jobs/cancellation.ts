@@ -26,8 +26,6 @@ export function cancellationBlockedReason(details: CancellationDetails): string 
   if (details.status === "Completed")
     return "Completed jobs cannot be cancelled. Their payment and review history is preserved.";
   if (details.paid) return "Payment is Paid. This job can no longer be cancelled.";
-  if (details.status !== "Pending")
-    return "Cancellation is currently available only while a job is Pending.";
   return null;
 }
 

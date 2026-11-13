@@ -91,7 +91,7 @@ describe("Creator cancellation boundary", () => {
     });
   });
 
-  it.each(["Accepted", "In Progress", "Completed"] as const)(
+  it.each(["Completed"] as const)(
     "does not POST when the fresh saved status is %s",
     async (job_status) => {
       vi.mocked(getCreatorJob).mockResolvedValue({

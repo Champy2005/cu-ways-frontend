@@ -109,14 +109,10 @@ describe("live US20 invitations", () => {
     fireEvent.click(
       within(screen.getByRole("alertdialog")).getByRole("button", { name: "Confirm" }),
     );
-    await screen.findByText("Invitation accepted");
-    expect(respondToInvitation).toHaveBeenCalledWith(7, undefined);
-    expect(screen.getByRole("tab", { name: "Responded (1)" })).toHaveAttribute(
-      "aria-selected",
-      "true",
+    await waitFor(() =>
+      expect(router.push).toHaveBeenCalledWith("/marketer/offer/create?requestId=7"),
     );
-    expect(document.querySelector(".ji-live-response time")).toHaveTextContent("15 Oct 2026");
-    expect(screen.getByRole("link", { name: "Submit Offer" })).toHaveClass("ji-primary");
+    expect(respondToInvitation).toHaveBeenCalledWith(7, undefined);
   });
   it("declines with optional reason and note", async () => {
     vi.mocked(respondToInvitation).mockResolvedValue(invitationEntry("Declined").request);

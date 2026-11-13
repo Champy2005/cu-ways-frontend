@@ -17,8 +17,8 @@ describe("user contact validation", () => {
     expect(normalizeContactUpdate({ phone: "0888888989", line_id: "  " }).line_id).toBeNull();
   });
 
-  it("requires a 10-digit phone, worded as in the design", () => {
-    expect(phoneValidationMessage("  ")).toBe("Phone number is required.");
+  it("requires 10 digits when a phone is provided, worded as in the design", () => {
+    expect(phoneValidationMessage("  ")).toBeNull();
     expect(phoneValidationMessage("088-88")).toBe("Phone number must be 10 digits");
     expect(phoneValidationMessage("088-888-89899")).toBe("Phone number must be 10 digits");
     expect(phoneValidationMessage("088-888-8989")).toBeNull();
@@ -30,7 +30,7 @@ describe("user contact validation", () => {
   it("accepts only the exact contact update shape at the server route", () => {
     expect(validateContactUpdate({ phone: "0812345678", line_id: null })).toBe(true);
     expect(validateContactUpdate({ phone: "081234567", line_id: null })).toBe(false);
-    expect(validateContactUpdate({ phone: null, line_id: "cuways" })).toBe(false);
+    expect(validateContactUpdate({ phone: null, line_id: "cuways" })).toBe(true);
     expect(validateContactUpdate({ phone: "0812345678", line_id: null, role: "admin" })).toBe(
       false,
     );

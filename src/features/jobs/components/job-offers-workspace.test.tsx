@@ -4,6 +4,8 @@ import { acceptJobOffer, refreshJobOffers, type AcceptOfferResult } from "../off
 import { acceptedSnapshot, testJob, testOffer } from "../testing/offer-fixtures";
 import { JobOffersWorkspace } from "./job-offers-workspace";
 
+const router = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => router }));
 vi.mock("../offer-actions", () => ({ acceptJobOffer: vi.fn(), refreshJobOffers: vi.fn() }));
 afterEach(cleanup);
 beforeEach(() => {
@@ -66,6 +68,7 @@ describe("creator hiring workspace", () => {
     expect(within(dialog).getByRole("button", { name: "Accepting…" })).toBeDisabled();
     expect(within(dialog).getByRole("button", { name: "Cancel" })).toBeDisabled();
     await act(async () => complete({ status: "accepted", data: acceptedSnapshot() }));
+    expect(router.push).toHaveBeenCalledWith("/creator/jobs/12/payment");
     await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
     expect(screen.getByText("Mali Research is your selected marketer")).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Accepted (1)" })).toBeInTheDocument();
@@ -94,6 +97,7 @@ describe("creator hiring workspace", () => {
       screen.queryByRole("button", { name: "Accept offer from Mali Research" }),
     ).not.toBeInTheDocument();
     expect(screen.queryByText(/is your selected marketer/)).not.toBeInTheDocument();
+    expect(router.push).not.toHaveBeenCalled();
   });
 
   it("blocks further acceptance after a lost response until a successful read-only refresh", async () => {

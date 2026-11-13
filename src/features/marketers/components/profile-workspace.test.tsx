@@ -41,16 +41,16 @@ function select(name: string) {
 }
 
 describe("Unified profile", () => {
-  it("requires a phone and shows duplicate-phone feedback without losing the draft", async () => {
+  it("validates a supplied phone and shows duplicate-phone feedback without losing the draft", async () => {
     const saveContact = vi
       .fn()
       .mockRejectedValue(new ApiError(409, "phone_already_exists", "phone already exists"));
     setup({ saveContact });
     select("Basic information");
     const phone = screen.getByLabelText(/^Phone number/);
-    expect(phone).toBeRequired();
-    expect(screen.getByText("Phone number is required. LINE ID is optional.")).toBeVisible();
-    fireEvent.change(phone, { target: { value: "" } });
+    expect(phone).not.toBeRequired();
+    expect(screen.getByText("Phone number and LINE ID are optional.")).toBeVisible();
+    fireEvent.change(phone, { target: { value: "123" } });
     fireEvent.click(screen.getByRole("button", { name: "Save contact information" }));
     expect(saveContact).not.toHaveBeenCalled();
     expect(phone).toHaveAttribute("aria-invalid", "true");

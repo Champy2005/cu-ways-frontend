@@ -29,13 +29,21 @@ export function JobDraftPage({
   jobId,
   creatorName,
   edit = false,
+  completion,
 }: {
   jobId: string;
   creatorName?: string;
   edit?: boolean;
+  completion?: React.ReactNode;
 }) {
   return (
-    <SavedJobPage key={`${jobId}-${edit}`} jobId={jobId} creatorName={creatorName} edit={edit} />
+    <SavedJobPage
+      key={`${jobId}-${edit}`}
+      jobId={jobId}
+      creatorName={creatorName}
+      edit={edit}
+      completion={completion}
+    />
   );
 }
 
@@ -43,10 +51,12 @@ function SavedJobPage({
   jobId,
   creatorName,
   edit,
+  completion,
 }: {
   jobId: string;
   creatorName?: string;
   edit: boolean;
+  completion?: React.ReactNode;
 }) {
   const router = useRouter();
   const [state, setState] = useState<SavedJobState | { status: "loading" }>({ status: "loading" });
@@ -195,6 +205,7 @@ function SavedJobPage({
             status: job.job_status,
           }}
           reviewStatus={state.review}
+          completion={completion}
           canEdit={!pending && job.job_status === "Pending"}
           notification={notification}
           onDismissNotification={() => setNotification(null)}
@@ -202,6 +213,7 @@ function SavedJobPage({
         />
         <JobLinkedSurveys
           surveys={surveys}
+          editable={job.job_status === "Pending"}
           pending={pending}
           onAdd={() => {
             setSelectingSurveys(true);
@@ -215,6 +227,7 @@ function SavedJobPage({
           jobId={jobId}
           creatorId={state.creatorId}
           creatorName={creatorName}
+          editable={job.job_status === "Pending"}
           onSaved={() => {
             setNotification({ kind: "brief-updated" });
             window.scrollTo({ top: 0, behavior: "smooth" });

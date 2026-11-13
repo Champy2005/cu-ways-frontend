@@ -80,9 +80,9 @@ describe("marketer query parsing", () => {
     expect(parseMarketerQuery({ sort: "rating_desc" }).sort).toBe("rating_desc");
   });
 
-  it("ignores the removed minimum-rating and date-range parameters", () => {
+  it("preserves the minimum rating and ignores obsolete date parameters", () => {
     const query = parseMarketerQuery({ rating: "4", from: "2025-09-06", to: "2025-09-28" });
-    expect(query).toEqual(EMPTY_MARKETER_QUERY);
+    expect(query).toEqual({ ...EMPTY_MARKETER_QUERY, minRating: 4 });
   });
 });
 

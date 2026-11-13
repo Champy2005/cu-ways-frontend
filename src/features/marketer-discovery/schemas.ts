@@ -94,6 +94,7 @@ export function parseMarketerQuery(input: RawSearchParams | URLSearchParams): Ma
     maxPrice: swap ? minPrice : maxPrice,
     availability: parseAvailability(params.avail),
     sort: parseSort(params.sort),
+    ...(params.rating !== undefined ? { minRating: parseInteger(params.rating, 1, 5) } : {}),
   };
 }
 
@@ -110,6 +111,7 @@ export function serializeMarketerQuery(query: MarketerQuery): string {
   if (query.minPrice !== null) params.set("min", String(query.minPrice));
   if (query.maxPrice !== null) params.set("max", String(query.maxPrice));
   if (query.availability !== null) params.set("avail", query.availability);
+  if (query.minRating != null) params.set("rating", String(query.minRating));
   if (query.sort !== null) params.set("sort", query.sort);
   return params.toString();
 }
@@ -150,6 +152,7 @@ export function activeFilterChips(query: MarketerQuery): FilterChip[] {
   if (query.availability !== null) {
     chips.push({ key: "availability", label: labelFor(AVAILABILITY_OPTIONS, query.availability) });
   }
+  if (query.minRating != null) chips.push({ key: "minRating", label: `${query.minRating}+ stars` });
   if (query.sort !== null) {
     chips.push({ key: "sort", label: labelFor(SORT_OPTIONS, query.sort) });
   }
@@ -172,6 +175,8 @@ export function removeFilter(query: MarketerQuery, chip: FilterChip): MarketerQu
         ...query,
         campus: query.campus.filter((value) => labelFor(CAMPUS_OPTIONS, value) !== chip.label),
       };
+    case "minRating":
+      return { ...query, minRating: null };
     case "experience":
       return { ...query, experience: null };
     case "minPrice":

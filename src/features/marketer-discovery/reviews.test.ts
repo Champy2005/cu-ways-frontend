@@ -50,6 +50,12 @@ describe("review URL state", () => {
       "/marketers/7/verified-performance?ref=q%3Da+b&rating=4&page=2",
     );
   });
+
+  it("keeps owner review filtering and pagination in the marketer workspace", () => {
+    expect(reviewsHref(7, { rating: 4, page: 2 }, "marketer-dashboard")).toBe(
+      "/marketer/reviews?rating=4&page=2",
+    );
+  });
 });
 
 describe("review aggregates", () => {
