@@ -194,6 +194,7 @@ function SavedJobPage({
             pendingOfferCount: job.pending_offer_count,
             status: job.job_status,
           }}
+          reviewStatus={state.review}
           canEdit={!pending && job.job_status === "Pending"}
           notification={notification}
           onDismissNotification={() => setNotification(null)}

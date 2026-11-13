@@ -37,7 +37,7 @@ export type MarketerReview = {
   /** Null when the Creator left only a rating. */
   comment: string | null;
   created_at: string;
-  /** Null until the backend supplies the reviewer's name. */
+  /** Null when the reviewer's stored name is blank. */
   reviewer_name: string | null;
 };
 

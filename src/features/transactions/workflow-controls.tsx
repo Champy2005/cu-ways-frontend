@@ -135,7 +135,13 @@ export function CompleteJob({ job }: { job: Settlement }) {
   );
 }
 
-export function SubmitProof({ job }: { job: Settlement }) {
+export function SubmitProof({
+  job,
+  inputId,
+}: {
+  job: Pick<Settlement, "job_id">;
+  inputId?: string;
+}) {
   const [error, setError] = useState("");
   const urlRef = useRef<HTMLInputElement>(null);
   const id = useId();
@@ -166,6 +172,7 @@ export function SubmitProof({ job }: { job: Settlement }) {
             <span>Proof link</span>
             <Input
               ref={urlRef}
+              id={inputId}
               name="url"
               inputMode="url"
               aria-describedby={error ? id : undefined}

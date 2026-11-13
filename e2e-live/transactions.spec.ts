@@ -52,13 +52,10 @@ async function signIn(page: Page, account: Awaited<ReturnType<typeof createAccou
   await expect(page).toHaveURL(/\/(creator|marketer)\/dashboard$/);
 }
 
-test("US032 shows completed paid jobs and linked records to both participants", async ({
-  page,
-  browser,
-  baseURL,
-}) => {
-  const creator = await createAccount(false);
-  const marketer = await createAccount(true);
+async function createAcceptedJob(
+  creator: Awaited<ReturnType<typeof createAccount>>,
+  marketer: Awaited<ReturnType<typeof createAccount>>,
+) {
   const survey = await api<{ survey_id: number }>("/api/v1/surveys", creator.token, "POST", {
     title: "Campus mobility survey",
     survey_link: "https://example.test/survey",
@@ -90,6 +87,17 @@ test("US032 shows completed paid jobs and linked records to both participants", 
     },
   );
   await api(`${jobApi}/offers/${offerId}/accept`, creator.token, "POST");
+  return { jobId, jobApi };
+}
+
+test("US032 shows completed paid jobs and linked records to both participants", async ({
+  page,
+  browser,
+  baseURL,
+}) => {
+  const creator = await createAccount(false);
+  const marketer = await createAccount(true);
+  const { jobId } = await createAcceptedJob(creator, marketer);
 
   const marketerContext = await browser.newContext({
     baseURL,
@@ -170,4 +178,36 @@ test("US032 shows completed paid jobs and linked records to both participants", 
   } finally {
     await marketerContext.close();
   }
+});
+
+test("US034 shows verified reviews to the marketer who received them", async ({ page }) => {
+  const creator = await createAccount(false);
+  const marketer = await createAccount(true);
+  const { jobId, jobApi } = await createAcceptedJob(creator, marketer);
+  const performanceURL = `/marketers/${marketer.id}/verified-performance`;
+
+  await signIn(page, marketer);
+  await page.goto(performanceURL);
+  await expect(page.getByRole("heading", { name: "No ratings yet" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "No reviews yet" })).toBeVisible();
+
+  await api(`${jobApi}/payments`, creator.token, "POST", {
+    method: "PromptPay",
+    amount: "2500.00",
+  });
+  await api(`${jobApi}/start`, marketer.token, "POST");
+  await api(`${jobApi}/proofs`, marketer.token, "POST", { url: "https://example.test/delivery" });
+  await api(`${jobApi}/complete`, creator.token, "POST");
+  const comment = "Delivery was clear and complete.";
+  await api(`${jobApi}/reviews`, creator.token, "POST", { rating: 5, comment });
+
+  await page.reload();
+  const reviews = page.getByRole("region", { name: "Verified reviews" });
+  await expect(reviews.getByText("5.00", { exact: true })).toBeVisible();
+  await expect(reviews.getByText("US32 Creator", { exact: true })).toBeVisible();
+  await expect(reviews.getByText(comment, { exact: true })).toBeVisible();
+  await expect(reviews.getByText(`Job #${jobId}`, { exact: true })).toBeVisible();
+  await reviews.getByLabel("Filter by rating").selectOption("1");
+  await expect(page).toHaveURL(/rating=1/);
+  await expect(reviews.getByText("No reviews match this rating", { exact: true })).toBeVisible();
 });

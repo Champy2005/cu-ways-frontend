@@ -37,9 +37,11 @@ export async function getInvitations(requestId?: string): Promise<InvitationEntr
   }));
 }
 
-export async function getMarketerOffers(): Promise<MarketerOffersSnapshot> {
+export async function getMarketerOffers(jobId?: number): Promise<MarketerOffersSnapshot> {
   const requests = readRequests(await serverApiGet<unknown>("/api/v1/me/job-requests"));
-  const histories = await Promise.all(requests.map(loadHistory));
+  const selected =
+    jobId === undefined ? requests : requests.filter((item) => item.job_id === jobId);
+  const histories = await Promise.all(selected.map(loadHistory));
   const offers = histories.flatMap(({ request, offers }) =>
     offers.map((offer) => ({ request, offer })),
   );

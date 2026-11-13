@@ -22,12 +22,14 @@ export async function listTransactions(workspace: Workspace, keyword: string, pa
   return serverApiGet<TransactionPage>(`/api/v1/me/transactions?${query}`);
 }
 
-export function getPayment(id: string) {
-  return serverApiGet<Settlement>(`${jobPath(id)}/payments`);
+export function getPayment(id: string, options?: { signal?: AbortSignal }) {
+  const path = `${jobPath(id)}/payments`;
+  return options ? serverApiGet<Settlement>(path, options) : serverApiGet<Settlement>(path);
 }
 
-export function getProofs(id: string) {
-  return serverApiGet<Proof[]>(`${jobPath(id)}/proofs`);
+export function getProofs(id: string, options?: { signal?: AbortSignal }) {
+  const path = `${jobPath(id)}/proofs`;
+  return options ? serverApiGet<Proof[]>(path, options) : serverApiGet<Proof[]>(path);
 }
 
 export function getReview(id: string) {

@@ -10,13 +10,8 @@ import { RetryButton } from "./history-controls";
 import { MutationFeedback } from "./mutation-control";
 import { getJobWorkflow, getPayment, getReview } from "./queries";
 import type { Proof, Settlement, Workspace } from "./types";
-import {
-  CompleteJob,
-  RecordPayment,
-  StartJob,
-  SubmitProof,
-  SubmitReview,
-} from "./workflow-controls";
+import { ProofWorkspace } from "@/features/proofs/proof-workspace";
+import { CompleteJob, RecordPayment, StartJob, SubmitReview } from "./workflow-controls";
 
 const jobTitle = (job: Settlement) => job.job_title || `Job #${job.job_id}`;
 
@@ -182,11 +177,11 @@ export async function MarketerJobPage({ id }: { id: string }) {
             </div>
           )}
         </div>
-        <div className="mk-card space-y-3 p-5">
-          <h2 className="font-semibold">Delivery proof</h2>
-          <ProofList proofs={proofs} />
-          {job.job_status === "In Progress" && <SubmitProof job={job} />}
-        </div>
+        <ProofWorkspace
+          jobId={job.job_id}
+          proofs={proofs}
+          canAdd={job.job_status === "In Progress"}
+        />
       </MutationFeedback>
     </section>
   );

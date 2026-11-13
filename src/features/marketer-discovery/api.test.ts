@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getMarketer, getMarketerReviews } from "./api";
 import { serverApiGet } from "@/lib/api/server-client";
 import { ApiError } from "@/lib/api/errors";
+import type { MarketerReviewItem, MarketerReviewsPage } from "./types";
 vi.mock("@/lib/api/server-client", () => ({ serverApiGet: vi.fn() }));
 beforeEach(() => vi.resetAllMocks());
 
@@ -38,14 +39,19 @@ describe("marketer detail lookup", () => {
 });
 
 describe("marketer review history", () => {
-  const item = (id: number, rating = 5, comment: string | null = "Good") => ({
+  const item = (id: number, rating = 5, comment: string | null = "Good"): MarketerReviewItem => ({
     review_id: id,
     job_id: id + 100,
     rating,
     comment,
     created_at: "2026-10-01T00:00:00Z",
+    reviewer_name: "Narin C.",
   });
-  const page = (items: ReturnType<typeof item>[], total: number, average: number | null = 4.5) => ({
+  const page = (
+    items: MarketerReviewItem[],
+    total: number,
+    average: number | null = 4.5,
+  ): MarketerReviewsPage => ({
     items,
     average_rating: average,
     review_count: total,
@@ -63,7 +69,7 @@ describe("marketer review history", () => {
     expect(result).toMatchObject({ average_rating: 4.5, review_count: 2, truncated: false });
     expect(result.reviews.map((review) => review.review_id)).toEqual([2, 1]);
     expect(result.reviews[1]?.comment).toBeNull();
-    expect(result.reviews[0]?.reviewer_name).toBeNull();
+    expect(result.reviews[0]?.reviewer_name).toBe("Narin C.");
   });
 
   it("reads every page in order and drops a review repeated across pages", async () => {
@@ -109,10 +115,19 @@ describe("marketer review history", () => {
     await expect(getMarketerReviews(7)).rejects.toBe(failure);
   });
 
-  it("reads the reviewer name once the backend sends it", async () => {
+  it("trims reviewer names and treats a blank name as absent", async () => {
     vi.mocked(serverApiGet).mockResolvedValue(
-      page([{ ...item(1), reviewer_name: "  Narin C. " } as ReturnType<typeof item>], 1),
+      page(
+        [
+          { ...item(2), reviewer_name: "  Narin C. " },
+          { ...item(1), reviewer_name: "  " },
+        ],
+        2,
+      ),
     );
-    expect((await getMarketerReviews(7)).reviews[0]?.reviewer_name).toBe("Narin C.");
+    expect((await getMarketerReviews(7)).reviews.map((review) => review.reviewer_name)).toEqual([
+      "Narin C.",
+      null,
+    ]);
   });
 });

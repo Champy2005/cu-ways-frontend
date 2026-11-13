@@ -88,4 +88,52 @@ describe("JobCreatedView payment entry", () => {
     if (visible) expect(link).toHaveAttribute("href", "/creator/jobs/41/payment");
     else expect(link).not.toBeInTheDocument();
   });
+
+  it.each([
+    ["not_reviewed", "Write a review"],
+    ["reviewed", "View review"],
+    ["unknown", "Open review"],
+    [undefined, "Open review"],
+  ] as const)("links a Completed job to its review (%s: %s)", (reviewStatus, label) => {
+    render(
+      <JobCreatedView
+        job={{
+          id: 41,
+          createdAt: "2026-10-01T10:00:00Z",
+          title: "Campus campaign",
+          compensation: "฿8,500 fixed",
+          deadline: "2026-10-28",
+          surveyCount: 2,
+          status: "Completed",
+        }}
+        reviewStatus={reviewStatus}
+        onEdit={() => undefined}
+      />,
+    );
+    expect(screen.getByRole("link", { name: label })).toHaveAttribute(
+      "href",
+      "/creator/jobs/41/review",
+    );
+  });
+
+  it.each(["Pending", "Accepted", "In Progress", "Cancelled"] as const)(
+    "has no review link for a %s job",
+    (status) => {
+      render(
+        <JobCreatedView
+          job={{
+            id: 41,
+            createdAt: "2026-10-01T10:00:00Z",
+            title: "Campus campaign",
+            compensation: "฿8,500 fixed",
+            deadline: "2026-10-28",
+            surveyCount: 2,
+            status,
+          }}
+          onEdit={() => undefined}
+        />,
+      );
+      expect(screen.queryByRole("link", { name: /review/i })).not.toBeInTheDocument();
+    },
+  );
 });
