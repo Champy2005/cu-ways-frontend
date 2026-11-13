@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, Eye, Home, Mail, Receipt, UserRound } from "lucide-react";
+import {
+  Briefcase,
+  BriefcaseBusiness,
+  Eye,
+  Home,
+  Mail,
+  Receipt,
+  ReceiptText,
+  UserRound,
+} from "lucide-react";
 
 import { navigateDemo, useLocalQuery } from "../local-navigation";
 import { usePathname } from "next/navigation";
@@ -10,13 +19,17 @@ import { cn } from "@/lib/utils";
 export const ownerViews = [
   { id: "dashboard", label: "Overview", icon: Home },
   { id: "services", label: "Services", icon: Briefcase },
+  { id: "jobs", label: "My Jobs", icon: BriefcaseBusiness },
   { id: "invitations", label: "Invitations", icon: Mail },
   { id: "offers", label: "My Offers", icon: Receipt },
+  { id: "transactions", label: "Transactions", icon: ReceiptText },
   { id: "profile", label: "Profile", icon: UserRound },
 ] as const;
 
 export const demoViews = [
-  ...ownerViews.filter((view) => view.id !== "offers"),
+  ...ownerViews.filter(
+    (view) => view.id !== "offers" && view.id !== "transactions" && view.id !== "jobs",
+  ),
   { id: "viewer", label: "Creator view", icon: Eye },
 ] as const;
 
@@ -39,7 +52,11 @@ export function MarketerNavigation({
   const pathname = usePathname();
   const localView = useLocalQuery("view", selected ?? "dashboard");
   const view = demo ? getDemoView(localView) : (selected ?? pathname.split("/").at(-1));
-  const active = view === "offer" || pathname.startsWith("/marketer/offer/") ? "invitations" : view;
+  const active = pathname.startsWith("/marketer/jobs")
+    ? "jobs"
+    : view === "offer" || pathname.startsWith("/marketer/offer/")
+      ? "invitations"
+      : view;
   const label = demo ? "Demo views" : "Marketer navigation";
   return (
     <nav

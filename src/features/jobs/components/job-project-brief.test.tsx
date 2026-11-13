@@ -384,7 +384,9 @@ describe("Project brief UI", () => {
     render(<JobProjectBrief jobId="41" creatorId={4} onSaved={onSaved} />);
     await attachBrief();
     vi.mocked(loadJobBriefs).mockImplementation(() => new Promise(() => {}));
-    fireEvent.click(screen.getByRole("button", { name: "Edit project brief" }));
+    const edit = screen.getByRole("button", { name: "Edit project brief" });
+    await waitFor(() => expect(edit).toBeEnabled());
+    fireEvent.click(edit);
     await screen.findByRole("dialog", { name: "Project Brief URL" });
     enterBrief(secondUrl, "Updated guidelines");
     fireEvent.click(screen.getByRole("button", { name: "Save Brief" }));

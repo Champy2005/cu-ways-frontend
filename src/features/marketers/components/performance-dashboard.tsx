@@ -6,6 +6,7 @@ import { MarketerIdentity } from "@/features/marketers/components/marketer-ident
 import type { MarketerProfile, MarketerStats } from "@/features/marketers/types";
 import { cn } from "@/lib/utils";
 import { formatBahtAmount } from "@/features/marketers/format";
+import type { ReactNode } from "react";
 
 export type RecentJob = {
   id: number;
@@ -20,6 +21,7 @@ type PerformanceDashboardProps = {
   stats: MarketerStats | null;
   statsError?: string;
   recentJobs?: RecentJob[];
+  workLinks?: ReactNode;
 };
 
 const cardClassName = "mk-card mk-card-padding gap-0";
@@ -113,6 +115,7 @@ export function PerformanceDashboard({
   stats,
   statsError,
   recentJobs = [],
+  workLinks,
 }: PerformanceDashboardProps) {
   return (
     <div className="text-[var(--mk-text)]">
@@ -122,8 +125,10 @@ export function PerformanceDashboard({
         <p className="mk-page-description">A snapshot of your work, earnings, and impact.</p>
       </div>
       <div className="mk-overview">
-        <MarketerIdentity name={profile.name} />
-        <section aria-labelledby="marketer-quickview">
+        <div className="mk-overview-recent">
+          <MarketerIdentity name={profile.name} />
+        </div>
+        <section aria-labelledby="marketer-quickview" className="mk-overview-recent">
           <h2 id="marketer-quickview" className="mk-section-title">
             Quickview
           </h2>
@@ -138,7 +143,13 @@ export function PerformanceDashboard({
             </Card>
           )}
         </section>
-        <RecentJobs jobs={recentJobs} />
+        {workLinks ? (
+          <section className="mk-overview-recent" aria-label="Your work">
+            {workLinks}
+          </section>
+        ) : (
+          <RecentJobs jobs={recentJobs} />
+        )}
       </div>
     </div>
   );

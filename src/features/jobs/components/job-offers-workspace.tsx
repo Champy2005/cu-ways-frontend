@@ -5,6 +5,7 @@ import { StatusText } from "@/components/ui/status-text";
 import { SuccessToast } from "@/components/feedback/success-toast";
 import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle2, RefreshCw, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { JobOffersInitialData } from "../api";
@@ -20,6 +21,7 @@ function jobName(job: JobOffersInitialData["job"]) {
 
 export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInitialData }) {
   const state = useJobOffers(initialData);
+  const router = useRouter();
   const [transitionPending, startTransition] = useTransition();
   const pending = state.pending || transitionPending;
   const { job, offers } = state.data;
@@ -36,8 +38,9 @@ export function JobOffersWorkspace({ initialData }: { initialData: JobOffersInit
   function confirm() {
     if (!selection || pending) return;
     startTransition(async () => {
-      await state.accept(selection.offer_id);
+      const accepted = await state.accept(selection.offer_id);
       setSelection(null);
+      if (accepted) router.push(`/creator/jobs/${job.job_id}/payment`);
     });
   }
   return (

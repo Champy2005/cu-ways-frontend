@@ -34,6 +34,8 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "next-env.d.ts",
+    // Standalone design snapshot has its own source/ownership and browser checks.
+    "design/chp-sprint-iii/**",
   ]),
 ]);
 

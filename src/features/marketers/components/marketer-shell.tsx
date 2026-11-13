@@ -24,7 +24,7 @@ export function MarketerShell({
       <a className="mk-skip" href="#marketer-content">
         Skip to content
       </a>
-      <header className="mk-header">
+      <header className="mk-header mk-marketer-header">
         <div className="mk-frame mk-header-inner">
           <Link
             href={demo ? "/demo/marketer" : "/marketer/dashboard"}

@@ -48,7 +48,7 @@ export function LiveOfferFields({
         <FieldDescription id={`${id}-price-help`}>
           {readOnly
             ? "Saved proposed price."
-            : "Propose an amount from ฿0 to ฿99,999,999.99, with at most two decimal places."}
+            : "This is your proposed compensation. Enter an amount from ฿0 to ฿99,999,999.99, with at most two decimal places."}
         </FieldDescription>
         <p id={`${id}-price-error`} className="ji-field-error">
           {errors.price}

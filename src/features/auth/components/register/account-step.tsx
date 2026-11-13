@@ -183,15 +183,17 @@ export function AccountStep({ values, errors, choice, onChange, onChoose }: Acco
                   aria-describedby={describedBy(errors, key)}
                   className="register-checkbox size-4 rounded-[3px]"
                 />
-                <span>
-                  {label}
-                  {/* No Terms/Privacy pages exist yet: plain text, kept out of the checkbox's name. */}
-                  <span aria-hidden="true">
-                    {" - "}
-                    <span className="text-[var(--rg-sds-tertiary)] underline">Learn more</span>
-                  </span>
-                </span>
+                <span>{label}</span>
               </label>
+              <a
+                href={key === "accept_terms" ? "/terms" : "/privacy"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-7 text-xs text-[var(--rg-sds-tertiary)] underline"
+              >
+                {key === "accept_terms" ? "Read Terms of Service" : "Read Privacy Policy"} (opens in
+                a new tab)
+              </a>
               {errors[key] && (
                 <p
                   id={`register-${key}-error`}

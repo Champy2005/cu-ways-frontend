@@ -7,20 +7,33 @@ import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ApiError, getDisplayError } from "@/lib/api/errors";
-import { createSurvey } from "@/features/surveys/browser-api";
+import { createSurvey, updateSurvey } from "@/features/surveys/browser-api";
 import { createSurveyValidationMessage } from "@/features/surveys/schemas";
-import type { CreateSurveyRequest } from "@/features/surveys/types";
+import type { CreateSurveyRequest, Survey } from "@/features/surveys/types";
 
-export function CreateSurveyForm() {
-  const router = useRouter();
-  const [values, setValues] = useState<CreateSurveyRequest>({
-    title: "",
-    survey_link: "",
-    description: "",
-    target_group: "",
-    desired_responses: undefined,
-    deadline: "",
+function initialValues(survey?: Survey): CreateSurveyRequest {
+  return {
+    title: survey?.title ?? "",
+    survey_link: survey?.survey_link ?? "",
+    description: survey?.description ?? "",
+    target_group: survey?.target_group ?? "",
+    desired_responses: survey?.desired_responses ?? undefined,
+    deadline: survey?.deadline ? new Date(survey.deadline).toISOString().slice(0, 10) : "",
+  };
+}
+
+async function saveSurvey(values: CreateSurveyRequest, survey?: Survey) {
+  if (!survey) return createSurvey(values);
+  const unchangedDeadline = values.deadline === initialValues(survey).deadline;
+  return updateSurvey(survey.survey_id, {
+    ...values,
+    deadline: unchangedDeadline ? survey.deadline : values.deadline,
   });
+}
+
+export function CreateSurveyForm({ survey }: { survey?: Survey } = {}) {
+  const router = useRouter();
+  const [values, setValues] = useState(() => initialValues(survey));
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [uncertain, setUncertain] = useState(false);
@@ -44,15 +57,15 @@ export function CreateSurveyForm() {
     setIsPending(true);
     setError(null);
     try {
-      const survey = await createSurvey(values);
-      router.push(`/surveys/${survey.survey_id}?created=1`);
+      const saved = await saveSurvey(values, survey);
+      router.push(`/surveys/${saved.survey_id}${survey ? "" : "?created=1"}`);
       router.refresh();
     } catch (requestError) {
       const unconfirmed = !(requestError instanceof ApiError) || requestError.status >= 500;
       setUncertain(unconfirmed);
       setError(
         unconfirmed
-          ? "Creation could not be confirmed. Check My surveys before trying again; your survey may already have been saved."
+          ? "The save could not be confirmed. Check My surveys before trying again."
           : getDisplayError(requestError),
       );
       submitting.current = false;
@@ -196,7 +209,13 @@ export function CreateSurveyForm() {
           </Link>
         ) : null}
         <Button type="submit" disabled={isPending || uncertain}>
-          {isPending ? "Creating Survey..." : "Create Survey"}
+          {isPending
+            ? survey
+              ? "Saving…"
+              : "Creating Survey..."
+            : survey
+              ? "Save changes"
+              : "Create Survey"}
         </Button>
       </div>
     </form>

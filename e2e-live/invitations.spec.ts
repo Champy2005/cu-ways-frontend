@@ -150,10 +150,7 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
   }
   await card.getByRole("button", { name: "Accept Request" }).click();
   await page.getByRole("button", { name: "Confirm", exact: true }).click();
-  await expect(card.getByText("Invitation accepted", { exact: true })).toBeVisible();
-  await expect(card.getByRole("link", { name: "Submit Offer" })).toHaveClass(/ji-primary/);
-  await page.screenshot({ path: testInfo.outputPath("invitations-responded.png"), fullPage: true });
-  await card.getByRole("link", { name: "Submit Offer" }).click();
+  await expect(page).toHaveURL(new RegExp(`/marketer/offer/create\\?requestId=${first.requestId}`));
   await page.getByLabel("Proposed Price (THB) *", { exact: true }).fill("9000.50");
   await page.getByLabel("Estimated Delivery *", { exact: true }).fill("2099-10-25");
   await page
@@ -328,5 +325,10 @@ test("real US20/21: accept, submit, reload, decline, and isolate another markete
     true,
   );
   await page.screenshot({ path: testInfo.outputPath("invite-standard.png"), fullPage: false });
+  await page.goto(`/creator/jobs/${first.jobId}/offers`);
+  await page.getByRole("button", { name: /Accept offer from/ }).click();
+  await page.getByRole("button", { name: "Confirm and hire" }).click();
+  await expect(page).toHaveURL(new RegExp(`/creator/jobs/${first.jobId}/payment$`));
+  await expect(page.getByRole("heading", { name: "Record payment" })).toBeVisible();
   expect(pageErrors, "Live workflow must not produce uncaught browser errors").toEqual([]);
 });

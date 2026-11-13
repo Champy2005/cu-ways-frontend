@@ -24,7 +24,6 @@ export function ContactStep({ values, errors, onChange }: StepProps) {
           inputMode="tel"
           autoComplete="tel"
           placeholder="xxx-xxx-xxxx"
-          required
           maxLength={30}
           value={values.phone}
           onChange={(event) => onChange("phone", event.target.value)}

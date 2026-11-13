@@ -81,6 +81,10 @@ export function LiveInvitationsPage({
     } catch (error) {
       return state.recover(error);
     }
+    if (!input) {
+      router.push(`/marketer/offer/create?requestId=${selection.id}`);
+      return;
+    }
     state.setNotice(
       input
         ? "Invitation declined. Your response has been saved."

@@ -87,6 +87,7 @@ jobs:
           BEFORE_SHA: ${{ github.event.before }}
         run: |
           legacy_pre_policy_sha="f4c1338568147ffb61a517fa3f4933a0c6f1281e"
+          legacy_design_merge_sha="428edaa75a1632f5c23d3aa20dff3262aea3fbe6"
 
           lint_range() {
             local range="$1"
@@ -98,6 +99,10 @@ jobs:
 
               if [[ "$commit_sha" == "$legacy_pre_policy_sha" ]]; then
                 echo "Skipping pre-policy commit $commit_sha (Add AGENTS.md)."
+                continue
+              fi
+              if [[ "$commit_sha" == "$legacy_design_merge_sha" ]]; then
+                echo "Skipping historical design handoff merge $commit_sha."
                 continue
               fi
 

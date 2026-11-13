@@ -69,7 +69,9 @@ async function openJob(accepted = false) {
       job: { ...mockSavedState().job, job_status: "Accepted" },
     });
   const result = render(<JobDraftPage jobId="41" />);
-  await screen.findByRole("region", { name: "Manage Linked Surveys" });
+  await screen.findByRole("region", {
+    name: accepted ? "Linked surveys" : "Manage Linked Surveys",
+  });
   return result;
 }
 
@@ -78,7 +80,9 @@ describe("Persisted job survey links", () => {
     "loads linked surveys from the owned job, accepted preview %s",
     async (accepted) => {
       await openJob(accepted);
-      const region = within(screen.getByRole("region", { name: "Manage Linked Surveys" }));
+      const region = within(
+        screen.getByRole("region", { name: accepted ? "Linked surveys" : "Manage Linked Surveys" }),
+      );
       expect(region.getAllByRole("listitem")).toHaveLength(2);
       expect(region.getByText("Campus Mobility Study")).toBeInTheDocument();
       expect(region.getByText("Green Habits 2026")).toBeInTheDocument();
@@ -139,6 +143,12 @@ describe("Persisted job survey links", () => {
     async (accepted) => {
       mockLinkedIds = ["118"];
       await openJob(accepted);
+      if (accepted) {
+        expect(
+          screen.queryByRole("button", { name: /remove|add existing surveys/i }),
+        ).not.toBeInTheDocument();
+        return;
+      }
       fireEvent.click(screen.getByRole("button", { name: "Remove Green Habits 2026" }));
       let warning = screen.getByRole("alertdialog", { name: "Keep at least one survey" });
       expect(within(warning).queryByRole("button", { name: "Remove" })).not.toBeInTheDocument();

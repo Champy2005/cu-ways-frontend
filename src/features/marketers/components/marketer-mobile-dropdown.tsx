@@ -34,7 +34,7 @@ export default function MarketerMobileMenu({
     current === "offer" || pathname.startsWith("/marketer/offer/") ? "invitations" : current;
   useEffect(() => {
     if (device !== "desktop") return;
-    const media = window.matchMedia("(min-width: 1024px)");
+    const media = window.matchMedia("(min-width: 1280px)");
     const closeOnWide = () => {
       if (media.matches) setOpen(false);
     };

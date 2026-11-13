@@ -12,6 +12,7 @@ vi.mock("@/features/jobs/offer-actions", () => ({
 }));
 
 vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
   notFound: vi.fn(() => {
     throw new Error("NEXT_NOT_FOUND");
   }),

@@ -3,6 +3,7 @@ import { getDisplayError } from "@/lib/api/errors";
 import { requireSession } from "@/lib/auth/guards";
 import { getUser } from "@/features/users/api";
 import { CreatorOverview } from "@/features/creators/components/creator-overview";
+import { loadCreatorJobs } from "@/features/jobs/api";
 
 export const metadata = { title: "Creator overview | CU Ways" };
 
@@ -15,5 +16,6 @@ export default async function CreatorDashboardPage() {
     return <InlineError message={getDisplayError(error)} />;
   }
 
-  return <CreatorOverview name={user.name} />;
+  const jobs = await loadCreatorJobs();
+  return <CreatorOverview name={user.name} jobs={jobs.status === "success" ? jobs.items : null} />;
 }

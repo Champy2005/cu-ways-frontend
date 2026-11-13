@@ -67,10 +67,12 @@ export function useJobOffers(initial: JobOffersInitialData) {
               }
             : { kind: "error", message: result.message },
         );
+        return result.status === "accepted";
       } else {
         setLocked(true);
         setNotice({ kind: "error", message: result.message });
       }
+      return false;
     } catch {
       setLocked(true);
       setNotice({
@@ -78,6 +80,7 @@ export function useJobOffers(initial: JobOffersInitialData) {
         message:
           "The result of your request is unknown. Refresh offers before making another decision.",
       });
+      return false;
     } finally {
       busy.current = false;
       setPending(false);

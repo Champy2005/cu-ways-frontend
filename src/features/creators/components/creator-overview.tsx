@@ -1,10 +1,30 @@
 import Link from "next/link";
-import { Briefcase, Plus, Search, UserPlus } from "lucide-react";
-
+import { Briefcase, ClipboardList, Search, UserPlus, Layers } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { MarketerIdentity } from "@/features/marketers/components/marketer-identity";
+import type { CreatorJobSummary } from "@/features/jobs/types";
 
-export function CreatorOverview({ name }: { name: string }) {
+const links = [
+  { href: "/surveys", label: "Manage surveys", icon: ClipboardList },
+  { href: "/creator/jobs", label: "My jobs", icon: Layers },
+  { href: "/creator/discovery", label: "Discover marketers", icon: Search },
+  { href: "/creator/jobs/invite", label: "Invite marketers", icon: UserPlus },
+  { href: "/creator/jobs/offers", label: "Compare job offers", icon: Briefcase },
+];
+
+export function CreatorOverview({
+  name,
+  jobs = null,
+}: {
+  name: string;
+  jobs?: CreatorJobSummary[] | null;
+}) {
+  const attention = jobs?.filter(
+    (job) =>
+      (job.pending_offer_count ?? 0) > 0 ||
+      job.job_status === "Accepted" ||
+      job.job_status === "In Progress",
+  );
   return (
     <div className="text-[var(--mk-text)]">
       <div className="mk-page-heading">
@@ -13,94 +33,63 @@ export function CreatorOverview({ name }: { name: string }) {
         <p className="mk-page-description">Find the right marketers for your next project.</p>
       </div>
       <div className="mk-overview">
-        <MarketerIdentity
-          name={name}
-          roleLabel="Creator"
-          mascotSrc="/marketer-assets/mascot-pink.svg"
-          tone="pink"
-        />
-        <section aria-labelledby="creator-surveys">
-          <h2 id="creator-surveys" className="mk-section-title">
-            My surveys
+        <div className="mk-overview-recent">
+          <MarketerIdentity
+            name={name}
+            roleLabel="Creator"
+            mascotSrc="/marketer-assets/mascot-pink.svg"
+            tone="pink"
+          />
+        </div>
+        <section aria-labelledby="creator-workspace">
+          <h2 id="creator-workspace" className="mk-section-title">
+            Workspace
           </h2>
-          <Card className="mk-card mk-card-padding gap-0">
-            <p className="text-sm text-[var(--mk-muted)]">
-              Create survey records with external links before linking them to jobs.
-            </p>
-            <Link
-              href="/surveys"
-              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
-            >
-              Manage surveys
-            </Link>
+          <Card className="mk-card mk-card-padding gap-2">
+            {links.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex min-h-12 items-center gap-3 rounded-lg px-3 font-medium hover:bg-[var(--mk-hover)]"
+              >
+                <Icon aria-hidden="true" className="size-5 text-[var(--mk-accent)]" />
+                {label}
+              </Link>
+            ))}
           </Card>
         </section>
-        <section aria-labelledby="creator-create-job">
-          <h2 id="creator-create-job" className="mk-section-title">
-            My jobs
+        <section aria-labelledby="creator-actions">
+          <h2 id="creator-actions" className="mk-section-title">
+            Jobs needing attention
           </h2>
-          <Card className="mk-card mk-card-padding gap-0">
-            <p className="text-sm text-[var(--mk-muted)]">
-              Open saved jobs or create a new job with your surveys.
-            </p>
-            <Link
-              href="/creator/jobs"
-              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
-            >
-              <Plus aria-hidden="true" className="size-4" />
-              My jobs
-            </Link>
-          </Card>
-        </section>
-        <section aria-labelledby="creator-discovery">
-          <h2 id="creator-discovery" className="mk-section-title">
-            Marketer discovery
-          </h2>
-          <Card className="mk-card mk-card-padding gap-0">
-            <p className="text-sm text-[var(--mk-muted)]">
-              Search marketers by expertise, campus, experience, price, and rating.
-            </p>
-            <Link
-              href="/creator/discovery"
-              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
-            >
-              <Search aria-hidden="true" className="size-4" />
-              Discover marketers
-            </Link>
-          </Card>
-        </section>
-        <section aria-labelledby="creator-job-invitations">
-          <h2 id="creator-job-invitations" className="mk-section-title">
-            Job invitations
-          </h2>
-          <Card className="mk-card mk-card-padding gap-0">
-            <p className="text-sm text-[var(--mk-muted)]">
-              Invite selected marketers to make offers on an existing job.
-            </p>
-            <Link
-              href="/creator/jobs/invite"
-              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
-            >
-              <UserPlus aria-hidden="true" className="size-4" />
-              Invite marketers
-            </Link>
-          </Card>
-        </section>
-        <section aria-labelledby="creator-job-offers">
-          <h2 id="creator-job-offers" className="mk-section-title">
-            Job offers & bids
-          </h2>
-          <Card className="mk-card mk-card-padding gap-0">
-            <p className="text-sm text-[var(--mk-muted)]">
-              Compare marketer proposals, offered prices, and ratings to make hiring decisions.
-            </p>
-            <Link
-              href="/creator/jobs/offers"
-              className="mk-primary-button mt-5 inline-flex items-center justify-center gap-2 self-start text-sm font-medium"
-            >
-              <Briefcase aria-hidden="true" className="size-4" />
-              Compare job offers
-            </Link>
+          <Card className="mk-card mk-card-padding gap-2">
+            {attention === undefined ? (
+              <p>
+                Jobs are temporarily unavailable.{" "}
+                <Link href="/creator/jobs" className="underline">
+                  Try again
+                </Link>
+              </p>
+            ) : attention.length === 0 ? (
+              <p>No jobs need your attention right now.</p>
+            ) : (
+              attention.map((job) => (
+                <Link
+                  key={job.job_id}
+                  href={`/creator/jobs/${job.job_id}`}
+                  className="block rounded-lg px-3 py-3 hover:bg-[var(--mk-hover)]"
+                >
+                  <strong>{job.title || `Job #${job.job_id}`}</strong>
+                  <span className="mt-1 block text-sm text-[var(--mk-muted)]">
+                    {(job.pending_offer_count ?? 0) > 0
+                      ? `${job.pending_offer_count} offer(s) to review`
+                      : job.job_status === "Accepted"
+                        ? "Marketer hired · check payment"
+                        : "In progress · check payment and delivery"}
+                  </span>
+                </Link>
+              ))
+            )}
           </Card>
         </section>
       </div>

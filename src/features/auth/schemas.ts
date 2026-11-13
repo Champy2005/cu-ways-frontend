@@ -43,7 +43,7 @@ export function validateRegisterInput(value: unknown): value is RegisterRequest 
   if (!value || typeof value !== "object") return false;
   const input = value as Record<string, unknown>;
   const phoneValid =
-    isString(input.phone) && input.phone.trim().length > 0 && input.phone.length <= 20;
+    input.phone == null || (isString(input.phone) && /^[0-9]{10}$/.test(input.phone));
   const lineIDValid =
     input.line_id === undefined ||
     input.line_id === null ||
@@ -95,8 +95,8 @@ export function registerValidationMessage(input: RegisterRequest): string | null
   if (input.password.length < 8 || input.password.length > 128) {
     return "Password must be between 8 and 128 characters.";
   }
-  if (!input.phone || input.phone.trim().length === 0 || input.phone.length > 20) {
-    return "Phone must be between 1 and 20 characters.";
+  if (input.phone != null && !/^[0-9]{10}$/.test(input.phone)) {
+    return "Phone number must be 10 digits.";
   }
   if (
     input.line_id !== undefined &&
@@ -177,8 +177,7 @@ export function accountStepErrors(input: RegistrationFields): RegistrationErrors
 export function contactStepErrors(input: RegistrationFields): RegistrationErrors {
   const errors: RegistrationErrors = {};
   const phone = phoneDigits(input.phone.trim());
-  if (!phone) errors.phone = "Phone number is required.";
-  else if (!/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits";
+  if (phone && !/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits";
   if (input.line_id.trim().length > 50) errors.line_id = "Enter a valid Line ID.";
   return errors;
 }
@@ -200,7 +199,7 @@ export function registrationPayload(input: RegistrationFields): RegisterRequest 
   const payload: RegisterRequest = {
     name: `${input.first_name.trim()} ${input.last_name.trim()}`,
     email: input.email.trim(),
-    phone: phoneDigits(input.phone.trim()),
+    phone: phoneDigits(input.phone.trim()) || null,
     password: input.password,
     line_id: input.line_id.trim() || null,
   };

@@ -2,6 +2,8 @@ import { SEARCH_PAGE_SIZE } from "@/features/marketer-discovery/constants";
 import type {
   Marketer,
   MarketerQuery,
+  MarketerReview,
+  MarketerReviewItem,
   MarketerSearchItem,
   MarketerSearchParams,
   MarketerSummary,
@@ -32,6 +34,7 @@ export function toBackendSearchParams(
   if (query.minPrice !== null) add("min_price", query.minPrice);
   if (query.maxPrice !== null) add("max_price", query.maxPrice);
   if (query.availability !== null) add("availability_status", query.availability);
+  if (query.minRating != null) add("min_rating", query.minRating);
   if (query.sort !== null) add("sort", query.sort);
   return params;
 }
@@ -94,7 +97,16 @@ export function toMarketer(item: MarketerSearchItem): Marketer {
       rating_count: item.review_count,
     },
     service_packages: newestFirst.map(toPackage),
-    // No backend endpoint returns individual reviews yet.
-    reviews: [],
+  };
+}
+
+export function toMarketerReview(item: MarketerReviewItem): MarketerReview {
+  return {
+    review_id: item.review_id,
+    job_id: item.job_id,
+    rating: item.rating,
+    comment: item.comment?.trim() ? item.comment : null,
+    created_at: item.created_at,
+    reviewer_name: item.reviewer_name.trim() || null,
   };
 }
