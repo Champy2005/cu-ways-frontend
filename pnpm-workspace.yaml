@@ -7,9 +7,10 @@ overrides:
   # GHSA js-yaml CPU-exhaustion advisory; transitive via openapi-typescript,
   # commitlint and shadcn, so there is no direct dependency to bump.
   js-yaml: 4.3.2
-  # GHSA-qw65-cvwx-89v3 / GHSA-58mr-gqgx-xq4g fast-uri authority and host-confusion advisories;
-  # transitive via shadcn's ajv, which accepts any fast-uri 3.x.
-  fast-uri: 3.1.8
+  # Snyk URI parsing advisories in the 3.x release used by shadcn's Ajv.
+  fast-uri: 3.1.9
+  # Snyk ReDoS advisory in the 10.x release used by shadcn's socks dependency.
+  socks>ip-address: 10.7.4
 auditConfig:
   ignoreGhsas:
     # GHSA-vfj7-8cjw-p6xm braces stack-exhaustion DoS. No patched release exists (3.0.3 is the
