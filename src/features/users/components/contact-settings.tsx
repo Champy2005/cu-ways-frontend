@@ -88,7 +88,8 @@ function Field({ id, label, hint, error, icon: Icon, className, children }: Fiel
 }
 
 /**
- * Settings > Contact Information (US-003). Email is fixed. Phone and LINE are optional.
+ * Settings > Contact Information (US-003). Email is fixed; phone is required and
+ * must be 10 digits; LINE ID is optional.
  */
 export function ContactSettings({ user: initialUser }: { user: ContactProfile }) {
   const form = useContactSettings(initialUser, updateCurrentUser);
@@ -150,6 +151,7 @@ export function ContactSettings({ user: initialUser }: { user: ContactProfile })
               inputMode="tel"
               autoComplete="tel"
               placeholder="Enter phone number"
+              required
               maxLength={20}
               value={form.phone}
               onChange={(event) => form.setPhone(event.target.value)}

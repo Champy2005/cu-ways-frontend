@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import { ContactSettings } from "@/features/users/components/contact-settings";
 import { ApiError } from "@/lib/api/errors";
@@ -66,15 +66,13 @@ describe("ContactSettings", () => {
     expect(updateCurrentUser).not.toHaveBeenCalled();
   });
 
-  it("clears an optional phone", async () => {
-    updateCurrentUser.mockResolvedValue({ ...user, phone: null });
+  it("keeps the phone required", () => {
     render(<ContactSettings user={user} />);
     fireEvent.change(phoneInput(), { target: { value: "  " } });
     save();
 
-    await waitFor(() =>
-      expect(updateCurrentUser).toHaveBeenCalledWith({ phone: null, line_id: user.line_id }),
-    );
+    expect(screen.getByText("Phone number is required.")).toBeInTheDocument();
+    expect(updateCurrentUser).not.toHaveBeenCalled();
   });
 
   it("shows the banner and field error when the phone is taken", async () => {

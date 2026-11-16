@@ -29,8 +29,8 @@ export function validateContactUpdate(value: unknown): value is UpdateUserReques
   return (
     keys.length === 2 &&
     keys.every((key) => key === "phone" || key === "line_id") &&
-    (input.phone === null ||
-      (typeof input.phone === "string" && PHONE_PATTERN.test(input.phone))) &&
+    typeof input.phone === "string" &&
+    PHONE_PATTERN.test(input.phone) &&
     isNullableString(input.line_id, 50)
   );
 }
@@ -40,14 +40,14 @@ export function normalizeContactUpdate(input: {
   line_id: string;
 }): UpdateUserRequest {
   return {
-    phone: phoneDigits(input.phone.trim()) || null,
+    phone: phoneDigits(input.phone.trim()),
     line_id: input.line_id.trim() || null,
   };
 }
 
 /** The phone rule on its own, worded as in the contact-settings design. */
-export function phoneValidationMessage(phone: string | null | undefined): string | null {
-  if (!phone?.trim()) return null;
+export function phoneValidationMessage(phone: string | undefined): string | null {
+  if (!phone?.trim()) return "Phone number is required.";
   if (!PHONE_PATTERN.test(phoneDigits(phone.trim()))) return "Phone number must be 10 digits";
   return null;
 }
