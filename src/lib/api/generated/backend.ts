@@ -720,7 +720,7 @@ export interface paths {
         put?: never;
         /**
          * Complete a paid job with proof as its owning Creator
-         * @description Sets the completion time and records simulated payout release. Repeating completion returns the saved state.
+         * @description The owning Creator completes an In Progress job with an accepted offer, a Paid payment matching the accepted price, and a Proof attachment. Send this request without a body. The server sets the completion time in UTC and reports a simulated payout release. Repeating completion returns the saved state and its original completed_at.
          */
         post: operations["completeJob"];
         delete?: never;
@@ -2019,6 +2019,15 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
+            /** @description Too many authentication requests (rate_limited). */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
             /** @description Unexpected server error. */
             500: {
                 headers: {
@@ -2069,6 +2078,15 @@ export interface operations {
             };
             /** @description Request validation failed. */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too many authentication requests (rate_limited). */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4314,6 +4332,15 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Invalid job ID (validation_error). */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
         };
     };
     createJobPayment: {
@@ -4492,12 +4519,23 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description Job, accepted offer, Paid payment, or proof does not meet completion requirements. */
+            /** @description The job is not in progress (job_not_in_progress), has no accepted offer (accepted_offer_required), lacks a matching Paid payment (completion_payment_required), or lacks a Proof attachment (completion_proof_required). */
             409: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Invalid job ID or unexpected request body (validation_error). */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
         };
     };
