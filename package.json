@@ -20,6 +20,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:trace": "playwright test --trace on",
+    "test:e2e:epc08": "playwright test -c playwright.epc08.config.ts",
     "security:audit": "pnpm audit --audit-level=high",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:tooling && pnpm test:coverage && pnpm security:audit && pnpm build",
     "generate:api": "node scripts/generate-api.mjs",
