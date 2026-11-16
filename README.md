@@ -4,6 +4,8 @@ Next.js App Router frontend for CU Ways. The project uses TypeScript, Tailwind C
 
 For Sprint 3 screens and future UI work, follow [the design guide](design.md). It records the approved mobile layout, shared components, colors, navigation, status text, and feedback behavior.
 
+See the shared [job completion API design](https://github.com/Aluminium51/cu-ways-backend/blob/main/docs/job-completion-design.md) for the sequence from the Next.js Server Action to the Go backend and the Sprint 3 Swagger demo. In a paired local checkout, the document is at `../backend/docs/job-completion-design.md`.
+
 Tim's Sprint 3 HTML previews for payment recording, transaction history and reviews are in [design/](design/README.md), with a behavior and route guide for each screen.
 
 Chp's standalone Sprint III handoff for starting jobs, delivery proof, completion, cancellation and marketer reviews is in [design/chp-sprint-iii/](design/chp-sprint-iii/EXPORT.md). It includes the shared theme, scenario studios, searchable design records and review evidence; application adoption remains separate.
